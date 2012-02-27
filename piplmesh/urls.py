@@ -5,6 +5,7 @@ from django.conf.urls.defaults import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+	('^$', first),
     # Examples:
     # url(r'^$', 'piplmesh.views.home', name='home'),
     # url(r'^piplmesh/', include('piplmesh.foo.urls')),
@@ -14,4 +15,5 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
+	
 )
