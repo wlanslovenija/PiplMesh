@@ -1,0 +1,71 @@
+/* PiplMesh CSS */
+
+
+body {
+	text-align:center;
+	background:#EEE;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:12px;
+}
+
+	.container {
+		background:#FFF;
+		margin: 0 auto;
+		width:1100px;
+		text-align:left;
+		position:relative
+	}
+	
+	.header {
+		background-color:yellow;
+		position:relative;
+		float:left;
+		width:100%;
+		margin-bottom:20px;
+	}
+	
+		.header .logo {
+			float:left;
+			padding-top:10px
+		}
+		
+			.header .logo h1 {
+				font-size:40px;
+				display:inline;
+			}
+			
+			.header .logo img {
+				width:80px;
+			}
+		
+		.header .search {
+			float:right;
+			padding:20px;
+			background:#FFF;
+			width:410px
+		}
+		
+		.header .search img {
+			padding-top:10px;
+			display:inline-block;
+		}
+
+
+	.main {
+		clear:both;
+		text-align:center;
+		position:relative;
+	}
+	
+	.footer {
+		border-top: 1px solid #CCC;
+		padding-top:20px;
+		font-size: 10px;
+		padding-bottom:20px;
+		position:relative;
+		text-align:center;
+		background-color:#FFF
+	}
+
+
+/* */
