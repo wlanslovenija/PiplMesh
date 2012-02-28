@@ -1,8 +1,28 @@
+{# some really basic block stuff #}
 <html>
 <head>
-<title>{{ title }}</title>
+	<title>{% block title %}PiplMesh{% endblock %}</title>
 </head>
 <body>
-{{ title }}
+	{% block top %}
+	<img src="{{ STATIC_URL }}piplmesh/images/logo.png" />
+	<br />
+	<form method="get" action="http://www.google.com/search">
+
+	<div style="border:1px solid black;padding:4px;width:20em;">
+	<table border="0" cellpadding="0">
+	<tr><td>
+	<img width="100" height="30" alt="{{ search_engine }} Search Engine" src="{{ STATIC_URL }}piplmesh/images/{{ search_engine_logo }}" />
+	</td></tr>
+	<tr><td>
+	<input type="text" name="q" size="25" maxlength="255" value="" />
+	<input type="submit" value="{{ search_engine }} Search" /></td></tr>
+	</td></tr></table>
+	</div>
+
+	</form>
+	{% endblock %}
+	{% block content %}{% endblock %}
+	{% block footer %}Footer here!{% endblock %}
 </body>
 </html>
