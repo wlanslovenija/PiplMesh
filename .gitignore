@@ -1,11 +1,22 @@
-# OS Generated Files
-.DS_Store*
+# Hidden files
+.*
+
+# OS generated files
 ehthumbs.db
 Icon?
 Thumbs.db
 
-# Python Compiled Source Code
+# Python compiled source code
 *.pyc
 
+# Vim swap files
+*.swp
+
+# SQLite database
+*.sqlite
+
+# Internationalization files
+*.mo
+
 # Virtual environment
-env_piplmesh/
+/env_*
