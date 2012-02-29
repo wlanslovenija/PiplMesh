@@ -1,11 +1,13 @@
 # Create your views here.
 
+from django.views.generic import TemplateView
 from django.template import RequestContext
-from django.http import HttpResponse
-from django.shortcuts import render_to_response
 
-def first(request):
-    d = {}
-    d['search_engine'] = 'Google'
-    d['search_engine_logo'] = d['search_engine'].lower() + '_logo.png'
-    return render_to_response('home.html', d, context_instance=RequestContext(request))
+class MainView(TemplateView):
+    def get_context_data(self, **kwargs):
+        context = super(MainView, self).get_context_data(**kwargs)
+        context.update({
+            'search_engine': 'Google',
+            'search_engine_logo': 'google_logo.png'
+        })
+        return context

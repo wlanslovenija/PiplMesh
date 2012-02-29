@@ -6,15 +6,6 @@ from frontend.views import *
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-	('^$', first),
-    # Examples:
-    # url(r'^$', 'piplmesh.views.home', name='home'),
-    # url(r'^piplmesh/', include('piplmesh.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
-	
+    ('^home$', MainView.as_view(template_name="home.html")),
+    ('^$', MainView.as_view(template_name="home.html")),
 )
