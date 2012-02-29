@@ -1,0 +1,11 @@
+# OS Generated Files
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# Python Compiled Source Code
+*.pyc
+
+# Virtual environment
+env_piplmesh/
