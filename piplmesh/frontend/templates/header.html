@@ -1,1 +1,16 @@
- 
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <img src="{{ STATIC_URL }}piplmesh/images/logo.png" alt="PiplMesh" />
+            <h1>Pipl Mesh</h1>
+        </div>
+        <div class="search">
+            <form method="get" action="http://www.google.com/search">
+                <div>
+                    <img width="100" height="30" alt="{{ search_engine }} Search Engine" src="{{ STATIC_URL }}piplmesh/images/{{ search_engine_logo }}" />
+                    <input type="text" name="q" size="25" maxlength="255" value="" />
+                    <input type="submit" value="{{ search_engine }} Search" />
+                </div>
+            </form>
+        </div>
+    </div>

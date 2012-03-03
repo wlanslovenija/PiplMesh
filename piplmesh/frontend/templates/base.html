@@ -1,44 +1,14 @@
-{# some really basic block stuff #}
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>{% block title %}PiplMesh{% endblock %}</title>
-	<link rel="stylesheet" href="{{ STATIC_URL }}piplmesh/css/style.css" type="text/css" media="screen" />
-</head>
-<body>
-<div class="container">
-	{% block top %}
-	<div class="header">
-		<div class="logo">
-		
-
-		<img src="{{ STATIC_URL }}piplmesh/images/logo.png" alt="PiplMesh" />
-		<h1>Pipl Mesh</h1>
-		</div>
-		
-		<div class="search">
-			<form method="get" action="http://www.google.com/search">
-				<img width="100" height="30" alt="{{ search_engine }} Search Engine" src="{{ STATIC_URL }}piplmesh/images/{{ search_engine_logo }}" />
-				<input type="text" name="q" size="25" maxlength="255" value="" />
-				<input type="submit" value="{{ search_engine }} Search" />
-			</form>
-		</div>
-	</div>
-	{% endblock %}
-	
-	{% block content %}
-	
-	{% endblock %}
-	
-	{% block footer %}
-	
-	<div class="footer">
-		<p>Footer here!</p>
-	</div>
-	
-	{% endblock %}
-</div>
-</body>
+    <head>
+        <title>{% block fulltitle %}{% block title %}{% endblock %} – wlan slovenija{% endblock %}</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="{{ STATIC_URL }}piplmesh/css/style.css" type="text/css" media="screen" />
+        {% block extrahead %}{% endblock %}
+        {% block js %}{% endblock %}
+        {% block css %}{% endblock %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
 </html>
