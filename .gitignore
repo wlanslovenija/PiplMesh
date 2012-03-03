@@ -20,3 +20,6 @@ Thumbs.db
 
 # Virtual environment
 /env_*
+
+# Generated documentation
+/docs/_build/
