@@ -4,6 +4,8 @@ from django.template.context import RequestContext
 from django.contrib.auth import login, authenticate
 from forms import RegistrationForm
 
+# this method checks if form data are valid, saves new user.
+# New user is authenticated, logged in and redirected to home page
 def registration_view(request):
     form = RegistrationForm()
     if request.method == "POST":

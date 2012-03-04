@@ -9,18 +9,20 @@ class RegistrationForm(forms.Form):
     password1 = forms.CharField(widget=forms.PasswordInput, label=u"Password")
     password2 = forms.CharField(widget=forms.PasswordInput, label=u"Repeat password") 
 
-    # This method checks whether the passwords match
+    # This method checks whether the passwords match.
     def clean_password2(self):
         if self.cleaned_data["password1"]==self.cleaned_data["password2"]:
             return self.cleaned_data["password2"]
         raise forms.ValidationError(u"Passwords do not match.")
     
+    # This method checks if username already exists.
     def clean_username(self):
         user_number = User.objects.filter(username=self.cleaned_data["username"]).count();
         if(user_number == 0):
             return self.cleaned_data["username"]
         raise forms.ValidationError(u"Username already exists.")
     
+    # This method saves new user data and returns username and password for authentication.
     def save(self):
         new_user = User()
         new_user.username = self.cleaned_data["username"] # username

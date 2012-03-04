@@ -13,6 +13,8 @@
                 </div>
             </form>
         </div>
+        
+        <!-- This div is used for registration and log in link. If user is already logged in, his username and logout link are shown instead. -->
         <div class='user'>
         	{% if user.is_authenticated %}
         		<p>Username: <strong>{{ user.username}}</strong> </p>
