@@ -1,0 +1,13 @@
+{% extends "plain.html" %}
+
+{% block fulltitle %}wlan slovenija{% endblock %}
+
+{% block content %}
+<div class="main">
+	<form method="post" action="{% url login %}">
+    {% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" value="Login" />
+	</form>
+</div>
+{% endblock %}
