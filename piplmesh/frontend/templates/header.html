@@ -13,13 +13,5 @@
                 </div>
             </form>
         </div>
-        <div class='user'>
-        	{% if user.is_authenticated %}
-        		<p>Username: <strong>{{ user.username}}</strong> </p>
-        		<p><a href="{% url logout %}">Log out</a></p>
-        	{% else %}
-        		<p><a href="{% url registration %}">Register</a></p>
-        		<p><a href="{% url login %}">Log in</a></p>
-        	{% endif %}
-        </div>
+        
     </div>
