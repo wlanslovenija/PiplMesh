@@ -1,13 +1,13 @@
-from django.db import models
-from django.contrib.auth.models import User
+from django.db import models as django_models
+from django.contrib.auth.models import User as auth_user
 
 
-class UserProfile(models.Model):
+class UserProfile(django_models.Model):
     """ 
 	Class used for storing additional information about user
 	"""
-    user = models.OneToOneField(User)
+    user = django_models.OneToOneField(auth_user)
 
     # Custom fields
-    gender = models.CharField(null=True, blank=True, max_length=1)
-    birthdate = models.DateField(null=True, blank=True)
+    gender = django_models.CharField(null=True, blank=True, max_length=1)
+    birthdate = django_models.DateField(null=True, blank=True)
