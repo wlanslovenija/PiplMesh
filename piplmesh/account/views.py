@@ -7,6 +7,9 @@ from forms import RegistrationForm
 # this method checks if form data are valid, saves new user.
 # New user is authenticated, logged in and redirected to home page
 def registration_view(request):
+    # redirect user to home page if logged in
+    if request.user.is_authenticated():
+        return redirect('home')
     form = RegistrationForm()
     if request.method == "POST":
         form = RegistrationForm(request.POST)
