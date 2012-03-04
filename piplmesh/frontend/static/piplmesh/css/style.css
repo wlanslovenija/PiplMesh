@@ -12,7 +12,7 @@ body {
 		text-align: left;
 		position: relative;
 	}
-	
+
 	.header {
 		background-color: yellow;
 		position: relative;
@@ -20,28 +20,28 @@ body {
 		width: 100%;
 		margin-bottom: 20px;
 	}
-	
+
 		.header .logo {
 			float: left;
 			padding-top: 10px
 		}
-		
+
 			.header .logo h1 {
 				font-size: 40px;
 				display: inline;
 			}
-			
+
 			.header .logo img {
 				width: 80px;
 			}
-		
+
 		.header .search {
 			float: right;
 			padding: 20px;
 			background: #FFF;
 			width: 410px;
 		}
-		
+
 		.header .search img {
 			padding-top: 10px;
 			display: inline-block;
@@ -52,7 +52,7 @@ body {
 		text-align: center;
 		position: relative;
 	}
-	
+
 	.footer {
 		border-top: 1px solid #CCC;
 		padding-top:20px;
@@ -61,4 +61,8 @@ body {
 		position: relative;
 		text-align: center;
 		background-color: #FFF;
+	}
+
+	.gravatar {
+        border: 0px;
 	}
