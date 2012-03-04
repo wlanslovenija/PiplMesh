@@ -176,3 +176,7 @@ LOGGING = {
 LOGIN_REDIRECT_URL='/'
 
 AUTH_PROFILE_MODULE = 'accounts.UserProfile'
+
+AUTHENTICATION_BACKENDS = (
+    'account.backends.CaseInsensitiveModelBackend',
+)
