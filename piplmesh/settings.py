@@ -140,7 +140,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 INSTALLED_APPS = (
     # Ours are first so that we can override default templates in other apps
     'piplmesh.frontend',
-
+    'piplmesh.account',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -173,3 +173,4 @@ LOGGING = {
         },
     }
 }
+LOGIN_REDIRECT_URL='/'
