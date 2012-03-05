@@ -13,7 +13,7 @@ def gravatar(email, size=50, default_avatar='unknown.png'):
 
     Sample usage::
 
-        {% load gravatar %}
+        {% load gravatar_tags %}
         {% gravatar "piplmesh@piplmesh" 50 %}
     """
 
@@ -32,7 +32,7 @@ def gravatar(email, size=50, default_avatar='unknown.png'):
     gravatar_url = "https://secure.gravatar.com/avatar/%(email_hash)s?s=%(size)s&d=%(default_avatar_url)s" % {
         "email_hash": hashlib.md5(email.lower()).hexdigest(),
         "size": size,
-        "default_avatar_url": urllib.quote(default_avatar_url)
+        "default_avatar_url": urllib.quote(default_avatar_url),
     }
 
     return {

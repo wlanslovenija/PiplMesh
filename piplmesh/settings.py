@@ -45,7 +45,7 @@ URL_VALIDATOR_USER_AGENT = 'Django'
 
 SITE_ID = 1
 
-# Use SSL for default gravatar URL or not
+# Use SSL for default gravatar URL
 GRAVATAR_HTTPS_DEFAULT = False
 
 # If you set this to False, Django will make some optimizations so as not
