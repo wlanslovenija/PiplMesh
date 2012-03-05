@@ -12,13 +12,14 @@ class CaseInsensitveRegForm(auth_forms.UserCreationForm):
     To enable it simply extend registration form class with this class.
     """
     def clean_username(self):
-	    username = super(CaseInsensitveRegForm, self).clean_username()
-	    try:
-		    auth_models.User.objects.get(username__iexact=username)
-	    except auth_models.User.DoesNotExist:
-	        return username
-	    raise forms.ValidationError(u"A user with that username already exists.")
-		
+        username = super(CaseInsensitveRegForm, self).clean_username()
+        try:
+            auth_models.User.objects.get(username__iexact=username)
+        except auth_models.User.DoesNotExist:
+            return username
+        raise forms.ValidationError(u"A user with that username already exists.")
+
+
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
     """
     Renders horizontal radio buttons.
@@ -31,41 +32,41 @@ class HorizontalRadioRenderer(forms.RadioSelect.renderer):
 
 class RegistrationForm(CaseInsensitveRegForm):
     """
-	Class with user registration form
-	"""
-	
-	#required data
+    Class with user registration form
+    """
+
+    #required data
     username = forms.CharField(label=u"Username *")
     email = forms.EmailField(label=u"Email *")
     password1 = forms.CharField(widget=forms.PasswordInput, label=u"Password *")
     password2 = forms.CharField(widget=forms.PasswordInput, label=u"Repeat password *") 
     first_name = forms.CharField(label=u"First name *")
     last_name = forms.CharField(label=u"Last name *")
-	
-	#additional information
+    
+    #additional information
     gender = forms.ChoiceField(label=u"Gender", required=False, choices=(('m','Male'),('f','Female')),widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))   
     current_date = datetime.now()
     birthdate = forms.DateField(label=u"Birth date", required=False, widget=widgets.SelectDateWidget(years=[y for y in range(current_date.year,1900,-1)]))
     
     def clean_password2(self):
-	    # This method checks whether the passwords match.
+        # This method checks whether the passwords match.
         if self.cleaned_data["password1"]==self.cleaned_data["password2"]:
             return self.cleaned_data["password2"]
         raise forms.ValidationError(u"Passwords do not match.")
     
     
     def clean_username(self):
-	    # This method checks if username already exists.
-	    username = super(RegistrationForm, self).clean_username()
-	    try:
-		    auth_models.User.objects.get(username__iexact=username)
-	    except auth_models.User.DoesNotExist:
-	        return username
-	    raise forms.ValidationError(u"A user with that username already exists.")
+        # This method checks if username already exists.
+        username = super(RegistrationForm, self).clean_username()
+        try:
+           auth_models.User.objects.get(username__iexact=username)
+        except auth_models.User.DoesNotExist:
+            return username
+        raise forms.ValidationError(u"A user with that username already exists.")
     
    
     def save(self):	
-	    # We first have to save user to db
+        # We first have to save user to db
         new_user = auth_models.User()
         new_user.username = self.cleaned_data["username"] # username
         new_user.first_name = self.cleaned_data["first_name"] # first name
