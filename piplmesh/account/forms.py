@@ -1,10 +1,10 @@
-from django import forms as django_forms
+from datetime import datetime
+from django import forms
 from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import models as auth_models
-from django.contrib.auth.models import User as auth_user
-from django.utils.safestring import mark_safe as string_mark_safe
-from django.forms.extras.widgets import SelectDateWidget as forms_date_widget
-from datetime import datetime as date_time
+from django.forms.extras import widgets
+from django.utils.safestring import mark_safe
+from models import UserProfile
 
 class CaseInsensitveRegForm(auth_forms.UserCreationForm):
     """
@@ -17,9 +17,9 @@ class CaseInsensitveRegForm(auth_forms.UserCreationForm):
 		    auth_models.User.objects.get(username__iexact=username)
 	    except auth_models.User.DoesNotExist:
 	        return username
-	    raise django_forms.ValidationError(u"A user with that username already exists.")
+	    raise forms.ValidationError(u"A user with that username already exists.")
 		
-class HorizontalRadioRenderer(django_forms.RadioSelect.renderer):
+class HorizontalRadioRenderer(forms.RadioSelect.renderer):
     """
     Renders horizontal radio buttons.
     Found here:
@@ -27,7 +27,7 @@ class HorizontalRadioRenderer(django_forms.RadioSelect.renderer):
     """
 
     def render(self):
-        return string_mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+        return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
 
 class RegistrationForm(CaseInsensitveRegForm):
     """
@@ -35,17 +35,17 @@ class RegistrationForm(CaseInsensitveRegForm):
 	"""
 	
 	#required data
-    username = django_forms.CharField(label=u"Username *")
-    email = django_forms.EmailField(label=u"Email *")
-    password1 = django_forms.CharField(widget=django_forms.PasswordInput, label=u"Password *")
-    password2 = django_forms.CharField(widget=django_forms.PasswordInput, label=u"Repeat password *") 
-    first_name = django_forms.CharField(label=u"First name *")
-    last_name = django_forms.CharField(label=u"Last name *")
+    username = forms.CharField(label=u"Username *")
+    email = forms.EmailField(label=u"Email *")
+    password1 = forms.CharField(widget=forms.PasswordInput, label=u"Password *")
+    password2 = forms.CharField(widget=forms.PasswordInput, label=u"Repeat password *") 
+    first_name = forms.CharField(label=u"First name *")
+    last_name = forms.CharField(label=u"Last name *")
 	
 	#additional information
-    gender = django_forms.ChoiceField(label=u"Gender", required=False, choices=(('m','Male'),('f','Female')),widget=django_forms.RadioSelect(renderer=HorizontalRadioRenderer))   
-    current_date = date_time.now()
-    birthdate = django_forms.DateField(label=u"Birth date", required=False, widget=forms_date_widget(years=[y for y in range(current_date.year,1900,-1)]))
+    gender = forms.ChoiceField(label=u"Gender", required=False, choices=(('m','Male'),('f','Female')),widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))   
+    current_date = datetime.now()
+    birthdate = forms.DateField(label=u"Birth date", required=False, widget=widgets.SelectDateWidget(years=[y for y in range(current_date.year,1900,-1)]))
 
 
     
@@ -53,7 +53,7 @@ class RegistrationForm(CaseInsensitveRegForm):
 	    # This method checks whether the passwords match.
         if self.cleaned_data["password1"]==self.cleaned_data["password2"]:
             return self.cleaned_data["password2"]
-        raise django_forms.ValidationError(u"Passwords do not match.")
+        raise forms.ValidationError(u"Passwords do not match.")
     
     
     def clean_username(self):
@@ -63,12 +63,12 @@ class RegistrationForm(CaseInsensitveRegForm):
 		    auth_models.User.objects.get(username__iexact=username)
 	    except auth_models.User.DoesNotExist:
 	        return username
-	    raise django_forms.ValidationError(u"A user with that username already exists.")
+	    raise forms.ValidationError(u"A user with that username already exists.")
     
    
     def save(self):	
 	    # We first have to save user to db
-        new_user = User()
+        new_user = auth_models.User()
         new_user.username = self.cleaned_data["username"] # username
         new_user.first_name = self.cleaned_data["first_name"] # first name
         new_user.last_name = self.cleaned_data["last_name"] # last name
@@ -77,6 +77,7 @@ class RegistrationForm(CaseInsensitveRegForm):
         new_user.save() # save user in db
 
         # Then we asign profile to this user
+        profile = UserProfile()
         profile.user = new_user
         profile.gender = self.cleaned_data["gender"]
         profile.birthdate = self.cleaned_data["birthdate"]
