@@ -46,8 +46,6 @@ class RegistrationForm(CaseInsensitveRegForm):
     gender = forms.ChoiceField(label=u"Gender", required=False, choices=(('m','Male'),('f','Female')),widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))   
     current_date = datetime.now()
     birthdate = forms.DateField(label=u"Birth date", required=False, widget=widgets.SelectDateWidget(years=[y for y in range(current_date.year,1900,-1)]))
-
-
     
     def clean_password2(self):
 	    # This method checks whether the passwords match.
