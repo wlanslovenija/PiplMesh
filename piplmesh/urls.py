@@ -1,11 +1,9 @@
 from django.conf.urls.defaults import patterns, include, url
-from piplmesh.frontend import views as frontend_views
 from piplmesh.account import views as account_views
+from piplmesh.frontend import views as frontend_views
 
 from django.contrib import admin
 admin.autodiscover()
-
-from piplmesh.frontend import views as frontend_views
 
 urlpatterns = patterns('',
     url('^$', frontend_views.HomeView.as_view(), name='home'),

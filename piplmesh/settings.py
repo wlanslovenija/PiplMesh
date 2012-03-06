@@ -139,9 +139,10 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 INSTALLED_APPS = (
     # Ours are first so that we can override default templates in other apps
-	'piplmesh.facebook',
+    'piplmesh.facebook',
     'piplmesh.frontend',
     'piplmesh.account',
+    
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -174,7 +175,7 @@ LOGGING = {
         },
     }
 }
-LOGIN_REDIRECT_URL='/'
+LOGIN_REDIRECT_URL = '/'
 
 AUTH_PROFILE_MODULE = 'account.UserProfile'
 
@@ -193,6 +194,3 @@ FACEBOOK_SCOPE = 'email' # You may add additional parameters
 FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
 FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
 FACEBOOK_LOGOUT_REDIRECT = '/' # Redirects here when user logouts
-
-
-

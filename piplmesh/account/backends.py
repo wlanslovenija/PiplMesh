@@ -1,5 +1,4 @@
-from django.contrib.auth import models as auth_models
-from django.contrib.auth import backends
+from django.contrib.auth import backends, models as auth_models
 
 class CaseInsensitiveModelBackend(backends.ModelBackend):
     """
