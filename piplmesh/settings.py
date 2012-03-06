@@ -139,6 +139,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 INSTALLED_APPS = (
     # Ours are first so that we can override default templates in other apps
+	'piplmesh.facebook',
     'piplmesh.frontend',
     'piplmesh.account',
     'django.contrib.auth',
@@ -180,6 +181,13 @@ AUTH_PROFILE_MODULE = 'account.UserProfile'
 AUTHENTICATION_BACKENDS = (
     'account.backends.CaseInsensitiveModelBackend',
 )
+
+# Facebook settings
+FACEBOOK_APP_ID = '207371922661306' # Add your app ID/API key
+FACEBOOK_APP_SECRET = '67e595cb85d9836c305fe4b9985180df' # Add your app secret key
+FACEBOOK_SCOPE = 'email' # You may add additional parameters
+FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
+FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
 
 
 
