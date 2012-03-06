@@ -12,3 +12,4 @@ class HomeView(generic_views.TemplateView):
         })
 
         return context
+        
