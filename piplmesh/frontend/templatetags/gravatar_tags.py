@@ -7,7 +7,7 @@ from django.contrib.sites import models as sites_models
 register = template.Library()
 
 @register.inclusion_tag('gravatar.html')
-def gravatar(email, size=50, default_avatar='unknown.png'):
+def gravatar(user.email, size=50, default_avatar='unknown.png'):
     """
     Gravatar template tag returns avatar image based on user's email address.
 
@@ -22,17 +22,17 @@ def gravatar(email, size=50, default_avatar='unknown.png'):
     domain = sites_models.Site.objects.get_current().domain
 
     # Construct the url for gravatar service with default avatar specified
-    default_avatar_url = "%(schema)s://%(domain)s%(static_url)spiplmesh/images/%(default_avatar)s" % {
-        "schema": schema,
-        "domain": domain,
-        "static_url": settings.STATIC_URL,
-        "default_avatar": default_avatar,
+    default_avatar_url = '%(schema)s://%(domain)s%(static_url)spiplmesh/images/%(default_avatar)s' % {
+        'schema': schema,
+        'domain': domain,
+        'static_url': settings.STATIC_URL,
+        'default_avatar': default_avatar,
     }
 
-    gravatar_url = "https://secure.gravatar.com/avatar/%(email_hash)s?s=%(size)s&d=%(default_avatar_url)s" % {
-        "email_hash": hashlib.md5(email.lower()).hexdigest(),
-        "size": size,
-        "default_avatar_url": urllib.quote(default_avatar_url),
+    gravatar_url = 'https://secure.gravatar.com/avatar/%(email_hash)s?s=%(size)s&d=%(default_avatar_url)s' % {
+        'email_hash': hashlib.md5(user.email.lower()).hexdigest(),
+        'size': size,
+        'default_avatar_url': urllib.quote(default_avatar_url),
     }
 
     return {
