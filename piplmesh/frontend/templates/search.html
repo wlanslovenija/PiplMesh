@@ -1,34 +1,9 @@
 <form>
-<input type="button" VALUE="go back" onclick="window.location.href='/'"> 
+    <input type="button" value="go back" onclick="window.location.href='/'"> 
 </form>
-<hr/>
-<div id="cse" style="width: 100%;">Loading</div>
-<script src="http://www.google.com/jsapi" type="text/javascript"></script>
-<script type="text/javascript"> 
-google.load('search', '1', {language : 'en'});
-google.setOnLoadCallback(function() {
-var customSearchOptions = {};  var customSearchControl = new google.search.CustomSearchControl('003912915932446183218:zeq20qye9oa', customSearchOptions);
-customSearchControl.setResultSetSize(google.search.Search.LARGE_RESULTSET);
-customSearchControl.draw('cse');
-function parseParamsFromUrl() {
-    var params = {};
-    var parts = window.location.search.substr(1).split('&');
-    for (var i = 0; i < parts.length; i++) {
-        var keyValuePair = parts[i].split('=');
-        var key = decodeURIComponent(keyValuePair[0]);
-        params[key] = keyValuePair[1] ? decodeURIComponent(keyValuePair[1].replace(/\+/g, ' ')) : keyValuePair[1];
-    }
-    return params;
-}
-
-var urlParams = parseParamsFromUrl();
-var queryParamName = "q";
-if (urlParams[queryParamName]) {
-    customSearchControl.execute(urlParams[queryParamName], null,
-    {'oq': urlParams['oq'], 'aq': urlParams['aq'],
-    'aqi': urlParams['aqi'], 'aql': urlParams['aql'],
-    'gs_sm': urlParams['gs_sm'], 'gs_upl': urlParams['gs_upl']});
-    }
-}, true);
+<hr />
+<div id="cse">Loading</div>
+    <script src="https://www.google.com/jsapi" type="text/javascript"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}piplmesh/js/search_page.js"> 
 </script>
-<link rel="stylesheet" href="http://www.google.com/cse/style/look/default.css" type="text/css" /> 
+<link rel="stylesheet" href="https://www.google.com/cse/style/look/default.css" type="text/css" /> 
