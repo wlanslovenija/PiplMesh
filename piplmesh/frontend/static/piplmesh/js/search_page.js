@@ -1,4 +1,4 @@
-google.load('search', '1', {language : 'en'});
+google.load("search", "1");
 google.setOnLoadCallback(function () {
     var customSearchOptions = {};
     var customSearchControl = new google.search.CustomSearchControl('003912915932446183218:zeq20qye9oa', customSearchOptions);
