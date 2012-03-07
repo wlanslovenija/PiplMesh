@@ -1,10 +1,9 @@
-import json
-import urllib
+import json, urllib
 
 from django import template
 from django.contrib.auth.models import User
 
-from core.models import Profile
+from account.models import UserProfile
 from facebook.utils import fb, valid_token as token
 
 register = template.Library()

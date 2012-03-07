@@ -1,7 +1,6 @@
-import json
-import urllib
+import json, urllib
 
-from core.models import Profile
+from account.models import UserProfile
 
 def fb(self, user=None, page=None, token=None):
     """ 
@@ -10,7 +9,7 @@ def fb(self, user=None, page=None, token=None):
     
     param = ''
     if user:
-        profile = Profile.objects.get(user=user)
+        profile = UserProfile.objects.get(user=user)
     if user and token:
         param = '?access_token=%s' % profile.token
     results = 'https://graph.facebook.com/%s/%s' % (self, param)
