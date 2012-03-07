@@ -13,3 +13,5 @@ class HomeView(generic_views.TemplateView):
 
         return context
         
+class SearchView(generic_views.TemplateView):
+	template_name = 'search.html'
