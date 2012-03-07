@@ -7,7 +7,10 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 
 def facebook_login(request):
-  """ Authenticate user via Facebook. """
+  """ 
+  Authenticate user via Facebook.
+  """
+  
   args = {
     'client_id': settings.FACEBOOK_APP_ID,
     'scope': settings.FACEBOOK_SCOPE,
@@ -17,12 +20,18 @@ def facebook_login(request):
   return HttpResponseRedirect('%s%s' % (url, urllib.urlencode(args)))
 
 def facebook_logout(request):
-  """ Log user out of Facebook and redirect to FACEBOOK_LOGOUT_REDIRECT. """
+  """ 
+  Log user out of Facebook and redirect to FACEBOOK_LOGOUT_REDIRECT.
+  """
+  
   logout(request)
   return HttpResponseRedirect(settings.FACEBOOK_LOGOUT_REDIRECT)
 
 def facebook_callback(request):
-  """ Authentication callback. Redirects user to LOGIN_REDIRECT_URL. """
+  """
+  Authentication callback. Redirects user to LOGIN_REDIRECT_URL.
+  """
+  
   code = request.GET['code']
   user = authenticate(token=code, request=request)
   login(request, user)

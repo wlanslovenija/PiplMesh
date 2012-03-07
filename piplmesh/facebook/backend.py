@@ -1,6 +1,4 @@
-import json
-import urlparse
-import urllib
+import json, urlparse, urllib
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -18,6 +16,7 @@ class FacebookBackend:
     profile. If not, a new profile is created using either the user's
     username or Facebook id. Finally, the user's Facebook data is saved.
     """
+    
     args = {
       'client_id': settings.FACEBOOK_APP_ID,
       'client_secret': settings.FACEBOOK_APP_SECRET,
@@ -60,7 +59,10 @@ class FacebookBackend:
     return user
 
   def get_user(self, user_id):
-    """ Returns user of a given ID. """
+    """
+    Returns user of a given ID.
+    """
+    
     try:
       return User.objects.get(pk=user_id)
     except User.DoesNotExist:

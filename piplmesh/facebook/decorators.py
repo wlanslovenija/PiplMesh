@@ -13,6 +13,7 @@ def facebook_required(view):
   of protection for Facebook-dependent pages. The user remains authenticated
   until (s)he logs out.
   """
+  
   @wraps(view)
   def inner(request, *args, **kwargs):
     url = getattr(settings, 'FACEBOOK_ERROR_REDIRECT', '/')
