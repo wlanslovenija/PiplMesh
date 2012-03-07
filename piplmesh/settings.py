@@ -194,3 +194,9 @@ FACEBOOK_SCOPE = 'email' # You may add additional parameters
 FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
 FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
 FACEBOOK_LOGOUT_REDIRECT = '/' # Redirects here when user logouts
+
+# Form settings
+GENDER_CHOICES = {
+    'GENDER_MALE': ('m', 'Male'),
+    'GENDER_FEMALE': ('f', 'Female'),
+}
