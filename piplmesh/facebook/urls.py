@@ -1,7 +1,6 @@
 from django.conf.urls.defaults import patterns, url
 
-from facebook.views import (facebook_login, facebook_logout,
-                            facebook_callback)
+from facebook.views import (facebook_login, facebook_logout, facebook_callback)
 
 urlpatterns = patterns('',
     url(r'^login/$', facebook_login, name='facebook_login'),
