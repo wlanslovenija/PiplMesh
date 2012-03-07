@@ -59,8 +59,8 @@ class RegistrationForm(auth_forms.UserCreationForm):
         new_user.email = self.cleaned_data['email'] # email									
         new_user.set_password(self.cleaned_data['password2'])
         new_user.save()
-
-		# Then we asign profile to this user
+        
+        # Then we asign profile to this user
         profile = UserProfile()
         profile.user = new_user
         profile.gender = self.cleaned_data['gender']
