@@ -1,13 +1,12 @@
-# Account view
+from django.contrib.auth import login, authenticate
 from django.shortcuts import render_to_response, redirect
 from django.template.context import RequestContext
-from django.contrib.auth import login, authenticate
 from forms import RegistrationForm
 
-# this method checks if form data are valid, saves new user.
+# This method checks if form data are valid, saves new user
 # New user is authenticated, logged in and redirected to home page
 def registration_view(request):
-    # redirect user to home page if logged in
+    # Redirect user to home page if logged in
     if request.user.is_authenticated():
         return redirect('home')
     form = RegistrationForm()

@@ -3,8 +3,9 @@ from django.db import models as django_models
 
 class UserProfile(django_models.Model):
     """ 
-    Class used for storing additional information about user
+    Class used for storing additional information about user.
     """
+
     user = django_models.OneToOneField(auth_models.User)
 
     # Custom fields
