@@ -7,6 +7,12 @@ from django.forms.extras import widgets
 from django.utils.safestring import mark_safe
 from models import UserProfile
 
+# Form settings
+GENDER_CHOICES = {
+    'GENDER_MALE': ('m', 'Male'),
+    'GENDER_FEMALE': ('f', 'Female'),
+}
+
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
     """
     Renders horizontal radio buttons.
@@ -31,7 +37,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
     last_name = forms.CharField(label=u"Last name *")
     
     # Additional information
-    gender = forms.ChoiceField(label=u"Gender", required=False, choices=(settings.GENDER_CHOICES.values()), widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))    
+    gender = forms.ChoiceField(label=u"Gender", required=False, choices=(GENDER_CHOICES.values()), widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))    
     current_date = datetime.now()
     birthdate = forms.DateField(label=u"Birth date", required=False, widget=widgets.SelectDateWidget(years=[y for y in range(current_date.year, 1900, -1)]))
     
@@ -52,19 +58,16 @@ class RegistrationForm(auth_forms.UserCreationForm):
       
     def save(self):	
         # We first have to save user to database
-        new_user = auth_models.User()
-        new_user.username = self.cleaned_data['username'] # username
-        new_user.first_name = self.cleaned_data['first_name'] # first name
-        new_user.last_name = self.cleaned_data['last_name'] # last name
-        new_user.email = self.cleaned_data['email'] # email									
+        new_user = auth_models.User(username=self.cleaned_data['username'],
+                                    first_name=self.cleaned_data['first_name'],
+                                    last_name=self.cleaned_data['last_name'],
+                                    email=self.cleaned_data['email'])			
+                                    
         new_user.set_password(self.cleaned_data['password2'])
         new_user.save()
         
         # Then we asign profile to this user
-        profile = UserProfile()
-        profile.user = new_user
-        profile.gender = self.cleaned_data['gender']
-        profile.birthdate = self.cleaned_data['birthdate']
-        profile.save() # save profile
+        profile = UserProfile(user=new_user,gender=self.cleaned_data['gender'],birthdate=self.cleaned_data['birthdate'])
+        profile.save()
 
         return self.cleaned_data['username'], self.cleaned_data['password2']
