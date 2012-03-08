@@ -174,4 +174,10 @@ LOGGING = {
     }
 }
 
-SEARCH_ENGINE_UNIQE_ID = '003912915932446183218:zeq20qye9oa'
+# You can set up your own custom search engine on: http://www.google.com/cse/
+# just register with you google account and crate new search engine.
+# When you create new search engine, switch uniqe id with your own and new settings will apply,
+# unles you change something that needs to be changed in the code, but if you do that
+# you will be warrned before you will make the change.
+# Current settings are autocomplete, searching whole web.
+SEARCH_ENGINE_UNIQUE_ID = '003912915932446183218:zeq20qye9oa'
