@@ -50,9 +50,9 @@ class FacebookBackend:
             user.last_name = fb['last_name']
             user.save()
 
-        # Create and save account user
-        profile = UserProfile.objects.create(user=user, token=access_token, fid=fb['id'], gender=fb['gender'])
-        profile.save()
+            # Create and save account user
+            profile = UserProfile.objects.create(user=user, token=access_token, fid=fb['id'], gender=fb['gender'])
+            profile.save()
 
         return user
 
