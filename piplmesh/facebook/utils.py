@@ -1,15 +1,15 @@
 import json, urllib
 
-from account.models import UserProfile
+from account import models
 
-def fb(self, user=None, page=None, token=None):
+def graph_api_url(self, user=None, page=None, token=None):
     """ 
     Format Facebook Graph API URL. 
     """
     
     param = ''
     if user:
-        profile = UserProfile.objects.get(user=user)
+        profile = models.UserProfile.objects.get(user=user)
     if user and token:
         param = '?access_token=%s' % profile.token
     results = 'https://graph.facebook.com/%s/%s' % (self, param)
@@ -21,7 +21,7 @@ def valid_token(self):
     """
     
     if self.is_authenticated():
-        url = urllib.urlopen('%s' % fb('me', self, token=True))
+        url = urllib.urlopen('%s' % graph_api_url('me', self, token=True))
         data = json.load(url)
     if not 'error' in data:
         results = True

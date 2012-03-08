@@ -3,8 +3,7 @@ import urllib
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
-from django.template import RequestContext
+from django import http
 
 def facebook_login(request):
     """ 
@@ -17,7 +16,7 @@ def facebook_login(request):
         'redirect_uri': request.build_absolute_uri(reverse('facebook_callback')),
     }
     url = 'https://www.facebook.com/dialog/oauth?'
-    return HttpResponseRedirect('%s%s' % (url, urllib.urlencode(args)))
+    return http.HttpResponseRedirect('%s%s' % (url, urllib.urlencode(args)))
 
 def facebook_logout(request):
     """ 
@@ -25,7 +24,7 @@ def facebook_logout(request):
     """
     
     logout(request)
-    return HttpResponseRedirect(settings.FACEBOOK_LOGOUT_REDIRECT)
+    return http.HttpResponseRedirect(settings.FACEBOOK_LOGOUT_REDIRECT)
 
 def facebook_callback(request):
     """ 
@@ -35,4 +34,4 @@ def facebook_callback(request):
     code = request.GET['code']
     user = authenticate(token=code, request=request)
     login(request, user)
-    return HttpResponseRedirect(settings.FACEBOOK_LOGIN_REDIRECT)
+    return http.HttpResponseRedirect(settings.FACEBOOK_LOGIN_REDIRECT)

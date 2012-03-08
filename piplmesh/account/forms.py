@@ -4,8 +4,9 @@ from django import forms
 from django.conf import settings
 from django.contrib.auth import forms as auth_forms, models as auth_models
 from django.forms.extras import widgets
-from django.utils.safestring import mark_safe
-from models import UserProfile
+from django.utils import safestring
+
+from account import models
 
 # Form settings
 GENDER_CHOICES = {
@@ -21,7 +22,7 @@ class HorizontalRadioRenderer(forms.RadioSelect.renderer):
     """
 
     def render(self):
-        return mark_safe(u'\n'.join([u'%s\n' % widget for widget in self]))
+        return safestring.mark_safe(u'\n'.join([u'%s\n' % widget for widget in self]))
 
 class RegistrationForm(auth_forms.UserCreationForm):
     """
@@ -67,7 +68,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
         new_user.save()
         
         # Then we asign profile to this user
-        profile = UserProfile(user=new_user,gender=self.cleaned_data['gender'],birthdate=self.cleaned_data['birthdate'])
+        profile = models.UserProfile(user=new_user,gender=self.cleaned_data['gender'],birthdate=self.cleaned_data['birthdate'])
         profile.save()
 
         return self.cleaned_data['username'], self.cleaned_data['password2']
