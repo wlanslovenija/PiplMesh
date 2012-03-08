@@ -1,10 +1,10 @@
 import json, urllib
 
 from django import template
-from django.contrib.auth.models import User
+from django.contrib.auth import models
 
-from account.models import UserProfile
-from facebook.utils import fb, valid_token as token
+from account import models
+from facebook.utils import graph_api_url, valid_token as token
 
 register = template.Library()
 
@@ -14,7 +14,7 @@ def facebook_graph(self):
     Facebook graph for a specific user. 
     """
     
-    data = urllib.urlopen('%s' % fb('me', self, token=True))
+    data = urllib.urlopen('%s' % graph_api_url('me', self, token=True))
     results = json.load(data)
     return results
 
@@ -28,13 +28,13 @@ def facebook_picture(self, size):
     variable height) and "large" (200 pixels wide, variable height). 
     """
     
-    results = '%s?type=%s' % (fb('%s/picture' % self), size)
+    results = '%s?type=%s' % (graph_api_url('%s/picture' % self), size)
     return results
 
 @register.filter
 def valid_token(user):
     """ 
-    Check a user's Facebook token is still valid. 
+    Check if a user's Facebook token is still valid.
     """
   
     results = None
