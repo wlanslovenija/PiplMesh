@@ -1,7 +1,7 @@
-google.load("search", "1");
+google.load("search", "1", { language : {{ LANGUAGE_CODE }}});
 google.setOnLoadCallback(function () {
     var customSearchOptions = {};
-    var customSearchControl = new google.search.CustomSearchControl('003912915932446183218:zeq20qye9oa', customSearchOptions);
+    var customSearchControl = new google.search.CustomSearchControl({{ SEARCH_ENGINE_UNIQUE_ID }}, customSearchOptions);
     customSearchControl.setResultSetSize(google.search.Search.LARGE_RESULTSET);
     customSearchControl.draw('cse');
     function parseParamsFromUrl() {

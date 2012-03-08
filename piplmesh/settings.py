@@ -173,3 +173,5 @@ LOGGING = {
         },
     }
 }
+
+SEARCH_ENGINE_UNIQE_ID = '003912915932446183218:zeq20qye9oa'
