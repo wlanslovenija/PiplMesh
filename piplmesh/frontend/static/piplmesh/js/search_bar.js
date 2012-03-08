@@ -1,4 +1,4 @@
-google.load("search", "1", { language : {{ LANGUAGE_CODE }}})
+google.load("search", "1", { language : {{ LANGUAGE_CODE }}});
 google.setOnLoadCallback(function () {
     var customSearchOptions = {};
     var customSearchControl = new google.search.CustomSearchControl({{ SEARCH_ENGINE_UNIQUE_ID }}, customSearchOptions);
