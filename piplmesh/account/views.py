@@ -12,8 +12,8 @@ from account import forms
 
 def registration_view(request):
     """
-    This method checks if form data are valid, saves new user
-    New user is authenticated, logged in and redirected to home page
+    This method checks if form data are valid, saves new user.
+    New user is authenticated, logged in and redirected to home page.
     """
 
     if request.user.is_authenticated():
