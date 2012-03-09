@@ -181,7 +181,7 @@ AUTH_PROFILE_MODULE = 'account.UserProfile'
 
 AUTHENTICATION_BACKENDS = (
     'account.backends.CaseInsensitiveModelBackend',
-    'facebook.backend.FacebookBackend',
+    'facebook.backend.FacebookBackend', # Required for facebook authentication
 )
 
 # Facebook settings:

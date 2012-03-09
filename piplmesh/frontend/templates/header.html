@@ -16,13 +16,15 @@
         
         <!-- This div is used for registration and log in link. If user is already logged in, his username and logout link are shown instead. -->
         <div class='user'>
-        	{% if user.is_authenticated %}
-        		<p>Username: <strong>{{ user.username}}</strong> </p>
-        		<p><a href="{% url logout %}">Log out</a></p>
-        	{% else %}
-        		<p><a href="{% url registration %}">Register</a></p>
-        		<p><a href="{% url login %}">Log in</a></p>
+            {% load facebook_tags %}
+            {% if user.is_authenticated %}
+                <img src="{% facebook_picture user.username "square" %}" />
+                <p>Username: <strong>{{ user.username}}</strong> </p>
+                <p><a href="{% url logout %}">Log out</a></p>
+            {% else %}
+                <p><a href="{% url registration %}">Register</a></p>
+                <p><a href="{% url login %}">Log in</a></p>
                 <p><a href="{% url facebook_login %}">Log in with Facebook</a></p>
-        	{% endif %}
+            {% endif %}
         </div>
     </div>

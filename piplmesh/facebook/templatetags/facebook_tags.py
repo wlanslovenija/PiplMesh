@@ -23,7 +23,7 @@ def facebook_picture(self, size):
     """
     Facebook profile picture.
 
-    Retrieve a user's Facebook profile image. Sizes include "square" (50x50),
+    Retrieve user's Facebook profile image. Sizes include "square" (50x50),
     "small" (50 pixels wide, variable height), "normal" (100 pixels wide,
     variable height) and "large" (200 pixels wide, variable height). 
     """
@@ -34,7 +34,7 @@ def facebook_picture(self, size):
 @register.filter
 def valid_token(user):
     """ 
-    Check if a user's Facebook token is still valid.
+    Check if user's Facebook token is still valid.
     """
   
     results = None

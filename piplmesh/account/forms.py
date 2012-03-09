@@ -9,10 +9,10 @@ from django.utils import safestring
 from account import models
 
 # Form settings
-GENDER_CHOICES = {
-    'GENDER_MALE': ('m', 'Male'),
-    'GENDER_FEMALE': ('f', 'Female'),
-}
+GENDER_CHOICES = (
+    ('GENDER_MALE', 'Male'),
+    ('GENDER_FEMALE', 'Female')
+)
 
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
     """
@@ -38,7 +38,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
     last_name = forms.CharField(label=u"Last name *")
     
     # Additional information
-    gender = forms.ChoiceField(label=u"Gender", required=False, choices=(GENDER_CHOICES.values()), widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))    
+    gender = forms.ChoiceField(label=u"Gender", required=False, choices=(GENDER_CHOICES), widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))    
     current_date = datetime.now()
     birthdate = forms.DateField(label=u"Birth date", required=False, widget=widgets.SelectDateWidget(years=[y for y in range(current_date.year, 1900, -1)]))
     
