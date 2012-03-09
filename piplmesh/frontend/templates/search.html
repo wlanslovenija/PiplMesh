@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+
+{% block body %}
 <form>
     <input type="button" value="Pipl Mesh" onclick="window.location.href='/'"> 
 </form>
@@ -9,4 +12,5 @@
     var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID }}';
 </script>
 <script type="text/javascript" src="{{ STATIC_URL }}piplmesh/js/search_page.js"></script>
-<link rel="stylesheet" href="https://www.google.com/cse/style/look/default.css" type="text/css" /> 
+<link rel="stylesheet" href="https://www.google.com/cse/style/look/default.css" type="text/css" />
+{% endblock %}
