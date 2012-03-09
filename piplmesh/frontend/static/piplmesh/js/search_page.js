@@ -1,7 +1,7 @@
-google.load('search', '1', { language : lang_code });
+google.load('search', '1', { 'language' : language_code });
 google.setOnLoadCallback(function () {
     var customSearchOptions = {};
-    var customSearchControl = new google.search.CustomSearchControl(unique_id, customSearchOptions);
+    var customSearchControl = new google.search.CustomSearchControl(search_engine_unique_id, customSearchOptions);
     customSearchControl.setResultSetSize(google.search.Search.LARGE_RESULTSET);
     customSearchControl.draw('cse');
     function parseParamsFromUrl() {
@@ -15,15 +15,16 @@ google.setOnLoadCallback(function () {
         return params;
     }
 
-var urlParams = parseParamsFromUrl();
-var queryParamName = 'q';
-if (urlParams[queryParamName]) {
-    customSearchControl.execute(urlParams[queryParamName], null,{
-        'oq': urlParams['oq'],
-        'aq': urlParams['aq'],
-        'aqi': urlParams['aqi'],
-        'aql': urlParams['aql'],
-        'gs_sm': urlParams['gs_sm'],
-        'gs_upl': urlParams['gs_upl']});
+    var urlParams = parseParamsFromUrl();
+    var queryParamName = 'q';
+    if (urlParams[queryParamName]) {
+        customSearchControl.execute(urlParams[queryParamName], null, {
+            'oq': urlParams['oq'],
+            'aq': urlParams['aq'],
+            'aqi': urlParams['aqi'],
+            'aql': urlParams['aql'],
+            'gs_sm': urlParams['gs_sm'],
+            'gs_upl': urlParams['gs_upl'],
+        });
     }
 }, true);
