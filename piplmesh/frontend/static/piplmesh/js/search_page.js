@@ -3,7 +3,9 @@ google.setOnLoadCallback(function () {
     var customSearchOptions = {};
     var customSearchControl = new google.search.CustomSearchControl(search_engine_unique_id, customSearchOptions);
     customSearchControl.setResultSetSize(google.search.Search.LARGE_RESULTSET);
-    customSearchControl.draw('cse');
+    var options = new google.search.DrawOptions();
+    options.enableSearchResultsOnly();
+    customSearchControl.draw('cse', options);
     function parseParamsFromUrl() {
         var params = {};
         var parts = window.location.search.substr(1).split('&');

@@ -1,18 +1,15 @@
-{% extends "base.html" %}
+{% extends "plain.html" %}
 
-{% block body %}
-<form>
-    <input type="button" value="Pipl Mesh" onclick="window.location.href='/'"> 
-</form>
-<hr />
-<div id="cse"></div>
-<script src="https://www.google.com/jsapi" type="text/javascript"></script>
-<script type="text/javascript">
-    var language_code = '{{ LANGUAGE_CODE }}';
-    var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID }}';
-</script>
-<script type="text/javascript" src="{{ STATIC_URL }}piplmesh/js/search_page.js"></script>
-<link rel="stylesheet" href="https://www.google.com/cse/style/look/default.css" type="text/css" />
-<hr />
-{% include "footer.html" %}
+{% block fulltitle %}wlan slovenija{% endblock %}
+
+{% block content %}
+<div class="main">
+	<div id="cse"></div>
+	<script src="https://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var language_code = '{{ LANGUAGE_CODE }}';
+		var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID }}';
+	</script>
+	<script type="text/javascript" src="{{ STATIC_URL }}piplmesh/js/search_page.js"></script>
+</div>
 {% endblock %}
