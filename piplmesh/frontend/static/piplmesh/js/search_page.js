@@ -1,6 +1,10 @@
 google.load('search', '1', { 'language' : language_code });
 google.setOnLoadCallback(function () {
     var customSearchOptions = {};
+    var imageSearchOptions = {};
+    imageSearchOptions['layout'] = google.search.ImageSearch.LAYOUT_POPOUT;
+    customSearchOptions['enableImageSearch'] = true;
+    customSearchOptions['imageSearchOptions'] = imageSearchOptions;  
     var customSearchControl = new google.search.CustomSearchControl(search_engine_unique_id, customSearchOptions);
     customSearchControl.setResultSetSize(google.search.Search.LARGE_RESULTSET);
     var options = new google.search.DrawOptions();
