@@ -19,7 +19,7 @@
             {% load facebook_tags %}
             {% if user.is_authenticated %}
                 <img src="{% facebook_picture user.username "square" %}" />
-                <p>Username: <strong>{{ user.username}}</strong> </p>
+                <p>Username: <strong>{{ user.username }}</strong> </p>
                 <p><a href="{% url logout %}">Log out</a></p>
             {% else %}
                 <p><a href="{% url registration %}">Register</a></p>
