@@ -5,13 +5,14 @@ from django.conf import settings
 from django.contrib.auth import forms as auth_forms, models as auth_models
 from django.forms.extras import widgets
 from django.utils import safestring
+from django.utils.translation import ugettext_lazy as _
 
 from account import models
 
 # Form settings
 GENDER_CHOICES = (
-    ('male', 'Male'),
-    ('female', 'Female')
+    ('male', _('Male')),
+    ('female', _('Female'))
 )
 
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
@@ -30,23 +31,23 @@ class RegistrationForm(auth_forms.UserCreationForm):
     """
 
     # Required data
-    username = forms.CharField(label=u"Username *")
-    email = forms.EmailField(label=u"Email *")
-    password1 = forms.CharField(widget=forms.PasswordInput, label=u"Password *")
-    password2 = forms.CharField(widget=forms.PasswordInput, label=u"Repeat password *") 
-    first_name = forms.CharField(label=u"First name *")
-    last_name = forms.CharField(label=u"Last name *")
+    username = forms.CharField(label=_("Username *"))
+    email = forms.EmailField(label=_("Email *"))
+    password1 = forms.CharField(widget=forms.PasswordInput, label=_("Password *"))
+    password2 = forms.CharField(widget=forms.PasswordInput, label=_("Repeat password *"))
+    first_name = forms.CharField(label=_("First name *"))
+    last_name = forms.CharField(label=_("Last name *"))
     
     # Additional information
-    gender = forms.ChoiceField(label=u"Gender", required=False, choices=(GENDER_CHOICES), widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))    
+    gender = forms.ChoiceField(label=_("Gender"), required=False, choices=(GENDER_CHOICES), widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))    
     current_date = datetime.now()
-    birthdate = forms.DateField(label=u"Birth date", required=False, widget=widgets.SelectDateWidget(years=[y for y in range(current_date.year, 1900, -1)]))
+    birthdate = forms.DateField(label=_("Birth date"), required=False, widget=widgets.SelectDateWidget(years=[y for y in range(current_date.year, 1900, -1)]))
     
     def clean_password2(self):
         # This method checks whether the passwords match
         if self.cleaned_data['password1'] == self.cleaned_data['password2']:
             return self.cleaned_data['password2']
-        raise forms.ValidationError(u"Passwords do not match.")
+        raise forms.ValidationError(_("Passwords do not match."))
        
     def clean_username(self):
         # This method checks whether the username exists in case-insensitive manner
@@ -55,7 +56,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
             auth_models.User.objects.get(username__iexact=username)
         except auth_models.User.DoesNotExist:
             return username
-        raise forms.ValidationError(u"A user with that username already exists.")
+        raise forms.ValidationError(_("A user with that username already exists."))
       
     def save(self):	
         # We first have to save user to database
