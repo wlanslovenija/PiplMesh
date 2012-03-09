@@ -1,11 +1,11 @@
 {% extends "plain.html" %}
 {% load i18n %}
 
-{% block fulltitle %} {% trans "wlan slovenija" %} {% endblock %}
+{% block fulltitle %}{% trans "wlan slovenija" %}{% endblock %}
 
 {% block content %}
 <div class="main">
-    <p>{% blocktrans %}You have been logged out.{% blocktrans %}</p>
-    <a href="{% url home %}">{% "Home page" %}</a>
+    <p>{% blocktrans %}You have been logged out.{% endblocktrans %}</p>
+    <a href="{% url home %}">{% trans "Home page" %}</a>
 </div>
 {% endblock %}

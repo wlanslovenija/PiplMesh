@@ -183,7 +183,6 @@ AUTHENTICATION_BACKENDS = (
     'account.backends.FacebookBackend', # Required for facebook authentication
 )
 
-
 # Facebook settings:
 # Site URL for Facebook app is set to http://127.0.0.1:8000/
 # so run your development server on port 8000

@@ -1,14 +1,14 @@
 {% extends "plain.html" %}
 {% load i18n %}
 
-{% block fulltitle %} {% trans "Registration" %} {% endblock %}
+{% block fulltitle %}{% trans "Registration" %}{% endblock %}
 
 {% block content %}
 <div class="main">
     <form method="post" action="{% url registration %}">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Add user" />
+    <input type="submit" value="{% trans "Add user" %}" />
     </form>
     {{ user.get_profile.gender }}
 </div>
