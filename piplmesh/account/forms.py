@@ -10,8 +10,8 @@ from account import models
 
 # Form settings
 GENDER_CHOICES = (
-    ('GENDER_MALE', 'Male'),
-    ('GENDER_FEMALE', 'Female')
+    ('male', 'Male'),
+    ('female', 'Female')
 )
 
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):

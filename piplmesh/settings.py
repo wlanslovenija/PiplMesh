@@ -139,7 +139,6 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 INSTALLED_APPS = (
     # Ours are first so that we can override default templates in other apps
-    'piplmesh.facebook',
     'piplmesh.frontend',
     'piplmesh.account',
     
@@ -181,7 +180,7 @@ AUTH_PROFILE_MODULE = 'account.UserProfile'
 
 AUTHENTICATION_BACKENDS = (
     'account.backends.CaseInsensitiveModelBackend',
-    'facebook.backend.FacebookBackend', # Required for facebook authentication
+    'account.backends.FacebookBackend', # Required for facebook authentication
 )
 
 # Facebook settings:
