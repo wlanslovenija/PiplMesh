@@ -4,22 +4,26 @@ from django import template
 from django.conf import settings
 from django.contrib.sites import models as sites_models
 
+from django.template import *
 register = template.Library()
 
-@register.inclusion_tag('gravatar.html')
-def gravatar(user.email, size=50, default_avatar='unknown.png'):
+@register.inclusion_tag('gravatar.html', takes_context=True)
+def gravatar(context, user, size=50, default_avatar='unknown.png'):
     """
     Gravatar template tag returns avatar image based on user's email address.
 
     Sample usage::
 
         {% load gravatar_tags %}
-        {% gravatar "piplmesh@piplmesh" 50 %}
+        {% gravatar user_object 50 %}
     """
 
     schema = 'https' if getattr(settings, 'GRAVATAR_HTTPS_DEFAULT', False) else 'http'
 
-    domain = sites_models.Site.objects.get_current().domain
+    if sites_models.Site._meta.installed:
+        domain = sites_models.Site.objects.get_current().domain
+    else:
+        domain = sites_models.RequestSite(context['request']).domain
 
     # Construct the url for gravatar service with default avatar specified
     default_avatar_url = '%(schema)s://%(domain)s%(static_url)spiplmesh/images/%(default_avatar)s' % {
