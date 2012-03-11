@@ -4,7 +4,6 @@ from django import template
 from django.conf import settings
 from django.contrib.sites import models as sites_models
 
-from django.template import *
 register = template.Library()
 
 @register.inclusion_tag('gravatar.html', takes_context=True)
