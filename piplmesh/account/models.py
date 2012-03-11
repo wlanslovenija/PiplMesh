@@ -11,7 +11,7 @@ class UserProfile(django_models.Model):
     # Custom fields
     birthdate = django_models.DateField(blank=True, null=True)
     gender = django_models.CharField(max_length=6, blank=True)
-    fid = django_models.BigIntegerField(verbose_name=u'Facebook ID', null=True, blank=True)
+    facebook_id = django_models.BigIntegerField(verbose_name=u'Facebook ID', null=True, blank=True)
     token = django_models.CharField(max_length=150)
     
     def __unicode__(self):

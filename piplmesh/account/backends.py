@@ -48,7 +48,7 @@ class FacebookBackend:
 
         try:
             # Check if user profile exists
-            profile = models.UserProfile.objects.get(fid=fb['id'])
+            profile = models.UserProfile.objects.get(facebook_id=fb['id'])
             user = profile.user
 
             # Update access token
@@ -64,7 +64,7 @@ class FacebookBackend:
             user.save()
 
             # Create and save account user
-            profile = models.UserProfile.objects.create(user=user, token=access_token, fid=fb['id'], gender=fb['gender'])
+            profile = models.UserProfile.objects.create(user=user, token=access_token, facebook_id=fb['id'], gender=fb['gender'])
             profile.save()
 
         return user
