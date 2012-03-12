@@ -5,7 +5,7 @@ google.setOnLoadCallback(function () {
     var options = new google.search.DrawOptions();
     options.setAutoComplete(true);
     options.enableSearchboxOnly('/search');
-    customSearchControl.draw('cse-search-form', options);
+    customSearchControl.draw('cse_search_form', options);
 }, true);
 
 
