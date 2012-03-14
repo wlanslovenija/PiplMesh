@@ -4,10 +4,9 @@ google.setOnLoadCallback(function () {
     var customSearchControl = new google.search.CustomSearchControl(search_engine_unique_id, customSearchOptions);
     var options = new google.search.DrawOptions();
     options.setAutoComplete(true);
-    options.enableSearchboxOnly('/search');
+    options.enableSearchboxOnly(search_page_url);
     customSearchControl.draw('cse_search_form', options);
 }, true);
-
 
 $(document).ready(function () {
     var query = location.search;

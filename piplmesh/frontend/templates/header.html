@@ -3,10 +3,10 @@
 <div class="container">
     <div class="header">
         <div class="logo">
-            <a href="/">
+            <a href="{% url home %}">
                 <img src="{{ STATIC_URL }}piplmesh/images/logo.png" alt="PiplMesh" />
             </a>
-            <h1>Pipl Mesh</h1>
+            <h1>PiplMesh</h1>
         </div>
         <div class="search">
             <div id="cse_search_form"></div>
@@ -14,6 +14,7 @@
             <script type="text/javascript">
                 var language_code = '{{ LANGUAGE_CODE }}';
                 var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID }}';
+                var search_page_url = '{% url search %}';
             </script>
             <script type="text/javascript" src="{{ STATIC_URL }}piplmesh/js/search_bar.js"></script>
             <link rel="stylesheet" href="https://www.google.com/cse/style/look/default.css" type="text/css" />
