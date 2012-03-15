@@ -31,12 +31,12 @@ class RegistrationForm(auth_forms.UserCreationForm):
     """
 
     # Required data
-    username = forms.CharField(label=_("Username *"))
-    email = forms.EmailField(label=_("Email *"))
-    password1 = forms.CharField(widget=forms.PasswordInput, label=_("Password *"))
-    password2 = forms.CharField(widget=forms.PasswordInput, label=_("Repeat password *"))
-    first_name = forms.CharField(label=_("First name *"))
-    last_name = forms.CharField(label=_("Last name *"))
+    username = forms.CharField(label=_("Username"))
+    email = forms.EmailField(label=_("Email"))
+    password1 = forms.CharField(widget=forms.PasswordInput, label=_("Password"))
+    password2 = forms.CharField(widget=forms.PasswordInput, label=_("Repeat password"))
+    first_name = forms.CharField(label=_("First name"))
+    last_name = forms.CharField(label=_("Last name"))
     
     # Additional information
     gender = forms.ChoiceField(label=_("Gender"), required=False, choices=(GENDER_CHOICES), widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))    
