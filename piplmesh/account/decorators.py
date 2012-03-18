@@ -1,6 +1,6 @@
 from django import http
 from django.conf import settings
-from django.utils.functional import wraps
+from django.utils import functional
 
 from piplmesh.account import utils
 
@@ -14,7 +14,7 @@ def facebook_required(view):
     until logging out.
     """
   
-    @wraps(view)
+    @functional.wraps(view)
     def inner(request, *args, **kwargs):
         url = getattr(settings, 'FACEBOOK_ERROR_REDIRECT', '/')
         if request.user.is_authenticated():
