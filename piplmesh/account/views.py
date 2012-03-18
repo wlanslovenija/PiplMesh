@@ -8,7 +8,6 @@ from django.shortcuts import render_to_response, redirect
 from django.template import context
 
 from piplmesh.account import forms
-from piplmesh.account import backends
 
 def registration_view(request):
     """
