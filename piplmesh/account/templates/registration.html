@@ -8,7 +8,16 @@
 <div class="main">
     <form method="post" action="{% url registration %}">
     {% csrf_token %}
-    {{ form.as_p }}
+	{% for field in form %}
+	    <div class="form_field">
+		{{ field.errors }}
+        <label for="{{ field.auto_id }}">
+            {% if field.field.required %}<span class="required">{{ field.label }} *</span>
+            {% else %}{{ field.label }}{% endif %}
+        </label>
+        {{ field }}  
+	    </div>
+	{% endfor %}
     <input type="submit" value="{% trans "Register" %}" />
     </form>
     {{ user.get_profile.gender }}

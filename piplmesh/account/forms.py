@@ -45,8 +45,11 @@ class RegistrationForm(auth_forms.UserCreationForm):
     
     def clean_password2(self):
         # This method checks whether the passwords match
-        if self.cleaned_data['password1'] == self.cleaned_data['password2']:
-            return self.cleaned_data['password2']
+        try:
+            if self.cleaned_data.has_key('password1') and self.cleaned_data['password1'] == self.cleaned_data['password2']:
+                return self.cleaned_data['password2']
+        except KeyError:
+           pass
         raise forms.ValidationError(_("Passwords do not match."))
        
     def clean_username(self):

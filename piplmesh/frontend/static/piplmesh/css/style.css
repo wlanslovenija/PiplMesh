@@ -1,3 +1,4 @@
+/* Basic layout */
 body {
 	text-align: center;
 	background: #EEE;
@@ -62,3 +63,12 @@ body {
 		text-align: center;
 		background-color: #FFF;
 	}
+
+/* Styling forms */
+ul.errorlist {
+	list-style: none;
+}
+
+div.form_field {
+	padding: 0px 0px 10px 0px;
+}
