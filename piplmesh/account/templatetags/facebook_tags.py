@@ -3,8 +3,7 @@ import json, urllib
 from django import template
 from django.contrib.auth import models
 
-from piplmesh.account import models
-from piplmesh.account.utils import graph_api_url, valid_token as token
+from piplmesh.account import models, utils
 
 register = template.Library()
 
@@ -14,7 +13,7 @@ def facebook_graph(self):
     Facebook graph for a specific user. 
     """
     
-    data = urllib.urlopen('%s' % graph_api_url('me', self, token=True))
+    data = urllib.urlopen('%s' % utils.graph_api_url('me', self, token=True))
     results = json.load(data)
     return results
 
@@ -28,7 +27,7 @@ def facebook_picture(self, size):
     variable height) and "large" (200 pixels wide, variable height). 
     """
     
-    results = '%s?type=%s' % (graph_api_url('%s/picture' % self), size)
+    results = '%s?type=%s' % (utils.graph_api_url('%s/picture' % self), size)
     return results
 
 @register.filter
@@ -39,7 +38,7 @@ def valid_token(user):
   
     results = None
     if user.is_authenticated():
-        if token(user):
+        if utils.token(user):
             results = True
 
     return results

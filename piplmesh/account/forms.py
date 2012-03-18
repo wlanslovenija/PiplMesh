@@ -39,7 +39,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
     last_name = forms.CharField(label=_("Last name"))
     
     # Additional information
-    gender = forms.ChoiceField(label=_("Gender"), required=False, choices=(GENDER_CHOICES), widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))    
+    gender = forms.ChoiceField(label=_("Gender"), required=False, choices=GENDER_CHOICES, widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))    
     current_date = datetime.now()
     birthdate = forms.DateField(label=_("Birth date"), required=False, widget=widgets.SelectDateWidget(years=[y for y in range(current_date.year, 1900, -1)]))
     
@@ -60,16 +60,18 @@ class RegistrationForm(auth_forms.UserCreationForm):
       
     def save(self):	
         # We first have to save user to database
-        new_user = auth_models.User(username=self.cleaned_data['username'],
-                                    first_name=self.cleaned_data['first_name'],
-                                    last_name=self.cleaned_data['last_name'],
-                                    email=self.cleaned_data['email'])			
+        new_user = auth_models.User(
+            username=self.cleaned_data['username'],
+            first_name=self.cleaned_data['first_name'],
+            last_name=self.cleaned_data['last_name'],
+            email=self.cleaned_data['email']
+        )			
                                     
         new_user.set_password(self.cleaned_data['password2'])
         new_user.save()
         
         # Then we asign profile to this user
-        profile = models.UserProfile(user=new_user,gender=self.cleaned_data['gender'],birthdate=self.cleaned_data['birthdate'])
+        profile = models.UserProfile(user=new_user, gender=self.cleaned_data['gender'], birthdate=self.cleaned_data['birthdate'])
         profile.save()
 
         return self.cleaned_data['username'], self.cleaned_data['password2']

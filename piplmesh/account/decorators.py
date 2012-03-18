@@ -1,8 +1,8 @@
-from django.conf import settings
 from django import http
+from django.conf import settings
 from django.utils.functional import wraps
 
-from facebook import utils
+from piplmesh.account import utils
 
 def facebook_required(view):
     """

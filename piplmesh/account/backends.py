@@ -3,9 +3,8 @@ import json, urlparse, urllib
 from django.conf import settings
 from django.contrib.auth import backends, models as auth_models
 from django.core import urlresolvers
-from django.db import IntegrityError
 
-from account import models
+from piplmesh.account import models
 
 class CaseInsensitiveModelBackend(backends.ModelBackend):
     """

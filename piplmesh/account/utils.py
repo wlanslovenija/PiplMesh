@@ -1,6 +1,6 @@
 import json, urllib
 
-from account import models
+from piplmesh.account import models
 
 def graph_api_url(self, user=None, page=None, token=None):
     """ 
