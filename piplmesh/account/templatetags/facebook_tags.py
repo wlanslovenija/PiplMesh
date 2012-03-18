@@ -3,8 +3,8 @@ import json, urllib
 from django import template
 from django.contrib.auth import models
 
-from account import models
-from account.utils import graph_api_url, valid_token as token
+from piplmesh.account import models
+from piplmesh.account.utils import graph_api_url, valid_token as token
 
 register = template.Library()
 

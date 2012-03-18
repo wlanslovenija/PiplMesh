@@ -2,13 +2,13 @@ import urllib
 
 from django import http
 from django.conf import settings
-from django.contrib.auth import authenticate, login, logout
+from django.contrib import auth
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, redirect
-from django.contrib import auth
 from django.template import context
 
-from account import forms
+from piplmesh.account import forms
+from piplmesh.account import backends
 
 def registration_view(request):
     """
@@ -19,7 +19,7 @@ def registration_view(request):
     if request.user.is_authenticated():
         return redirect('home')
     form = forms.RegistrationForm()
-    if request.method == "POST":
+    if request.method == 'POST':
         form = forms.RegistrationForm(request.POST)
         if form.is_valid():
             username, password = form.save()
@@ -27,7 +27,7 @@ def registration_view(request):
             auth.login(request, new_user)
             return redirect('home')
     data = {'form': form}
-    return render_to_response("registration.html", data, context_instance=context.RequestContext(request))
+    return render_to_response('registration.html', data, context_instance=context.RequestContext(request))
 
 
 def facebook_login(request):
@@ -48,7 +48,7 @@ def facebook_logout(request):
     Log user out of Facebook and redirect to FACEBOOK_LOGOUT_REDIRECT. 
     """
     
-    logout(request)
+    auth.logout(request)
     return http.HttpResponseRedirect(settings.FACEBOOK_LOGOUT_REDIRECT)
 
 def facebook_callback(request):
@@ -57,6 +57,6 @@ def facebook_callback(request):
     """
     
     code = request.GET['code']
-    user = authenticate(token=code, request=request)
-    login(request, user)
+    user = auth.authenticate(token=code, request=request)
+    auth.login(request, user)
     return http.HttpResponseRedirect(settings.FACEBOOK_LOGIN_REDIRECT)
