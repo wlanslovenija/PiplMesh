@@ -28,7 +28,6 @@ def registration_view(request):
     data = {'form': form}
     return render_to_response('registration.html', data, context_instance=context.RequestContext(request))
 
-
 def facebook_login(request):
     """ 
     Authenticate user via Facebook. 
