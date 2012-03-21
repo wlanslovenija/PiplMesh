@@ -190,8 +190,8 @@ AUTHENTICATION_BACKENDS = (
 # Site URL for Facebook app is set to http://127.0.0.1:8000/
 # so run your development server on port 8000
 # and access your site by local ip 127.0.0.1:8000 in your browser.
-FACEBOOK_APP_ID = '207371922661306' # Add your app ID/API key
-FACEBOOK_APP_SECRET = '67e595cb85d9836c305fe4b9985180df' # Add your app secret key
+FACEBOOK_APP_ID = '268978083181801' # Add your app ID/API key
+FACEBOOK_APP_SECRET = '0d86323405308915be0564e8c00bf6e0' # Add your app secret key
 FACEBOOK_SCOPE = 'email' # You may add additional parameters
 FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
 FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
