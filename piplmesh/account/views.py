@@ -31,9 +31,15 @@ class RegistrationView(form_views.FormView):
         return context
 
     # Overridden method
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         if request.user.is_authenticated():
             return simple.redirect_to(request, url='../', permanent=False)
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        return self.render_to_response(self.get_context_data(form=form))
+
+    # Overridden method
+    def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         if form.is_valid():
