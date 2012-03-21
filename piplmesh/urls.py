@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^search', frontend_views.SearchView.as_view(), name='search'),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    (r'^i18n/', include('django.conf.urls.i18n')),
 
     # Registration, login, logout
     url(r'^register/$', account_views.registration_view, name='registration'),

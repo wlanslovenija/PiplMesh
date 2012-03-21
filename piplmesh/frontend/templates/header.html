@@ -1,6 +1,18 @@
 {% load i18n %}
 <div id="container">
     <div id="header">
+        <div id="language_selection">
+        	<div id="language_links">
+            {% for lang in LANGUAGES %}
+                <form name="setLanguage{{ lang.1}}" action="/i18n/setlang/" method="POST">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="/" />
+                    <input type="hidden" name="language" value="{{ lang.0 }}" />
+                    <a href="#" onclick="document.setLanguage{{ lang.1 }}.submit();return false;">{{ lang.1 }}</a>
+                </form>
+            {% endfor %} 
+            </div>
+        </div>
         <div id="logo">
 			<a href="{% url home %}">
             	<img src="{{ STATIC_URL }}piplmesh/images/logo-sl.png" alt="PiplMesh" />
