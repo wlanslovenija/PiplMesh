@@ -1,4 +1,4 @@
-<div class="container">
+{% load i18n %}<div class="container">
     <div class="header">
         <div class="logo">
             <img src="{{ STATIC_URL }}piplmesh/images/logo.png" alt="PiplMesh" />
@@ -12,5 +12,21 @@
                     <input type="submit" value="{{ search_engine }} Search" />
                 </div>
             </form>
+        </div>
+        {% comment %}
+        This div is used for registration and log in link. 
+        If user is already logged in, his username and logout link are shown instead.
+        {% endcomment %}
+        <div class='user'>
+            {% load facebook_tags %}
+            {% if user.is_authenticated %}
+                <img src="{% facebook_picture user.username "square" %}" />
+                <p>{% trans "Username:" %}<strong>{{ user.username }}</strong> </p>
+                <p><a href="{% url logout %}">{% trans "Log out" %}</a></p>
+            {% else %}
+                <p><a href="{% url registration %}">{% trans "Register" %}</a></p>
+                <p><a href="{% url login %}">{% trans "Log in" %}</a></p>
+                <p><a href="{% url facebook_login %}">{% trans "Log in with Facebook" %}</a></p>
+            {% endif %}
         </div>
     </div>

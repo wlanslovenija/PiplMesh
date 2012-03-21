@@ -143,7 +143,8 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 INSTALLED_APPS = (
     # Ours are first so that we can override default templates in other apps
     'piplmesh.frontend',
-
+    'piplmesh.account',
+    
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -176,3 +177,22 @@ LOGGING = {
         },
     }
 }
+LOGIN_REDIRECT_URL = '/'
+
+AUTH_PROFILE_MODULE = 'account.UserProfile'
+
+AUTHENTICATION_BACKENDS = (
+    'account.backends.CaseInsensitiveModelBackend',
+    'account.backends.FacebookBackend', 
+)
+
+# Facebook settings:
+# Site URL for Facebook app is set to http://127.0.0.1:8000/
+# so run your development server on port 8000
+# and access your site by local ip 127.0.0.1:8000 in your browser.
+FACEBOOK_APP_ID = '207371922661306' # Add your app ID/API key
+FACEBOOK_APP_SECRET = '67e595cb85d9836c305fe4b9985180df' # Add your app secret key
+FACEBOOK_SCOPE = 'email' # You may add additional parameters
+FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
+FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
+FACEBOOK_LOGOUT_REDIRECT = '/' # Redirects here when user logouts

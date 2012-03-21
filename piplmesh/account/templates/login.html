@@ -1,0 +1,15 @@
+{% extends "plain.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Login" %}{% endblock %}
+
+{% block content %}
+<div class="main">
+    <form method="post" action="{% url login %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="{% trans "Login" %}" />
+    </form>
+</div>
+{% endblock %}
