@@ -31,7 +31,7 @@
             {% else %}
                 <p><a href="{% url registration %}">{% trans "Register" %}</a></p>
                 <p><a href="{% url login %}">{% trans "Log in" %}</a></p>
-                <p><a href="{% url facebook_login %}">{% trans "Log in with Facebook" %}</a></p>
+                <p><a class="fb_login_button" href="{% url facebook_login %}"><span class="fb_button_text">{% trans "Log in with Facebook" %}</span></a></p>
             {% endif %}
         </div>
     </div>
