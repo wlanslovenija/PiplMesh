@@ -21,13 +21,9 @@ a {
 	border: 0px;
 }
 
-/* Styling forms */
+/* Styling forms*/
 ul.errorlist {
     list-style: none;
-}
-
-div.form_field {
-    padding: 0px 0px 10px 0px;
 }
 
 /* -------------------- HEADER --------------------- */
@@ -68,6 +64,54 @@ div.form_field {
 	padding-right: 110px;
 	padding-left: 110px;
 	padding-bottom: 10px;
+}
+/* ------------------ REGISTRATION ---------------------------- */
+.registration {
+    width: 960px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.registration .form_field ul {
+    list-style-type: none;
+    padding-top: 5px;
+    overflow: hidden;
+}
+
+.registration .form_field li {
+    display: inline-block;
+    padding-right: 4px;
+    text-align: right;
+}
+
+.registration .form_field .form_label {
+    width: 120px;
+}
+
+.registration .form_field .form_textbox {
+    width: 300px;
+    text-align: left;
+}
+
+/* buttons */
+.button {
+    padding-top: 20px;
+    margin-left: 100px;
+}
+
+.button input {
+    height: 30px;
+    width: 100px;
+}
+
+.button ul {
+    list-style-type: none;
+    overflow: hidden;
+}
+
+.button li {
+    float: left;
+    padding-right: 4px;
 }
 
 /* ------------------ FOOTER ---------------------------- */
