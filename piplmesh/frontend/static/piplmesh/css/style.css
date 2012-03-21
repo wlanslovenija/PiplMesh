@@ -34,6 +34,11 @@ ul.errorlist {
     margin-right: auto;
 }
 
+#header #language_selection {
+    float: right;
+    margin-top: 30px;
+}
+
 #header #logo {
     margin-top: 30px;
     margin-bottom: 10px;
