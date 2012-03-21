@@ -45,6 +45,9 @@ URL_VALIDATOR_USER_AGENT = 'Django'
 
 SITE_ID = 1
 
+# Use SSL for default gravatar URL
+GRAVATAR_HTTPS_DEFAULT = False
+
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
@@ -140,7 +143,8 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 INSTALLED_APPS = (
     # Ours are first so that we can override default templates in other apps
     'piplmesh.frontend',
-
+    'piplmesh.account',
+    
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -173,3 +177,31 @@ LOGGING = {
         },
     }
 }
+
+LOGIN_REDIRECT_URL = '/'
+
+AUTH_PROFILE_MODULE = 'account.UserProfile'
+
+AUTHENTICATION_BACKENDS = (
+    'account.backends.CaseInsensitiveModelBackend',
+    'account.backends.FacebookBackend', 
+)
+
+# Facebook settings:
+# Site URL for Facebook app is set to http://127.0.0.1:8000/
+# so run your development server on port 8000
+# and access your site by local ip 127.0.0.1:8000 in your browser.
+FACEBOOK_APP_ID = '268978083181801' # Add your app ID/API key
+FACEBOOK_APP_SECRET = '0d86323405308915be0564e8c00bf6e0' # Add your app secret key
+FACEBOOK_SCOPE = 'email' # You may add additional parameters
+FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
+FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
+FACEBOOK_LOGOUT_REDIRECT = '/' # Redirects here when user logouts
+
+# You can set up your own custom search engine on: http://www.google.com/cse/
+# just register with you google account and crate new search engine.
+# When you create new search engine, switch uniqe id with your own and new settings will apply.
+# If want to change some settings that needs to be changed in the source code to take effect,
+# you will be explicitly warned that you have to change the code to take effect, before you will make the change.
+# Current settings are autocomplete, searching whole web.
+SEARCH_ENGINE_UNIQUE_ID = '003912915932446183218:zeq20qye9oa'

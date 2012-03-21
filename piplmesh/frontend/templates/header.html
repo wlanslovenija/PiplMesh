@@ -1,16 +1,38 @@
-<div class="container">
-    <div class="header">
-        <div class="logo">
-            <img src="{{ STATIC_URL }}piplmesh/images/logo.png" alt="PiplMesh" />
-            <h1>Pipl Mesh</h1>
+{% load i18n %}
+<div id="container">
+    <div id="header">
+        <div id="logo">
+			<a href="{% url home %}">
+            	<img src="{{ STATIC_URL }}piplmesh/images/logo-sl.png" alt="PiplMesh" />
+            </a>
         </div>
-        <div class="search">
-            <form method="get" action="http://www.google.com/search">
-                <div>
-                    <img width="100" height="30" alt="{{ search_engine }} Search Engine" src="{{ STATIC_URL }}piplmesh/images/{{ search_engine_logo }}" />
-                    <input type="text" name="q" size="25" maxlength="255" value="" />
-                    <input type="submit" value="{{ search_engine }} Search" />
-                </div>
-            </form>
+        <div id="search">
+            <div id="cse_search_form"></div>
+            <script src="https://www.google.com/jsapi" type="text/javascript"></script>
+            <script type="text/javascript">
+                var language_code = '{{ LANGUAGE_CODE }}';
+                var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID }}';
+                var search_page_url = '{% url search %}';
+            </script>
+            <script type="text/javascript" src="{{ STATIC_URL }}piplmesh/js/search_bar.js"></script>
+            <link rel="stylesheet" href="https://www.google.com/cse/style/look/default.css" type="text/css" />
+            {% trans "See your query results on " %}<a id="google_results_link">Google</a>.
+        </div>
+        {% comment %}
+        This div is used for registration and log in link. 
+        If user is already logged in, his username and logout link are shown instead.
+        {% endcomment %}
+        <div class='user'>
+            {% load facebook_tags %}
+            {% if user.is_authenticated %}
+                <img src="{% facebook_picture user.username "square" %}" />
+                <p>{% trans "Username:" %}<strong>{{ user.username }}</strong> </p>
+                <p><a href="{% url logout %}">{% trans "Log out" %}</a></p>
+            {% else %}
+                <p><a href="{% url registration %}">{% trans "Register" %}</a></p>
+                <p><a href="{% url login %}">{% trans "Log in" %}</a></p>
+                <p><a href="{% url facebook_login %}">{% trans "Log in with Facebook" %}</a></p>
+            {% endif %}
         </div>
     </div>
+</div>

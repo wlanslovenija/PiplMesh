@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.views import generic as generic_views
 
 class HomeView(generic_views.TemplateView):
@@ -7,8 +8,19 @@ class HomeView(generic_views.TemplateView):
         context = super(HomeView, self).get_context_data(**kwargs)
 
         context.update({
-            'search_engine': 'Google',
-            'search_engine_logo': 'google_logo.png'
+            'SEARCH_ENGINE_UNIQUE_ID': settings.SEARCH_ENGINE_UNIQUE_ID,
         })
 
         return context
+        
+class SearchView(generic_views.TemplateView):
+	template_name = 'search.html'
+	
+	def get_context_data(self, **kwargs):
+		context = super(SearchView, self).get_context_data(**kwargs)
+		
+		context.update({
+			'SEARCH_ENGINE_UNIQUE_ID': settings.SEARCH_ENGINE_UNIQUE_ID,
+		})
+		
+		return context
