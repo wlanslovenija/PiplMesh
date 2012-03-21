@@ -1,13 +1,12 @@
 {% load i18n %}
-<div class="container">
-    <div class="header">
-        <div class="logo">
-            <a href="{% url home %}">
-                <img src="{{ STATIC_URL }}piplmesh/images/logo.png" alt="PiplMesh" />
+<div id="container">
+    <div id="header">
+        <div id="logo">
+			<a href="{% url home %}">
+            	<img src="{{ STATIC_URL }}piplmesh/images/logo-sl.png" alt="PiplMesh" />
             </a>
-            <h1>PiplMesh</h1>
         </div>
-        <div class="search">
+        <div id="search">
             <div id="cse_search_form"></div>
             <script src="https://www.google.com/jsapi" type="text/javascript"></script>
             <script type="text/javascript">
