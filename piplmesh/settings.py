@@ -177,6 +177,7 @@ LOGGING = {
         },
     }
 }
+
 LOGIN_REDIRECT_URL = '/'
 
 AUTH_PROFILE_MODULE = 'account.UserProfile'
@@ -196,3 +197,11 @@ FACEBOOK_SCOPE = 'email' # You may add additional parameters
 FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
 FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
 FACEBOOK_LOGOUT_REDIRECT = '/' # Redirects here when user logouts
+
+# You can set up your own custom search engine on: http://www.google.com/cse/
+# just register with you google account and crate new search engine.
+# When you create new search engine, switch uniqe id with your own and new settings will apply.
+# If want to change some settings that needs to be changed in the source code to take effect,
+# you will be explicitly warned that you have to change the code to take effect, before you will make the change.
+# Current settings are autocomplete, searching whole web.
+SEARCH_ENGINE_UNIQUE_ID = '003912915932446183218:zeq20qye9oa'
