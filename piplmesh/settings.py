@@ -39,7 +39,14 @@ TIME_ZONE = 'Europe/Ljubljana'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'sl'
+
+_ = lambda s: s
+
+LANGUAGES = (
+    ('sl', _('Slovenian')),
+    ('en', _('English')),
+)
 
 URL_VALIDATOR_USER_AGENT = 'Django'
 
@@ -123,8 +130,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
 )
