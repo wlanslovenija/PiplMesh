@@ -4,7 +4,7 @@
         <div id="language_selection">
         	<div id="language_links">
             {% for lang in LANGUAGES %}
-                <form name="setLanguage{{ lang.1}}" action="/i18n/setlang/" method="POST">
+                <form name="setLanguage{{ lang.1 }}" action="/i18n/setlang/" method="post">
                     {% csrf_token %}
                     <input name="next" type="hidden" value="/" />
                     <input type="hidden" name="language" value="{{ lang.0 }}" />
