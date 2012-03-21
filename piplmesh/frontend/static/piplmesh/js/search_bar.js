@@ -12,4 +12,6 @@ $(document).ready(function () {
     var query = location.search;
     var open_in_google_link = 'http://www.google.com/search' + query;
     $('#google_results_link').prop('href', open_in_google_link);
+    var current_url = document.URL;
+    $('#next_page').prop('value', current_url)
 });

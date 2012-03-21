@@ -6,7 +6,7 @@
             {% for lang in LANGUAGES %}
                 <form name="setLanguage{{ lang.1 }}" action="/i18n/setlang/" method="post">
                     {% csrf_token %}
-                    <input name="next" type="hidden" value="/" />
+                    <input id="next_page" name="next" type="hidden" />
                     <input type="hidden" name="language" value="{{ lang.0 }}" />
                     <a href="#" onclick="document.setLanguage{{ lang.1 }}.submit();return false;">{{ lang.1 }}</a>
                 </form>
