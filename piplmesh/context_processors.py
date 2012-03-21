@@ -1,6 +1,6 @@
-def search_engine(request):
+def global_vars(request):
     """
-    Adds search engine related context variables to the context.
+    Adds global context variables to the context.
     """
     
-    return {'search_engine': 'Google', 'search_engine_logo': 'google_logo.png'}
+    return {}
