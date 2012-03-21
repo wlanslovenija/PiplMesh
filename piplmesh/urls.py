@@ -4,6 +4,8 @@ from piplmesh.account import views as account_views
 from piplmesh.frontend import views as frontend_views
 
 from django.contrib import admin
+from django.conf import settings
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
