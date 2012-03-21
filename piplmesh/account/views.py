@@ -84,7 +84,6 @@ class FacebookLogoutView(generic_views.RedirectView):
     
     # Overridden method
     def get(self, request, *args, **kwargs):
-        context = super(FacebookLogoutView, self).get_context_data(**kwargs)
         auth.logout(request)
         url = self.get_redirect_url(**kwargs)
         if url:
