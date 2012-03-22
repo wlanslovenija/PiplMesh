@@ -1,118 +1,115 @@
-# PIPLMESH SLOVENIAN TRANSLATION
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# ALJAZ PRIJATELJ <aljaz.prijatelj@gmail.com>, 2012.
+# PiplMesh Slovenian translation
+# Copyright (C) 2012 wlan slovenija, open wireless network of Slovenia
+# This file is distributed under the same license as PiplMesh.
+# Aljaz Prijatelj <aljaz.prijatelj@gmail.com>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-21 12:05+0100\n"
+"Report-Msgid-Bugs-To: https://github.com/mitar/PiplMesh\n"
+"POT-Creation-Date: 2012-03-22 09:11+0100\n"
 "PO-Revision-Date: 2012-03-21 12:18+0100\n"
-"Last-Translator: Aljaz <aljaz.prijatelj@gmail.com>\n"
-"Language-Team: team 5 <LL@li.org>\n"
-"Language: \n"
+"Last-Translator: Aljaz Prijatelj <aljaz.prijatelj@gmail.com>\n"
+"Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
+"%100==4 ? 2 : 3)\n"
 
-
-#: piplmesh/settings.py:47
+#: settings.py:48
 msgid "Slovenian"
 msgstr "Slovenščina"
 
-#: piplmesh/settings.py:48
+#: settings.py:49
 msgid "English"
 msgstr "Angleščina"
 
-#: piplmesh/account/forms.py:14
+#: account/forms.py:14
 msgid "Male"
 msgstr "Moški"
 
-#: piplmesh/account/forms.py:15
+#: account/forms.py:15
 msgid "Female"
 msgstr "Ženska"
 
-#: piplmesh/account/forms.py:34
+#: account/forms.py:34
 msgid "Username"
 msgstr "Uporabniško ime"
 
-#: piplmesh/account/forms.py:35
-msgid "Email"
+#: account/forms.py:35
+#, fuzzy
+msgid "E-mail"
 msgstr "E-mail"
 
-#: piplmesh/account/forms.py:36
+#: account/forms.py:36
 msgid "Password"
 msgstr "Geslo"
 
-#: piplmesh/account/forms.py:37
+#: account/forms.py:37
 msgid "Repeat password"
 msgstr "Ponovi geslo"
 
-#: piplmesh/account/forms.py:38
+#: account/forms.py:38
 msgid "First name"
 msgstr "Ime"
 
-#: piplmesh/account/forms.py:39
+#: account/forms.py:39
 msgid "Last name"
 msgstr "Priimek"
 
-#: piplmesh/account/forms.py:42
+#: account/forms.py:42
 msgid "Gender"
 msgstr "Spol"
 
-#: piplmesh/account/forms.py:44
+#: account/forms.py:44
 msgid "Birth date"
-msgstr "Rojstni datum"
+msgstr "Datum rojstva"
 
-#: piplmesh/account/forms.py:50
+#: account/forms.py:50
 msgid "Passwords do not match."
 msgstr "Gesli se ne ujemata"
 
-#: piplmesh/account/forms.py:59
+#: account/forms.py:59
 msgid "A user with that username already exists."
-msgstr "Uporabniško ime že obstaja"
+msgstr "Uporabnik s tem uporabniškim imenom že obstaja."
 
-#: piplmesh/account/templates/login.html:5
-#: piplmesh/account/templates/login.html:12
+#: account/templates/login.html:5 account/templates/login.html.py:12
 msgid "Login"
 msgstr "Prijavi se"
 
-#: piplmesh/account/templates/logout.html:9
+#: account/templates/logout.html:9
 msgid "You have been logged out."
-msgstr "Odjava uspešna"
+msgstr "Odjava uspešna."
 
-#: piplmesh/account/templates/logout.html:10
+#: account/templates/logout.html:10
 msgid "Home page"
 msgstr "Domov"
 
-#: piplmesh/account/templates/registration.html:5
+#: account/templates/registration.html:5
 msgid "Registration"
 msgstr "Registracija"
 
-#: piplmesh/account/templates/registration.html:21
-#: piplmesh/frontend/templates/header.html:33
+#: account/templates/registration.html:21 frontend/templates/header.html:45
 msgid "Register"
 msgstr "Registriraj se"
 
-#: piplmesh/frontend/templates/header.html:19
+#: frontend/templates/header.html:31
 msgid "See your query results on "
 msgstr "Poglej rezultate na "
 
-#: piplmesh/frontend/templates/header.html:30
+#: frontend/templates/header.html:42
 msgid "Username:"
 msgstr "Uporabniško ime:"
 
-#: piplmesh/frontend/templates/header.html:31
+#: frontend/templates/header.html:43
 msgid "Log out"
 msgstr "Odjava"
 
-#: piplmesh/frontend/templates/header.html:34
+#: frontend/templates/header.html:46
 msgid "Log in"
 msgstr "Prijava"
 
-#: piplmesh/frontend/templates/header.html:35
+#: frontend/templates/header.html:47
 msgid "Log in with Facebook"
 msgstr "Prijavi se s Facebook-om"
-
