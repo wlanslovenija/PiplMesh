@@ -26,9 +26,7 @@ class RegistrationView(edit_views.FormView):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated():
             return simple.redirect_to(request, url=self.get_success_url(), permanent=False)
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        return self.render_to_response(self.get_context_data(form=form))
+        super(RegistrationView, self).get(self, request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
@@ -47,7 +45,7 @@ class FacebookLoginView(generic_views.RedirectView):
     """
 
     permanent = False
-    url = 'https://www.facebook.com/dialog/oauth?'
+    url = 'https://www.facebook.com/dialog/oauth'
 
     def get(self, request, *args, **kwargs):
         args = {
@@ -56,7 +54,7 @@ class FacebookLoginView(generic_views.RedirectView):
             'redirect_uri': request.build_absolute_uri(reverse('facebook_callback')),
         }
         url = self.get_redirect_url(**kwargs)
-        url += urllib.urlencode(args)
+        url = "%s?%s" % (url, urllib.urlencode(args))
         if url:
             if self.permanent:
                 return http.HttpResponsePermanentRedirect(url)
@@ -67,8 +65,8 @@ class FacebookLoginView(generic_views.RedirectView):
                             'status_code': 410,
                             'request': self.request,
                         })
-            return http.HttpResponseGone() 
-
+            return http.HttpResponseGone()
+        
 class FacebookLogoutView(generic_views.RedirectView):
     """ 
     Log user out of Facebook and redirect to FACEBOOK_LOGOUT_REDIRECT. 
@@ -79,18 +77,7 @@ class FacebookLogoutView(generic_views.RedirectView):
     
     def get(self, request, *args, **kwargs):
         auth.logout(request)
-        url = self.get_redirect_url(**kwargs)
-        if url:
-            if self.permanent:
-                return http.HttpResponsePermanentRedirect(url)
-            else:
-                return http.HttpResponseRedirect(url)
-        else:
-            logger.warning('Gone: %s' % self.request.path, extra={
-                            'status_code': 410,
-                            'request': self.request,
-                        })
-            return http.HttpResponseGone() 
+        super(FacebookLogoutView, self).get(self, request, *args, **kwargs)
 
 class FacebookCallbackView(generic_views.RedirectView):
     """ 
@@ -104,15 +91,4 @@ class FacebookCallbackView(generic_views.RedirectView):
         token = request.GET['code']
         user = auth.authenticate(token=token, request=request)
         auth.login(request, user)
-        url = self.get_redirect_url(**kwargs)
-        if url:
-            if self.permanent:
-                return http.HttpResponsePermanentRedirect(url)
-            else:
-                return http.HttpResponseRedirect(url)
-        else:
-            logger.warning('Gone: %s' % self.request.path, extra={
-                            'status_code': 410,
-                            'request': self.request,
-                        })
-            return http.HttpResponseGone() 
+        super(FacebookCallbackView, self).get(self, request, *args, **kwargs)
