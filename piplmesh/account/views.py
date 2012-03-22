@@ -5,8 +5,7 @@ from django.conf import settings
 from django.contrib import auth
 from django.core.urlresolvers import reverse
 from django.views import generic as generic_views
-from django.views.generic import simple
-from django.views.generic import edit as edit_views
+from django.views.generic import simple, edit as edit_views
 
 from piplmesh.account import forms
 
