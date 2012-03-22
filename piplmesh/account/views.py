@@ -19,6 +19,7 @@ class RegistrationView(edit_views.FormView):
     form_class = forms.RegistrationForm
 
     # Have to do this because we don't have reverse_lazy() yet
+    # We can't get urlconf (reverse() needs it) initialized in attribute space so we have to do a work-around
     def get_success_url(self):
         return urlresolvers.reverse('home')
 
@@ -39,7 +40,6 @@ class FacebookLoginView(generic_views.RedirectView):
     """
 
     permanent = False
-    url = 'https://www.facebook.com/dialog/oauth'
 
     def get_redirect_url(self, **kwargs):
         args = {
@@ -47,11 +47,8 @@ class FacebookLoginView(generic_views.RedirectView):
             'scope': settings.FACEBOOK_SCOPE,
             'redirect_uri': self.request.build_absolute_uri(urlresolvers.reverse('facebook_callback')),
         }
-        if self.url:
-            url = self.url % kwargs
-            return "%s?%s" % (url, urllib.urlencode(args))
-        else:
-            return None
+        url = 'https://www.facebook.com/dialog/oauth' % kwargs
+        return "%s?%s" % (url, urllib.urlencode(args))
         
 class FacebookLogoutView(generic_views.RedirectView):
     """ 
@@ -60,7 +57,10 @@ class FacebookLogoutView(generic_views.RedirectView):
 
     permanent = False
     url = settings.FACEBOOK_LOGOUT_REDIRECT
-    
+
+    # TODO
+    # use post instead of get
+    # use csrf tokens
     def get(self, request, *args, **kwargs):
         auth.logout(request)
         return super(FacebookLogoutView, self).get(request, *args, **kwargs)
@@ -72,14 +72,16 @@ class FacebookCallbackView(generic_views.RedirectView):
 
     permanent = False
     url = settings.FACEBOOK_LOGIN_REDIRECT
-  
+
+    # TODO
+    # use post instead of get
+    # use csrf tokens
     def get(self, request, *args, **kwargs):
-        try:
-            token = request.GET['code']
-        except KeyError:
-            # If the user clicks cancel, they will be redirected back without logging in
+        if 'code' in request.GET:
+            user = auth.authenticate(token=request.GET['code'], request=request)
+            auth.login(request, user)
+            # message user that they have been logged in (maybe this will be already in auth.login once we move to MongoDB
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
         else:
-            user = auth.authenticate(token=token, request=request)
-            auth.login(request, user)
+            # message user that they have not been logged in because they cancelled the Facebook
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
