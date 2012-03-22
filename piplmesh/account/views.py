@@ -6,11 +6,11 @@ from django.contrib import auth
 from django.core.urlresolvers import reverse
 from django.views import generic as generic_views
 from django.views.generic import simple
-from django.views.generic import edit as form_views
+from django.views.generic import edit as edit_views
 
 from piplmesh.account import forms
 
-class RegistrationView(form_views.FormView):
+class RegistrationView(edit_views.FormView):
     """
     This view checks if form data are valid, saves new user.
     New user is authenticated, logged in and redirected to home page.
@@ -18,27 +18,18 @@ class RegistrationView(form_views.FormView):
 
     template_name = 'registration.html'
     form_class = forms.RegistrationForm
-    success_url = '../'
-        
-    def get_context_data(self, **kwargs):
-        context = super(RegistrationView, self).get_context_data(**kwargs)
-        form = forms.RegistrationForm()
-        
-        context.update({
-            'form': form
-        })
 
-        return context
-
-    # Overridden method
+    # Have to do this because we don't have reverse_lazy() yet
+    def get_success_url(self):
+        return reverse('home')
+      
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated():
-            return simple.redirect_to(request, url='../', permanent=False)
+            return simple.redirect_to(request, url=self.get_success_url(), permanent=False)
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         return self.render_to_response(self.get_context_data(form=form))
 
-    # Overridden method
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
@@ -49,7 +40,7 @@ class RegistrationView(form_views.FormView):
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
-        
+     
 class FacebookLoginView(generic_views.RedirectView):
     """ 
     This view authenticates the user via Facebook. 
@@ -57,8 +48,7 @@ class FacebookLoginView(generic_views.RedirectView):
 
     permanent = False
     url = 'https://www.facebook.com/dialog/oauth?'
-    
-    # Overridden method
+
     def get(self, request, *args, **kwargs):
         args = {
             'client_id': settings.FACEBOOK_APP_ID,
@@ -73,10 +63,9 @@ class FacebookLoginView(generic_views.RedirectView):
             else:
                 return http.HttpResponseRedirect(url)
         else:
-            logger.warning('Gone: %s' % self.request.path,
-                        extra={
+            logger.warning('Gone: %s' % self.request.path, extra={
                             'status_code': 410,
-                            'request': self.request
+                            'request': self.request,
                         })
             return http.HttpResponseGone() 
 
@@ -88,7 +77,6 @@ class FacebookLogoutView(generic_views.RedirectView):
     permanent = False
     url = settings.FACEBOOK_LOGOUT_REDIRECT
     
-    # Overridden method
     def get(self, request, *args, **kwargs):
         auth.logout(request)
         url = self.get_redirect_url(**kwargs)
@@ -98,10 +86,9 @@ class FacebookLogoutView(generic_views.RedirectView):
             else:
                 return http.HttpResponseRedirect(url)
         else:
-            logger.warning('Gone: %s' % self.request.path,
-                        extra={
+            logger.warning('Gone: %s' % self.request.path, extra={
                             'status_code': 410,
-                            'request': self.request
+                            'request': self.request,
                         })
             return http.HttpResponseGone() 
 
@@ -113,10 +100,9 @@ class FacebookCallbackView(generic_views.RedirectView):
     permanent = False
     url = settings.FACEBOOK_LOGIN_REDIRECT
     
-    # Overridden method
     def get(self, request, *args, **kwargs):
-        code = request.GET['code']
-        user = auth.authenticate(token=code, request=request)
+        token = request.GET['code']
+        user = auth.authenticate(token=token, request=request)
         auth.login(request, user)
         url = self.get_redirect_url(**kwargs)
         if url:
@@ -125,9 +111,8 @@ class FacebookCallbackView(generic_views.RedirectView):
             else:
                 return http.HttpResponseRedirect(url)
         else:
-            logger.warning('Gone: %s' % self.request.path,
-                        extra={
+            logger.warning('Gone: %s' % self.request.path, extra={
                             'status_code': 410,
-                            'request': self.request
+                            'request': self.request,
                         })
             return http.HttpResponseGone() 
