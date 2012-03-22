@@ -73,18 +73,18 @@ ul.errorlist {
 }
 
 .login_form {
-    text-align:right;
-    display:inline-block;
+    text-align: right;
+    display: inline-block;
 }
 
 #other_login_options {
-    margin-left:50px;
-    display:inline-block;
-    text-align:left;
+    margin-left: 50px;
+    display: inline-block;
+    text-align: left;
 }
 
 #other_login_options li {
-    padding-top:15px;
+    padding-top: 15px;
     list-style-type: none;
 }
 
