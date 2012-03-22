@@ -131,7 +131,10 @@ ul.errorlist {
     border-bottom: dotted 1px #999;
 }
 
-<<<<<<< HEAD
+#footer #language_links {
+    margin-top: 10px;
+}
+
 /* ---------------- FB LOGIN BUTTON ------------------- */
 .fb_login_button {
     background: #29447E url('../images/fb_sprite.png');
@@ -157,8 +160,4 @@ ul.errorlist {
     padding: 2px 6px 3px 6px;
     margin: 1px 1px 0 21px;
     text-shadow: none;
-=======
-#footer #language_links {
-    margin-top: 10px;
->>>>>>> Some fixes implemented.
 }
