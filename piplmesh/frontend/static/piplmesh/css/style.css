@@ -54,8 +54,8 @@ ul.errorlist {
 /* -------------------- MAIN ------------------------ */
 #main {
     width: 960px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto;
+    overflow: hidden;
 }
 
 .result {
@@ -65,6 +65,56 @@ ul.errorlist {
     padding-left: 110px;
     padding-bottom: 10px;
 }
+
+/* --------------------- LOGIN ------------------------ */
+.login {
+    text-align: center;
+    margin: 20px 0px 20px 0px;
+}
+
+.login_form {
+    text-align:right;
+    display:inline-block;
+}
+
+#other_login_options {
+    margin-left:50px;
+    display:inline-block;
+    text-align:left;
+}
+
+#other_login_options li {
+    padding-top:15px;
+    list-style-type: none;
+}
+
+/* ---------------- FB LOGIN BUTTON ------------------- */
+.fb_login_button {
+    background: #29447E url('../images/fb_sprite.png');
+    background-position: left -188px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 0 0 1px;
+    text-decoration: none;
+    outline: none;
+    font-size: 11px;
+    line-height: 14px;
+}
+
+.fb_button_text {
+    background: #5F78AB url('../images/fb_sprite.png');
+    border-top: solid 1px #879AC0;
+    border-bottom: solid 1px #1A356E;
+    color: white;
+    display: block;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-weight: bold;
+    padding: 2px 6px 3px 6px;
+    margin: 1px 1px 0 21px;
+    text-shadow: none;
+}
+
 /* ------------------ REGISTRATION ---------------------------- */
 .registration {
     width: 960px;
@@ -128,31 +178,4 @@ ul.errorlist {
 #footer a {
     color: #999;
     border-bottom: dotted 1px #999;
-}
-
-/* ---------------- FB LOGIN BUTTON ------------------- */
-.fb_login_button {
-    background: #29447E url('../images/fb_sprite.png');
-    background-position: left -188px;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    display: inline-block;
-    padding: 0 0 0 1px;
-    text-decoration: none;
-    outline: none;
-    font-size: 11px;
-    line-height: 14px;
-}
-
-.fb_button_text {
-    background: #5F78AB url('../images/fb_sprite.png');
-    border-top: solid 1px #879AC0;
-    border-bottom: solid 1px #1A356E;
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    padding: 2px 6px 3px 6px;
-    margin: 1px 1px 0 21px;
-    text-shadow: none;
 }
