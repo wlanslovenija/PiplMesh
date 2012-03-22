@@ -5,11 +5,20 @@
 {% block title %}{% trans "Login" %}{% endblock %}
 
 {% block content %}
-<div class="main">
-    <form method="post" action="{% url login %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="{% trans "Login" %}" />
-    </form>
+<div id="main">
+    <div class="login">
+        <div class="login_form">
+            <form method="post" action="{% url login %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="{% trans "Login" %}" />
+            </form>
+        </div>
+        <div id="other_login_options">
+            <li><a class="fb_login_button" href="{% url facebook_login %}"><span class="fb_button_text">{% trans "Log in with Facebook" %}</span></a></li>
+            <li>{% comment %}Place for OpenID button.{% endcomment %}</li>
+            <li><a href="{% url registration %}">{% trans "Register" %}</a></li>
+        </div>
+    </div>
 </div>
 {% endblock %}
