@@ -34,10 +34,6 @@ ul.errorlist {
     margin-right: auto;
 }
 
-#header #language_selection {
-    float: right;
-    margin-top: 30px;
-}
 
 #header #logo {
     margin-top: 30px;
@@ -183,4 +179,8 @@ ul.errorlist {
 #footer a {
     color: #999;
     border-bottom: dotted 1px #999;
+}
+
+#footer #language_link {
+    margin-top: 10px;
 }
