@@ -1,74 +1,158 @@
 /* Basic layout */
 body {
-	text-align: center;
-	background: #EEE;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    background: url('../images/background.png') repeat-x top left;
+    color: #000000;
+    padding: 0px;
+    margin: 0px;
 }
 
-	.container {
-		background: #FFF;
-		margin: 0 auto;
-		width: 1100px;
-		text-align: left;
-		position: relative;
-	}
-	
-	.header {
-		background-color: yellow;
-		position: relative;
-		float: left;
-		width: 100%;
-		margin-bottom: 20px;
-	}
-	
-		.header .logo {
-			float: left;
-			padding-top: 10px
-		}
-		
-			.header .logo h1 {
-				font-size: 40px;
-				display: inline;
-			}
-			
-			.header .logo img {
-				width: 80px;
-			}
-		
-		.header .search {
-			float: right;
-			padding: 20px;
-			background: #FFF;
-			width: 410px;
-		}
-		
-		.header .search img {
-			padding-top: 10px;
-			display: inline-block;
-		}
+.hidden {
+    visibility: hidden;
+}
 
-	.main {
-		clear: both;
-		text-align: center;
-		position: relative;
-	}
-	
-	.footer {
-		border-top: 1px solid #CCC;
-		padding-top:20px;
-		font-size: 10px;
-		padding-bottom: 20px;
-		position: relative;
-		text-align: center;
-		background-color: #FFF;
-	}
+a {
+    color: #68AE2C;
+    text-decoration: none;
+}
 
-/* Styling forms */
+.gravatar {
+    border: 0px;
+}
+
+/* Styling forms*/
 ul.errorlist {
-	list-style: none;
+    list-style: none;
 }
 
-div.form_field {
-	padding: 0px 0px 10px 0px;
+/* -------------------- HEADER --------------------- */
+#header {
+    width: 960px;
+    height: 150px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#header #logo {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+#header #search {
+    float: right;
+    padding: 20px;
+    background: #FFF;
+    width: 410px;
+}
+
+#header #search img {
+    padding-top: 10px;
+    display: inline-block;
+}
+
+/* -------------------- MAIN ------------------------ */
+#main {
+    width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.result {
+    text-align: left;
+    padding-top: 110px;
+    padding-right: 110px;
+    padding-left: 110px;
+    padding-bottom: 10px;
+}
+/* ------------------ REGISTRATION ---------------------------- */
+.registration {
+    width: 960px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.registration .form_field ul {
+    list-style-type: none;
+    padding-top: 5px;
+    overflow: hidden;
+}
+
+.registration .form_field li {
+    display: inline-block;
+    padding-right: 4px;
+    text-align: right;
+}
+
+.registration .form_field .form_label {
+    width: 120px;
+}
+
+.registration .form_field .form_textbox {
+    width: 300px;
+    text-align: left;
+}
+
+/* buttons */
+.button {
+    padding-top: 20px;
+    margin-left: 100px;
+}
+
+.button input {
+    height: 30px;
+    width: 100px;
+}
+
+.button ul {
+    list-style-type: none;
+    overflow: hidden;
+}
+
+.button li {
+    float: left;
+    padding-right: 4px;
+}
+
+/* ------------------ FOOTER ---------------------------- */
+#footer {
+    width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-bottom: 1.3em;
+    font-size: 10px;
+    color: #888;
+}
+
+#footer a {
+    color: #999;
+    border-bottom: dotted 1px #999;
+}
+
+/* ---------------- FB LOGIN BUTTON ------------------- */
+.fb_login_button {
+    background: #29447E url('../images/fb_sprite.png');
+    background-position: left -188px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 0 0 1px;
+    text-decoration: none;
+    outline: none;
+    font-size: 11px;
+    line-height: 14px;
+}
+
+.fb_button_text {
+    background: #5F78AB url('../images/fb_sprite.png');
+    border-top: solid 1px #879AC0;
+    border-bottom: solid 1px #1A356E;
+    color: white;
+    display: block;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-weight: bold;
+    padding: 2px 6px 3px 6px;
+    margin: 1px 1px 0 21px;
+    text-shadow: none;
 }

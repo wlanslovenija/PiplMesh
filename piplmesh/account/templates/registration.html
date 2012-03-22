@@ -5,20 +5,29 @@
 {% block title %}{% trans "Registration" %}{% endblock %}
 
 {% block content %}
-<div class="main">
+<div class="registration">
     <form method="post" action="{% url registration %}">
-    {% csrf_token %}
-	{% for field in form %}
-	    <div class="form_field">
-		{{ field.errors }}
-        <label for="{{ field.auto_id }}">
-            {% if field.field.required %}<span class="required">{{ field.label }} *</span>
-            {% else %}{{ field.label }}{% endif %}
-        </label>
-        {{ field }}  
-	    </div>
-	{% endfor %}
-    <input type="submit" value="{% trans "Register" %}" />
+        {% csrf_token %}
+        {% for field in form %}
+        {{ field.errors }}
+        <ul class="form_field">
+            <li class="form_label">
+                <label for="{{ field.auto_id }}">
+                {% if field.field.required %}
+                <span class="required">{{ field.label }}<sup title="Required">*</sup>
+            </span>
+                {% else %}{{ field.label }}{% endif %}
+            </label>
+            </li>
+            <li class="form_textbox">{{ field }}</li>
+        </ul>
+        {% endfor %}
+        <div class="button">
+            <ul>
+                <li><input type="submit" value="{% trans " Register" %}" /></li>
+                <li><input type=reset></li>
+            </ul>
+        </div>
     </form>
     {{ user.get_profile.gender }}
 </div>

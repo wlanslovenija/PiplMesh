@@ -5,7 +5,8 @@ from django.conf import settings
 from django.contrib import auth
 from django.core.urlresolvers import reverse
 from django.views import generic as generic_views
-from django.views.generic import simple, edit as edit_views
+from django.views.generic import simple
+from django.views.generic import edit as edit_views
 
 from piplmesh.account import forms
 
@@ -26,12 +27,12 @@ class RegistrationView(edit_views.FormView):
         username, password = form.save()
         new_user = auth.authenticate(username=username, password=password)
         auth.login(self.request, new_user)
-        super(RegistrationView, self).form_valid(self, form)
+        return super(RegistrationView, self).form_valid(form)
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated():
             return simple.redirect_to(request, url=self.get_success_url(), permanent=False)
-        super(RegistrationView, self).get(self, request, *args, **kwargs)
+        return super(RegistrationView, self).get(request, *args, **kwargs)
 
 class FacebookLoginView(generic_views.RedirectView):
     """ 
@@ -71,7 +72,7 @@ class FacebookLogoutView(generic_views.RedirectView):
     
     def get(self, request, *args, **kwargs):
         auth.logout(request)
-        super(FacebookLogoutView, self).get(self, request, *args, **kwargs)
+        return super(FacebookLogoutView, self).get(request, *args, **kwargs)
 
 class FacebookCallbackView(generic_views.RedirectView):
     """ 
@@ -80,9 +81,14 @@ class FacebookCallbackView(generic_views.RedirectView):
 
     permanent = False
     url = settings.FACEBOOK_LOGIN_REDIRECT
-    
+  
     def get(self, request, *args, **kwargs):
-        token = request.GET['code']
-        user = auth.authenticate(token=token, request=request)
-        auth.login(request, user)
-        super(FacebookCallbackView, self).get(self, request, *args, **kwargs)
+        try:
+            token = request.GET['code']
+        except KeyError:
+            # If the user clicks cancel, they will be redirected back without logging in
+            return super(FacebookCallbackView, self).get(request, *args, **kwargs)
+        else:
+            user = auth.authenticate(token=token, request=request)
+            auth.login(request, user)
+            return super(FacebookCallbackView, self).get(request, *args, **kwargs)
