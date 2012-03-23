@@ -3,15 +3,15 @@
         <div id="footer_nav">
             <a href="http://wlan-si.net/">wlan slovenija</a> | <a href="https://nodes.wlan-si.net/">node database</a> | <a href="http://dev.wlan-si.net/">development</a> | <a href="http://grow.wlan-si.net/">growing</a>
         </div>
-		<div id="language_links">
-		{% for lang in LANGUAGES %}
-			<form name="setLanguage{{ lang.1 }}" action="/i18n/setlang/" method="post">
-				{% csrf_token %}
-				<input id="next_page" name="next" type="hidden" />
-				<input type="hidden" name="language" value="{{ lang.0 }}" />
-				<a href="#" onclick="document.setLanguage{{ lang.1 }}.submit();return false;">{{ lang.1 }}</a>
-			</form>
-		{% endfor %} 
-		</div>
+        <div id="language_links">
+        {% for lang in LANGUAGES %}
+            <form name="set_language_{{ lang.1 }}" action="/i18n/setlang/" method="post">
+                {% csrf_token %}
+                <input id="next_page" name="next" type="hidden" />
+                <input type="hidden" name="language" value="{{ lang.0 }}" />
+                <a href="#" onclick="document.set_language_{{ lang.1 }}.submit();return false;">{{ lang.1 }}</a>
+            </form>
+        {% endfor %} 
+        </div>
     </div>
 </div>

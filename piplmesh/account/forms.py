@@ -7,7 +7,7 @@ from django.forms.extras import widgets
 from django.utils import safestring
 from django.utils.translation import ugettext_lazy as _
 
-from account import models
+from account import models, fields
 
 # Form settings
 GENDER_CHOICES = (
@@ -64,7 +64,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
             username=self.cleaned_data['username'],
             first_name=self.cleaned_data['first_name'],
             last_name=self.cleaned_data['last_name'],
-            email=self.cleaned_data['email']
+            email=self.cleaned_data['email'],
         )			
                                     
         new_user.set_password(self.cleaned_data['password2'])
