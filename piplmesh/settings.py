@@ -41,7 +41,7 @@ TIME_ZONE = 'Europe/Ljubljana'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'sl'
 
-# Dummy function, so that makemessages can find strings which should be translated.
+# Dummy function, so that "makemessages" can find strings which should be translated.
 _ = lambda s: s
 
 LANGUAGES = (
@@ -131,9 +131,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'piplmesh.account.middleware.languageFromUserMiddleware',
+#    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
 )

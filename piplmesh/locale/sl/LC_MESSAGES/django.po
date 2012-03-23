@@ -68,7 +68,7 @@ msgstr "Datum rojstva"
 
 #: account/forms.py:50
 msgid "Passwords do not match."
-msgstr "Gesli se ne ujemata"
+msgstr "Gesli se ne ujemata."
 
 #: account/forms.py:59
 msgid "A user with that username already exists."
