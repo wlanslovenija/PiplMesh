@@ -17,4 +17,4 @@ class UserBasedLocaleMiddleware(locale.LocaleMiddleware):
             request.LANGUAGE_CODE = translation.get_language()
             return None
         else:
-			return super(UserBasedLocaleMiddleware, self).proces_request()            
+            return super(UserBasedLocaleMiddleware, self).proces_request()            

@@ -21,7 +21,7 @@ class SearchView(generic_views.TemplateView):
 		context = super(SearchView, self).get_context_data(**kwargs)
 		
 		context.update({
-			'SEARCH_ENGINE_UNIQUE_ID': settings.SEARCH_ENGINE_UNIQUE_ID,
+            'SEARCH_ENGINE_UNIQUE_ID': settings.SEARCH_ENGINE_UNIQUE_ID,
             'SET_LANGUAGE_URL': settings.SET_LANGUAGE_URL,
 		})
 		
