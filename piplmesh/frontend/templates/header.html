@@ -7,15 +7,16 @@
             </a>
         </div>
         <div id="search">
-            <div id="cse_search_form"></div>
-            <script src="https://www.google.com/jsapi" type="text/javascript"></script>
-            <script type="text/javascript">
-                var language_code = '{{ LANGUAGE_CODE }}';
-                var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID }}';
-                var search_page_url = '{% url search %}';
-            </script>
+            <div id="cse_search_form">
+                <script src="https://www.google.com/jsapi" type="text/javascript"></script>
+                <script type="text/javascript">
+                    var language_code = '{{ LANGUAGE_CODE }}';
+                    var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID }}';
+                    var search_page_url = '{% url search %}';
+                </script>
+            </div>
             <script type="text/javascript" src="{{ STATIC_URL }}piplmesh/js/search_bar.js"></script>
-            <link rel="stylesheet" href="https://www.google.com/cse/style/look/default.css" type="text/css" />
+            
             {% trans "See your query results on " %}<a id="google_results_link">Google</a>.
         </div>
         {% comment %}
