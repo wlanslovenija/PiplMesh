@@ -1,9 +1,10 @@
 TRANSLATION OF DJANGO APPLICATION:
+==================================
 
 
 1. All strings which do you want to be translated must be marked translatabe,
-   in django template like: {% trans "Some string" %},
-   in python files like: _("some string").
+   in Django template like: {% trans "Some string" %},
+   in Python files like: _("some string").
    
 2. It is important to run folowing commands from application root folder!
 
@@ -23,4 +24,4 @@ TRANSLATION OF DJANGO APPLICATION:
 6. After you are done translating run the command ./manage.py compilemessages and a new file "django.mo"
    will be created.
    
-7. Use your language in the application. :)
+7. Use your language in the application.

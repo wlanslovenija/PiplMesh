@@ -1,7 +1,9 @@
+from django.middleware import locale
 from django.utils import translation
 from django.utils.cache import patch_vary_headers
 
-class languageFromUserMiddleware(object):
+
+class UserBasedLocaleMiddleware(locale.LocaleMiddleware):
     """
     This middleware will set language based on users settings,
     if user is not authenticated language will be set based on
@@ -9,13 +11,10 @@ class languageFromUserMiddleware(object):
     """
     
     def proces_request(self, request):
-        if request.user.is_authenticated():
+        if request.user and request.user.is_authenticated() and request.user.get_profile() and hasattr('language', request.user.get_profile()):
             language = request.user.get_profile.language
             translation.activate(language)
-            request.LANGUAGE_CODE = language
-            
-    def proces_response(self, request, response):
-    	patch_vary_headers(respone, ('Accept-Language',))
-    	response['Content-Language'] = translation.get_langauge()
-    	translation.deactivate()
-    	return response
+            request.LANGUAGE_CODE = translation.get_language()
+            return None
+        else:
+			return super(UserBasedLocaleMiddleware, self).proces_request()            

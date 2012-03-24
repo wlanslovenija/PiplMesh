@@ -1,7 +1,7 @@
 from django.contrib.auth import models as auth_models
 from django.db import models as django_models
 
-from account import fields
+from piplmesh.account import fields
 
 class UserProfile(django_models.Model):
     """ 

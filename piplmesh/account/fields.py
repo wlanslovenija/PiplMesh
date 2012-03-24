@@ -4,12 +4,10 @@ from django.utils import translation
 
 language_choices = map(lambda (code, name): (code, name), settings.LANGUAGES)
 
-
 def get_initial_language(request=None):
     if request:
         return translation.get_language_from_request(request)
     return settings.LANGUAGE_CODE
-
 
 class LanguageField(fields.CharField):
     def __init__(self, *args, **kwargs):
