@@ -190,6 +190,8 @@ LOGGING = {
 
 LOGIN_REDIRECT_URL = '/'
 
+SET_LANGUAGE_URL = '/i18n/setlang/'
+
 AUTH_PROFILE_MODULE = 'account.UserProfile'
 
 AUTHENTICATION_BACKENDS = (
