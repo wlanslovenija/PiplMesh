@@ -193,8 +193,8 @@ ul.errorlist {
     cursor: pointer;
 }
 
-.text_button: hover,
-.text_button: focus {
+.text_button:hover,
+.text_button:focus {
     color: #800000;
     background-color: #e3e0d1;
 }
