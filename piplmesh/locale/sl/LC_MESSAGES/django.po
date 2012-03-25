@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
-"Report-Msgid-Bugs-To: https://github.com/mitar/PiplMesh\n"
-"POT-Creation-Date: 2012-03-22 09:11+0100\n"
+"Report-Msgid-Bugs-To: https://github.com/mitar/PiplMesh\\n"
+"POT-Creation-Date: 2012-03-25 18:04+0200\n"
 "PO-Revision-Date: 2012-03-21 12:18+0100\n"
 "Last-Translator: Aljaz Prijatelj <aljaz.prijatelj@gmail.com>\n"
 "Language: sl\n"
@@ -38,7 +38,6 @@ msgid "Username"
 msgstr "Uporabniško ime"
 
 #: account/forms.py:35
-#, fuzzy
 msgid "E-mail"
 msgstr "E-mail"
 
@@ -74,9 +73,17 @@ msgstr "Gesli se ne ujemata."
 msgid "A user with that username already exists."
 msgstr "Uporabnik s tem uporabniškim imenom že obstaja."
 
-#: account/templates/login.html:5 account/templates/login.html.py:12
+#: account/templates/login.html:5 account/templates/login.html.py:14
 msgid "Login"
 msgstr "Prijavi se"
+
+#: account/templates/login.html:19
+msgid "Log in with Facebook"
+msgstr "Facebook prijava"
+
+#: account/templates/login.html:22 frontend/templates/header.html:34
+msgid "Register"
+msgstr "Registriraj se"
 
 #: account/templates/logout.html:9
 msgid "You have been logged out."
@@ -90,26 +97,22 @@ msgstr "Domov"
 msgid "Registration"
 msgstr "Registracija"
 
-#: account/templates/registration.html:21 frontend/templates/header.html:45
-msgid "Register"
+#: account/templates/registration.html:27
+msgid " Register"
 msgstr "Registriraj se"
 
-#: frontend/templates/header.html:31
+#: frontend/templates/header.html:20
 msgid "See your query results on "
 msgstr "Poglej zadetke na "
 
-#: frontend/templates/header.html:42
+#: frontend/templates/header.html:31
 msgid "Username:"
 msgstr "Uporabniško ime:"
 
-#: frontend/templates/header.html:43
+#: frontend/templates/header.html:32
 msgid "Log out"
 msgstr "Odjava"
 
-#: frontend/templates/header.html:46
+#: frontend/templates/header.html:35
 msgid "Log in"
 msgstr "Prijava"
-
-#: frontend/templates/header.html:47
-msgid "Log in with Facebook"
-msgstr "Facebook prijava"

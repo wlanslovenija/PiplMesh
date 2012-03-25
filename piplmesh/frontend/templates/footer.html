@@ -7,7 +7,7 @@
     {% for lang in LANGUAGES %}
         <form action="{% url django.views.i18n.set_language %}" method="post">
             {% csrf_token %}
-            <input id="next_page" type="hidden" />
+            <input type="hidden" value="{{ request.get_full_path }}" />
             <input type="hidden" name="language" value="{{ lang.0 }}" />
             <button type="submit" class="text_button">{{ lang.1 }}</button>
         </form>

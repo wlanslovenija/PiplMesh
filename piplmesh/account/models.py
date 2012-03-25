@@ -15,7 +15,7 @@ class UserProfile(django_models.Model):
     gender = django_models.CharField(max_length=6, blank=True)
     facebook_id = django_models.BigIntegerField(verbose_name=u'Facebook ID', null=True, blank=True)
     token = django_models.CharField(max_length=150)
-    language = fields.LanguageField('language')
+    language = fields.LanguageField(verbose_name=u'language')
     
     def __unicode__(self):
         return u'%s' % (self.user)

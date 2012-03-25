@@ -1,5 +1,5 @@
-Translation of Django application
-==================================
+Translation of PiplMesh
+=======================
 
 1. All strings which do you want to be translated must be marked translatabe,
    in Django template like: ``{% trans "Some string" %}``,

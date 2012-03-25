@@ -7,7 +7,7 @@ from django.forms.extras import widgets
 from django.utils import safestring
 from django.utils.translation import ugettext_lazy as _
 
-from account import models, fields
+from piplmesh.account import models, fields
 
 # Form settings
 GENDER_CHOICES = (
