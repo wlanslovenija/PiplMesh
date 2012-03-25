@@ -2,7 +2,6 @@ from django.middleware import locale
 from django.utils import translation
 from django.utils.cache import patch_vary_headers
 
-
 class UserBasedLocaleMiddleware(locale.LocaleMiddleware):
     """
     This middleware will set language based on users settings,
