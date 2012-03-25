@@ -20,11 +20,13 @@ Translation of PiplMesh
        ./manage.py -l sl
    
    This will create file ``django.po`` under ``locale/sl/LC_MESSAGES/``
-   `(note: All other subfolders are automaticly created.)`
+   *(note: All other subfolders are automaticly created.)*
 
-4. Open file ``django.po`` with text editor or with special translation tool (`Poedit` for eaxmple)
+4. Open file ``django.po`` with text editor or with special translation tool (Poedit_ for eaxmple)
    and tranlate strings. Original string is named ``msgid "Some string"`` and under it
    is ``msgstr`` which contains empty string where you should write your translation.
+
+.. _Poedit: http://www.poedit.net/
 
 5. After you are done translating run the command::
 
