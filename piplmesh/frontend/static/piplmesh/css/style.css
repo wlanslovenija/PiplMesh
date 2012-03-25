@@ -178,3 +178,23 @@ ul.errorlist {
     color: #999;
     border-bottom: dotted 1px #999;
 }
+
+/* -------------- BUTON IN LINK TRANSFORMATION ----------*/
+.text_button {
+    overflow:visible;
+    margin:0;
+    padding:0;
+    border:0;
+    color: #999;
+    background:transparent;
+    font:inherit;
+    line-height:normal;
+	border-bottom: dotted 1px #999;
+    cursor:pointer;
+}
+
+.text_button :hover,
+.text_button :focus {
+    color:#800000;
+    background-color:#e3e0d1;
+}

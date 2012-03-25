@@ -96,7 +96,7 @@ msgstr "Registriraj se"
 
 #: frontend/templates/header.html:31
 msgid "See your query results on "
-msgstr "Poglej rezultate na "
+msgstr "Poglej zadetke na "
 
 #: frontend/templates/header.html:42
 msgid "Username:"

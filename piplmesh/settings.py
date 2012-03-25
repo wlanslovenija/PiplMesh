@@ -134,7 +134,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'piplmesh.account.middleware.UserBasedLocaleMiddleware',
-#    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
 )
@@ -189,8 +188,6 @@ LOGGING = {
 }
 
 LOGIN_REDIRECT_URL = '/'
-
-SET_LANGUAGE_URL = '/i18n/setlang/'
 
 AUTH_PROFILE_MODULE = 'account.UserProfile'
 
