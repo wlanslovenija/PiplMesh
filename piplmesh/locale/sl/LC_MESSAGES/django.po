@@ -99,7 +99,7 @@ msgstr "Registracija"
 
 #: account/templates/registration.html:28
 msgid "Reset"
-msgstr "Resetiraj"
+msgstr "Ponastavi"
 
 #: frontend/templates/header.html:20
 msgid "See your query results on "
@@ -116,6 +116,3 @@ msgstr "Odjava"
 #: frontend/templates/header.html:35
 msgid "Log in"
 msgstr "Prijava"
-
-#~ msgid " Register"
-#~ msgstr "Registriraj se"

@@ -27,3 +27,25 @@ def valid_token(self):
         results = True
         
     return results
+
+def initial_accepts_request(request, form_class):
+	 
+    initial = {}
+ 
+    for name, field in form_class.base_fields.items():
+        if callable(field.initial):
+            try:
+                if len(inspect.getargspec(field.initial)[0]) == 1:
+                    initial[name] = (lambda fi: lambda: fi(request))(field.initial)
+            except:
+                pass
+	 
+    if not initial:
+        return form_class
+	 
+    def wrapper(*args, **kwargs):
+        initial.update(kwargs.get('initial', {}))
+        kwargs['initial'] = initial
+        return form_class(*args, **kwargs)
+	 
+    return wrapper
