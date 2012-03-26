@@ -180,10 +180,10 @@ ul.errorlist {
 }
 
 #language {
-    float:left;
-    width:100%;
-    overflow:hidden;
-    position:relative;
+    float: left;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
 }
 
 #language ul {
