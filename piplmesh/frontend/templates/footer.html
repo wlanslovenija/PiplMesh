@@ -3,14 +3,22 @@
     <div id="footer_nav">
         <a href="http://wlan-si.net/">wlan slovenija</a> | <a href="https://nodes.wlan-si.net/">node database</a> | <a href="http://dev.wlan-si.net/">development</a> | <a href="http://grow.wlan-si.net/">growing</a>
     </div>
-    <p id="language_links">
-    {% for lang in LANGUAGES %}
-        <form action="{% url django.views.i18n.set_language %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" value="{{ request.get_full_path }}" />
-            <input type="hidden" name="language" value="{{ lang.0 }}" />
-            <button type="submit" class="text_button">{{ lang.1 }}</button>
-        </form>
-    {% endfor %}
-    </p>
+    <div id="language">
+        <ul>
+            {% for lang in LANGUAGES %}
+                {% if lang.0 == LANGUAGE_CODE %}
+                    <li class="language_selected">{{ lang.1 }}</li>
+                {% else %}
+                    <li>
+                        <form action="{% url django.views.i18n.set_language %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ request.get_full_path }}" />
+                            <input type="hidden" name="language" value="{{ lang.0 }}" />
+                            <button type="submit" class="text_button">{{ lang.1 }}</button>
+                        </form>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
 </div>

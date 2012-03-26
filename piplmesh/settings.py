@@ -45,8 +45,8 @@ LANGUAGE_CODE = 'sl'
 _ = lambda s: s
 
 LANGUAGES = (
-    ('sl', _('Slovenian')),
-    ('en', _('English')),
+    ('sl', 'Slovenščina'),
+    ('en', 'English'),
 )
 
 URL_VALIDATOR_USER_AGENT = 'Django'

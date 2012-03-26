@@ -179,6 +179,38 @@ ul.errorlist {
     border-bottom: dotted 1px #999;
 }
 
+#language {
+    float:left;
+    width:100%;
+    overflow:hidden;
+    position:relative;
+}
+
+#language ul {
+    clear: left;
+    float: left;
+    list-style: none;
+    margin-top: 5px;
+    padding: 0;
+    position: relative;
+    left: 50%;
+    text-align: center;
+}
+
+#language ul li {
+    display: block;
+    float: left;
+    list-style: none;
+    margin: 0;
+    padding: 2px;
+    position: relative;
+    right: 50%;
+}
+
+.language_selected {
+    color: #68AE2C;
+}
+
 /* -------------- LANGUAGE SELECTION BUTTONS ------------ */
 .text_button {
     overflow: visible;
@@ -191,10 +223,4 @@ ul.errorlist {
     line-height: normal;
     border-bottom: dotted 1px #999;
     cursor: pointer;
-}
-
-.text_button:hover,
-.text_button:focus {
-    color: #800000;
-    background-color: #e3e0d1;
 }

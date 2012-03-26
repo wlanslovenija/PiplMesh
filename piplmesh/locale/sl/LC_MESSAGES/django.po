@@ -2,12 +2,11 @@
 # Copyright (C) 2012 wlan slovenija, open wireless network of Slovenia
 # This file is distributed under the same license as PiplMesh.
 # Aljaz Prijatelj <aljaz.prijatelj@gmail.com>, 2012.
-
 msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
-"Report-Msgid-Bugs-To: https://github.com/mitar/PiplMesh\\n"
-"POT-Creation-Date: 2012-03-25 18:04+0200\n"
+"Report-Msgid-Bugs-To: https://github.com/mitar/PiplMesh\n"
+"POT-Creation-Date: 2012-03-25 20:05+0200\n"
 "PO-Revision-Date: 2012-03-21 12:18+0100\n"
 "Last-Translator: Aljaz Prijatelj <aljaz.prijatelj@gmail.com>\n"
 "Language: sl\n"
@@ -81,7 +80,8 @@ msgstr "Prijavi se"
 msgid "Log in with Facebook"
 msgstr "Facebook prijava"
 
-#: account/templates/login.html:22 frontend/templates/header.html:34
+#: account/templates/login.html:22 account/templates/registration.html:27
+#: frontend/templates/header.html:34
 msgid "Register"
 msgstr "Registriraj se"
 
@@ -97,9 +97,9 @@ msgstr "Domov"
 msgid "Registration"
 msgstr "Registracija"
 
-#: account/templates/registration.html:27
-msgid " Register"
-msgstr "Registriraj se"
+#: account/templates/registration.html:28
+msgid "Reset"
+msgstr "Resetiraj"
 
 #: frontend/templates/header.html:20
 msgid "See your query results on "
@@ -116,3 +116,6 @@ msgstr "Odjava"
 #: frontend/templates/header.html:35
 msgid "Log in"
 msgstr "Prijava"
+
+#~ msgid " Register"
+#~ msgstr "Registriraj se"
