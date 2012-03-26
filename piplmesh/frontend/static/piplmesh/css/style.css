@@ -83,6 +83,11 @@ ul.errorlist {
     text-align: left;
 }
 
+#other_login_options ul {
+    margin: 0;
+    padding: 0;
+}
+
 #other_login_options li {
     padding-top: 15px;
     list-style-type: none;
