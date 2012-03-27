@@ -65,6 +65,21 @@ ul.errorlist {
     padding-left: 110px;
     padding-bottom: 10px;
 }
+
+/* -------------------- LOGIN ------------------------ */
+.login_button {
+	background: none;
+	border: none;
+	padding: 0px;
+	cursor: pointer;
+	cursor: hand;
+}
+
+.login_button_text {
+    color: #68AE2C;
+    text-decoration: none;
+}
+
 /* ------------------ REGISTRATION ---------------------------- */
 .registration {
     width: 960px;
