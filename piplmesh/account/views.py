@@ -16,12 +16,8 @@ class RegistrationView(edit_views.FormView):
     """
 
     template_name = 'registration.html'
+    success_url = urlresolvers.reverse_lazy('home')
     form_class = forms.RegistrationForm
-
-    # Have to do this because we don't have reverse_lazy() yet
-    # We can't get urlconf (reverse() needs it) initialized in attribute space so we have to do a work-around
-    def get_success_url(self):
-        return urlresolvers.reverse('home')
 
     def form_valid(self, form):
         username, password = form.save()
