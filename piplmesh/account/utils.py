@@ -29,7 +29,12 @@ def valid_token(self):
     return results
 
 def initial_accepts_request(request, form_class):
-	 
+    """
+    If fields in the given form uses dynamic initial values which accepts request argument
+    it wraps them so that request is given to them when called.
+    """
+	
+	
     initial = {}
  
     for name, field in form_class.base_fields.items():
