@@ -7,4 +7,4 @@ def global_vars(request):
 
     return {
         'SEARCH_ENGINE_UNIQUE_ID': settings.SEARCH_ENGINE_UNIQUE_ID,
-        }
+    }

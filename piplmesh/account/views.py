@@ -58,9 +58,8 @@ class FacebookLogoutView(generic_views.RedirectView):
     permanent = False
     url = settings.FACEBOOK_LOGOUT_REDIRECT
 
-    # TODO
-    # use post instead of get
-    # use csrf tokens
+    # TODO: use post instead of get
+    # TODO: use csrf tokens
     def get(self, request, *args, **kwargs):
         auth.logout(request)
         return super(FacebookLogoutView, self).get(request, *args, **kwargs)
@@ -73,9 +72,8 @@ class FacebookCallbackView(generic_views.RedirectView):
     permanent = False
     url = settings.FACEBOOK_LOGIN_REDIRECT
 
-    # TODO
-    # use post instead of get
-    # use csrf tokens
+    # TODO: use post instead of get
+    # TODO: use csrf tokens
     def get(self, request, *args, **kwargs):
         if 'code' in request.GET:
             user = auth.authenticate(token=request.GET['code'], request=request)
