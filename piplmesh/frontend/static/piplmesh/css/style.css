@@ -66,16 +66,16 @@ ul.errorlist {
     padding-bottom: 10px;
 }
 
-/* -------------------- LOGIN ------------------------ */
-.login_button {
-	background: none;
-	border: none;
-	padding: 0px;
-	cursor: pointer;
-	cursor: hand;
+/* -------------------- AUTHENTICATION ------------------------ */
+.auth_button {
+    background: none;
+    border: none;
+    padding: 0px;
+    cursor: pointer;
+    cursor: hand;
 }
 
-.login_button_text {
+.auth_button_text {
     color: #68AE2C;
     text-decoration: none;
 }

@@ -43,20 +43,20 @@ class FacebookLoginView(generic_views.RedirectView):
             'scope': settings.FACEBOOK_SCOPE,
             'redirect_uri': self.request.build_absolute_uri(urlresolvers.reverse('facebook_callback')),
         }
-        url = 'https://www.facebook.com/dialog/oauth' % kwargs
-        return "%s?%s" % (url, urllib.urlencode(args))
+        url = 'https://www.facebook.com/dialog/oauth'
+        return "%(url)s?%(args)s" % {'url':url, 'args':urllib.urlencode(args)}
         
 class FacebookLogoutView(generic_views.RedirectView):
     """ 
-    Log user out of Facebook and redirect to FACEBOOK_LOGOUT_REDIRECT. 
+    This view logs the user out of Facebook and redirects them to FACEBOOK_LOGOUT_REDIRECT. 
     """
 
     permanent = False
     url = settings.FACEBOOK_LOGOUT_REDIRECT
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         auth.logout(request)
-        return super(FacebookLogoutView, self).get(request, *args, **kwargs)
+        return super(FacebookLogoutView, self).post(request, *args, **kwargs)
 
 class FacebookCallbackView(generic_views.RedirectView):
     """ 
@@ -70,8 +70,9 @@ class FacebookCallbackView(generic_views.RedirectView):
         if 'code' in request.GET:
             user = auth.authenticate(token=request.GET['code'], request=request)
             auth.login(request, user)
-            # message user that they have been logged in (maybe this will be already in auth.login once we move to MongoDB
+            # TODO: message user that they have been logged in (maybe this will be already in auth.login once we move to MongoDB
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
         else:
-            # message user that they have not been logged in because they cancelled the Facebook
+            # TODO: message user that they have not been logged in because they cancelled the Facebook
+            # TODO: use information provided from facebook as to why login was not successful
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
