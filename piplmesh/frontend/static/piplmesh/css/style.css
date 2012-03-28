@@ -38,7 +38,15 @@ ul.errorlist {
     margin-top: 30px;
     margin-bottom: 10px;
 }
-
+#header .user {
+	margin-right: 20px;
+	position:absolute;
+    top:0;
+	right:0; 
+}
+#header a { 
+	padding-right: 20px; 
+} 
 #header #search {
     float: right;
     padding: 20px;
