@@ -30,8 +30,8 @@
                 <span>{% trans "Username:" %}<strong>{{ user.username }}</strong> </span>
                 <span><a href="{% url logout %}">{% trans "Log out" %}</a></span>
             {% else %}
-                <span><a href="{% url registration %}">{% trans "Register" %}</a></span>
                 <span><a href="{% url login %}">{% trans "Log in" %}</a></span>
+				<span><a href="{% url registration %}">{% trans "Register" %}</a></span>
             {% endif %}
         </div>
     </div>
