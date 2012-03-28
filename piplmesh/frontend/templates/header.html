@@ -27,7 +27,7 @@
             {% load facebook_tags %}
             {% if user.is_authenticated %}
                 <img src="{% facebook_picture user.username "square" %}" />
-                <span>{% trans "Username:" %}<strong>{{ user.username }}</strong> </span>
+                <span><strong>{{ user.username }}</strong> </span>
                 <span><a href="{% url logout %}">{% trans "Log out" %}</a></span>
             {% else %}
                 <span><a href="{% url login %}">{% trans "Log in" %}</a></span>
