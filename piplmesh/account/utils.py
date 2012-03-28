@@ -33,14 +33,14 @@ def initial_accepts_request(request, form_class):
     If fields in the given form uses dynamic initial values which accepts request argument
     it wraps them so that request is given to them when called.
     """
-	
-	
+
     initial = {}
  
     for name, field in form_class.base_fields.items():
         if callable(field.initial):
             try:
                 if len(inspect.getargspec(field.initial)[0]) == 1:
+                    # We fight Python aliasing in for loops here
                     initial[name] = (lambda fi: lambda: fi(request))(field.initial)
             except:
                 pass
