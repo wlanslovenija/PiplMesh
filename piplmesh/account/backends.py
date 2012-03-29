@@ -6,18 +6,28 @@ from django.core import urlresolvers
 
 from piplmesh.account import models
 
-class CaseInsensitiveModelBackend(backends.ModelBackend):
-    """
-    This backend uses case-insensitive username authentication which is not supported by default.
-    """
-    
+from mongoengine.django import auth as mongo_models
+
+class CustomUserModelBackend(mongo_models.MongoEngineBackend):
+    supports_object_permissions = True
+    supports_anonymous_user = True
+    supports_inactive_user = False
+
     def authenticate(self, username=None, password=None):
-        try:
-            user = auth_models.User.objects.get(username__iexact=username)
-            if user.check_password(password):
+        user = self.user_class.objects(username__iexact=username).first()
+        print user
+        if user:
+            if password and user.check_password(password):
                 return user
-        except auth_models.User.DoesNotExist:
-            return None
+        return None
+
+    def get_user(self, user_id):
+        return self.user_class.objects.with_id(user_id)
+
+    @property
+    def user_class(self):
+        self._user_class = models.CustomUser
+        return self._user_class
 
 class FacebookBackend:
     def authenticate(self, token=None, request=None):
