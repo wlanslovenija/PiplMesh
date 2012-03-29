@@ -24,15 +24,17 @@
         If user is already logged in, his username and logout link are shown instead.
         {% endcomment %}
         <div class='user'>
-            {% load facebook_tags %}
+            <p>
+		    {% load facebook_tags %}
             {% if user.is_authenticated %}
                 <img src="{% facebook_picture user.username "square" %}" />
-                <span><strong>{{ user.username }}</strong> </span>
-                <span><a href="{% url logout %}">{% trans "Log out" %}</a></span>
+                <strong>{{ user.username }}</strong>
+                <a href="{% url logout %}">{% trans "Log out" %}</a>
             {% else %}
-                <span><a href="{% url login %}">{% trans "Log in" %}</a></span>
-			    <span><a href="{% url registration %}">{% trans "Register" %}</a></span>
+                <a href="{% url login %}">{% trans "Log in" %}</a>
+			    <a href="{% url registration %}">{% trans "Register" %}</a>
             {% endif %}
+		    </p>
         </div>
     </div>
 </div>

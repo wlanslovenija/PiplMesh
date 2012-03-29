@@ -38,16 +38,22 @@ ul.errorlist {
     margin-top: 20px;
     margin-bottom: 10px;
 }
+
 #header .user {
     margin-right: 20px;
-    position:absolute;
-    top:0;
-    right:0; 
+    position: absolute;
+    top: 0;
+    right: 0; 
 }
+
 #header a { 
-    padding-right: 20px;
-	
+    padding-right: 20px;	
+}
+
+#header .user img { 
+    vertical-align: text-top;	
 } 
+
 #header #search {
     float: right;
     padding: 20px;
