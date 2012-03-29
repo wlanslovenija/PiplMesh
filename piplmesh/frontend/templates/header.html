@@ -25,15 +25,17 @@
         {% endcomment %}
         <div class="user">
             <p>
-            {% load facebook_tags %}
-            {% if user.is_authenticated %}
-                <img src="{% facebook_picture user.username "square" %}" />
-                <span class="username">{{ user.username }}</span>
-                <a href="{% url logout %}">{% trans "Log out" %}</a>
-            {% else %}
-                <a href="{% url login %}">{% trans "Log in" %}</a>
-                <a href="{% url registration %}">{% trans "Register" %}</a>
-            {% endif %}
+                <ul>
+                {% load facebook_tags %}
+                {% if user.is_authenticated %}
+                    <li><img src="{% facebook_picture user.username "square" %}" /></li>
+                    <li><span class="username">{{ user.username }}</span></li>
+                    <li><a href="{% url logout %}">{% trans "Log out" %}</a></li>
+                {% else %}
+                    <li><a href="{% url login %}">{% trans "Log in" %}</a></li>
+                    <li><a href="{% url registration %}">{% trans "Register" %}</a></li>
+                {% endif %}
+                </ul>
             </p>
         </div>
     </div>
