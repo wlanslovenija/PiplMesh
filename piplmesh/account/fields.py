@@ -3,8 +3,6 @@ from django.db.models import fields
 from django.utils import translation
 
 def get_initial_language(request=None):
-    if request:
-        return translation.get_language_from_request(request)
     return settings.LANGUAGE_CODE
 
 class LanguageField(fields.CharField):

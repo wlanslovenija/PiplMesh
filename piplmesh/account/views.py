@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, redirect
 from django.template import context
 
-from piplmesh.account import forms, utils
+from piplmesh.account import forms
 
 def registration_view(request):
     """
@@ -17,9 +17,9 @@ def registration_view(request):
 
     if request.user.is_authenticated():
         return redirect('home')
-    form = utils.initial_accepts_request(request, forms.RegistrationForm())
+    form = forms.RegistrationForm()
     if request.method == 'POST':
-        form = utils.initial_accepts_request(request, forms.RegistrationForm(request.POST))
+        form = forms.RegistrationForm(request.POST)
         if form.is_valid():
             username, password = form.save()
             new_user = auth.authenticate(username=username, password=password)
