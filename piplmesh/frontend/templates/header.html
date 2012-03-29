@@ -23,12 +23,12 @@
         This div is used for registration and log in link. 
         If user is already logged in, his username and logout link are shown instead.
         {% endcomment %}
-        <div class='user'>
+        <div class="user">
             <p>
             {% load facebook_tags %}
             {% if user.is_authenticated %}
                 <img src="{% facebook_picture user.username "square" %}" />
-                <strong>{{ user.username }}</strong>
+                <span class="username">{{ user.username }}</span>
                 <a href="{% url logout %}">{% trans "Log out" %}</a>
             {% else %}
                 <a href="{% url login %}">{% trans "Log in" %}</a>

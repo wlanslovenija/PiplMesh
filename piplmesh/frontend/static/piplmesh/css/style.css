@@ -46,6 +46,11 @@ ul.errorlist {
     right: 0; 
 }
 
+#header .user .username {
+    font-weight: bold;
+    padding-right: 20px;
+}
+
 #header .user img { 
     vertical-align: text-top;	
 }
