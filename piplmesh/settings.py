@@ -3,8 +3,12 @@
 # Development Django settings for PiplMesh project.
 
 import os.path
+import mongoengine
+
 settings_dir = os.path.abspath(os.path.dirname(__file__))
 database_file = os.path.join(settings_dir, 'db.sqlite')
+
+mongoengine.connect('project')
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -189,10 +193,12 @@ LOGGING = {
 
 LOGIN_REDIRECT_URL = '/'
 
-AUTH_PROFILE_MODULE = 'account.UserProfile'
+#AUTH_PROFILE_MODULE = 'account.UserProfile'
+CUSTOM_USER_MODEL = 'accounts.CustomUser'
 
 AUTHENTICATION_BACKENDS = (
-    'account.backends.CaseInsensitiveModelBackend',
+    #'account.backends.CaseInsensitiveModelBackend',
+    'account.backends.CustomUserModelBackend',
     'account.backends.FacebookBackend', 
 )
 
