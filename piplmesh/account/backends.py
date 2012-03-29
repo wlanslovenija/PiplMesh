@@ -1,7 +1,6 @@
 import json, urlparse, urllib
 
 from django.conf import settings
-from django.contrib.auth import backends, models as auth_models
 from django.core import urlresolvers
 
 from mongoengine.django import auth as mongo_models
