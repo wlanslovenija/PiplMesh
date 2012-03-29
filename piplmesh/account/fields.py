@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db.models import fields
-from django.utils import translation
 
 def get_initial_language(request=None):
     return settings.LANGUAGE_CODE
