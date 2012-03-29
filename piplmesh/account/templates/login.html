@@ -9,7 +9,7 @@
     <form method="post" action="{% url login %}" id="login_form">
     {% csrf_token %}
     {{ form.as_p }}
-    <p><button type="submit" class="auth_button" value="value"><span class="auth_button_text">{% trans "Login" %}</span></button></p>
+    <p><button type="submit" class="auth_button" value="value">{% trans "Login" %}</button></p>
     </form>
 </div>
 {% endblock %}

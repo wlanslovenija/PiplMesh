@@ -29,7 +29,7 @@
                 <p>{% trans "Username:" %}<strong>{{ user.username }}</strong> </p>
                 <form method="post" action="{% url logout %}" id="logout_form">
                 	  {% csrf_token %}
-                    <p><button type="submit" class="auth_button" value="value"><span class="auth_button_text">{% trans "Log out" %}</span></button></p>
+                    <p><button type="submit" class="auth_button" value="value">{% trans "Log out" %}</button></p>
                 </form>
             {% else %}
                 <p><a href="{% url registration %}">{% trans "Register" %}</a></p>

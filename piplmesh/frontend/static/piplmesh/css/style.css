@@ -71,11 +71,9 @@ ul.errorlist {
     background: none;
     border: none;
     padding: 0px;
+    margin: 0px;
     cursor: pointer;
     cursor: hand;
-}
-
-.auth_button_text {
     color: #68AE2C;
     text-decoration: none;
 }
@@ -157,6 +155,7 @@ ul.errorlist {
     outline: none;
     font-size: 11px;
     line-height: 14px;
+    margin: 0px;
 }
 
 .fb_button_text {

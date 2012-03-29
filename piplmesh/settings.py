@@ -197,7 +197,6 @@ FACEBOOK_APP_SECRET = '0d86323405308915be0564e8c00bf6e0' # Add your app secret k
 FACEBOOK_SCOPE = 'email' # You may add additional parameters
 FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
 FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
-FACEBOOK_LOGOUT_REDIRECT = '/' # Redirects here when user logouts
 
 # You can set up your own custom search engine on: http://www.google.com/cse/
 # just register with you google account and crate new search engine.

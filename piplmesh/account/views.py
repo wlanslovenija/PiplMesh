@@ -43,20 +43,7 @@ class FacebookLoginView(generic_views.RedirectView):
             'scope': settings.FACEBOOK_SCOPE,
             'redirect_uri': self.request.build_absolute_uri(urlresolvers.reverse('facebook_callback')),
         }
-        url = 'https://www.facebook.com/dialog/oauth'
-        return "%(url)s?%(args)s" % {'url':url, 'args':urllib.urlencode(args)}
-        
-class FacebookLogoutView(generic_views.RedirectView):
-    """ 
-    This view logs the user out of Facebook and redirects them to FACEBOOK_LOGOUT_REDIRECT. 
-    """
-
-    permanent = False
-    url = settings.FACEBOOK_LOGOUT_REDIRECT
-
-    def post(self, request, *args, **kwargs):
-        auth.logout(request)
-        return super(FacebookLogoutView, self).post(request, *args, **kwargs)
+        return "https://www.facebook.com/dialog/oauth?%(args)s" % {'args': urllib.urlencode(args)}
 
 class FacebookCallbackView(generic_views.RedirectView):
     """ 
@@ -68,11 +55,12 @@ class FacebookCallbackView(generic_views.RedirectView):
 
     def get(self, request, *args, **kwargs):
         if 'code' in request.GET:
+            # TODO: Add security measures to prevent attackers from sending a redirect to this url with a forged 'code'
             user = auth.authenticate(token=request.GET['code'], request=request)
             auth.login(request, user)
-            # TODO: message user that they have been logged in (maybe this will be already in auth.login once we move to MongoDB
+            # TODO: Message user that they have been logged in (maybe this will be already in auth.login once we move to MongoDB
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
         else:
-            # TODO: message user that they have not been logged in because they cancelled the Facebook
-            # TODO: use information provided from facebook as to why login was not successful
+            # TODO: Message user that they have not been logged in because they cancelled the Facebook
+            # TODO: Use information provided from facebook as to why the login was not successful
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
