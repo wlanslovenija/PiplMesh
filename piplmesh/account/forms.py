@@ -71,7 +71,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
         new_user.save()
         
         # Then we asign profile to this user
-        profile = models.UserProfile(user=new_user, gender=self.cleaned_data['gender'], birthdate=self.cleaned_data['birthdate'], language=settings.LANGUAGE_CODE)
+        profile = models.UserProfile(user=new_user, gender=self.cleaned_data['gender'], birthdate=self.cleaned_data['birthdate'])
         profile.save()
 
         return self.cleaned_data['username'], self.cleaned_data['password2']
