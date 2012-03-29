@@ -4,9 +4,9 @@ from django.conf import settings
 from django.contrib.auth import backends, models as auth_models
 from django.core import urlresolvers
 
-from piplmesh.account import models
-
 from mongoengine.django import auth as mongo_models
+
+from piplmesh.account import models
 
 class CustomUserModelBackend(mongo_models.MongoEngineBackend):
     supports_object_permissions = True
@@ -15,7 +15,6 @@ class CustomUserModelBackend(mongo_models.MongoEngineBackend):
 
     def authenticate(self, username=None, password=None):
         user = self.user_class.objects(username__iexact=username).first()
-        print user
         if user:
             if password and user.check_password(password):
                 return user
@@ -57,24 +56,22 @@ class FacebookBackend:
 
         try:
             # Check if user profile exists
-            profile = models.UserProfile.objects.get(facebook_id=fb['id'])
-            user = profile.user
+            user = self.user_class.objects(facebook_id=fb['id']).first()
 
             # Update access token
-            profile.token = access_token
-            profile.save()
-
-        except models.UserProfile.DoesNotExist:
-            # User profile doesn't exist, create new user
-            username = fb.get('username', fb['id'])
-            user = auth_models.User.objects.create_user(username=username, email=fb['email'])
-            user.first_name = fb['first_name']
-            user.last_name = fb['last_name']
+            user.token = access_token
             user.save()
 
-            # Create and save account user
-            profile = models.UserProfile.objects.create(user=user, token=access_token, facebook_id=fb['id'], gender=fb['gender'])
-            profile.save()
+        except self.user_class.DoesNotExist:
+            # User profile doesn't exist, create new user
+            username = fb.get('username', fb['id'])
+            user = self.user_class.objects.create_user(username=username, email=fb['email'])
+            user.first_name = fb['first_name']
+            user.last_name = fb['last_name']
+            user.token = access_token
+            user.facebook_id = fb['id']
+            user.gender = fb['gender']
+            user.save()
 
         return user
 
@@ -84,9 +81,14 @@ class FacebookBackend:
         """
     
         try:
-            return auth_models.User.objects.get(pk=user_id)
-        except auth_models.User.DoesNotExist:
+            return self.user_class.objects.with_id(user_id)
+        except self.user_class.DoesNotExist:
             return None
 
         supports_object_permissions = False
         supports_anonymous_user = True
+
+    @property
+    def user_class(self):
+        self._user_class = models.CustomUser
+        return self._user_class
