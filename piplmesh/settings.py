@@ -151,8 +151,6 @@ TEMPLATE_DIRS = (
     os.path.join(settings_dir, 'templates'),
 )
 
-MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
-
 INSTALLED_APPS = (
     # Ours are first so that we can override default templates in other apps
     'piplmesh.frontend',
@@ -193,11 +191,11 @@ LOGGING = {
 
 LOGIN_REDIRECT_URL = '/'
 
-#AUTH_PROFILE_MODULE = 'account.UserProfile'
+SESSION_ENGINE = 'mongoengine.django.sessions'
+
 CUSTOM_USER_MODEL = 'accounts.CustomUser'
 
 AUTHENTICATION_BACKENDS = (
-    #'account.backends.CaseInsensitiveModelBackend',
     'account.backends.CustomUserModelBackend',
     'account.backends.FacebookBackend', 
 )
