@@ -2,7 +2,12 @@ from datetime import datetime
 
 from django import forms
 from django.conf import settings
-from django.contrib.auth import forms as auth_forms, models as auth_models
+
+#from django.contrib.auth import forms as auth_forms, models as auth_models
+from django.contrib.auth import forms as auth_forms
+from mongoengine.django import auth as mongo_models
+
+
 from django.forms.extras import widgets
 from django.utils import safestring
 from django.utils.translation import ugettext_lazy as _
@@ -53,25 +58,23 @@ class RegistrationForm(auth_forms.UserCreationForm):
         # This method checks whether the username exists in case-insensitive manner
         username = super(RegistrationForm, self).clean_username()
         try:
-            auth_models.User.objects.get(username__iexact=username)
-        except auth_models.User.DoesNotExist:
+            models.CustomUser.objects.get(username__iexact=username)
+        except models.CustomUser.DoesNotExist:
             return username
         raise forms.ValidationError(_("A user with that username already exists."))
       
     def save(self):	
         # We first have to save user to database
-        new_user = auth_models.User(
+        new_user = models.CustomUser(
             username=self.cleaned_data['username'],
             first_name=self.cleaned_data['first_name'],
             last_name=self.cleaned_data['last_name'],
             email=self.cleaned_data['email'],
+            gender=self.cleaned_data['gender'],
+            birthdate=self.cleaned_data['birthdate'],
         )			
                                     
         new_user.set_password(self.cleaned_data['password2'])
         new_user.save()
-        
-        # Then we asign profile to this user
-        profile = models.UserProfile(user=new_user, gender=self.cleaned_data['gender'], birthdate=self.cleaned_data['birthdate'])
-        profile.save()
 
         return self.cleaned_data['username'], self.cleaned_data['password2']
