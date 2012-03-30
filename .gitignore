@@ -15,9 +15,6 @@ Thumbs.db
 # SQLite database
 *.sqlite
 
-# Internationalization files
-*.mo
-
 # Virtual environment
 /env_*
 
