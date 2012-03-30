@@ -1,5 +1,4 @@
-{% load i18n %}
-{% load facebook_tags %}
+{% load i18n facebook %}
 <div id="container">
     <div id="header">
         <div id="logo">
@@ -24,22 +23,15 @@
         This div is used for registration and log in link. 
         If user is already logged in, his username and logout link are shown instead.
         {% endcomment %}
-<<<<<<< HEAD
-        <div class="user">
-            <ul>
-=======
-        <div class='user'>
-            {% load facebook %}
->>>>>>> master
+        <ul class='user'>
             {% if user.is_authenticated %}
                 <li><img src="{% facebook_picture user.username "square" %}" /></li>
                 <li class="username">{{ user.username }}</span></li>
-                <li><a href="{% url logout %}">{% trans "Log out" %}</a></li>
+                <li class="last"><a href="{% url logout %}">{% trans "Log out" %}</a></li>
             {% else %}
                 <li><a href="{% url login %}">{% trans "Log in" %}</a></li>
-                <li><a href="{% url registration %}">{% trans "Register" %}</a></li>
+                <li class="last"><a href="{% url registration %}">{% trans "Register" %}</a></li>
             {% endif %}
-            </ul>
-        </div>
+        </ul>
     </div>
 </div>
