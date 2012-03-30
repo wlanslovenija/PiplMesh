@@ -1,5 +1,5 @@
-from mongoengine.django import auth
 import mongoengine
+from mongoengine.django import auth
 
 class User(auth.User):
     birthdate = mongoengine.DateTimeField()
