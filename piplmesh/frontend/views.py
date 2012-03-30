@@ -14,13 +14,13 @@ class HomeView(generic_views.TemplateView):
         return context
         
 class SearchView(generic_views.TemplateView):
-	template_name = 'search.html'
+    template_name = 'search.html'
 	
-	def get_context_data(self, **kwargs):
-		context = super(SearchView, self).get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(SearchView, self).get_context_data(**kwargs)
 		
-		context.update({
-			'SEARCH_ENGINE_UNIQUE_ID': settings.SEARCH_ENGINE_UNIQUE_ID,
-		})
+        context.update({
+            'SEARCH_ENGINE_UNIQUE_ID': settings.SEARCH_ENGINE_UNIQUE_ID,
+        })
 		
-		return context
+        return context

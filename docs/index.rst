@@ -17,6 +17,7 @@ Contents
    :maxdepth: 2
 
    installation
+   translation
 
 Source Code and Issue Tracker
 -----------------------------
