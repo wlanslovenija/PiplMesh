@@ -134,7 +134,7 @@ ul.errorlist {
     list-style-type: none;
 }
 
-#other_login_options p {
+#other_login_options ul li p {
     margin: 0px;
 }
 
