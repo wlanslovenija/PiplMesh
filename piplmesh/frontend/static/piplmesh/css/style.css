@@ -51,12 +51,14 @@ ul.errorlist {
     margin: 0;
     text-align: right;
 }
+
 #header .user li {
     border-right: 1px solid #d7d7d7;
     display: inline;
     padding: 0 .75em;
     white-space: nowrap;
 }
+
 #header .user li.last { 
     border-right: none; 
 }
