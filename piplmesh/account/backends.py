@@ -59,7 +59,7 @@ class FacebookBackend(MongoEngineBackend):
         data = urllib.urlopen('https://graph.facebook.com/me?access_token=%s' % access_token)
         fb = json.load(data)
         
-        user, created = self.user_class.objects.get_or_create(facebook_id=fb.get('id'), defaults={'username': fb.get('username', fb.get('id')), 'first_name': fb.get('first_name', fb.get('id')), 'last_name': fb.get('last_name', fb.get('id')), 'email': fb.get('gender', fb.get('email')), 'gender': fb.get('gender', fb.get('id'))})
+        user, created = self.user_class.objects.get_or_create(facebook_id=fb.get('id'), defaults={'username': fb.get('username', fb.get('id')), 'first_name': fb.get('first_name', fb.get('id')), 'last_name': fb.get('last_name', fb.get('id')), 'email': fb.get('email', fb.get('id')), 'gender': fb.get('gender', fb.get('id'))})
         user.facebook_token = access_token
         user.save()
 
