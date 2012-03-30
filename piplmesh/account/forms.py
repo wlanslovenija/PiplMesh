@@ -53,14 +53,14 @@ class RegistrationForm(auth_forms.UserCreationForm):
         # This method checks whether the username exists in case-insensitive manner
         username = super(RegistrationForm, self).clean_username()
         try:
-            models.CustomUser.objects.get(username__iexact=username)
-        except models.CustomUser.DoesNotExist:
+            models.User.objects.get(username__iexact=username)
+        except models.User.DoesNotExist:
             return username
         raise forms.ValidationError(_("A user with that username already exists."))
       
     def save(self):	
         # We first have to save user to database
-        new_user = models.CustomUser(
+        new_user = models.User(
             username=self.cleaned_data['username'],
             first_name=self.cleaned_data['first_name'],
             last_name=self.cleaned_data['last_name'],
