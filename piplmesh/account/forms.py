@@ -2,14 +2,12 @@ from datetime import datetime
 
 from django import forms
 from django.conf import settings
-from django.contrib.auth import forms as auth_forms
 from django.forms.extras import widgets
 from django.utils import safestring
 from django.utils.translation import ugettext_lazy as _
 
 from piplmesh.account import models
 
-# Form settings
 GENDER_CHOICES = (
     ('male', _('Male')),
     ('female', _('Female'))
@@ -25,10 +23,11 @@ class HorizontalRadioRenderer(forms.RadioSelect.renderer):
     def render(self):
         return safestring.mark_safe(u'\n'.join([u'%s\n' % widget for widget in self]))
 
-class RegistrationForm(auth_forms.UserCreationForm):
+class RegistrationForm(forms.Form):
     """
     Class with user registration form.
     """
+    print "RegistrationForm"
 
     # Required data
     username = forms.CharField(label=_("Username"))
