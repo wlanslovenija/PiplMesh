@@ -3,12 +3,11 @@
 # Development Django settings for PiplMesh project.
 
 import os.path
+
 import mongoengine
+mongoengine.connect('settings')
 
 settings_dir = os.path.abspath(os.path.dirname(__file__))
-database_file = os.path.join(settings_dir, 'db.sqlite')
-
-mongoengine.connect('project')
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -17,20 +16,9 @@ TEMPLATE_DEBUG = DEBUG
 # DEBUG=False and a view raises an exception, Django will e-mail these
 # people with the full exception information. Each member of the tuple
 # should be a tuple of (Full name, e-mail address).
-ADMINS = ()
+#ADMINS = ()
 
-MANAGERS = ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': database_file,                  # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
+#MANAGERS = ADMINS
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -139,7 +127,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'piplmesh.account.middleware.UserBasedLocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.transaction.TransactionMiddleware',
 )
 
 ROOT_URLCONF = 'piplmesh.urls'
@@ -151,19 +138,16 @@ TEMPLATE_DIRS = (
     os.path.join(settings_dir, 'templates'),
 )
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 INSTALLED_APPS = (
     # Ours are first so that we can override default templates in other apps
     'piplmesh.frontend',
     'piplmesh.account',
     
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
-    'django.contrib.admindocs',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -192,8 +176,6 @@ LOGGING = {
 LOGIN_REDIRECT_URL = '/'
 
 SESSION_ENGINE = 'mongoengine.django.sessions'
-
-CUSTOM_USER_MODEL = 'accounts.User'
 
 AUTHENTICATION_BACKENDS = (
     'account.backends.MongoEngineBackend',
