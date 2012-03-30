@@ -28,7 +28,10 @@
             {% if user.is_authenticated %}
                 <img src="{% facebook_picture user.username "square" %}" />
                 <p>{% trans "Username:" %}<strong>{{ user.username }}</strong> </p>
-                <p><a href="{% url logout %}">{% trans "Log out" %}</a></p>
+                <form method="post" action="{% url logout %}" id="logout_form">
+                	  {% csrf_token %}
+                    <p><button type="submit" class="auth_button" value="value">{% trans "Log out" %}</button></p>
+                </form>
             {% else %}
                 <p><a href="{% url registration %}">{% trans "Register" %}</a></p>
                 <p><a href="{% url login %}">{% trans "Log in" %}</a></p>
