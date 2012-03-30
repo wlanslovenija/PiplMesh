@@ -1,9 +1,10 @@
 {% load i18n %}
+{% load facebook_tags %}
 <div id="container">
     <div id="header">
         <div id="logo">
-			<a href="{% url home %}">
-            	<img src="{{ STATIC_URL }}piplmesh/images/logo-sl.png" alt="PiplMesh" />
+            <a href="{% url home %}">
+                <img src="{{ STATIC_URL }}piplmesh/images/logo-sl.png" alt="PiplMesh" />
             </a>
         </div>
         <div id="search">
@@ -24,19 +25,16 @@
         If user is already logged in, his username and logout link are shown instead.
         {% endcomment %}
         <div class="user">
-            <p>
-                <ul>
-                {% load facebook_tags %}
-                {% if user.is_authenticated %}
-                    <li><img src="{% facebook_picture user.username "square" %}" /></li>
-                    <li><span class="username">{{ user.username }}</span></li>
-                    <li><a href="{% url logout %}">{% trans "Log out" %}</a></li>
-                {% else %}
-                    <li><a href="{% url login %}">{% trans "Log in" %}</a></li>
-                    <li><a href="{% url registration %}">{% trans "Register" %}</a></li>
-                {% endif %}
-                </ul>
-            </p>
+            <ul>
+            {% if user.is_authenticated %}
+                <li><img src="{% facebook_picture user.username "square" %}" /></li>
+                <li class="username">{{ user.username }}</span></li>
+                <li><a href="{% url logout %}">{% trans "Log out" %}</a></li>
+            {% else %}
+                <li><a href="{% url login %}">{% trans "Log in" %}</a></li>
+                <li><a href="{% url registration %}">{% trans "Register" %}</a></li>
+            {% endif %}
+            </ul>
         </div>
     </div>
 </div>
