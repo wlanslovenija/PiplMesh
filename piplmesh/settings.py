@@ -193,10 +193,10 @@ LOGIN_REDIRECT_URL = '/'
 
 SESSION_ENGINE = 'mongoengine.django.sessions'
 
-CUSTOM_USER_MODEL = 'accounts.CustomUser'
+CUSTOM_USER_MODEL = 'accounts.User'
 
 AUTHENTICATION_BACKENDS = (
-    'account.backends.CustomUserModelBackend',
+    'account.backends.MongoEngineBackend',
     'account.backends.FacebookBackend', 
 )
 
