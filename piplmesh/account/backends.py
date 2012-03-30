@@ -3,11 +3,11 @@ import json, urlparse, urllib
 from django.conf import settings
 from django.core import urlresolvers
 
-from mongoengine.django.auth import MongoEngineBackend
+from mongoengine.django import auth as mongo_auth
 
 from piplmesh.account import models
 
-class CustomUserModelBackend(MongoEngineBackend):
+class MongoEngineBackend(mongo_auth.MongoEngineBackend):
     supports_object_permissions = True
     supports_anonymous_user = True
     supports_inactive_user = True
@@ -20,14 +20,17 @@ class CustomUserModelBackend(MongoEngineBackend):
         return None
 
     def get_user(self, user_id):
-        return self.user_class.objects.with_id(user_id)
+        try:
+            return self.user_class.objects.with_id(user_id)
+        except self.user_class.DoesNotExist:
+            return None
+
 
     @property
     def user_class(self):
-        self._user_class = models.CustomUser
-        return self._user_class
+        return models.User
 
-class FacebookBackend:
+class FacebookBackend(MongoEngineBackend):
     def authenticate(self, token=None, request=None):
         """
         Facebook authentication.
@@ -52,42 +55,9 @@ class FacebookBackend:
         # Retrieve user's public profile information
         data = urllib.urlopen('https://graph.facebook.com/me?access_token=%s' % access_token)
         fb = json.load(data)
-
-        try:
-            # Check if user profile exists
-            user = self.user_class.objects(facebook_id=fb['id']).first()
-
-            # Update access token
-            user.token = access_token
-            user.save()
-
-        except self.user_class.DoesNotExist:
-            # User profile doesn't exist, create new user
-            username = fb.get('username', fb['id'])
-            user = self.user_class.objects.create_user(username=username, email=fb['email'])
-            user.first_name = fb['first_name']
-            user.last_name = fb['last_name']
-            user.token = access_token
-            user.facebook_id = fb['id']
-            user.gender = fb['gender']
-            user.save()
+        
+        user, created = self.user_class.objects.get_or_create(facebook_id=fb.get('id'), defaults={'username': fb.get('username', fb.get('id')), 'first_name': fb.get('first_name', fb.get('id')), 'last_name': fb.get('last_name', fb.get('id')), 'gender': fb.get('gender', fb.get('id'))})
+        user.facebook_token = access_token
+        user.save()
 
         return user
-
-    def get_user(self, user_id):
-        """ 
-        Returns the user from a given ID. 
-        """
-    
-        try:
-            return self.user_class.objects.with_id(user_id)
-        except self.user_class.DoesNotExist:
-            return None
-
-        supports_object_permissions = False
-        supports_anonymous_user = True
-
-    @property
-    def user_class(self):
-        self._user_class = models.CustomUser
-        return self._user_class
