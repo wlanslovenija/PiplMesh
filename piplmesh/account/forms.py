@@ -1,5 +1,3 @@
-from account import models
-
 from datetime import datetime
 
 from django import forms
@@ -8,6 +6,8 @@ from django.contrib.auth import forms as auth_forms
 from django.forms.extras import widgets
 from django.utils import safestring
 from django.utils.translation import ugettext_lazy as _
+
+from piplmesh.account import models
 
 # Form settings
 GENDER_CHOICES = (
@@ -32,7 +32,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
 
     # Required data
     username = forms.CharField(label=_("Username"))
-    email = forms.EmailField(label=_("Email"))
+    email = forms.EmailField(label=_("E-mail"))
     password1 = forms.CharField(widget=forms.PasswordInput, label=_("Password"))
     password2 = forms.CharField(widget=forms.PasswordInput, label=_("Repeat password"))
     first_name = forms.CharField(label=_("First name"))
