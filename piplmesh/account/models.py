@@ -9,7 +9,7 @@ import datetime
 
 REDIRECT_FIELD_NAME = 'next'
 
-class CustomUser(Document):
+class User(Document):
     """A User document that aims to mirror most of the API specified by Django
     at http://docs.djangoproject.com/en/dev/topics/auth/#users
     Ripped from mongoengine auth.py
@@ -44,7 +44,7 @@ class CustomUser(Document):
     birthdate = DateTimeField()
     gender = StringField(max_length=6)
     facebook_id = IntField()
-    token = StringField(max_length=150)
+    facebook_token = StringField(max_length=150)
 
 
     meta = {
