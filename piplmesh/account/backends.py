@@ -8,9 +8,12 @@ from mongoengine.django import auth as mongo_auth
 from piplmesh.account import models
 
 class MongoEngineBackend(mongo_auth.MongoEngineBackend):
-    supports_object_permissions = True
-    supports_anonymous_user = True
-    supports_inactive_user = True
+    # TODO:
+    supports_object_permissions = False
+    # TODO: implement anonymous user backend
+    supports_anonymous_user = False
+    # TODO: implement inactive user backend
+    supports_inactive_user = False
 
     def authenticate(self, username=None, password=None):
         user = self.user_class.objects(username__iexact=username).first()
@@ -56,7 +59,7 @@ class FacebookBackend(MongoEngineBackend):
         data = urllib.urlopen('https://graph.facebook.com/me?access_token=%s' % access_token)
         fb = json.load(data)
         
-        user, created = self.user_class.objects.get_or_create(facebook_id=fb.get('id'), defaults={'username': fb.get('username', fb.get('id')), 'first_name': fb.get('first_name', fb.get('id')), 'last_name': fb.get('last_name', fb.get('id')), 'gender': fb.get('gender', fb.get('id'))})
+        user, created = self.user_class.objects.get_or_create(facebook_id=fb.get('id'), defaults={'username': fb.get('username', fb.get('id')), 'first_name': fb.get('first_name', fb.get('id')), 'last_name': fb.get('last_name', fb.get('id')), 'email': fb.get('gender', fb.get('email')), 'gender': fb.get('gender', fb.get('id'))})
         user.facebook_token = access_token
         user.save()
 
