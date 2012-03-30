@@ -134,6 +134,10 @@ ul.errorlist {
     list-style-type: none;
 }
 
+#other_login_options p {
+    margin: 0px;
+}
+
 /* ------------------ REGISTRATION ---------------------------- */
 .registration {
     width: 960px;
