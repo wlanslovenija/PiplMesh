@@ -10,7 +10,7 @@ from piplmesh.account import models
 class CustomUserModelBackend(MongoEngineBackend):
     supports_object_permissions = True
     supports_anonymous_user = True
-    supports_inactive_user = False
+    supports_inactive_user = True
 
     def authenticate(self, username=None, password=None):
         user = self.user_class.objects(username__iexact=username).first()
