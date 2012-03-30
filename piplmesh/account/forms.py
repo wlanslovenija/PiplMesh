@@ -9,8 +9,6 @@ from django.forms.extras import widgets
 from django.utils import safestring
 from django.utils.translation import ugettext_lazy as _
 
-from mongoengine.django import auth as mongo_models
-
 # Form settings
 GENDER_CHOICES = (
     ('male', _('Male')),
