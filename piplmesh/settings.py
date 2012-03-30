@@ -39,7 +39,15 @@ TIME_ZONE = 'Europe/Ljubljana'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'sl'
+
+# Dummy function, so that "makemessages" can find strings which should be translated.
+_ = lambda s: s
+
+LANGUAGES = (
+    ('sl', _('Slovenian')),
+    ('en', _('English')),
+)
 
 URL_VALIDATOR_USER_AGENT = 'Django'
 
@@ -126,6 +134,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'piplmesh.account.middleware.UserBasedLocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
 )

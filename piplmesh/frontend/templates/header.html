@@ -24,7 +24,7 @@
         If user is already logged in, his username and logout link are shown instead.
         {% endcomment %}
         <div class='user'>
-            {% load facebook_tags %}
+            {% load facebook %}
             {% if user.is_authenticated %}
                 <img src="{% facebook_picture user.username "square" %}" />
                 <p>{% trans "Username:" %}<strong>{{ user.username }}</strong> </p>
