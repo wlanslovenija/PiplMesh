@@ -11,7 +11,7 @@ class LanguageField(mongoengine.StringField):
         kwargs.setdefault('choices', settings.LANGUAGES)
         kwargs.setdefault('default', get_initial_language)
         
-        super(mongoengine.StringField, self).__init__(*args, **kwargs)
+        super(LanguageField, self).__init__(*args, **kwargs)
         
     def get_internal_type(self):
         return "StringField"
