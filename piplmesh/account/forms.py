@@ -6,12 +6,8 @@ from django.forms.extras import widgets
 from django.utils import safestring
 from django.utils.translation import ugettext_lazy as _
 
+from piplmesh.account import fields
 from piplmesh.account import models
-
-GENDER_CHOICES = (
-    ('male', _('Male')),
-    ('female', _('Female'))
-)
 
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
     """
@@ -37,7 +33,7 @@ class RegistrationForm(forms.Form):
     last_name = forms.CharField(label=_("Last name"))
     
     # Additional information
-    gender = forms.ChoiceField(label=_("Gender"), required=False, choices=GENDER_CHOICES, widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))    
+    gender = forms.ChoiceField(label=_("Gender"), required=False, choices=fields.GENDER_CHOICES, widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))    
     current_date = datetime.now()
     birthdate = forms.DateField(label=_("Birth date"), required=False, widget=widgets.SelectDateWidget(years=[y for y in range(current_date.year, 1900, -1)]))
     
