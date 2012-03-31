@@ -4,8 +4,10 @@
 
 import os.path
 
+MONGODB_DATABASE = 'PiplMesh'
+
 import mongoengine
-mongoengine.connect('settings')
+mongoengine.connect(MONGODB_DATABASE)
 
 settings_dir = os.path.abspath(os.path.dirname(__file__))
 
