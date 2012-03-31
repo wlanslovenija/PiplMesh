@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django import forms
 from django.conf import settings
+from django.contrib.auth import forms as auth_forms
 from django.forms.extras import widgets
 from django.utils import safestring
 from django.utils.translation import ugettext_lazy as _
@@ -19,7 +20,7 @@ class HorizontalRadioRenderer(forms.RadioSelect.renderer):
     def render(self):
         return safestring.mark_safe(u'\n'.join([u'%s\n' % widget for widget in self]))
 
-class RegistrationForm(forms.Form):
+class RegistrationForm(auth_forms.UserCreationForm):
     """
     Class with user registration form.
     """
@@ -45,15 +46,12 @@ class RegistrationForm(forms.Form):
        
     def clean_username(self):
         # This method checks whether the username exists in case-insensitive manner
-        #username = super(RegistrationForm, self).clean_username()
         username = self.cleaned_data['username']
-        try:
-            models.User.objects.get(username__iexact=username)
-        except models.User.DoesNotExist:
-            return username
-        raise forms.ValidationError(_("A user with that username already exists."))
+        if models.User.objects(username__iexact=username).first():
+            raise forms.ValidationError(_("A user with that username already exists."))
+        return username
       
-    def save(self):	
+    def save(self):
         # We first have to save user to database
         new_user = models.User(
             username=self.cleaned_data['username'],
@@ -68,3 +66,7 @@ class RegistrationForm(forms.Form):
         new_user.save()
 
         return self.cleaned_data['username'], self.cleaned_data['password2']
+        
+    def validate_unique(self):
+        # TODO: check for errors
+        pass
