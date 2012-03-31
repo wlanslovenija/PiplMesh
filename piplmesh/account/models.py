@@ -4,10 +4,9 @@ from mongoengine.django import auth
 from piplmesh.account import fields
 
 class User(auth.User):
-    # TODO: Add constraints
+    # TODO: Add birthdate constraints
     birthdate = mongoengine.DateTimeField()
-    # TODO: Add constraints
-    gender = mongoengine.StringField(max_length=6)
+    gender = fields.GenderField()
     language = fields.LanguageField()
     
     facebook_id = mongoengine.IntField()
