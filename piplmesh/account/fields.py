@@ -23,11 +23,11 @@ class GenderField(mongoengine.StringField):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('max_length', 6)
         kwargs.setdefault('choices', GENDER_CHOICES)
-        kwargs.setdefault('default', None)
+        kwargs.setdefault('default', GENDER_CHOICES[1])
         
         super(GenderField, self).__init__(*args, **kwargs)
 
-class DateTimeField(mongoengine.DateTimeField):
+class LimitedDateTimeField(mongoengine.DateTimeField):
     def validate(self, value):
         super(DateTimeField, self).__validate__(value)
         
