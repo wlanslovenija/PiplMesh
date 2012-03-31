@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
 import mongoengine
 
@@ -25,3 +26,9 @@ class GenderField(mongoengine.StringField):
         kwargs.setdefault('default', None)
         
         super(GenderField, self).__init__(*args, **kwargs)
+
+class DateTimeField(mongoengine.DateTimeField):
+    def validate(self, value):
+        super(DateTimeField, self).__validate__(value)
+        
+        # TODO: Restrain to plausible date
