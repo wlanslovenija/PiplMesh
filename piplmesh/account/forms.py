@@ -27,7 +27,6 @@ class RegistrationForm(forms.Form):
     """
     Class with user registration form.
     """
-    print "RegistrationForm"
 
     # Required data
     username = forms.CharField(label=_("Username"))
