@@ -4,8 +4,7 @@ from mongoengine.django import auth
 from piplmesh.account import fields
 
 class User(auth.User):
-    # TODO: Add birthdate constraints
-    birthdate = mongoengine.DateTimeField()
+    birthdate = fields.DateTimeField()
     gender = fields.GenderField()
     language = fields.LanguageField()
     
