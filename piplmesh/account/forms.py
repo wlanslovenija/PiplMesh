@@ -45,7 +45,8 @@ class RegistrationForm(forms.Form):
        
     def clean_username(self):
         # This method checks whether the username exists in case-insensitive manner
-        username = super(RegistrationForm, self).clean_username()
+        #username = super(RegistrationForm, self).clean_username()
+        username = self.cleaned_data['username']
         try:
             models.User.objects.get(username__iexact=username)
         except models.User.DoesNotExist:
