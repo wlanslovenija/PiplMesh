@@ -3,16 +3,16 @@ import json, urlparse, urllib
 from django.conf import settings
 from django.core import urlresolvers
 
-from mongoengine.django import auth as mongo_auth
+from mongoengine.django import auth
 
 from piplmesh.account import models
 
-class MongoEngineBackend(mongo_auth.MongoEngineBackend):
-    # TODO:
+class MongoEngineBackend(auth.MongoEngineBackend):
+    # TODO: Implement object permission support
     supports_object_permissions = False
-    # TODO: implement anonymous user backend
+    # TODO: Implement anonymous user backend
     supports_anonymous_user = False
-    # TODO: implement inactive user backend
+    # TODO: Implement inactive user backend
     supports_inactive_user = False
 
     def authenticate(self, username=None, password=None):
