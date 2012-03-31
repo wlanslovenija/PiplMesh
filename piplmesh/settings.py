@@ -16,9 +16,9 @@ TEMPLATE_DEBUG = DEBUG
 # DEBUG=False and a view raises an exception, Django will e-mail these
 # people with the full exception information. Each member of the tuple
 # should be a tuple of (Full name, e-mail address).
-#ADMINS = ()
+ADMINS = ()
 
-#MANAGERS = ADMINS
+MANAGERS = ADMINS
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
