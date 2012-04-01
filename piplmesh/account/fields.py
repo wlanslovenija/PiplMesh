@@ -32,7 +32,7 @@ class GenderField(mongoengine.StringField):
 class LimitedDateTimeField(mongoengine.DateTimeField):
     def __init__(self, upper_limit=None, lower_limit=None, *args, **kwargs):
         self.upper_limit = upper_limit
-        self.lower_lmit = lower_limit
+        self.lower_limit = lower_limit
         super(LimitedDateTimeField, self).__init__(*args, **kwargs)
    
     def validate(self, value):
