@@ -69,4 +69,5 @@ class RegistrationForm(auth_forms.UserCreationForm):
         
     def validate_unique(self):
         # TODO: check for errors
+        # http://docs.nullpobug.com/django/trunk/django.forms.models-pysrc.html#BaseModelForm.validate_unique
         pass
