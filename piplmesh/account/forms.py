@@ -7,8 +7,7 @@ from django.forms.extras import widgets
 from django.utils import safestring
 from django.utils.translation import ugettext_lazy as _
 
-from piplmesh.account import fields
-from piplmesh.account import models
+from piplmesh.account import fields, models
 
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
     """
@@ -68,6 +67,6 @@ class RegistrationForm(auth_forms.UserCreationForm):
         return self.cleaned_data['username'], self.cleaned_data['password2']
         
     def validate_unique(self):
-        # TODO: check for errors
+        # TODO: Check for errors
         # http://docs.nullpobug.com/django/trunk/django.forms.models-pysrc.html#BaseModelForm.validate_unique
         pass
