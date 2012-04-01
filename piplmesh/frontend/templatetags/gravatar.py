@@ -13,7 +13,7 @@ def gravatar(context, user, size=50, default_avatar='unknown.png'):
 
     Sample usage::
 
-        {% load gravatar_tags %}
+        {% load gravatar %}
         {% gravatar user_object 50 %}
     """
 

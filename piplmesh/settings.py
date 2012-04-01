@@ -39,7 +39,15 @@ TIME_ZONE = 'Europe/Ljubljana'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'sl'
+
+# Dummy function, so that "makemessages" can find strings which should be translated.
+_ = lambda s: s
+
+LANGUAGES = (
+    ('sl', _('Slovenian')),
+    ('en', _('English')),
+)
 
 URL_VALIDATOR_USER_AGENT = 'Django'
 
@@ -118,6 +126,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
+    'piplmesh.context_processors.global_vars',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -125,6 +134,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'piplmesh.account.middleware.UserBasedLocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
 )
@@ -196,7 +206,6 @@ FACEBOOK_APP_SECRET = '0d86323405308915be0564e8c00bf6e0' # Add your app secret k
 FACEBOOK_SCOPE = 'email' # You may add additional parameters
 FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
 FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
-FACEBOOK_LOGOUT_REDIRECT = '/' # Redirects here when user logouts
 
 # You can set up your own custom search engine on: http://www.google.com/cse/
 # just register with you google account and crate new search engine.
