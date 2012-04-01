@@ -23,11 +23,16 @@
         This div is used for registration and log in link. 
         If user is already logged in, his username and logout link are shown instead.
         {% endcomment %}
-        <ul class='user'>
+        <ul class="user">
             {% if user.is_authenticated %}
-                <li><img src="{% facebook_picture user.username "square" %}" /></li>
-                <li class="username">{{ user.username }}</span></li>
-                <li class="last"><a href="{% url logout %}">{% trans "Log out" %}</a></li>
+               <li class="image"><img src="{% facebook_picture user.username "square" %}" /></li>
+                <li class="username">{{ user.username }}</li>
+                <li class="last">
+                    <form method="post" action="{% url logout %}" id="logout_form">
+                        {% csrf_token %}
+                        <button type="submit" class="auth_button" value="value">{% trans "Log out" %}</button>
+                    </form>
+                </li>
             {% else %}
                 <li><a href="{% url login %}">{% trans "Log in" %}</a></li>
                 <li class="last"><a href="{% url registration %}">{% trans "Register" %}</a></li>

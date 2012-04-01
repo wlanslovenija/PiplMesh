@@ -53,6 +53,7 @@ ul.errorlist {
 }
 
 #header .user li {
+    float: left;
     border-right: 1px solid #d7d7d7;
     display: inline;
     padding: 0 .75em;
@@ -67,8 +68,15 @@ ul.errorlist {
     font-weight: bold;
 }
 
-#header .user img { 
+#header .user .image { 
     vertical-align: text-top;
+    border-right: none;
+}
+
+#header .user a, .user button {
+    text-decoration: none;
+    border-bottom: 1px dotted;
+    font-size: 10px;
 }
 
 #header #search {
@@ -98,6 +106,47 @@ ul.errorlist {
     padding-bottom: 10px;
 }
 
+/* -------------------- AUTHENTICATION ------------------------ */
+.auth_button {
+    background: none;
+    border: none;
+    padding: 0px;
+    margin: 0px;
+    cursor: pointer;
+    cursor: hand;
+    color: #68AE2C;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+/* ---------------- FB LOGIN BUTTON ------------------- */
+.fb_login_button {
+    background: #29447E url('../images/fb_sprite.png');
+    background-position: left -188px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 0 0 1px;
+    text-decoration: none;
+    outline: none;
+    font-size: 11px;
+    line-height: 14px;
+    margin: 0px;
+}
+
+.fb_button_text {
+    background: #5F78AB url('../images/fb_sprite.png');
+    border-top: solid 1px #879AC0;
+    border-bottom: solid 1px #1A356E;
+    color: white;
+    display: block;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-weight: bold;
+    padding: 2px 6px 3px 6px;
+    margin: 1px 1px 0 21px;
+    text-shadow: none;
+}
+
 /* --------------------- LOGIN ------------------------ */
 .login {
     text-align: center;
@@ -125,31 +174,8 @@ ul.errorlist {
     list-style-type: none;
 }
 
-/* ---------------- FB LOGIN BUTTON ------------------- */
-.fb_login_button {
-    background: #29447E url('../images/fb_sprite.png');
-    background-position: left -188px;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    display: inline-block;
-    padding: 0 0 0 1px;
-    text-decoration: none;
-    outline: none;
-    font-size: 11px;
-    line-height: 14px;
-}
-
-.fb_button_text {
-    background: #5F78AB url('../images/fb_sprite.png');
-    border-top: solid 1px #879AC0;
-    border-bottom: solid 1px #1A356E;
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    padding: 2px 6px 3px 6px;
-    margin: 1px 1px 0 21px;
-    text-shadow: none;
+#other_login_options ul li p {
+    margin: 0px;
 }
 
 /* ------------------ REGISTRATION ---------------------------- */
