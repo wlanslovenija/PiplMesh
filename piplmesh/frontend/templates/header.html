@@ -25,12 +25,14 @@
         {% endcomment %}
         <ul class="user">
             {% if user.is_authenticated %}
-               <li class="image"><img src="{% facebook_picture user.username "square" %}" /></li>
+                <li class="image"><img src="{% facebook_picture user.username "square" %}" alt="user picture" /></li>
                 <li class="username">{{ user.username }}</li>
                 <li class="last">
                     <form method="post" action="{% url logout %}" id="logout_form">
                         {% csrf_token %}
-                        <button type="submit" class="auth_button" value="value">{% trans "Log out" %}</button>
+                        <div>
+                            <button type="submit" class="auth_button" value="value">{% trans "Log out" %}</button>
+                        </div>
                     </form>
                 </li>
             {% else %}
