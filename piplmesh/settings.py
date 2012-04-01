@@ -43,8 +43,6 @@ LANGUAGES = (
     ('en', _('English')),
 )
 
-FUTUREDATE = 366
-
 URL_VALIDATOR_USER_AGENT = 'Django'
 
 SITE_ID = 1
