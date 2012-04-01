@@ -1,3 +1,5 @@
+import datetime
+
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
@@ -31,4 +33,9 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
     def validate(self, value):
         super(LimitedDateTimeField, self).validate(value)
         
-        # TODO: Restrain to plausible date
+        try:
+            futureDate = value > datetime.datetime.today() - datetime.timedelta(settings.FUTUREDATE)
+        except:
+            futureDate = value > datetime.date.today() - datetime.timedelta(settings.FUTUREDATE)
+        if futureDate:
+            self.error(u'User born on "%s" is too young to register' % value)
