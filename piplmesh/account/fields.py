@@ -51,4 +51,4 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
             futureDate = value > self.upper_limit.date()
             futureDate |= value < self.lower_limit.date()
         if futureDate:
-            self.error(u'Value is out of bonds.')
+            self.error(u'Value is out of bounds.')
