@@ -30,12 +30,25 @@ class GenderField(mongoengine.StringField):
         super(GenderField, self).__init__(*args, **kwargs)
 
 class LimitedDateTimeField(mongoengine.DateTimeField):
+    def __init__(self, upper_limit=None, lower_limit=None, *args, **kwargs):
+        self.upper_limit = upper_limit
+        self.lower_lmit = lower_limit
+        super(LimitedDateTimeField, self).__init__(*args, **kwargs)
+   
     def validate(self, value):
         super(LimitedDateTimeField, self).validate(value)
         
-        try:
-            futureDate = value > datetime.datetime.today() - datetime.timedelta(settings.FUTUREDATE)
-        except:
-            futureDate = value > datetime.date.today() - datetime.timedelta(settings.FUTUREDATE)
+        # TODO: This is not needed right?
+        if self.upper_limit and not isinstance(self.upper_limit, (datetime.datetime, datetime.date)):
+            self.error(u'Invalid limit.')
+        if self.lower_limit and not isinstance(self.lower_limit, (datetime.datetime, datetime.date)):
+            self.error(u'Invalid limit.')
+        
+        if isinstance(value, datetime.datetime):
+            futureDate = value > self.upper_limit
+            futureDate |= value < self.lower_limit
+        elif isinstance(value, datetime.date):
+            futureDate = value > self.upper_limit.date()
+            futureDate |= value < self.lower_limit.date()
         if futureDate:
-            self.error(u'User born on "%s" is too young to register' % value)
+            self.error(u'Value is out of bonds.')
