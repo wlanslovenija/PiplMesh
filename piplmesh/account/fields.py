@@ -47,5 +47,7 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
         
         if isintance(value, datetime.datetime)
             value = value.date()
-        if value > self.upper_limit or value < self.lower_limit:
+        if self.upper_limit and value > self.upper_limit:
+            self.error(u'Value is out of bounds.')
+        if self.lower_limit and value < self.lower_limit:
             self.error(u'Value is out of bounds.')
