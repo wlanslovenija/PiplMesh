@@ -35,9 +35,9 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
         self.lower_limit = lower_limit
 
         if self.upper_limit and not isinstance(self.upper_limit, (datetime.datetime, datetime.date)):
-                self.error(u'Invalid upper_limit argument.')
+            self.error(u'Invalid upper_limit argument.')
         if self.lower_limit and not isinstance(self.lower_limit, (datetime.datetime, datetime.date)):
-                self.error(u'Invalid lower_limit argument.')
+            self.error(u'Invalid lower_limit argument.')
 
         super(LimitedDateTimeField, self).__init__(*args, **kwargs)
    
@@ -46,20 +46,22 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
         
         if self.upper_limit:
             tmp_value = value
+            tmp_upper_limit = self.upper_limit
             if not isinstance(value, datetime.datetime) or not isinstance(self.upper_limit, datetime.datetime):
                 if isinstance(self.upper_limit, datetime.datetime):
-                    self.upper_limit = self.upper_limit.date()
+                    tmp_upper_limit = self.upper_limit.date()
                 elif isinstance(value, datetime.datetime):
                     tmp_value = value.date()
-            if tmp_value > self.upper_limit:
+            if tmp_value > tmp_upper_limit:
                 self.error(u'Value is out of bounds.')
                     
         if self.lower_limit:
             tmp_value = value
+            tmp_lower_limit = self.lower_limit
             if not isinstance(value, datetime.datetime) or not isinstance(self.lower_limit, datetime.datetime):
                 if isinstance(self.lower_limit, datetime.datetime):
-                    self.lower_limit = self.lower_limit.date()
+                    tmp_lower_limit = self.lower_limit.date()
                 elif isinstance(value, datetime.datetime):
                     tmp_value = value.date()
-            if tmp_value < self.lower_limit:
+            if tmp_value < tmp_lower_limit:
                 self.error(u'Value is out of bounds.')
