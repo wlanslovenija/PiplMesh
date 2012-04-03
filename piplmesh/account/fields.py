@@ -35,9 +35,9 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
         self.lower_limit = lower_limit
 
         # TODO: This is not needed right?
-        if self.upper_limit and not isinstance(self.upper_limit, datetime.date):
+        if self.upper_limit and not isinstance(self.upper_limit, datetime.datetime):
             self.error(u'Invalid limit.')
-        if self.lower_limit and not isinstance(self.lower_limit, datetime.date):
+        if self.lower_limit and not isinstance(self.lower_limit, datetime.datetime):
             self.error(u'Invalid limit.')
 
         super(LimitedDateTimeField, self).__init__(*args, **kwargs)
@@ -47,7 +47,7 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
         
         if isinstance(value, datetime.datetime)
             value = value.date()
-        if self.upper_limit and value > self.upper_limit:
+        if self.upper_limit and value > self.upper_limit.date():
             self.error(u'Value is out of bounds.')
-        if self.lower_limit and value < self.lower_limit:
+        if self.lower_limit and value < self.lower_limit.date():
             self.error(u'Value is out of bounds.')
