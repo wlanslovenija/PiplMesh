@@ -6,8 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 import mongoengine
 
 GENDER_CHOICES = (
-    ('male', _('Male')),
-    ('female', _('Female'))
+    ('male', _('male')),
+    ('female', _('female'))
 )
 
 def get_initial_language(request=None):
@@ -34,11 +34,10 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
         self.upper_limit = upper_limit
         self.lower_limit = lower_limit
 
-        # TODO: This is not needed right?
         if self.upper_limit and not isinstance(self.upper_limit, datetime.datetime):
-            self.error(u'Invalid limit.')
+            self.error(u'Invalid upper_limit argument.')
         if self.lower_limit and not isinstance(self.lower_limit, datetime.datetime):
-            self.error(u'Invalid limit.')
+            self.error(u'Invalid lower_limit argument.')
 
         super(LimitedDateTimeField, self).__init__(*args, **kwargs)
    
