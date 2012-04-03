@@ -34,16 +34,10 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
         self.upper_limit = upper_limit
         self.lower_limit = lower_limit
 
-        if self.upper_limit:
-            if not isinstance(self.upper_limit, (datetime.datetime, datetime.date)):
+        if self.upper_limit and not isinstance(self.upper_limit, (datetime.datetime, datetime.date)):
                 self.error(u'Invalid upper_limit argument.')
-#            elif isinstance(self.upper_limit, datetime.datetime)
-#                self.upper_limit = self.upper_limit.date()
-        if self.lower_limit:
-            if not isinstance(self.lower_limit, (datetime.datetime, datetime.date)):
+        if self.lower_limit and not isinstance(self.lower_limit, (datetime.datetime, datetime.date)):
                 self.error(u'Invalid lower_limit argument.')
- #           elif isinstance(self.lower_limit, datetime.datetime)
- #               self.lower_limit = self.lower_limit.date()
 
         super(LimitedDateTimeField, self).__init__(*args, **kwargs)
    
@@ -51,27 +45,21 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
         super(LimitedDateTimeField, self).validate(value)
         
         if self.upper_limit:
-            if isinstance(value, datetime.datetime) and isinstance(self.upper_limit, datetime.datetime):
-                if value > self.upper_limit
-                    self.error(u'Value is out of bounds.')
-            else:
+            tmp_value = value
+            if not isinstance(value, datetime.datetime) or not isinstance(self.upper_limit, datetime.datetime):
                 if isinstance(self.upper_limit, datetime.datetime):
                     self.upper_limit = self.upper_limit.date()
-                if isinstance(value, datetime.datetime):
-                    if value.date() > self.upper_limit:
-                        self.error(u'Value is out of bounds.')
-                if value > self.upper_limit:
-                    self.error(u'Value is out of bounds.')
+                elif isinstance(value, datetime.datetime):
+                    tmp_value = value.date()
+            if tmp_value > self.upper_limit:
+                self.error(u'Value is out of bounds.')
                     
         if self.lower_limit:
-            if isinstance(value, datetime.datetime) and isinstance(self.lower_limit, datetime.datetime):
-                if value < self.lower_limit
-                    self.error(u'Value is out of bounds.')
-            else:
+            tmp_value = value
+            if not isinstance(value, datetime.datetime) or not isinstance(self.lower_limit, datetime.datetime):
                 if isinstance(self.lower_limit, datetime.datetime):
                     self.lower_limit = self.lower_limit.date()
-                if isinstance(value, datetime.datetime):
-                    if value.date() < self.lower_limit:
-                        self.error(u'Value is out of bounds.')
-                if value < self.lower_limit:
-                    self.error(u'Value is out of bounds.')
+                elif isinstance(value, datetime.datetime):
+                    tmp_value = value.date()
+            if tmp_value < self.lower_limit:
+                self.error(u'Value is out of bounds.')
