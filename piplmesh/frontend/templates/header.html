@@ -1,9 +1,9 @@
-{% load i18n %}
+{% load i18n facebook %}
 <div id="container">
     <div id="header">
         <div id="logo">
-			<a href="{% url home %}">
-            	<img src="{{ STATIC_URL }}piplmesh/images/logo-sl.png" alt="PiplMesh" />
+            <a href="{% url home %}">
+                <img src="{{ STATIC_URL }}piplmesh/images/logo-sl.png" alt="PiplMesh" />
             </a>
         </div>
         <div id="search">
@@ -23,19 +23,22 @@
         This div is used for registration and log in link. 
         If user is already logged in, his username and logout link are shown instead.
         {% endcomment %}
-        <div class='user'>
-            {% load facebook %}
+        <ul class="user">
             {% if user.is_authenticated %}
-                <img src="{% facebook_picture user.username "square" %}" />
-                <p>{% trans "Username:" %}<strong>{{ user.username }}</strong> </p>
-                <form method="post" action="{% url logout %}" id="logout_form">
-                	  {% csrf_token %}
-                    <p><button type="submit" class="auth_button" value="value">{% trans "Log out" %}</button></p>
-                </form>
+                <li class="image"><img src="{% facebook_picture user.username "square" %}" alt="{% trans "User picture" %}"/></li>
+                <li class="username">{{ user.username }}</li>
+                <li class="last">
+                    <form method="post" action="{% url logout %}" id="logout_form">
+                        {% csrf_token %}
+                        <div>
+                            <button type="submit" class="auth_button" value="value">{% trans "Log out" %}</button>
+                        </div>
+                    </form>
+                </li>
             {% else %}
-                <p><a href="{% url registration %}">{% trans "Register" %}</a></p>
-                <p><a href="{% url login %}">{% trans "Log in" %}</a></p>
+                <li><a href="{% url login %}">{% trans "Log in" %}</a></li>
+                <li class="last"><a href="{% url registration %}">{% trans "Register" %}</a></li>
             {% endif %}
-        </div>
+        </ul>
     </div>
 </div>

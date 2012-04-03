@@ -34,8 +34,48 @@ ul.errorlist {
 }
 
 #header #logo {
-    margin-top: 30px;
+    margin-top: 20px;
     margin-bottom: 10px;
+}
+
+#header .user {
+    margin-right: 20px;
+    position: absolute;
+    top: 0;
+    right: 0; 
+}
+
+#header .user ul { 
+    font-size: 10px;
+    list-style: none;
+    margin: 0;
+    text-align: right;
+}
+
+#header .user li {
+    float: left;
+    border-right: 1px solid #d7d7d7;
+    display: inline;
+    padding: 0 .75em;
+    white-space: nowrap;
+}
+
+#header .user li.last { 
+    border-right: none; 
+}
+
+#header .user .username {
+    font-weight: bold;
+}
+
+#header .user .image { 
+    vertical-align: text-top;
+    border-right: none;
+}
+
+#header .user a, .user button {
+    text-decoration: none;
+    font-size: 10px;
 }
 
 #header #search {
