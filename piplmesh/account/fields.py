@@ -45,7 +45,7 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
     def validate(self, value):
         super(LimitedDateTimeField, self).validate(value)
         
-        if isintance(value, datetime.datetime)
+        if isinstance(value, datetime.datetime)
             value = value.date()
         if self.upper_limit and value > self.upper_limit:
             self.error(u'Value is out of bounds.')
