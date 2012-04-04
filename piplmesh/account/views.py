@@ -67,15 +67,19 @@ class FacebookCallbackView(generic_views.RedirectView):
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
 
 def logout(request):
+    """
+    After user logouts, redirect her back to the page she came from.
+    """
+    
     url = request.META.get('HTTP_REFERER')
     return logout_redirect(request, next_page=url)
-    
+
 def logout_redirect(request, *args, **kwargs):
-      """
-      Logs out the user and redirects her to the log-in page or elsewhere, as specified.
-      """
-      
-      kwargs.setdefault('redirect_field_name')
-      kwargs.setdefault('next_page', request.REQUEST.get(kwargs.get('redirect_field_name')) or urlresolvers.reverse_lazy('login'))
-      res = auth_views.logout(request, *args, **kwargs)
-      return res
+    """
+    Logs out the user and redirects her to the log-in page or elsewhere, as specified.
+    """    
+    
+    kwargs.setdefault('redirect_field_name')
+    kwargs.setdefault('next_page', request.REQUEST.get(kwargs.get('redirect_field_name')) or urlresolvers.reverse_lazy('login'))
+    res = auth_views.logout(request, *args, **kwargs)
+    return res
