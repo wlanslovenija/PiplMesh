@@ -4,6 +4,7 @@ from django import http
 from django.conf import settings
 from django.contrib import auth
 from django.core import urlresolvers
+from django.contrib.auth import views as auth_views
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 
@@ -64,3 +65,17 @@ class FacebookCallbackView(generic_views.RedirectView):
             # TODO: Message user that they have not been logged in because they cancelled the facebook app
             # TODO: Use information provided from facebook as to why the login was not successful
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
+
+def logout(request):
+    url = request.META.get('HTTP_REFERER')
+    return logout_redirect(request, next_page=url)
+    
+def logout_redirect(request, *args, **kwargs):
+      """
+      Logs out the user and redirects her to the log-in page or elsewhere, as specified.
+      """
+      
+      kwargs.setdefault('redirect_field_name')
+      kwargs.setdefault('next_page', request.REQUEST.get(kwargs.get('redirect_field_name')) or urlresolvers.reverse_lazy('login'))
+      res = auth_views.logout(request, *args, **kwargs)
+      return res
