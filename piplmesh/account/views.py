@@ -9,6 +9,7 @@ from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 
 from piplmesh.account import forms
+from piplmesh.account import signals
 
 class RegistrationView(edit_views.FormView):
     """
@@ -81,5 +82,6 @@ def logout_redirect(request, *args, **kwargs):
     
     kwargs.setdefault('redirect_field_name')
     kwargs.setdefault('next_page', request.REQUEST.get(kwargs.get('redirect_field_name')) or urlresolvers.reverse_lazy('login'))
+    signals.user_logout.send(sender=logout_redirect, request=request, user=request.user)
     res = auth_views.logout(request, *args, **kwargs)
     return res
