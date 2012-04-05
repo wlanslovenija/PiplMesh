@@ -50,7 +50,7 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
             if not isinstance(value, datetime.datetime) or not isinstance(self.upper_limit, datetime.datetime):
                 if isinstance(self.upper_limit, datetime.datetime):
                     tmp_upper_limit = self.upper_limit.date()
-                elif isinstance(value, datetime.datetime):
+                elif isinstance(tmp_value, datetime.datetime):
                     tmp_value = value.date()
             if tmp_value > tmp_upper_limit:
                 self.error(u'Value is out of bounds.')
@@ -61,7 +61,7 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
             if not isinstance(value, datetime.datetime) or not isinstance(self.lower_limit, datetime.datetime):
                 if isinstance(self.lower_limit, datetime.datetime):
                     tmp_lower_limit = self.lower_limit.date()
-                elif isinstance(value, datetime.datetime):
+                elif isinstance(tmp_value, datetime.datetime):
                     tmp_value = value.date()
             if tmp_value < tmp_lower_limit:
                 self.error(u'Value is out of bounds.')
