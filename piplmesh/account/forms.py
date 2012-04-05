@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 from django import forms
 from django.conf import settings
@@ -7,7 +7,7 @@ from django.forms.extras import widgets
 from django.utils import safestring
 from django.utils.translation import ugettext_lazy as _
 
-from piplmesh.account import fields, models
+from piplmesh.account import fields, formfields, models
 
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
     """
@@ -25,17 +25,13 @@ class RegistrationForm(auth_forms.UserCreationForm):
     """
 
     # Required data
-    username = forms.CharField(label=_("Username"))
     email = forms.EmailField(label=_("E-mail"))
-    password1 = forms.CharField(widget=forms.PasswordInput, label=_("Password"))
-    password2 = forms.CharField(widget=forms.PasswordInput, label=_("Repeat password"))
     first_name = forms.CharField(label=_("First name"))
     last_name = forms.CharField(label=_("Last name"))
     
     # Additional information
     gender = forms.ChoiceField(label=_("Gender"), required=False, choices=fields.GENDER_CHOICES, widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))    
-    current_date = datetime.now()
-    birthdate = forms.DateField(label=_("Birth date"), required=False, widget=widgets.SelectDateWidget(years=[y for y in range(current_date.year, 1900, -1)]))
+    birthdate = formfields.FormLimitedDateTimeField(upper_limit=datetime.datetime.today(), lower_limit=datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT), label=_("Birth date"), required=False, widget=widgets.SelectDateWidget(years=[y for y in range(datetime.datetime.today().year, (datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT)).year, -1)]))
     
     def clean_password2(self):
         # This method checks whether the passwords match
