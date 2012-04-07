@@ -291,4 +291,5 @@ ul.errorlist {
 	color:#006600;
 	padding:4px;
 	text-align:center;
+	list-style-type:none;
 }
