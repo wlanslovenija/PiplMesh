@@ -1,6 +1,6 @@
 from django import dispatch
-from django.contrib.auth import signals
 from django.contrib import messages
+from django.contrib.auth import signals
 from django.utils.translation import ugettext_lazy as _
 
 def user_login_message(sender, request, user, **kwargs):

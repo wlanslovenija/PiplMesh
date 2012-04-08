@@ -3,13 +3,12 @@ import urllib
 from django import http
 from django.conf import settings
 from django.contrib import auth
-from django.core import urlresolvers
 from django.contrib.auth import views as auth_views
+from django.core import urlresolvers
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 
-from piplmesh.account import forms
-from piplmesh.account import signals
+from piplmesh.account import forms, signals
 
 class RegistrationView(edit_views.FormView):
     """
