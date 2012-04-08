@@ -41,8 +41,15 @@ class RegistrationForm(auth_forms.UserCreationForm):
         lower_limit=datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT),
         label=_("Birth date"),
         required=False,
-        widget=widgets.SelectDateWidget(years=[y for y in range(datetime.datetime.today().year,
-        (datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT)).year, -1)]),
+        widget=widgets.SelectDateWidget(
+            years=[
+                y for y in range(
+                    datetime.datetime.today().year,
+                    (datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT)).year,
+                    -1,
+                )
+            ],
+        ),
     )
     
     def clean_password2(self):
