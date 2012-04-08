@@ -74,6 +74,6 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
         super(LimitedDateTimeField, self).validate(value)
 
         def error():
-            raise self.error(error_messages['bounds'])
+            self.error(error_messages['bounds'])
         
         limit_date(value, self.lower_limit, self.upper_limit, error)
