@@ -1,21 +1,16 @@
-from django.contrib.auth import models as auth_models
-from django.db import models as django_models
+import datetime
+
+import mongoengine
+from mongoengine.django import auth
 
 from piplmesh.account import fields
 
-class UserProfile(django_models.Model):
-    """ 
-    Class used for storing additional information about user.
-    """
+LOWER_DATE_LIMIT = 366 * 120
 
-    user = django_models.OneToOneField(auth_models.User)
-
-    # Custom fields
-    birthdate = django_models.DateField(blank=True, null=True)
-    gender = django_models.CharField(max_length=6, blank=True)
-    facebook_id = django_models.BigIntegerField(verbose_name=u'Facebook ID', null=True, blank=True)
-    token = django_models.CharField(max_length=150)
-    language = fields.LanguageField(verbose_name=u'language')
+class User(auth.User):
+    birthdate = fields.LimitedDateTimeField(upper_limit=datetime.datetime.today(), lower_limit=datetime.datetime.today() - datetime.timedelta(LOWER_DATE_LIMIT))
+    gender = fields.GenderField()
+    language = fields.LanguageField()
     
-    def __unicode__(self):
-        return u'%s' % (self.user)
+    facebook_id = mongoengine.IntField()
+    facebook_token = mongoengine.StringField(max_length=150)
