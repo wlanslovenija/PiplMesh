@@ -16,7 +16,7 @@ class RegistrationView(edit_views.FormView):
     New user is authenticated, logged in and redirected to home page.
     """
 
-    template_name = 'registration.html'
+    template_name = 'registration/registration.html'
     success_url = urlresolvers.reverse_lazy('home')
     form_class = forms.RegistrationForm
 
