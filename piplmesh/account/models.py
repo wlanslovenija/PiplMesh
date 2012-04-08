@@ -1,7 +1,5 @@
 import datetime
 
-from django.utils.translation import ugettext_lazy as _
-
 import mongoengine
 from mongoengine.django import auth
 
