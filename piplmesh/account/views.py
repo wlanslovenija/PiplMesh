@@ -72,5 +72,5 @@ def logout(request):
     After user logouts, redirect her back to the page she came from.
     """
     
-    url = request.META.get('HTTP_REFERER')
+    url = request.REQUEST.get('next', '')
     return auth_views.logout_then_login(request, url)

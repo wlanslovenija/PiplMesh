@@ -29,7 +29,7 @@
                 <li class="image"><img src="{% facebook_picture user.username "square" %}" alt="{% trans "User picture" %}"/></li>
                 <li class="username">{{ user.username }}</li>
                 <li class="last">
-                    <form method="post" action="{% url logout %}" id="logout_form">
+                    <form method="post" action="{% url logout %}?next={{ request.path }}" id="logout_form">
                         {% csrf_token %}
                         <div>
                             <button type="submit" class="auth_button" value="value">{% trans "Log out" %}</button>
