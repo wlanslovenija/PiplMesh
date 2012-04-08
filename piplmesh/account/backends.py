@@ -61,7 +61,16 @@ class FacebookBackend(MongoEngineBackend):
         
         # TODO: Check if id and other fields are returned
         # TODO: Move user retrieval/creation to User document/manager
-        user, created = self.user_class.objects.get_or_create(facebook_id=fb.get('id'), defaults={'username': fb.get('username'), 'first_name': fb.get('first_name'), 'last_name': fb.get('last_name'), 'email': fb.get('email'), 'gender': fb.get('gender')})
+        user, created = self.user_class.objects.get_or_create(
+            facebook_id=fb.get('id'),
+            defaults={
+                'username': fb.get('username'),
+                'first_name': fb.get('first_name'),
+                'last_name': fb.get('last_name'),
+                'email': fb.get('email'),
+                'gender': fb.get('gender'),
+            }
+        )
         user.facebook_token = access_token
         user.save()
 
