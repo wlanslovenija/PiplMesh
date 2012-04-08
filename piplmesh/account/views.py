@@ -73,15 +73,4 @@ def logout(request):
     """
     
     url = request.META.get('HTTP_REFERER')
-    return logout_redirect(request, next_page=url)
-
-def logout_redirect(request, *args, **kwargs):
-    """
-    Logs out the user and redirects her to the log-in page or elsewhere, as specified.
-    """    
-    
-    kwargs.setdefault('redirect_field_name')
-    kwargs.setdefault('next_page', request.REQUEST.get(kwargs.get('redirect_field_name')) or urlresolvers.reverse_lazy('login'))
-    signals.user_logout.send(sender=logout_redirect, request=request, user=request.user)
-    res = auth_views.logout(request, *args, **kwargs)
-    return res
+    return auth_views.logout_then_login(request, url)
