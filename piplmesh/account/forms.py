@@ -7,7 +7,7 @@ from django.forms.extras import widgets
 from django.utils import safestring
 from django.utils.translation import ugettext_lazy as _
 
-from piplmesh.account import fields, formfields, models
+from piplmesh.account import formfields, models
 
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
     """
@@ -30,7 +30,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
     last_name = forms.CharField(label=_("Last name"))
     
     # Additional information
-    gender = forms.ChoiceField(label=_("Gender"), required=False, choices=fields.GENDER_CHOICES, widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))    
+    gender = forms.ChoiceField(label=_("Gender"), required=False, choices=models.GENDER_CHOICES, widget=forms.RadioSelect(renderer=HorizontalRadioRenderer))    
     birthdate = formfields.FormLimitedDateTimeField(upper_limit=datetime.datetime.today(), lower_limit=datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT), label=_("Birth date"), required=False, widget=widgets.SelectDateWidget(years=[y for y in range(datetime.datetime.today().year, (datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT)).year, -1)]))
     
     def clean_password2(self):
@@ -55,7 +55,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
             email=self.cleaned_data['email'],
             gender=self.cleaned_data['gender'],
             birthdate=self.cleaned_data['birthdate'],
-        )			
+        )
                                     
         new_user.set_password(self.cleaned_data['password2'])
         new_user.save()
