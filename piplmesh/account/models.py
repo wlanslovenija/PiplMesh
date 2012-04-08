@@ -5,7 +5,6 @@ from mongoengine.django import auth
 
 from piplmesh.account import fields
 
-# rough lower limit date
 LOWER_DATE_LIMIT = 366 * 120
 
 class User(auth.User):
