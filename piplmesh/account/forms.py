@@ -34,7 +34,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
         label=_("Gender"),
         required=False,
         choices=fields.GENDER_CHOICES,
-        widget=forms.RadioSelect(renderer=HorizontalRadioRenderer)
+        widget=forms.RadioSelect(renderer=HorizontalRadioRenderer),
     )    
     birthdate = formfields.LimitedDateTimeField(
         upper_limit=datetime.datetime.today(),
@@ -42,7 +42,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
         label=_("Birth date"),
         required=False,
         widget=widgets.SelectDateWidget(years=[y for y in range(datetime.datetime.today().year,
-        (datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT)).year, -1)])
+        (datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT)).year, -1)]),
     )
     
     def clean_password2(self):
