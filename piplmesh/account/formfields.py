@@ -6,7 +6,10 @@ from django.utils.translation import ugettext_lazy as _
 from piplmesh.account import fields
 
 class LimitedDateTimeField(forms.DateTimeField):
-    forms.DateTimeField.default_error_messages['bounds'] = _(u"Value is out of bounds.")
+    default_error_messages = forms.DateTimeField.default_error_messages.copy()
+    default_error_messages.update({
+        'bounds': _(u"Value is out of bounds."),
+    })
 
     def __init__(self, upper_limit=None, lower_limit=None, input_formats=None, *args, **kwargs):
         self.upper_limit = upper_limit
