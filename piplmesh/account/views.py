@@ -4,8 +4,7 @@ from django import http
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth import views as auth_views
-from django.core import urlresolvers
-from django.http import HttpResponse
+from django.core import exceptions, urlresolvers
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 
@@ -72,8 +71,8 @@ def logout(request):
     After user logouts, redirect her back to the page she came from.
     """
     
-    if request.method == "POST":
+    if request.method == 'POST':
         url = request.POST.get(auth.REDIRECT_FIELD_NAME)
         return auth_views.logout_then_login(request, url)
     else:
-        return HttpResponse(status=403)
+        raise exceptions.PermissionDenied()
