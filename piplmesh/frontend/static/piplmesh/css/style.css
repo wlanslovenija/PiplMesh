@@ -285,11 +285,11 @@ ul.errorlist {
 }
 
 /* ------------------- MESSAGES ------------------- */
-.messages{
-	border:solid 1px #DEDEDE; 
-	background:#00CC00;
-	color:#006600;
-	padding:4px;
-	text-align:center;
-	list-style-type:none;
+.messages {
+	border: solid 1px #DEDEDE; 
+	background: #00CC00;
+	color: #006600;
+	padding: 4px;
+	text-align: center;
+	list-style-type: none;
 }
