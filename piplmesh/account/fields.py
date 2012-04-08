@@ -10,12 +10,6 @@ GENDER_CHOICES = (
     ('female', _('female'))
 )
 
-error_messages = {
-    'bounds': _(u"Value is out of bounds."),
-    'syntax_lower': _(u"Invalid lower_limit argument."),
-    'syntax_upper': _(u"Invalid upper_limit argument."),
-}
-
 def limit_date(value, lower_limit, upper_limit, error):
     if upper_limit:
         tmp_value = value
@@ -59,14 +53,18 @@ class GenderField(mongoengine.StringField):
         super(GenderField, self).__init__(*args, **kwargs)
 
 class LimitedDateTimeField(mongoengine.DateTimeField):
+    error_messages = {
+        'bounds': (u"Value is out of bounds."),
+    }
+
     def __init__(self, upper_limit=None, lower_limit=None, *args, **kwargs):
         self.upper_limit = upper_limit
         self.lower_limit = lower_limit
 
         if self.upper_limit and not isinstance(self.upper_limit, (datetime.datetime, datetime.date)):
-            self.error(error_messages['syntax_upper'])
+            self.error(self.error_messages['bounds'])
         if self.lower_limit and not isinstance(self.lower_limit, (datetime.datetime, datetime.date)):
-            self.error(error_messages['syntax_lower'])
+            self.error(self.error_messages['bounds'])
 
         super(LimitedDateTimeField, self).__init__(*args, **kwargs)
    
@@ -74,6 +72,6 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
         super(LimitedDateTimeField, self).validate(value)
 
         def error():
-            self.error(error_messages['bounds'])
+            self.error(self.error_messages['bounds'])
         
         limit_date(value, self.lower_limit, self.upper_limit, error)
