@@ -9,5 +9,5 @@ def global_vars(request):
     return {
         'SEARCH_ENGINE_UNIQUE_ID': settings.SEARCH_ENGINE_UNIQUE_ID,
         'REDIRECT_FIELD_NAME': auth.REDIRECT_FIELD_NAME,
-        'REDIRECT_TO': request.POST.get(auth.REDIRECT_FIELD_NAME),
+        'redirect_to': request.POST.get(auth.REDIRECT_FIELD_NAME),
     }

@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 
 def user_login_message(sender, request, user, **kwargs):
     """
-    Show success login message.
+    Shows success login message.
     """
     
     messages.success(request, _("You have been successfully logged in."), fail_silently=True)
@@ -14,9 +14,9 @@ signals.user_logged_in.connect(user_login_message, dispatch_uid=__name__ + '.use
 
 def user_logout_message(sender, request, user, **kwargs):
     """
-    Show success logout message.
+    Shows success logout message.
     """
-    
+        
     messages.success(request, _("You have been successfully logged out."), fail_silently=True)
 
 signals.user_logged_out.connect(user_logout_message, dispatch_uid=__name__ + '.user_logout_message')
