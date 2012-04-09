@@ -30,30 +30,30 @@ class Post(mongoengine.Document):
 
 class TextPost(Post):
     """
-    This class adds support for posting text in wall posts.
+    This class defines support for posting text in wall posts.
     """
 
-    message = fields.StringField(max_langth=TEXT_POST_MAX_LENGTH)
+    text = fields.StringField(max_langth=TEXT_POST_MAX_LENGTH)
 
 class ImagePost(Post):
     """
-    This class adds support for posting images in wall posts. For now we don't support uploading photos.
+    This class defines support for posting images in wall posts.
     """
 
     image_path = fields.StringField()
 
 class LinkPost(Post):
     """
-    This class adds support for posting links in wall posts.
+    This class defines support for posting links in wall posts.
     """
 
     link_url = fields.URLField()  
 
 class Comment(mongoengine.EmbeddedDocument):
     """
-    This class defines embedded Document type for comments on wall posts. .
+    This class defines document type for comments on wall posts.
     """
 
     created_time = fields.DateTimeField(auto_now_add=True)
     author = fields.ReferencedField(User, required=True)
-    text = fields.StringField(max_length = COMMENT_MAX_LENGTH)
+    comment = fields.StringField(max_length=COMMENT_MAX_LENGTH)
