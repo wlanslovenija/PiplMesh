@@ -24,7 +24,7 @@ class Post(mongoengine.Document):
         This class defines document type for storing post on our wall.
     '''
 
-    author = fields.ReferenceField(User, required=True)
+    author = fields.ReferenceField(User, required=True, reverese_delete_rule=CASCADE)
     created_time = fields.DateTimeField(auto_now_add=True) 
     edited_time = fields.DateTimeField()
 
@@ -54,11 +54,11 @@ class PostComments(Post):
         Adds support for storing comments under each post.
     '''
 
-    comments = fields.ListFields()
+    comments = fields.ListFields(EmbeddedDocumentField(Comment))
 
-class Comment(mongoengine.Document):
+class Comment(mongoengine.EmbeddedDocument):
     '''
-        This class defines document type for comments on wall posts. .
+        This class defines embedded Document type for comments on wall posts. .
     '''
 
     created_time = fields.DateTimeField(auto_now_add=True)
