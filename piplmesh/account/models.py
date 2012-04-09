@@ -23,16 +23,17 @@ class Post(mongoengine.Document):
     This class defines document type for storing post on our wall.
     """
 
-    author = fields.ReferenceField(User, required=True, reverese_delete_rule=CASCADE)
+    author = mongoengine.ReferenceField('User', required=True)
     created_time = fields.DateTimeField(auto_now_add=True) 
     edited_time = fields.DateTimeField()
+    comments = fields.ListFields(EmbeddedDocumentField(Comment))
 
 class TextPost(Post):
     """
     This class adds support for posting text in wall posts.
     """
 
-    message = fields.StringField(max_langth=MAX_USER_POST_MESSAGE_LENGTH)
+    message = fields.StringField(max_langth=TEXT_POST_MAX_LENGTH)
 
 class ImagePost(Post):
     """
@@ -46,14 +47,7 @@ class LinkPost(Post):
     This class adds support for posting links in wall posts.
     """
 
-    link_url = fields.URLField()
-
-class PostComments(Post):
-    """
-    Adds support for storing comments under each post.
-    """
-
-    comments = fields.ListFields(EmbeddedDocumentField(Comment))
+    link_url = fields.URLField()  
 
 class Comment(mongoengine.EmbeddedDocument):
     """
