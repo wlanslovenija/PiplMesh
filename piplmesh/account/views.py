@@ -3,11 +3,12 @@ import urllib
 from django import http
 from django.conf import settings
 from django.contrib import auth
-from django.core import urlresolvers
+from django.contrib.auth import views as auth_views
+from django.core import exceptions, urlresolvers
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 
-from piplmesh.account import forms
+from piplmesh.account import forms, signals
 
 class RegistrationView(edit_views.FormView):
     """
@@ -15,7 +16,7 @@ class RegistrationView(edit_views.FormView):
     New user is authenticated, logged in and redirected to home page.
     """
 
-    template_name = 'registration.html'
+    template_name = 'registration/registration.html'
     success_url = urlresolvers.reverse_lazy('home')
     form_class = forms.RegistrationForm
 
@@ -64,3 +65,14 @@ class FacebookCallbackView(generic_views.RedirectView):
             # TODO: Message user that they have not been logged in because they cancelled the facebook app
             # TODO: Use information provided from facebook as to why the login was not successful
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
+
+def logout(request):
+    """
+    After user logouts, redirect her back to the page she came from.
+    """
+    
+    if request.method == 'POST':
+        url = request.POST.get(auth.REDIRECT_FIELD_NAME)
+        return auth_views.logout_then_login(request, url)
+    else:
+        raise exceptions.PermissionDenied

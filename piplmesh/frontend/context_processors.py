@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib import auth
 
 def global_vars(request):
     """
@@ -7,4 +8,6 @@ def global_vars(request):
 
     return {
         'SEARCH_ENGINE_UNIQUE_ID': settings.SEARCH_ENGINE_UNIQUE_ID,
+        'REDIRECT_FIELD_NAME': auth.REDIRECT_FIELD_NAME,
+        'redirect_to': request.REQUEST.get(auth.REDIRECT_FIELD_NAME),
     }
