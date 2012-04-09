@@ -75,4 +75,4 @@ def logout(request):
         url = request.POST.get(auth.REDIRECT_FIELD_NAME)
         return auth_views.logout_then_login(request, url)
     else:
-        raise exceptions.PermissionDenied()
+        raise exceptions.PermissionDenied
