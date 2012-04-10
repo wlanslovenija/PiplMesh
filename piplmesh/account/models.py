@@ -32,7 +32,7 @@ class Post(mongoengine.Document):
     This class defines document type for posts on a wall.
     """
 
-    author = mongoengine.ReferenceField('User', required=True)
+    author = mongoengine.ReferenceField(User, required=True)
     created_time = mongoengine.DateTimeField(default=datetime.datetime.now()) 
     updated_time = mongoengine.DateTimeField()
     comments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Comment))
