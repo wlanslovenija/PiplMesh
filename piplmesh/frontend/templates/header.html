@@ -18,8 +18,10 @@
                 </script>
                 
                 <script type="text/javascript" src="{{ STATIC_URL }}piplmesh/js/search_bar.js"></script>
-                
-                {% trans "See your query results on " %}<a id="google_results_link">Google</a>.
+
+                {% if "q" in request.GET %}
+                    {% trans "See your query results on " %}<a id="google_results_link">Google</a>.
+                {% endif %}
             </div>
             {% comment %}
             This div is used for registration and log in link. 
