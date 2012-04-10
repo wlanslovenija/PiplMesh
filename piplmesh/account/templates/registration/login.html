@@ -5,7 +5,9 @@
 {% block title %}{% trans "Login" %}{% endblock %}
 
 {% block content %}
+
 {% with next|default:redirect_to|default:request.GET.next as next_url %}
+
 <div id="main">
     <div class="login">
         <div class="login_form">
@@ -29,6 +31,9 @@
             </ul>
         </div>
     </div>
+
 </div>
+
 {% endwith %}
+
 {% endblock %}
