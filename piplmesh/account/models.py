@@ -2,7 +2,6 @@ import datetime
 
 import mongoengine
 from mongoengine.django import auth
-#from mongoengine import Document
 
 from piplmesh.account import fields
 
