@@ -8,7 +8,7 @@ from piplmesh.account import fields
 
 LOWER_DATE_LIMIT = 366 * 120
 
-TEXT_POST_MAX_LENGTH = 500
+MESSAGE_MAX_LENGTH = 500
 COMMENT_MAX_LENGTH = 300
 
 class User(auth.User):
@@ -30,31 +30,31 @@ class Comment(mongoengine.EmbeddedDocument):
 
 class Post(mongoengine.Document):
     """
-    This class defines document type for storing post on our wall.
+    This class defines document type for posts on a wall.
     """
 
     author = mongoengine.ReferenceField('User', required=True)
     created_time = mongoengine.DateTimeField(default=datetime.datetime.now()) 
-    edited_time = mongoengine.DateTimeField()
+    updated_time = mongoengine.DateTimeField()
     comments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Comment))
 
 class TextPost(Post):
     """
-    This class defines support for posting text in wall posts.
+    This class defines document type for text posts.
     """
 
-    text = mongoengine.StringField(max_length=TEXT_POST_MAX_LENGTH)
+    message = mongoengine.StringField(max_length=MESSAGE_MAX_LENGTH)
 
 class ImagePost(Post):
     """
-    This class defines support for posting images in wall posts.
+    This class defines document type for image posts.
     """
 
     image_path = mongoengine.StringField()
 
 class LinkPost(Post):
     """
-    This class defines support for posting links in wall posts.
+    This class defines document type for link posts.
     """
 
     link_url = mongoengine.URLField()  
