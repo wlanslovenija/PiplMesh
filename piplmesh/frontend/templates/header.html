@@ -41,7 +41,7 @@
                         </form>
                     </li>
                 {% else %}
-                    <li><a href="{% url login %}">{% trans "Log in" %}</a></li>
+                    <li><a href="{% url login %}?{{ REDIRECT_FIELD_NAME }}={{ next_url }}">{% trans "Log in" %}</a></li>
                     <li class="last"><a href="{% url registration %}">{% trans "Register" %}</a></li>
                 {% endif %}
             </ul>
