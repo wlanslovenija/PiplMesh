@@ -90,6 +90,10 @@ ul.errorlist {
     display: inline-block;
 }
 
+td.gsc-clear-button {
+    display: none !important;
+}
+
 /* -------------------- MAIN ------------------------ */
 #main {
     width: 960px;
