@@ -27,13 +27,15 @@ ul.errorlist {
 
 /* -------------------- HEADER --------------------- */
 #header {
-    height: 128px;
+    width: 960px;
+    height: 150px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #header #logo {
     margin-top: 20px;
     margin-bottom: 10px;
-    width: 315px;
 }
 
 #header .user {
