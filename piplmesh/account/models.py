@@ -8,8 +8,8 @@ from piplmesh.account import fields
 
 LOWER_DATE_LIMIT = 366 * 120
 
-MESSAGE_MAX_LENGTH = 500
-COMMENT_MAX_LENGTH = 300
+POST_MESSAGE_MAX_LENGTH = 500
+COMMENT_MESSAGE_MAX_LENGTH = 300
 
 class User(auth.User):
     birthdate = fields.LimitedDateTimeField(upper_limit=datetime.datetime.today(), lower_limit=datetime.datetime.today() - datetime.timedelta(LOWER_DATE_LIMIT))
@@ -26,7 +26,7 @@ class Comment(mongoengine.EmbeddedDocument):
 
     created_time = mongoengine.DateTimeField(default=datetime.datetime.now())
     author = mongoengine.ReferenceField(User, required=True)
-    comment = mongoengine.StringField(max_length=COMMENT_MAX_LENGTH)
+    message = mongoengine.StringField(max_length=COMMENT_MESSAGE_MAX_LENGTH)
 
 class Post(mongoengine.Document):
     """
@@ -43,7 +43,7 @@ class TextPost(Post):
     This class defines document type for text posts.
     """
 
-    message = mongoengine.StringField(max_length=MESSAGE_MAX_LENGTH)
+    message = mongoengine.StringField(max_length=POST_MESSAGE_MAX_LENGTH)
 
 class ImagePost(Post):
     """
@@ -58,3 +58,5 @@ class LinkPost(Post):
     """
 
     link_url = mongoengine.URLField()  
+    link_caption = mongoengine.StringField()
+    link_description = mongoengine.StringField()
