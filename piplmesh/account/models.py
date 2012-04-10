@@ -2,6 +2,7 @@ import datetime
 
 import mongoengine
 from mongoengine.django import auth
+#from mongoengine import Document
 
 from piplmesh.account import fields
 
@@ -18,42 +19,42 @@ class User(auth.User):
     facebook_id = mongoengine.IntField()
     facebook_token = mongoengine.StringField(max_length=150)
 
+class Comment(mongoengine.EmbeddedDocument):
+    """
+    This class defines document type for comments on wall posts.
+    """
+
+    created_time = mongoengine.DateTimeField(default=datetime.datetime.now())
+    author = mongoengine.ReferenceField(User, required=True)
+    comment = mongoengine.StringField(max_length=COMMENT_MAX_LENGTH)
+
 class Post(mongoengine.Document):
     """
     This class defines document type for storing post on our wall.
     """
 
     author = mongoengine.ReferenceField('User', required=True)
-    created_time = fields.DateTimeField(auto_now_add=True) 
-    edited_time = fields.DateTimeField()
-    comments = fields.ListFields(EmbeddedDocumentField(Comment))
+    created_time = mongoengine.DateTimeField(default=datetime.datetime.now()) 
+    edited_time = mongoengine.DateTimeField()
+    comments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Comment))
 
 class TextPost(Post):
     """
     This class defines support for posting text in wall posts.
     """
 
-    text = fields.StringField(max_langth=TEXT_POST_MAX_LENGTH)
+    text = mongoengine.StringField(max_length=TEXT_POST_MAX_LENGTH)
 
 class ImagePost(Post):
     """
     This class defines support for posting images in wall posts.
     """
 
-    image_path = fields.StringField()
+    image_path = mongoengine.StringField()
 
 class LinkPost(Post):
     """
     This class defines support for posting links in wall posts.
     """
 
-    link_url = fields.URLField()  
-
-class Comment(mongoengine.EmbeddedDocument):
-    """
-    This class defines document type for comments on wall posts.
-    """
-
-    created_time = fields.DateTimeField(auto_now_add=True)
-    author = fields.ReferencedField(User, required=True)
-    comment = fields.StringField(max_length=COMMENT_MAX_LENGTH)
+    link_url = mongoengine.URLField()  
