@@ -23,7 +23,7 @@ class Comment(mongoengine.EmbeddedDocument):
     This class defines document type for comments on wall posts.
     """
 
-    created_time = mongoengine.DateTimeField(default=lambda:datetime.datetime.now())
+    created_time = mongoengine.DateTimeField(default=lambda: datetime.datetime.now())
     author = mongoengine.ReferenceField(User, required=True)
     message = mongoengine.StringField(max_length=COMMENT_MESSAGE_MAX_LENGTH)
 
@@ -33,7 +33,7 @@ class Post(mongoengine.Document):
     """
 
     author = mongoengine.ReferenceField(User, required=True)
-    created_time = mongoengine.DateTimeField(default=lambda:datetime.datetime.now())
+    created_time = mongoengine.DateTimeField(default=lambda: datetime.datetime.now())
     updated_time = mongoengine.DateTimeField()
     comments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Comment))
 
