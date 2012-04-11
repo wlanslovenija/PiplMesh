@@ -9,18 +9,19 @@
     <form method="post" action="{% url registration %}">
         {% csrf_token %}
         {% for field in form %}
-        {{ field.errors }}
-        <ul class="form_field">
-            <li class="form_label">
-                <label for="{{ field.auto_id }}">
-                {% if field.field.required %}
-                <span class="required">{{ field.label }}<sup title="Required">*</sup>
-            </span>
-                {% else %}{{ field.label }}{% endif %}
-            </label>
-            </li>
-            <li class="form_textbox">{{ field }}</li>
-        </ul>
+            {{ field.errors }}
+            <ul class="form_field">
+                <li class="form_label">
+                    <label for="{{ field.id_for_label }}">
+                        {% if field.field.required %}
+                            <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
+                        {% else %}
+                            {{ field.label }}
+                        {% endif %}
+                    </label>
+                </li>
+                <li class="form_textbox">{{ field }}</li>
+            </ul>
         {% endfor %}
         <div class="button">
             <ul>
@@ -29,6 +30,5 @@
             </ul>
         </div>
     </form>
-    {{ user.get_profile.gender }}
 </div>
 {% endblock %}
