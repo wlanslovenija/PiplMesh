@@ -10,4 +10,5 @@ def global_vars(request):
         'SEARCH_ENGINE_UNIQUE_ID': settings.SEARCH_ENGINE_UNIQUE_ID,
         'REDIRECT_FIELD_NAME': auth.REDIRECT_FIELD_NAME,
         'redirect_to': request.REQUEST.get(auth.REDIRECT_FIELD_NAME),
+        'LOGIN_REDIRECT_URL': settings.LOGIN_REDIRECT_URL,
     }

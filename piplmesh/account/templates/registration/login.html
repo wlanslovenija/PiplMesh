@@ -11,7 +11,7 @@
                 <form method="post" action="{% url login %}">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    {% with next|default:redirect_to|default:'' as next_url %}
+                    {% with next|default:redirect_to|default:LOGIN_REDIRECT_URL as next_url %}
                         <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
                     {% endwith %}
                     <p><button type="submit" class="auth_button" value="value">{% trans "Login" %}</button></p>
