@@ -4,7 +4,8 @@ import mongoengine
 
 from piplmesh.models import User
 
-from django.db import models
+POST_MESSAGE_MAX_LENGTH = 500
+COMMENT_MESSAGE_MAX_LENGTH = 300
 
 class Comment(mongoengine.EmbeddedDocument):
     """
