@@ -11,8 +11,8 @@
                 <form method="post" action="{% url login %}">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    {% with next|default:'/'|default:redirect_to as next_url %}
-                    <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
+                    {% with next|default:redirect_to|default:'' as next_url %}
+                        <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
                     {% endwith %}
                     <p><button type="submit" class="auth_button" value="value">{% trans "Login" %}</button></p>
                 </form>
@@ -20,11 +20,11 @@
             <div id="other_login_options">
                 <ul>
                     <li>
-                		<form method="post" action="{% url facebook_login %}" id="fb_login_form2">
-                    		{% csrf_token %}
-                      		<p><button type="submit" class="fb_login_button" value="value"><span class="fb_button_text">{% trans "Log in with Facebook" %}</span></button></p>
-                  		</form>
-    	             </li>
+                        <form method="post" action="{% url facebook_login %}" id="fb_login_form2">
+                            {% csrf_token %}
+                            <p><button type="submit" class="fb_login_button" value="value"><span class="fb_button_text">{% trans "Log in with Facebook" %}</span></button></p>
+                        </form>
+                    </li>
                     <li>{% comment %}Place for OpenID button.{% endcomment %}</li>
                     <li><a href="{% url registration %}">{% trans "Register" %}</a></li>
                 </ul>
