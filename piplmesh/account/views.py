@@ -33,7 +33,8 @@ class RegistrationView(edit_views.FormView):
 
 class FacebookLoginView(generic_views.RedirectView):
     """ 
-    This view authenticates the user via Facebook. 
+    This view authenticates the user via Facebook.
+    TODO: redirect after user login via facebook.
     """
 
     permanent = False
