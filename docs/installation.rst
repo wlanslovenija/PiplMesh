@@ -24,11 +24,11 @@ following is required on the system to run PiplMesh:
 
 * Python virtualenv_ package
 * Python pip_ package (1.0+)
-
 .. _Python: http://python.org/
 .. _Django-supported: https://docs.djangoproject.com/en/1.3/ref/databases/
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
 .. _pip: http://pypi.python.org/pypi/pip
+.. _MongoDB: http://www.mongodb.org/
 
 Other prerequisites (Python packages) are installed later.
 
@@ -48,14 +48,9 @@ If you are not familiar with git_, please refer to its tutorial_.
 Development/Testing Instance
 ----------------------------
 
-Development/testing instance will by default use SQLite_ relation database
-system.
-
-.. _SQLite: http://www.sqlite.org/
-
 Deploying
 ^^^^^^^^^
-
+	
 Once you have all prerequisites and PiplMesh itself, you can create Python
 virtualenv_ for PiplMesh::
 
@@ -110,6 +105,28 @@ For Homebrew, install Python_, pip_, and virtualenv_::
 .. _MacPorts: http://www.macports.org/
 .. _Homebrew: http://mxcl.github.com/homebrew/
 
+Installing mongoDB
+
+The easiest way to install MongoDB is to use a package manager or the pre-built binaries:
+
+	OSX - Homebrew::
+		$ brew update
+		$ brew install mongodb
+	OSX - MacPorts::
+		$ sudo port install mongodb
+		
+By default MongoDB will store data in /data/db, but it won't automatically create that directory. To create it, do:
+	OSX::
+		$ sudo mkdir -p /data/db/
+		$ sudo chown `id -u` /data/db
+
+	Run the server:		
+		$ mongod
+
+	Connect to server:
+		$ mongo
+
+
 Debian
 ^^^^^^
 
@@ -117,5 +134,15 @@ The following Debian packages are needed:
 
 * ``python-virtualenv``
 * ``python-pip``
-
+* ``mongodb-10gen``
 Be careful about required versions. It could be necessary to use packages from Debian testing or backports distribution.
+
+Installing MongoDB in debian:
+
+DEBIAN (Ubuntu)::
+	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+	sudo add-apt-repository 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen'
+	sudo apt-get update 
+	sudo apt-get install mongodb-10gen
+
+
