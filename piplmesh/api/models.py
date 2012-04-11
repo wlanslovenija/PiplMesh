@@ -2,7 +2,7 @@ import datetime
 
 import mongoengine
 
-from piplmesh.models import User
+from piplmesh.account import models
 
 POST_MESSAGE_MAX_LENGTH = 500
 COMMENT_MESSAGE_MAX_LENGTH = 300
@@ -13,7 +13,7 @@ class Comment(mongoengine.EmbeddedDocument):
     """
 
     created_time = mongoengine.DateTimeField(default=lambda: datetime.datetime.now())
-    author = mongoengine.ReferenceField(User, required=True)
+    author = mongoengine.ReferenceField(models.User, required=True)
     message = mongoengine.StringField(max_length=COMMENT_MESSAGE_MAX_LENGTH)
 
 class Post(mongoengine.Document):
@@ -21,7 +21,7 @@ class Post(mongoengine.Document):
     This class defines document type for posts on a wall.
     """
 
-    author = mongoengine.ReferenceField(User, required=True)
+    author = mongoengine.ReferenceField(models.User, required=True)
     created_time = mongoengine.DateTimeField(default=lambda: datetime.datetime.now())
     updated_time = mongoengine.DateTimeField()
     comments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Comment))
