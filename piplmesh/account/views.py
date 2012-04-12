@@ -52,7 +52,7 @@ class FacebookCallbackView(generic_views.RedirectView):
     """
 
     permanent = False
-    # TODO: Redirect user to the page where initially came
+    # TODO: Redirect user to the page he initially came from
     url = settings.FACEBOOK_LOGIN_REDIRECT
 
     def get(self, request, *args, **kwargs):
