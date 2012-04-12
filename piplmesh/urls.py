@@ -18,4 +18,8 @@ urlpatterns = patterns('',
     # Facebook
     url(r'^facebook/login/$', account_views.FacebookLoginView.as_view(), name='facebook_login'),
     url(r'^facebook/callback/$', account_views.FacebookCallbackView.as_view(), name='facebook_callback'),
+
+    # Profile
+    url(r'^profile/(?P<username>\w+)/$', account_views.profile, name='profile'),
+
 )

@@ -30,7 +30,7 @@
             <ul class="user">
                 {% if user.is_authenticated %}
                     <li class="image"><img src="{% facebook_picture user.username "square" %}" alt="{% trans "User picture" %}"/></li>
-                    <li class="username">{{ user.username }}</li>
+                    <li class="username"><a href="/profile/{{user.username }}/">{{ user.username }}<a/></li>
                     <li class="last">
                         <form method="post" action="{% url logout %}" id="logout_form">
                             {% csrf_token %}

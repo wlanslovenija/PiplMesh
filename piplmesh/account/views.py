@@ -8,6 +8,9 @@ from django.core import exceptions, urlresolvers
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+
 from piplmesh.account import forms, signals
 
 class RegistrationView(edit_views.FormView):
@@ -76,3 +79,13 @@ def logout(request):
         return auth_views.logout_then_login(request, url)
     else:
         raise exceptions.PermissionDenied
+
+
+
+def profile(request, username):
+
+    # Checks if user exist in database
+    if(False):
+        return render_to_response('profile/profile.html',{'username': username}, context_instance=RequestContext(request))
+    else:
+        return render_to_response('profile/notFound.html',{'username': username}, context_instance=RequestContext(request))
