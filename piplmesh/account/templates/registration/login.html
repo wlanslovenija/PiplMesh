@@ -19,7 +19,7 @@
             </div>
             <div id="other_login_options">
                 <ul>
-                    <li>{% comment %}TODO: redirect after user login via facebook.{% endcomment %}
+                    <li>
                         <form method="post" action="{% url facebook_login %}" id="fb_login_form2">
                             {% csrf_token %}
                             <p><button type="submit" class="fb_login_button" value="value"><span class="fb_button_text">{% trans "Log in with Facebook" %}</span></button></p>
