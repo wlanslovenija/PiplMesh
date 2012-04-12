@@ -149,7 +149,7 @@ INSTALLED_APPS = (
     'piplmesh.api',
     'piplmesh.frontend',
 
-	'django.contrib.messages',
+    'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
 )
