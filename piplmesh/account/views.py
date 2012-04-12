@@ -34,7 +34,6 @@ class RegistrationView(edit_views.FormView):
 class FacebookLoginView(generic_views.RedirectView):
     """ 
     This view authenticates the user via Facebook.
-    TODO: redirect after user login via facebook.
     """
 
     permanent = False
@@ -53,6 +52,7 @@ class FacebookCallbackView(generic_views.RedirectView):
     """
 
     permanent = False
+    # TODO: Redirect user to the page where initially came
     url = settings.FACEBOOK_LOGIN_REDIRECT
 
     def get(self, request, *args, **kwargs):
