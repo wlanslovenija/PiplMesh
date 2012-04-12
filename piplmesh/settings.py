@@ -145,11 +145,12 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 INSTALLED_APPS = (
     # Ours are first so that we can override default templates in other apps
-    'piplmesh.frontend',
     'piplmesh.account',
-    
-    'django.contrib.sessions',
+    'piplmesh.api',
+    'piplmesh.frontend',
+
     'django.contrib.messages',
+    'django.contrib.sessions',
     'django.contrib.staticfiles',
 )
 
