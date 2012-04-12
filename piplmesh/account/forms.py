@@ -3,21 +3,35 @@ import datetime
 from django import forms
 from django.conf import settings
 from django.contrib.auth import forms as auth_forms
-from django.forms.extras import widgets
-from django.utils import safestring
+from django.forms import widgets
+from django.forms.extras import widgets as extras_widgets
+from django.utils import encoding, safestring
 from django.utils.translation import ugettext_lazy as _
 
 from piplmesh.account import fields, form_fields, models
 
-class HorizontalRadioRenderer(forms.RadioSelect.renderer):
+class RadioFieldRenderer(widgets.RadioFieldRenderer):
     """
-    Renders horizontal radio buttons.
-    Found `here 
-    <https://wikis.utexas.edu/display/~bm6432/Django-Modifying+RadioSelect+Widget+to+have+horizontal+buttons>`_.
+    RadioSelect renderer which adds ``first`` and ``last`` style classes
+    to first and last radio widgets.
     """
 
+    def _render_widgets(self):
+        for i, w in enumerate(self):
+            classes = []
+            if i == 0:
+                classes.append('first')
+            if i == len(self.choices) - 1:
+                classes.append('last')
+
+            cls = ''
+            if classes:
+                cls = u' class="%s"' % (u' '.join(classes),)
+
+            yield u'<li%s>%s</li>' % (cls, encoding.force_unicode(w))
+
     def render(self):
-        return safestring.mark_safe(u'\n'.join([u'%s\n' % widget for widget in self]))
+        return safestring.mark_safe(u'<ul>\n%s\n</ul>' % (u'\n'.join(self._render_widgets())),)
 
 class RegistrationForm(auth_forms.UserCreationForm):
     """
@@ -34,14 +48,14 @@ class RegistrationForm(auth_forms.UserCreationForm):
         label=_("Gender"),
         required=False,
         choices=fields.GENDER_CHOICES,
-        widget=forms.RadioSelect(renderer=HorizontalRadioRenderer),
+        widget=forms.RadioSelect(renderer=RadioFieldRenderer),
     )    
     birthdate = form_fields.LimitedDateTimeField(
         upper_limit=datetime.datetime.today(),
         lower_limit=datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT),
         label=_("Birth date"),
         required=False,
-        widget=widgets.SelectDateWidget(
+        widget=extras_widgets.SelectDateWidget(
             years=[
                 y for y in range(
                     datetime.datetime.today().year,
