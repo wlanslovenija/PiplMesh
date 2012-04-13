@@ -152,7 +152,65 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
+
+    'pushserver',
+    'djcelery',
 )
+
+PUSH_SERVER = {
+    'port': 8001,
+    'address': '127.0.0.1',
+    'store': {
+        'type': 'memory',
+        'min_messages': 0,
+        'max_messages': 100,
+        'message_timeout': 10,
+    },
+    'locations': (
+        {
+            'type': 'subscriber',
+            'url': r'/updates/([^/]+)',
+            'polling': 'long',
+            'create_on_get': True,
+            'allow_origin': 'http://127.0.0.1:8000',
+            'allow_credentials': True,
+            'passthrough': 'http://127.0.0.1:8000/passthrough',
+        },
+        {
+            'type': 'publisher',
+            'url': r'/send-update/([^/]+)',
+        },
+    ),
+}
+
+CELERY_RESULT_BACKEND = "mongodb"
+CELERY_MONGODB_BACKEND_SETTINGS = {
+    "host": "127.0.0.1",
+    "port": 27017,
+    "database": "celery",
+    "taskmeta_collection": "my_taskmeta" # Collection name to use for task output
+}
+
+BROKER_BACKEND = "mongodb"
+BROKER_HOST = "localhost"
+BROKER_PORT = 27017
+BROKER_USER = ""
+BROKER_PASSWORD = ""
+BROKER_VHOST = "celery"
+
+# Find and register all celery tasks.  Your tasks need to be in a
+# tasks.py file to be picked up.
+CELERY_IMPORTS = ('piplmesh.account.tasks', )
+
+from datetime import timedelta
+
+CELERYBEAT_SCHEDULE = {
+    "runs-every-30-seconds": {
+        "task": "piplmesh.account.tasks.add",
+        "schedule": timedelta(seconds=10),
+        "args": (16, 16)
+    },
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
