@@ -5,8 +5,12 @@ from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth import views as auth_views
 from django.core import exceptions, urlresolvers
+from django.utils.decorators import method_decorator
 from django.views import generic as generic_views
+from django.views.decorators import csrf
 from django.views.generic import simple, edit as edit_views
+
+from pushserver.utils import updates
 
 from piplmesh.account import forms, signals
 
@@ -76,3 +80,41 @@ def logout(request):
         return auth_views.logout_then_login(request, url)
     else:
         raise exceptions.PermissionDenied
+
+class PushView(generic_views.TemplateView):
+    template_name = 'push.html'
+
+    @method_decorator(csrf.csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super(PushView, self).dispatch(*args, **kwargs)
+
+    @method_decorator(csrf.csrf_exempt)
+    def post(self, request, *args, **kwargs):
+        channel_id = request.POST.get('channel_id')
+
+        if not channel_id:
+            raise exceptions.PermissionDenied
+
+        if request.POST.get('subscribe'):
+            print "SUBS", channel_id
+
+            request.user.update(push__clist=[request.META['HTTP_IF_NONE_MATCH'], request.META['HTTP_IF_MODIFIED_SINCE']])
+
+            if request.user.logged == False:
+                request.user.update(set__logged=True)
+                updates.send_update(channel_id, {'type':'answer', 'value':{'action':'JOIN', 'message':request.user.username}})
+
+            request.user.save()
+            print "ddd"
+        elif request.POST.get('unsubscribe'):
+            print "UNSU", channel_id
+
+            #print (request.META['HTTP_IF_NONE_MATCH'], request.META['HTTP_IF_MODIFIED_SINCE'])
+
+            request.user.update(push__dlist=[request.META['HTTP_IF_NONE_MATCH'], request.META['HTTP_IF_MODIFIED_SINCE']])
+            request.user.save()
+            print "bbb"
+        else:
+            raise exceptions.PermissionDenied
+
+        return http.HttpResponse(status=204)
