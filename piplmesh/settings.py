@@ -204,7 +204,7 @@ CELERY_IMPORTS = ('piplmesh.tasks', )
 
 CELERYBEAT_SCHEDULE = {
     "runs-every-10-seconds": {
-        "task": "piplmesh.tasks.add",
+        "task": "piplmesh.tasks.prune_users",
         "schedule": datetime.timedelta(seconds=10),
         "args": (),
     },
