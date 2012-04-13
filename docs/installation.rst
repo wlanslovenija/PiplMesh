@@ -5,17 +5,6 @@ The procedure of installing and running your own instance of PiplMesh follows.
 
 *Note: we are assuming that you are running an UNIX-like operating system.*
 
-Warning Regarding Database Backend
-----------------------------------
-
-PiplMesh assumes working support for transactional savepoints in the database
-backend. **This is only supported in PostgreSQL version 8.0 or higher** and
-therefore this is the only database that is supported by PiplMesh.
-
-**The system will still work with MySQL and SQLite but some features regarding
-error handling and validation may cause unexpected results and even data
-corruption!** Do not use them for production deployment. You have been warned.
-
 Prerequisites
 -------------
 
@@ -24,6 +13,7 @@ following is required on the system to run PiplMesh:
 
 * Python virtualenv_ package
 * Python pip_ package (1.0+)
+
 .. _Python: http://python.org/
 .. _Django-supported: https://docs.djangoproject.com/en/1.3/ref/databases/
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
@@ -94,37 +84,18 @@ Mac OS X
 
 Prerequisites can be installed with MacPorts_ or Homebrew_. For MacPorts::
 
-    sudo port install py27-virtualenv py27-pip
+    sudo port install py27-virtualenv py27-pip mongodb
 
 For Homebrew, install Python_, pip_, and virtualenv_::
 
     brew install python --universal --framework
     brew install pip
+	brew install mongodb
     pip install virtualenv
 
 .. _MacPorts: http://www.macports.org/
 .. _Homebrew: http://mxcl.github.com/homebrew/
-
-Installing mongoDB
-
-The easiest way to install MongoDB is to use a package manager or the pre-built binaries:
-
-	OSX - Homebrew::
-		$ brew update
-		$ brew install mongodb
-	OSX - MacPorts::
-		$ sudo port install mongodb
-		
-By default MongoDB will store data in /data/db, but it won't automatically create that directory. To create it, do:
-	OSX::
-		$ sudo mkdir -p /data/db/
-		$ sudo chown `id -u` /data/db
-
-	Run the server:		
-		$ mongod
-
-	Connect to server:
-		$ mongo
+.. _MongoDB: http://www.mongodb.org/display/DOCS/Quickstart+OS+X/
 
 
 Debian
@@ -134,15 +105,14 @@ The following Debian packages are needed:
 
 * ``python-virtualenv``
 * ``python-pip``
-* ``mongodb-10gen``
+* ``mongodb``
+
+More info about mongodb installation:
+
+.. _MongoDB: http://www.mongodb.org/display/DOCS/Quickstart+Unix
+
 Be careful about required versions. It could be necessary to use packages from Debian testing or backports distribution.
 
-Installing MongoDB in debian:
 
-DEBIAN (Ubuntu)::
-	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
-	sudo add-apt-repository 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen'
-	sudo apt-get update 
-	sudo apt-get install mongodb-10gen
 
 
