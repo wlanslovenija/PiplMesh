@@ -2,6 +2,8 @@
 #
 # Development Django settings for PiplMesh project.
 
+from datetime
+
 import os.path
 
 MONGODB_DATABASE = 'PiplMesh'
@@ -188,7 +190,7 @@ CELERY_MONGODB_BACKEND_SETTINGS = {
     "host": "127.0.0.1",
     "port": 27017,
     "database": "celery",
-    "taskmeta_collection": "my_taskmeta" # Collection name to use for task output
+    "taskmeta_collection": "my_taskmeta"
 }
 
 BROKER_BACKEND = "mongodb"
@@ -198,17 +200,13 @@ BROKER_USER = ""
 BROKER_PASSWORD = ""
 BROKER_VHOST = "celery"
 
-# Find and register all celery tasks.  Your tasks need to be in a
-# tasks.py file to be picked up.
-CELERY_IMPORTS = ('piplmesh.account.tasks', )
-
-from datetime import timedelta
+CELERY_IMPORTS = ('piplmesh.tasks', )
 
 CELERYBEAT_SCHEDULE = {
-    "runs-every-30-seconds": {
-        "task": "piplmesh.account.tasks.add",
-        "schedule": timedelta(seconds=10),
-        "args": (16, 16)
+    "runs-every-10-seconds": {
+        "task": "piplmesh.tasks.add",
+        "schedule": datetime.timedelta(seconds=10),
+        "args": (),
     },
 }
 
