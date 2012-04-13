@@ -13,6 +13,7 @@ following is required on the system to run PiplMesh:
 
 * Python virtualenv_ package
 * Python pip_ package (1.0+)
+* MongoDB_ database
 
 .. _Python: http://python.org/
 .. _Django-supported: https://docs.djangoproject.com/en/1.3/ref/databases/
@@ -95,6 +96,9 @@ For Homebrew, install Python_, pip_, and virtualenv_::
 
 .. _MacPorts: http://www.macports.org/
 .. _Homebrew: http://mxcl.github.com/homebrew/
+
+More about MondoDB_ instalation.
+
 .. _MongoDB: http://www.mongodb.org/display/DOCS/Quickstart+OS+X/
 
 
@@ -107,12 +111,6 @@ The following Debian packages are needed:
 * ``python-pip``
 * ``mongodb``
 
-More info about mongodb installation:
+More info about MongoDB_ installation.
 
 .. _MongoDB: http://www.mongodb.org/display/DOCS/Quickstart+Unix
-
-Be careful about required versions. It could be necessary to use packages from Debian testing or backports distribution.
-
-
-
-
