@@ -1,2 +1,4 @@
 Django==1.4
 mongoengine==0.6.3
+django-celery==2.5.1
+django-pushserver==0.1.7
