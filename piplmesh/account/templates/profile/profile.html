@@ -4,8 +4,22 @@
 
 {% block content %}
 <div id="main">
-    <p>Profil</p>
-    <p>{{ username }}</p>
-    <p>----</p>
+    <div id="settings">
+        <p>profile</p>
+        <p>settings</p>
+        <p>other</p>
+    </div>
+    <div id="profile">
+        <p>-----------------------</p>
+        <p>{{ user }}</p>
+        <p>{{ user.birthdate }}</p>
+        <p>{{ user.gender }}</p>
+        <p>{{ user.language }}</p>
+        <p>{{ user.facebook_id }}</p>
+        <p>{{ user.facebook_token }}</p>
+        <p>-----------------------</p>
+    </div>
 </div>
 {% endblock %}
+
+

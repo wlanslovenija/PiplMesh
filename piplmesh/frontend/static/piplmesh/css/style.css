@@ -297,3 +297,17 @@ td.gsc-clear-button {
     text-align: center;
     list-style-type: none;
 }
+
+/* --------------------- PROFILE ------------------------ */
+#profile {
+    margin-left: 500px;
+    display: inline-block;
+    text-align: center;
+}
+
+#settings {
+    text-align: left;
+    display: inline-block;
+    margin-top: 0;
+}
+
