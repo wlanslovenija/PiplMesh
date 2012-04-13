@@ -10,6 +10,7 @@ urlpatterns = patterns('',
 
     url(r'^search', frontend_views.SearchView.as_view(), name='search'),
     url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^passthrough', account_views.PushView.as_view(), name='push'),
 
     # Registration, login, logout
     url(r'^register/$', account_views.RegistrationView.as_view(), name='registration'),
