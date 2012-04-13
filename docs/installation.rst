@@ -91,7 +91,7 @@ For Homebrew, install Python_, pip_, and virtualenv_::
 
     brew install python --universal --framework
     brew install pip
-	brew install mongodb
+    brew install mongodb
     pip install virtualenv
 
 .. _MacPorts: http://www.macports.org/
