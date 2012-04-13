@@ -5,17 +5,6 @@ The procedure of installing and running your own instance of PiplMesh follows.
 
 *Note: we are assuming that you are running an UNIX-like operating system.*
 
-Warning Regarding Database Backend
-----------------------------------
-
-PiplMesh assumes working support for transactional savepoints in the database
-backend. **This is only supported in PostgreSQL version 8.0 or higher** and
-therefore this is the only database that is supported by PiplMesh.
-
-**The system will still work with MySQL and SQLite but some features regarding
-error handling and validation may cause unexpected results and even data
-corruption!** Do not use them for production deployment. You have been warned.
-
 Prerequisites
 -------------
 
@@ -24,11 +13,13 @@ following is required on the system to run PiplMesh:
 
 * Python virtualenv_ package
 * Python pip_ package (1.0+)
+* MongoDB_ database
 
 .. _Python: http://python.org/
 .. _Django-supported: https://docs.djangoproject.com/en/1.3/ref/databases/
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
 .. _pip: http://pypi.python.org/pypi/pip
+.. _MongoDB: http://www.mongodb.org/
 
 Other prerequisites (Python packages) are installed later.
 
@@ -48,14 +39,9 @@ If you are not familiar with git_, please refer to its tutorial_.
 Development/Testing Instance
 ----------------------------
 
-Development/testing instance will by default use SQLite_ relation database
-system.
-
-.. _SQLite: http://www.sqlite.org/
-
 Deploying
 ^^^^^^^^^
-
+	
 Once you have all prerequisites and PiplMesh itself, you can create Python
 virtualenv_ for PiplMesh::
 
@@ -99,16 +85,22 @@ Mac OS X
 
 Prerequisites can be installed with MacPorts_ or Homebrew_. For MacPorts::
 
-    sudo port install py27-virtualenv py27-pip
+    sudo port install py27-virtualenv py27-pip mongodb
 
 For Homebrew, install Python_, pip_, and virtualenv_::
 
     brew install python --universal --framework
     brew install pip
+    brew install mongodb
     pip install virtualenv
 
 .. _MacPorts: http://www.macports.org/
 .. _Homebrew: http://mxcl.github.com/homebrew/
+
+More about MondoDB_ instalation.
+
+.. _MongoDB: http://www.mongodb.org/display/DOCS/Quickstart+OS+X/
+
 
 Debian
 ^^^^^^
@@ -117,5 +109,8 @@ The following Debian packages are needed:
 
 * ``python-virtualenv``
 * ``python-pip``
+* ``mongodb``
 
-Be careful about required versions. It could be necessary to use packages from Debian testing or backports distribution.
+More info about MongoDB_ installation.
+
+.. _MongoDB: http://www.mongodb.org/display/DOCS/Quickstart+Unix
