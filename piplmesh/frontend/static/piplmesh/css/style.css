@@ -300,7 +300,7 @@ td.gsc-clear-button {
 
 /* --------------------- PROFILE ------------------------ */
 #profile {
-    margin-left: 500px;
+    margin-left: 50%;
     display: inline-block;
     text-align: center;
 }
@@ -308,6 +308,10 @@ td.gsc-clear-button {
 #settings {
     text-align: left;
     display: inline-block;
-    margin-top: 0;
+    position: absolute;
+    margin-top: 5%;
 }
+
+
+
 

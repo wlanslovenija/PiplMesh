@@ -103,7 +103,7 @@ def settings(request, username):
 
     for user in User.objects:
         if str(user) == str(username):
-            if str(request.user) == str(username):
+            if request.user.username == str(username):
                 return render_to_response('profile/settings.html',{'user': request.user}, context_instance=RequestContext(request))
             else:
                 signals.no_permission_message(request)
