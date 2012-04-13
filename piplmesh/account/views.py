@@ -90,8 +90,28 @@ def profile(request, username):
 
     for user in User.objects:
         if str(user) == str(username):
-            return render_to_response('profile/profile.html',{'user': user}, context_instance=RequestContext(request))
-    return render_to_response('profile/notFound.html',{'username': username}, context_instance=RequestContext(request))
+            return render_to_response('profile/profile.html',{'profile': user}, context_instance=RequestContext(request))
+
+    signals.user_not_found_message(request,username)
+    return render_to_response('home.html', context_instance=RequestContext(request))
+
+
+def settings(request, username):
+    """
+    This view checks if user has permission to access settings page
+    """
+
+    for user in User.objects:
+        if str(user) == str(username):
+            if str(request.user) == str(username):
+                return render_to_response('profile/settings.html',{'user': request.user}, context_instance=RequestContext(request))
+            else:
+                signals.no_permission_message(request)
+                return render_to_response('home.html', context_instance=RequestContext(request))
+    signals.user_not_found_message(request,username)
+    return render_to_response('home.html', context_instance=RequestContext(request))
+
+
 
 
 

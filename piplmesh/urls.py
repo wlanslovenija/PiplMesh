@@ -21,5 +21,6 @@ urlpatterns = patterns('',
 
     # Profile
     url(r'^profile/(?P<username>\w+)/$', account_views.profile, name='profile'),
+    url(r'^profile/(?P<username>\w+)/settings/$', account_views.settings, name='settings'),
 
 )

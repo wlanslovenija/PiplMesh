@@ -6,17 +6,18 @@
 <div id="main">
     <div id="settings">
         <p>profile</p>
-        <p>settings</p>
-        <p>other</p>
+        {% if user.username == profile.username %}
+            <p><a href="/profile/{{user.username }}/settings">settings<a/></p>
+        {% endif %}
     </div>
     <div id="profile">
         <p>-----------------------</p>
-        <p>{{ user }}</p>
-        <p>{{ user.birthdate }}</p>
-        <p>{{ user.gender }}</p>
-        <p>{{ user.language }}</p>
-        <p>{{ user.facebook_id }}</p>
-        <p>{{ user.facebook_token }}</p>
+        <p>{{ profile }}</p>
+        <p>{{ profile.birthdate }}</p>
+        <p>{{ profile.gender }}</p>
+        <p>{{ profile.language }}</p>
+        <p>{{ profile.facebook_id }}</p>
+        <p>{{ profile.facebook_token }}</p>
         <p>-----------------------</p>
     </div>
 </div>
