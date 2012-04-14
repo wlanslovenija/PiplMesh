@@ -2,8 +2,7 @@
 #
 # Development Django settings for PiplMesh project.
 
-from datetime
-
+import datetime
 import os.path
 
 MONGODB_DATABASE = 'PiplMesh'
