@@ -112,6 +112,13 @@ class PushView(generic_views.TemplateView):
             #print (request.META['HTTP_IF_NONE_MATCH'], request.META['HTTP_IF_MODIFIED_SINCE'])
 
             request.user.update(push__dlist=[request.META['HTTP_IF_NONE_MATCH'], request.META['HTTP_IF_MODIFIED_SINCE']])
+            #request.user.update(**{'unset__clist__$': [request.META['HTTP_IF_NONE_MATCH'], request.META['HTTP_IF_MODIFIED_SINCE']]})
+            #request.user.update(**{'unset__clist__$':[request.META['HTTP_IF_NONE_MATCH'], request.META['HTTP_IF_MODIFIED_SINCE']]})
+            #request.user.update(**{"unset__clist__$__[request.META['HTTP_IF_NONE_MATCH'], request.META['HTTP_IF_MODIFIED_SINCE']]": 1})
+            #request.user.update(**{'unset__clist__$': [request.META['HTTP_IF_NONE_MATCH'], request.META['HTTP_IF_MODIFIED_SINCE']]})
+            #request.user.update(pull__clist=None)
+            #request.user.update(**{'unset__clist': [request.META['HTTP_IF_NONE_MATCH'], request.META['HTTP_IF_MODIFIED_SINCE']]})
+            #request.user.update({"boys.name": "jhon"}, {"$unset": {"boys.$": {"name":"jhon"}}})
             request.user.save()
             print "bbb"
         else:
