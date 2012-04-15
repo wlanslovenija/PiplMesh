@@ -3,8 +3,7 @@ import datetime
 from django import forms
 from django.conf import settings
 from django.contrib.auth import forms as auth_forms
-from django.forms import widgets
-from django.forms.extras import widgets as extras_widgets
+from django.forms.extras import widgets
 from django.utils import safestring
 from django.utils.translation import ugettext_lazy as _
 
@@ -32,7 +31,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
         lower_limit=datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT),
         label=_("Birth date"),
         required=False,
-        widget=extras_widgets.SelectDateWidget(
+        widget=widgets.SelectDateWidget(
             years=[
                 y for y in range(
                     datetime.datetime.today().year,
