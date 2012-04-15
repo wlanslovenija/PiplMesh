@@ -20,9 +20,48 @@ a {
     border: 0px;
 }
 
-/* Styling forms*/
-ul.errorlist {
-    list-style: none;
+/* -------------------- FORMS --------------------- */
+.form_fields {
+    list-style-type: none;
+}
+
+.form_fields .field_error {
+    color: #FF0000;
+    margin-left: 18em;
+    padding: 0.3em;
+}
+
+.form_fields .field {
+    margin: 0.1em 0 0.1em 0;
+    padding: 0.2em 0.3em;
+    clear: left;
+    margin-left: 13em;
+    min-height: 2em;
+}
+
+.form_fields .field input {
+    width: 15.3em;
+}
+
+.form_fields .field input[type=radio] {
+    width: auto;
+}
+
+.form_fields .field label {
+    float: left;
+    width: 16em;
+    padding-right: 2em;
+    margin-left: -13em;
+}
+
+/* Styling nested lists such as radio buttons. */
+.form_fields .field ul {
+    padding-left: 0;
+    margin-left: 18em;
+}
+
+.form_fields .field ul li {
+    display: inline;
 }
 
 /* -------------------- HEADER --------------------- */
@@ -116,7 +155,6 @@ td.gsc-clear-button {
     padding: 0px;
     margin: 0px;
     cursor: pointer;
-    cursor: hand;
     color: #68AE2C;
     font-size: 13px;
     text-decoration: none;
@@ -125,7 +163,7 @@ td.gsc-clear-button {
 /* ---------------- FB LOGIN BUTTON ------------------- */
 .fb_login_button {
     background: #29447E url('../images/fb_sprite.png');
-    background-position: left -188px;
+    background-position: left -189px;
     background-repeat: no-repeat;
     cursor: pointer;
     display: inline-block;
@@ -135,6 +173,7 @@ td.gsc-clear-button {
     font-size: 11px;
     line-height: 14px;
     margin: 0px;
+    border: 0;
 }
 
 .fb_button_text {
@@ -181,32 +220,10 @@ td.gsc-clear-button {
     margin: 0px;
 }
 
-/* ------------------ REGISTRATION ---------------------------- */
 .registration {
     width: 960px;
     margin: auto;
     margin-top: 50px;
-}
-
-.registration .form_field ul {
-    list-style-type: none;
-    padding-top: 5px;
-    overflow: hidden;
-}
-
-.registration .form_field li {
-    display: inline-block;
-    padding-right: 4px;
-    text-align: right;
-}
-
-.registration .form_field .form_label {
-    width: 120px;
-}
-
-.registration .form_field .form_textbox {
-    width: 300px;
-    text-align: left;
 }
 
 /* buttons */

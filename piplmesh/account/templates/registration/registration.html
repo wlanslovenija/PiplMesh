@@ -8,20 +8,23 @@
 <div class="registration">
     <form method="post" action="{% url registration %}">
         {% csrf_token %}
-        {% for field in form %}
-        {{ field.errors }}
-        <ul class="form_field">
-            <li class="form_label">
-                <label for="{{ field.auto_id }}">
-                {% if field.field.required %}
-                <span class="required">{{ field.label }}<sup title="Required">*</sup>
-            </span>
-                {% else %}{{ field.label }}{% endif %}
-            </label>
-            </li>
-            <li class="form_textbox">{{ field }}</li>
+        <ul class="form_fields">
+            {% for field in form %}    
+                <li class="field_error">
+                    {{ field.errors.as_text }}
+                </li>     
+                <li class="field">
+                    <label for="{{ field.id_for_label }}">
+                        {% if field.field.required %}
+                            <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
+                        {% else %}
+                            {{ field.label }}
+                        {% endif %}
+                    </label>
+                    {{ field }} 
+                </li> 
+            {% endfor %}            
         </ul>
-        {% endfor %}
         <div class="button">
             <ul>
                 <li><input type="submit" value="{% trans "Register" %}" /></li>
@@ -29,6 +32,5 @@
             </ul>
         </div>
     </form>
-    {{ user.get_profile.gender }}
 </div>
 {% endblock %}
