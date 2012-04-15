@@ -13,20 +13,19 @@
             <script type="text/javascript">
                 var language_code = '{{ LANGUAGE_CODE|escapejs }}';
                 var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID|escapejs }}';
-                {% url search as search_url %}
-                var search_page_url = '{{ search_url|escapejs }}';
+                var search_page_url = '{% filter escapejs %}{% url search %}{% endfilter %}';
             </script>
             <script type="text/javascript" src="{{ STATIC_URL }}piplmesh/js/search_bar.js"></script>
             {% if "q" in request.GET %}
                 {% trans "See your query results on " %}<a id="google_results_link">Google</a>.
             {% endif %}
         </div>
-        {% comment %}
-            This div is used for registration and log in link. 
-            If user is already logged in, his username and logout link are shown instead.
-        {% endcomment %}
         {% with next|default:redirect_to|default:request.get_full_path as next_url %}
             <ul class="user">
+                {% comment %}
+                    This list is used for registration and log in link.
+                    If user is already logged in, logout link is shown instead.
+                {% endcomment %}
                 {% if user.is_authenticated %}
                     <li class="image"><img src="{% facebook_picture user.username "square" %}" alt="{% trans "User picture" %}"/></li>
                     <li class="username">{{ user.username }}</li>
