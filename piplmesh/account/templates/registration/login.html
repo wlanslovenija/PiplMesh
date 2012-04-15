@@ -12,7 +12,7 @@
                 {% csrf_token %}
                 <ul class="form_fields">
                     {% for field in form %}
-                         <li class="field_error">
+                        <li class="field_error">
                             {{ field.errors.as_text }}
                         </li>
                         <li class="field">
