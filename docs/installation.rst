@@ -28,7 +28,7 @@ Getting Source
 Use ``master`` branch which contains stable PiplMesh source from the project
 git_ repository. Get it using this command::
 
-    git clone https://github.com/mitar/PiplMesh.git
+    git clone https://github.com/wlanslovenija/PiplMesh.git
 
 If you are not familiar with git_, please refer to its tutorial_.
 
