@@ -3,7 +3,7 @@
     <div id="header">
         <div id="logo">
             <a href="{% url home %}">
-                <img src="{{ STATIC_URL }}piplmesh/images/logo-sl.png" alt="PiplMesh" />
+                <img src="{{ STATIC_URL }}piplmesh/images/logo-{{ LANGUAGE_CODE }}.png" alt="PiplMesh" />
             </a>
         </div>
         {% include "messages.html" %}
