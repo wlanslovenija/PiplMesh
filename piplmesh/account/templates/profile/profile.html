@@ -3,6 +3,9 @@
 {% block fulltitle %}wlan slovenija{% endblock %}
 
 {% block content %}
+
+{% load i18n facebook %}
+
 <div id="main">
     <div id="settings">
         <p>profile</p>
@@ -10,15 +13,18 @@
             <p><a href="/profile/{{user.username }}/settings">settings<a/></p>
         {% endif %}
     </div>
+    <div id="pic" >
+        <img src="{% facebook_picture profile.username "large" %}" alt="{% trans "User picture" %}"/>
+    </div>
     <div id="profile">
-        <p>-----------------------</p>
-        <p>{{ profile }}</p>
+        <p>{{ profile.username }}</p>
+        <p>{{ profile.email }}</p>
         <p>{{ profile.birthdate }}</p>
         <p>{{ profile.gender }}</p>
         <p>{{ profile.language }}</p>
+        <p>{{ profile.last_login }}</p>
         <p>{{ profile.facebook_id }}</p>
         <p>{{ profile.facebook_token }}</p>
-        <p>-----------------------</p>
     </div>
 </div>
 {% endblock %}

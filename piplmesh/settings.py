@@ -183,7 +183,7 @@ SESSION_ENGINE = 'mongoengine.django.sessions'
 
 AUTHENTICATION_BACKENDS = (
     'piplmesh.account.backends.MongoEngineBackend',
-    'piplmesh.account.backends.FacebookBackend', 
+    'piplmesh.account.backends.FacebookBackend',
 )
 
 # Facebook settings:
