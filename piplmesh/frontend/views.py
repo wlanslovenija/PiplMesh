@@ -30,7 +30,7 @@ def process_channel_subscribe(sender, request, channel_id, **kwargs):
         )
     # TODO: Code this into upper request
     request.user.channel[channel_id] = True
-    reques.user.save()
+    request.user.save()
 
 @dispatch.receiver(signals.channel_unsubscribe)
 def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
