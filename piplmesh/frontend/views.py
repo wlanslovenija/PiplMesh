@@ -1,3 +1,5 @@
+import datetime
+
 from django import dispatch
 from django.conf import settings
 from django.views import debug, generic as generic_views
@@ -16,6 +18,8 @@ def process_channel_subscribe(sender, request, channel_id, **kwargs):
         },
         set__last_access = datetime.datetime.now()
     )
+
+    print "1"
     
     if channel_id not in request.user.channel:
         updates.send_update(
@@ -31,6 +35,7 @@ def process_channel_subscribe(sender, request, channel_id, **kwargs):
     # TODO: Code this into upper request
     request.user.channel[channel_id] = True
     request.user.save()
+    print "3"
 
 @dispatch.receiver(signals.channel_unsubscribe)
 def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
@@ -45,6 +50,7 @@ def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
     # TODO: Race condition??
     request.user.update(pull__opened_connections=None)
     request.user.update(set__last_access = datetime.datetime.now())
+    print "2"
 
 
 class HomeView(generic_views.TemplateView):
