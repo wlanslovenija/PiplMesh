@@ -3,6 +3,7 @@ from django.conf import settings
 from django.views import debug, generic as generic_views
 
 from pushserver import signals
+from pushserver.utils import updates
 
 from piplmesh.account import models
 
