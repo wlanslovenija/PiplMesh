@@ -1,3 +1,5 @@
+import datetime
+
 from celery.task import task
 
 from pushserver.utils import updates
@@ -8,22 +10,23 @@ from piplmesh.account import models
 def prune_users():
     chan_users = models.User.objects()
     for user in chan_users:
-        cl = user.clist
-        dl = user.dlist
-        #print cl
-        #print dl
-        for el in dl:
-            try:
-                cl.remove(el)
-            except ValueError:
-                pass
-        #print len(cl)
-
-        if len(cl) == 0 and len(dl) > 0:
+        if len(user.opened_connections) == 0 and user.last_access and datetime.datetime.now() > user.last_access + datetime.timedelta(seconds=30):
             # TODO: Implement joining/parting subsystem
+            user.update(
+                set__opened_connections = [],
+                unset__last_access = 1,
+                set__channel = {},
+            )
+
             channel_id = 'a'
-            for el in dl:
-                user.update(pull__clist=el)
-                user.update(pull__dlist=el)
-            user.update(set__logged=False)
-            updates.send_update(channel_id, {'type':'answer', 'value':{'action':'PART', 'message':user.username}})
+
+            updates.send_update(
+                channel_id,
+                {
+                    'type': 'answer',
+                    'value': {
+                        'action': 'PART',
+                        'message': user.username
+                    }
+                }
+            )
