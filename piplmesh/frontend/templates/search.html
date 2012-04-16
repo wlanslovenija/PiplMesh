@@ -2,14 +2,14 @@
 
 {% load i18n %}
 
-{% block title %}Search{% endblock %}
+{% block title %}{% trans "Search" %}{% endblock %}
 
 {% block content %}
-<div id="cse" class="result"></div>
-<script src="https://www.google.com/jsapi" type="text/javascript"></script>
-<script type="text/javascript">
-	var language_code = '{{ LANGUAGE_CODE }}';
-	var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID }}';
-</script>
-<script type="text/javascript" src="{{ STATIC_URL }}piplmesh/js/search_page.js"></script>
+    <div id="cse" class="result"></div>
+    <script src="https://www.google.com/jsapi" type="text/javascript"></script>
+    <script type="text/javascript">
+        var language_code = '{{ LANGUAGE_CODE|escapejs }}';
+        var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID|escapejs }}';
+    </script>
+    <script type="text/javascript" src="{{ STATIC_URL }}piplmesh/js/search_page.js"></script>
 {% endblock %}
