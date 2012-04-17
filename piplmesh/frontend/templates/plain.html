@@ -3,6 +3,7 @@
 {% block body %}
     {% include "header.html" %}
     <div id="content">
+        {% include "messages.html" %}
         {% block content %}{% endblock %}
     </div>
     {% include "footer.html" %}

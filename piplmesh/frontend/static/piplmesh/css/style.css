@@ -27,15 +27,23 @@ ul.errorlist {
 
 /* -------------------- HEADER --------------------- */
 #header {
-    width: 960px;
-    height: 150px;
-    margin-left: auto;
-    margin-right: auto;
+    height: 128px;
+    min-width: 800px;
+    display: inline-block;
 }
 
 #header #logo {
     margin-top: 20px;
     margin-bottom: 10px;
+    margin-left: 20px;
+    display: inherit;
+}
+
+#header #search {
+    float: right;
+    padding: 20px;
+    width: 410px;
+    display: inherit;
 }
 
 #header .user {
@@ -78,26 +86,14 @@ ul.errorlist {
     font-size: 10px;
 }
 
-#header #search {
-    float: right;
-    padding: 20px;
-    background: #FFF;
-    width: 410px;
-}
-
-#header #search img {
-    padding-top: 10px;
-    display: inline-block;
-}
-
 td.gsc-clear-button {
     display: none !important;
 }
 
 /* -------------------- MAIN ------------------------ */
 #main {
-    width: 960px;
-    margin: auto;
+    margin-right: 20px;
+    margin-left: 20px;
     overflow: hidden;
 }
 
@@ -296,4 +292,6 @@ td.gsc-clear-button {
     padding: 4px;
     text-align: center;
     list-style-type: none;
+    margin-left: 20px;
+    margin-right: 20px;
 }
