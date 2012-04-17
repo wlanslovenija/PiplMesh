@@ -8,7 +8,7 @@
 
 <div id="main">
     <div id="settings">
-        <p>profile</p>
+        <p id="cur">profile</p>
         {% if user.username == profile.username %}
             <p><a href="/profile/{{user.username }}/settings">settings<a/></p>
         {% endif %}
@@ -17,14 +17,20 @@
         <img src="{% facebook_picture profile.username "large" %}" alt="{% trans "User picture" %}"/>
     </div>
     <div id="profile">
-        <p>{{ profile.username }}</p>
-        <p>{{ profile.email }}</p>
-        <p>{{ profile.birthdate }}</p>
-        <p>{{ profile.gender }}</p>
-        <p>{{ profile.language }}</p>
-        <p>{{ profile.last_login }}</p>
-        <p>{{ profile.facebook_id }}</p>
-        <p>{{ profile.facebook_token }}</p>
+        <p>Username: {{ profile.username }}</p>
+        <p>first name: {{ profile.first_name }}</p>
+        <p>last name: {{ profile.last_name }}</p>
+        <p>gender: {{ profile.gender }}</p>
+        <p>birthdate: {{ profile.birthdate }}</p>
+        <p>email: {{ profile.email }}</p>
+        <p>last login: {{ profile.last_login }}</p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
     </div>
 </div>
 {% endblock %}

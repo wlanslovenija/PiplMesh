@@ -14,6 +14,7 @@ from piplmesh.account.models import User
 
 from piplmesh.account import forms, signals
 
+
 class RegistrationView(edit_views.FormView):
     """
     This view checks if form data are valid, saves new user.

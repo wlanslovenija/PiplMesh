@@ -320,6 +320,10 @@ td.gsc-clear-button {
     position: absolute;
 }
 
+#cur{
+    text-decoration: underline;
+}
+
 
 
 
