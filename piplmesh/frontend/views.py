@@ -31,7 +31,7 @@ def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
     ).update_one(unset__opened_connections__S = 1)
 
     # TODO: Race condition??
-    request.user.update(pull__opened_connections=None)
+    request.user.update(pull__opened_connections = None)
     request.user.update(set__last_access = datetime.datetime.now())
 
 class HomeView(generic_views.TemplateView):
