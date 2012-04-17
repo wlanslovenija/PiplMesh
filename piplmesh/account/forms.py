@@ -42,14 +42,14 @@ class RegistrationForm(auth_forms.UserCreationForm):
     email = forms.EmailField(label=_("E-mail"))
     first_name = forms.CharField(label=_("First name"))
     last_name = forms.CharField(label=_("Last name"))
-    
+
     # Additional information
     gender = forms.ChoiceField(
         label=_("Gender"),
         required=False,
         choices=fields.GENDER_CHOICES,
         widget=forms.RadioSelect(renderer=RadioFieldRenderer),
-    )    
+    )
     birthdate = form_fields.LimitedDateTimeField(
         upper_limit=datetime.datetime.today(),
         lower_limit=datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT),
@@ -99,3 +99,39 @@ class RegistrationForm(auth_forms.UserCreationForm):
         # TODO: Check for errors
         # http://docs.nullpobug.com/django/trunk/django.forms.models-pysrc.html#BaseModelForm.validate_unique
         pass
+
+
+
+
+class UpdateForm(auth_forms.PasswordChangeForm):
+
+    # Required data
+    old_password = forms.CharField(label=_("Old password"), widget=forms.PasswordInput)
+    new_password1 = forms.CharField(label=_("New password"), widget=forms.PasswordInput)
+    new_password2 = forms.CharField(label=_("New password"), widget=forms.PasswordInput)
+
+
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(UpdateForm, self).__init__(*args, **kwargs)
+
+
+
+    def clean_oldpassword(self):
+        if self.clean_data.get('oldpassword') and not self.user.check_password(self.clean_data['oldpassword']):
+            raise ValidationError('Please type your current password.')
+        return self.clean_data['oldpassword']
+
+    def clean_password2(self):
+        if self.clean_data.get('password1') and self.clean_data.get('password2') and self.clean_data['password1'] != self.clean_data['password2']:
+            raise ValidationError('The new passwords are not the same')
+        return self.clean_data['password2']
+
+
+
+class UpdateForm2(auth_forms.UserChangeForm):
+
+    email = forms.EmailField(label=_("E-mail"))
+    first_name = forms.CharField(label=_("First name"))
+    last_name = forms.CharField(label=_("Last name"))

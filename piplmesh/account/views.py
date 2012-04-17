@@ -90,18 +90,20 @@ def profile(request, username):
     This view checks if user exist in database and returns his profile.
     """
 
-    for user in User.objects:
-        if str(user) == str(username):
-            return render_to_response('profile/profile.html',{'profile': user}, context_instance=RequestContext(request))
+    try:
+        profile = User.objects.get(username=username)
+        return render_to_response('profile/profile.html',{'profile': profile}, context_instance=RequestContext(request))
+    except Exception, e:
+        signals.user_not_found_message(request,username)
+        return render_to_response('home.html', context_instance=RequestContext(request))
 
-    signals.user_not_found_message(request,username)
-    return render_to_response('home.html', context_instance=RequestContext(request))
 
 
-def settings(request, username):
-    """
-    This view checks if user has permission to access settings page
-    """
+
+"""def settings(request, username):
+
+    #This view checks if user has permission to access settings page
+
 
     for user in User.objects:
         if str(user) == str(username):
@@ -112,6 +114,33 @@ def settings(request, username):
                 return render_to_response('home.html', context_instance=RequestContext(request))
     signals.user_not_found_message(request,username)
     return render_to_response('home.html', context_instance=RequestContext(request))
+"""
+
+
+
+class ChangeView(edit_views.UpdateView):
+    """
+
+    """
+
+    template_name = 'profile/settings.html'
+    success_url = urlresolvers.reverse_lazy('home')
+    user = User.objects.get(username="martin")
+    #form_class = forms.UpdateForm(user)
+    form_class = forms.UpdateForm2
+
+    def get_object(self, queryset=None):
+        user = User.objects.get(username=self.request.user.username)
+        return user
+
+    def form_valid(self, form):
+        # saves new password
+        print "DONE"
+        return super(ChangeView, self).form_valid(form)
+
+
+
+
 
 
 
