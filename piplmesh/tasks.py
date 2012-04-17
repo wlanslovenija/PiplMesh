@@ -2,6 +2,8 @@ import datetime
 
 from celery.task import task
 
+from pushserver.utils import updates
+
 from piplmesh.account import models
 
 @task
@@ -13,4 +15,17 @@ def prune_users():
             user.update(
                 set__opened_connections = [],
                 unset__last_access = 1,
+            )
+
+            channel_id = 'a'
+
+            updates.send_update(
+                channel_id,
+                {
+                    'type': 'answer',
+                    'value': {
+                        'action': 'PART',
+                        'message': user.username
+                    }
+                }
             )
