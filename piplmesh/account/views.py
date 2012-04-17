@@ -5,9 +5,7 @@ from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth import views as auth_views
 from django.core import exceptions, urlresolvers
-from django.utils.decorators import method_decorator
 from django.views import generic as generic_views
-from django.views.decorators import csrf
 from django.views.generic import simple, edit as edit_views
 
 from pushserver.utils import updates
