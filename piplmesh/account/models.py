@@ -20,5 +20,6 @@ class User(auth.User):
     facebook_id = mongoengine.IntField()
     facebook_token = mongoengine.StringField(max_length=150)
 
-    opened_connections = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Connection))
-    last_access = mongoengine.DateTimeField()
+    connections = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Connection))
+    connection_last_unsubscribe = mongoengine.DateTimeField()
+    is_online = mongoengine.BooleanField(default=False)
