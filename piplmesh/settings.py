@@ -3,8 +3,13 @@
 # Development Django settings for PiplMesh project.
 
 import os.path
+
+MONGODB_DATABASE = 'PiplMesh'
+
+import mongoengine
+mongoengine.connect(MONGODB_DATABASE)
+
 settings_dir = os.path.abspath(os.path.dirname(__file__))
-database_file = os.path.join(settings_dir, 'db.sqlite')
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -16,17 +21,6 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = ()
 
 MANAGERS = ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': database_file,                  # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -126,7 +120,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
-    'piplmesh.context_processors.global_vars',
+    'piplmesh.frontend.context_processors.global_vars',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -136,7 +130,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'piplmesh.account.middleware.UserBasedLocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.transaction.TransactionMiddleware',
 )
 
 ROOT_URLCONF = 'piplmesh.urls'
@@ -152,17 +145,13 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 INSTALLED_APPS = (
     # Ours are first so that we can override default templates in other apps
-    'piplmesh.frontend',
     'piplmesh.account',
-    
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
+    'piplmesh.api',
+    'piplmesh.frontend',
+
     'django.contrib.messages',
+    'django.contrib.sessions',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
-    'django.contrib.admindocs',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -190,11 +179,11 @@ LOGGING = {
 
 LOGIN_REDIRECT_URL = '/'
 
-AUTH_PROFILE_MODULE = 'account.UserProfile'
+SESSION_ENGINE = 'mongoengine.django.sessions'
 
 AUTHENTICATION_BACKENDS = (
-    'account.backends.CaseInsensitiveModelBackend',
-    'account.backends.FacebookBackend', 
+    'piplmesh.account.backends.MongoEngineBackend',
+    'piplmesh.account.backends.FacebookBackend', 
 )
 
 # Facebook settings:
