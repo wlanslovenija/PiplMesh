@@ -5,6 +5,7 @@ from django.conf import settings
 from django.views import debug, generic as generic_views
 
 from pushserver import signals
+from pushserver.utils import updates
 
 from piplmesh.account import models
 
@@ -18,6 +19,20 @@ def process_channel_subscribe(sender, request, channel_id, **kwargs):
         },
         set__last_access = datetime.datetime.now()
     )
+
+    channel_id = 'a'
+
+    if len(request.user.opened_connections) == 0:
+        updates.send_update(
+            channel_id,
+            {
+                'type': 'answer',
+                'value': {
+                    'action': 'JOIN',
+                    'message': request.user.username
+                }
+            }
+        )
 
 @dispatch.receiver(signals.channel_unsubscribe)
 def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
