@@ -2,8 +2,7 @@
 #
 # Development Django settings for PiplMesh project.
 
-import datetime
-import os.path
+import datetime, os.path
 
 MONGODB_DATABASE = 'PiplMesh'
 
@@ -184,28 +183,30 @@ PUSH_SERVER = {
     ),
 }
 
-CELERY_RESULT_BACKEND = "mongodb"
+CELERY_RESULT_BACKEND = 'mongodb'
 CELERY_MONGODB_BACKEND_SETTINGS = {
-    "host": "127.0.0.1",
-    "port": 27017,
-    "database": "celery",
-    "taskmeta_collection": "my_taskmeta"
+    'host': '127.0.0.1',
+    'port': 27017,
+    'database': 'celery',
+    'taskmeta_collection': 'my_taskmeta',
 }
 
-BROKER_BACKEND = "mongodb"
-BROKER_HOST = "localhost"
+BROKER_BACKEND = 'mongodb'
+BROKER_HOST = 'localhost'
 BROKER_PORT = 27017
-BROKER_USER = ""
-BROKER_PASSWORD = ""
-BROKER_VHOST = "celery"
+BROKER_USER = ''
+BROKER_PASSWORD = ''
+BROKER_VHOST = 'celery'
 
-CELERY_IMPORTS = ('piplmesh.tasks', )
+CELERY_IMPORTS = (
+    'piplmesh.frontend.tasks',
+)
 
 CELERYBEAT_SCHEDULE = {
-    "runs-every-10-seconds": {
-        "task": "piplmesh.tasks.prune_users",
-        "schedule": datetime.timedelta(seconds=10),
-        "args": (),
+    'runs-every-10-seconds': {
+        'task': 'piplmesh.frontend.tasks.prune_users',
+        'schedule': datetime.timedelta(seconds=10),
+        'args': (),
     },
 }
 
