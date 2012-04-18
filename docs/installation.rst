@@ -65,7 +65,7 @@ the following in separate terminals::
     ./manage.py runpushserver
     ./manage.py runserver
 
-PiplMesh is now available at http://localhost:8000/.
+PiplMesh is now available at http://127.0.0.1:8000/.
 
 More about Django development server in its `documentation`_.
 
