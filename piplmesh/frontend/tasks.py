@@ -12,7 +12,6 @@ def prune_users():
     for user in chan_users:
         # TODO: Implement joining/parting subsystem
         channel_id = 'a'
-
         if len(user.connections) == 0 and user.connection_last_unsubscribe and datetime.datetime.now() > user.connection_last_unsubscribe + datetime.timedelta(seconds=30):
             user.update(
                 set__connections=[],
@@ -29,6 +28,7 @@ def prune_users():
                 }
             )
         elif len(user.connections) > 0 and user.is_online == False:
+            # TODO: Check if this command succeeds and only then proceed to send_update
             user.update(
                 set__is_online=True,
             )
