@@ -14,7 +14,11 @@
         {% endif %}
     </div>
     <div id="pic" >
-        <img src="{% facebook_picture profile.facebook_id "large" %}" alt="{% trans "User picture" %}"/>
+        {% if profile.facebook_id == None %}
+            <img src="{% facebook_picture profile.username "large" %}" alt="{% trans "User picture" %}"/>
+        {% else %}
+            <img src="{% facebook_picture profile.facebook_id "large" %}" alt="{% trans "User picture" %}"/>
+        {% endif %}
     </div>
     <div id="profile">
         <p>Username: {{ profile.username }}</p>
