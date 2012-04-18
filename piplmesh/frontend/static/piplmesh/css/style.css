@@ -243,22 +243,27 @@ td.gsc-clear-button {
 }
 
 #language {
-    float: left;
-    width: 100%;
-    overflow: hidden;
-    position: relative;
+    
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    
 }
 
 #language ul {
     list-style: none;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
 }
 
 #language ul li {
     display: inline-block;
     font-weight: bold;
     color: black;
+    float: left;
+    margin-left: 2px;
+    margin-right: 2px;
 }
 
 /* -------------- LANGUAGE SELECTION BUTTONS ------------ */
@@ -272,6 +277,7 @@ td.gsc-clear-button {
     color: #474747;
     line-height: normal;
     cursor: pointer;
+    margin-top: -2px;
 }
 
 /* ------------------- MESSAGES ------------------- */
