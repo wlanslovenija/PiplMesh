@@ -40,13 +40,12 @@ ul.errorlist {
 }
 
 #header #search {
-    top: 0px;
-    left: 50%;
-    padding: 15px;
+    position: absolute;
+    right: 20px;
+    top: 85px;
     width: 400px;
     height: 50px;
-    margin-left: -200px;
-    position: absolute;
+    display: inherit;
 }
 
 #header .user {
@@ -89,23 +88,65 @@ ul.errorlist {
     font-size: 10px;
 }
 
-td.gsc-clear-button {
-    display: none !important;
+td.gsc-clear-button, table.gsc-branding {
+    display: none;
+}
+
+#gsc-i-id1 {
+    border-color: #969696;
+    border-bottom-left-radius: 2px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-top-left-radius: 2px;
+    border-top-style: solid;
+    border-top-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    font-size: 1.2em;
+    height: 24px;
+}
+
+input.gsc-search-button {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: transparent;
+    background-image: -moz-linear-gradient(#F1F1F1, #DFDFDF);
+    background-image: -ms-linear-gradient(#F1F1F1, #DFDFDF);
+    background-image: -webkit-linear-gradient(#F1F1F1, #DFDFDF);
+    background-origin: padding-box;
+    background-position: 0 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-color: #999999;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-top-right-radius: 3px;
+    border-top-color: #CCCCCC;
+    border-top-style: solid;
+    border-top-width: 1px;
+    box-shadow: 1px 1px 0 #E7E7E7, 0 1px 0 #FCFCFC inset, 0 -1px 0 #D7D7D7 inset;
+    color: #000000;
+    cursor: pointer;
+    font-size: 1em;
+    height: 28px;
+    margin-left: 50px;
+    position: relative;
+    left: -6px;
 }
 
 /* -------------------- MAIN ------------------------ */
+#content {
+    margin: 20px;
+}
+
 #main {
-    margin-right: 20px;
-    margin-left: 20px;
     overflow: hidden;
 }
 
 .result {
     text-align: left;
-    padding-top: 110px;
+    padding-top: 30px;
     padding-right: 110px;
     padding-left: 110px;
-    padding-bottom: 10px;
+    padding-bottom: 30px;
 }
 
 /* -------------------- AUTHENTICATION ------------------------ */
@@ -232,10 +273,10 @@ td.gsc-clear-button {
 /* ------------------ FOOTER ---------------------------- */
 #footer {
     text-align: center;
-    margin-bottom: 1.3em;
     font-size: 10px;
     color: #474747;
     border-top: 1px solid #BBB;
+    height: 60px;
 }
 
 #footer a {
@@ -243,11 +284,10 @@ td.gsc-clear-button {
 }
 
 #language {
-    
     width: 200px;
     margin-left: auto;
     margin-right: auto;
-    
+    margin-bottom: 20px;
 }
 
 #language ul {
