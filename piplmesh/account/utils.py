@@ -13,6 +13,7 @@ def graph_api_url(self, user=None, page=None, token=None):
     if user and token:
         param = '?access_token=%s' % profile.token
     results = 'https://graph.facebook.com/%s/%s' % (self, param)
+
     return results
 
 def valid_token(self):

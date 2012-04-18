@@ -28,6 +28,7 @@ def facebook_picture(self, size):
     """
     
     results = '%s?type=%s' % (utils.graph_api_url('%s/picture' % self), size)
+
     return results
 
 @register.filter
