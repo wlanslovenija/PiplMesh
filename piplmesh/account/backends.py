@@ -58,13 +58,18 @@ class FacebookBackend(MongoEngineBackend):
         # Retrieve user's public profile information
         data = urllib.urlopen('https://graph.facebook.com/me?access_token=%s' % access_token)
         fb = json.load(data)
-        
+
+        # Checks if facebook username exist. If not, it creates it using first and last name
+        username = fb.get('username')
+        if fb.get('username') == None:
+            username = fb.get('first_name')+fb.get('last_name')
+
         # TODO: Check if id and other fields are returned
         # TODO: Move user retrieval/creation to User document/manager
         user, created = self.user_class.objects.get_or_create(
             facebook_id=fb.get('id'),
             defaults={
-                'username': fb.get('username'),
+                'username': username,
                 'first_name': fb.get('first_name'),
                 'last_name': fb.get('last_name'),
                 'email': fb.get('email'),
