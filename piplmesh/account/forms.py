@@ -96,6 +96,21 @@ class RegistrationForm(auth_forms.UserCreationForm):
         return self.cleaned_data['username'], self.cleaned_data['password2']
         
     def validate_unique(self):
-        # TODO: Check for errors
-        # http://docs.nullpobug.com/django/trunk/django.forms.models-pysrc.html#BaseModelForm.validate_unique
-        pass
+        unique_checks, date_checks = self._get_unique_checks() 
+        form_errors = [] 
+        bad_fields = set() 
+
+        field_errors, global_errors = self._perform_unique_checks(unique_checks) 
+        bad_fields.union(field_errors) 
+        form_errors.extend(global_errors) 
+
+        field_errors, global_errors = self._perform_date_checks(date_checks) 
+        bad_fields.union(field_errors) 
+        form_errors.extend(global_errors) 
+
+        for field_name in bad_fields: 
+            del self.cleaned_data[field_name] 
+        if form_errors: 
+            # Raise the unique together errors since they are considered 
+            # form-wide. 
+            raise ValidationError(form_errors) 
