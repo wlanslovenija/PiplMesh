@@ -11,7 +11,7 @@ in Python files like: ``_("some string")``.
 Creation of translation files
 -----------------------------
    
-.. warning:: It is important to run folowing commands from site root directory!
+.. warning:: It is important to run folowing commands from repository root directory!
 
 Add your wanted language in ``settings.py`` under ``LANGUAGES``, make sure that in your Django applications
 you want translated there is a directory called ``locale``, if not you should make one.
