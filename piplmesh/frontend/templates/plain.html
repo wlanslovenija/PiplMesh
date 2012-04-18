@@ -2,8 +2,8 @@
 
 {% block body %}
     {% include "header.html" %}
+    {% include "messages.html" %}
     <div id="content">
-        {% include "messages.html" %}
         {% block content %}{% endblock %}
     </div>
     {% include "footer.html" %}

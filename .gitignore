@@ -21,4 +21,5 @@ Thumbs.db
 # Generated documentation
 /docs/_build/
 
+# Log files
 *.log
