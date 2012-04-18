@@ -127,16 +127,21 @@ class ChangeView(edit_views.UpdateView):
     success_url = urlresolvers.reverse_lazy('home')
     user = User.objects.get(username="martin")
     #form_class = forms.UpdateForm(user)
-    form_class = forms.UpdateForm2
+    #form_class = forms.UpdateForm2
 
     def get_object(self, queryset=None):
-        user = User.objects.get(username=self.request.user.username)
+        #user = User.objects.get(username=self.request.user.username)
+        user = User.objects.get(username="martin")
         return user
 
     def form_valid(self, form):
         # saves new password
         print "DONE"
         return super(ChangeView, self).form_valid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+
+        return super(ChangeView, self).dispatch(request, *args, **kwargs)
 
 
 
