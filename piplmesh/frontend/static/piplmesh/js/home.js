@@ -1,10 +1,13 @@
 function updateUserlist(data) {
     if (data.action == 'JOIN') {
-        $('#userlist').append('<li>' + escape(data.username) + '</li>');
+        $('<li/>').text(data.username).appendTo('#userlist');
     }
     else if (data.action == 'PART') {
+        // TODO: Improve escape and use more suitable :contains method
         $('#userlist li:contains(' + escape(data.username) + ')').remove();
     }
 }
 
-registerUpdatesProcessor('userlist', updateUserlist);
+$(document).ready(function () {
+    registerUpdatesProcessor('userlist', updateUserlist);
+});
