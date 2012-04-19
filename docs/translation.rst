@@ -43,7 +43,7 @@ Compiling translation files
 
 After you are done translating run the command::
 
-     django-admin.py compilemessages
+     ../manage.py compilemessages
        
 and a new file ``django.mo`` will be created.
    
