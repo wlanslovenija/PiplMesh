@@ -240,8 +240,8 @@ LOGIN_REDIRECT_URL = '/'
 SESSION_ENGINE = 'mongoengine.django.sessions'
 
 AUTHENTICATION_BACKENDS = (
-    'account.backends.MongoEngineBackend',
-    'account.backends.FacebookBackend', 
+    'piplmesh.account.backends.MongoEngineBackend',
+    'piplmesh.account.backends.FacebookBackend', 
 )
 
 # Facebook settings:

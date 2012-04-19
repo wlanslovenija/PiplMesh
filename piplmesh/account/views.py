@@ -35,7 +35,7 @@ class RegistrationView(edit_views.FormView):
 
 class FacebookLoginView(generic_views.RedirectView):
     """ 
-    This view authenticates the user via Facebook. 
+    This view authenticates the user via Facebook.
     """
 
     permanent = False
@@ -54,6 +54,7 @@ class FacebookCallbackView(generic_views.RedirectView):
     """
 
     permanent = False
+    # TODO: Redirect users to the page they initially came from
     url = settings.FACEBOOK_LOGIN_REDIRECT
 
     def get(self, request, *args, **kwargs):
@@ -61,7 +62,6 @@ class FacebookCallbackView(generic_views.RedirectView):
             # TODO: Add security measures to prevent attackers from sending a redirect to this url with a forged 'code'
             user = auth.authenticate(token=request.GET['code'], request=request)
             auth.login(request, user)
-            # TODO: Message user that they have been logged in (maybe this will already be in auth.login once we move to MongoDB)
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
         else:
             # TODO: Message user that they have not been logged in because they cancelled the facebook app
