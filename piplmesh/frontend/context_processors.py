@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.contrib import auth
 
+from piplmesh.frontend import views
+
 def global_vars(request):
     """
     Adds global context variables to the context.
@@ -11,4 +13,5 @@ def global_vars(request):
         'LOGIN_REDIRECT_URL': settings.LOGIN_REDIRECT_URL,
         'REDIRECT_FIELD_NAME': auth.REDIRECT_FIELD_NAME,
         'redirect_to': request.REQUEST.get(auth.REDIRECT_FIELD_NAME),
+        'HOME_CHANNEL_ID': views.HOME_CHANNEL_ID,
     }
