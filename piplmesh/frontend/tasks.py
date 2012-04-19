@@ -1,24 +1,25 @@
 import datetime
 
+from django.conf import settings
+
 from celery.task import task
 
 from pushserver.utils import updates
 
 from piplmesh.account import models
 
-@task
-def prune_users():
-    chan_users = models.User.objects()
-    for user in chan_users:
-        # TODO: Implement joining/parting subsystem
-        channel_id = 'a'
-        if len(user.connections) == 0 and user.connection_last_unsubscribe and datetime.datetime.now() > user.connection_last_unsubscribe + datetime.timedelta(seconds=30):
-            user.update(
-                set__connections=[],
-                unset__connection_last_unsubscribe=1,
-                set__is_online=False,
-            )
+CHECK_ONLINE_USERS_RECONNECT_TIMEOUT = 2 * settings.CHECK_ONLINE_USERS_INTERVAL
 
+@task
+def check_online_users():
+    for user in models.User.objects():
+        channel_id = 'a'
+        if models.User.objects( \
+            id=user.id, \
+            is_online=True, \
+            connections=[], \
+            connection_last_unsubscribe__lt=datetime.datetime.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT), \
+        ).update(set__is_online=False):
             updates.send_update(
                 channel_id,
                 {
@@ -27,12 +28,11 @@ def prune_users():
                     'username': user.username,
                 }
             )
-        elif len(user.connections) > 0 and user.is_online == False:
-            # TODO: Check if this command succeeds and only then proceed to send_update
-            user.update(
-                set__is_online=True,
-            )
-
+        elif models.User.objects( \
+            id=user.id, \
+            is_online=False, \
+            connections__ne=[], \
+        ).update(set__is_online=True):
             updates.send_update(
                 channel_id,
                 {
