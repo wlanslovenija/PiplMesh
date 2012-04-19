@@ -27,7 +27,11 @@
                     If user is already logged in, logout link is shown instead.
                 {% endcomment %}
                 {% if user.is_authenticated %}
-                    <li class="image"><img src="{% facebook_picture user.username "square" %}" alt="{% trans "User picture" %}"/></li>
+                    {% if user.facebook_id %}
+                        <li class="image"><img src="{% facebook_picture user.facebook_id "square" %}" alt="{% trans "User picture" %}" /></li>
+                    {% else %}
+                        <li class="image"><img src="{{ STATIC_URL }}piplmesh/images/unknown.png" height="50" width="50" alt="{% trans "User picture" %}" /></li>
+                    {% endif %}
                     <li class="username">{{ user.username }}</li>
                     <li class="last">
                         <form method="post" action="{% url logout %}" id="logout_form">

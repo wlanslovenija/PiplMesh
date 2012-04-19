@@ -64,7 +64,7 @@ class FacebookBackend(MongoEngineBackend):
         user, created = self.user_class.objects.get_or_create(
             facebook_id=fb.get('id'),
             defaults={
-                'username': fb.get('username'),
+                'username': fb.get('username', fb.get('first_name') + fb.get('last_name')),
                 'first_name': fb.get('first_name'),
                 'last_name': fb.get('last_name'),
                 'email': fb.get('email'),
