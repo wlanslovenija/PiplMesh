@@ -18,7 +18,7 @@ def check_online_users():
             id=user.id,
             is_online=True,
             connections=[],
-            connection_last_unsubscribe__lt=datetime.datetime.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT), \
+            connection_last_unsubscribe__lt=datetime.datetime.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
         ).update(set__is_online=False):
             updates.send_update(
                 views.HOME_CHANNEL_ID,
