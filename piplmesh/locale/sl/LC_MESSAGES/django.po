@@ -136,3 +136,9 @@ msgstr "Išči"
 
 #~ msgid "Repeat password"
 #~ msgstr "Ponovi geslo"
+
+#~ msgid "Username:"
+#~ msgstr "Uporabniško ime:"
+
+#~ msgid "Password:"
+#~ msgstr "Geslo:"
