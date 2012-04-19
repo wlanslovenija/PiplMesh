@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-18 16:46+0200\n"
+"Report-Msgid-Bugs-To: https://github.com/wlanslovenija/PiplMesh/\n"
+"POT-Creation-Date: 2012-04-19 09:29+0200\n"
 "PO-Revision-Date: 2012-03-21 12:18+0100\n"
 "Last-Translator: Aljaz Prijatelj <aljaz.prijatelj@gmail.com>\n"
 "Language: sl\n"
@@ -25,18 +25,16 @@ msgid "English"
 msgstr "Angleščina"
 
 #: account/fields.py:9
-#, fuzzy
 msgid "male"
-msgstr "Moški"
+msgstr "moški"
 
 #: account/fields.py:10
-#, fuzzy
 msgid "female"
-msgstr "Ženska"
+msgstr "ženska"
 
 #: account/form_fields.py:11
 msgid "Value is out of bounds."
-msgstr "Vrednost je izven dovoljenega."
+msgstr "Vrednost je izven meja."
 
 #: account/forms.py:42
 msgid "E-mail"
@@ -67,22 +65,21 @@ msgid "A user with that username already exists."
 msgstr "Uporabnik s tem uporabniškim imenom že obstaja."
 
 #: account/signals.py:11
-#, fuzzy
 msgid "You have been successfully logged in."
-msgstr "Odjava uspešna."
+msgstr "Prijava uspešna."
 
 #: account/signals.py:20
-#, fuzzy
 msgid "You have been successfully logged out."
 msgstr "Odjava uspešna."
 
 #: account/templates/registration/login.html:5
 #: account/templates/registration/login.html:17
+#: frontend/templates/header.html:43
 msgid "Login"
 msgstr "Prijavi se"
 
 #: account/templates/registration/login.html:25
-msgid "Log in with Facebook"
+msgid "Login with Facebook"
 msgstr "Facebook prijava"
 
 #: account/templates/registration/login.html:30
@@ -104,19 +101,14 @@ msgid "Reset"
 msgstr "Ponastavi"
 
 #: frontend/templates/footer.html:5
-#, fuzzy
-msgid "wlan slovenija"
-msgstr "wlan slovenija"
-
-#: frontend/templates/footer.html:6
 msgid "node database"
 msgstr "baza točk"
 
-#: frontend/templates/footer.html:7
+#: frontend/templates/footer.html:5
 msgid "development"
 msgstr "razvoj"
 
-#: frontend/templates/footer.html:8
+#: frontend/templates/footer.html:5
 msgid "growing"
 msgstr "rast"
 
@@ -129,19 +121,12 @@ msgid "User picture"
 msgstr "Slika uporabnika"
 
 #: frontend/templates/header.html:38
-msgid "Log out"
+msgid "Logout"
 msgstr "Odjava"
-
-#: frontend/templates/header.html:43
-msgid "Log in"
-msgstr "Prijava"
 
 #: frontend/templates/search.html:5
 msgid "Search"
 msgstr "Išči"
-
-#~ msgid "Male"
-#~ msgstr "Moški"
 
 #~ msgid "Username"
 #~ msgstr "Uporabniško ime"
@@ -151,9 +136,3 @@ msgstr "Išči"
 
 #~ msgid "Repeat password"
 #~ msgstr "Ponovi geslo"
-
-#~ msgid "Home page"
-#~ msgstr "Domov"
-
-#~ msgid "Username:"
-#~ msgstr "Uporabniško ime:"

@@ -19,12 +19,12 @@ you want translated have a directory called ``locale`` (if not, you should creat
 
 When all string are marked for translation and settings are prepared run command::
 
-    django-admin.py makemessages -l <language code>
+    ../manage.py makemessages -l <language code>
 
 *(You should replace <language code> with your preferred language code).*
 Example for Slovenian language::
 
-    django-admin.py makemessages -l sl
+    ../manage.py makemessages -l sl
 
 This will create file ``django.po`` under ``locale/sl/LC_MESSAGES/``
 *(note: All other Directories are automaticly created.)*
