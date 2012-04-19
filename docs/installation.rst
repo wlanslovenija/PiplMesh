@@ -62,6 +62,7 @@ Running
 PiplMesh consist of many components, so multiple daemons should be running. Run
 the following in separate terminals::
 
+    ./manage.py celeryd --loglevel=info --concurrency=1 --maxtasksperchild=10 --beat
     ./manage.py runpushserver
     ./manage.py runserver
 

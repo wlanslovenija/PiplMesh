@@ -8,6 +8,8 @@ from django.core import exceptions, urlresolvers
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 
+from pushserver.utils import updates
+
 from piplmesh.account import forms, signals
 
 class RegistrationView(edit_views.FormView):
