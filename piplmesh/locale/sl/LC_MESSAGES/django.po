@@ -127,18 +127,3 @@ msgstr "Odjava"
 #: frontend/templates/search.html:5
 msgid "Search"
 msgstr "Išči"
-
-#~ msgid "Username"
-#~ msgstr "Uporabniško ime"
-
-#~ msgid "Password"
-#~ msgstr "Geslo"
-
-#~ msgid "Repeat password"
-#~ msgstr "Ponovi geslo"
-
-#~ msgid "Username:"
-#~ msgstr "Uporabniško ime:"
-
-#~ msgid "Password:"
-#~ msgstr "Geslo:"
