@@ -28,7 +28,6 @@ class LimitedDateTimeField(forms.DateTimeField):
         def error():
             raise forms.ValidationError(self.error_messages['bounds'])
         
-        if value != None:
-            fields.limit_date(value, self.lower_limit, self.upper_limit, error)
+        fields.limit_date(value, self.lower_limit, self.upper_limit, error)
 
         return value
