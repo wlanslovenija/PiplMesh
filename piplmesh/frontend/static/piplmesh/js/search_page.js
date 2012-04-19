@@ -33,4 +33,6 @@ google.setOnLoadCallback(function () {
             'gs_upl': urlParams['gs_upl'],
         });
     }
+    $('#gsc-i-id1').val(urlParams[queryParamName]);
+    $('#gsc-i-id1').focus();
 }, true);
