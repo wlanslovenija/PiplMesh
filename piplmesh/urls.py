@@ -1,7 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
 
-from django.conf import settings
-
 from piplmesh.account import views as account_views
 from piplmesh.frontend import views as frontend_views
 
