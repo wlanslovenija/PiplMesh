@@ -27,10 +27,10 @@
                     If user is already logged in, logout link is shown instead.
                 {% endcomment %}
                 {% if user.is_authenticated %}
-                    {% if user.facebook_id == None %}
-                        <li class="image"><img src="{% facebook_picture user.username "square" %}" alt="{% trans "User picture" %}"/></li>
-                    {% else %}
+                    {% if user.facebook_id %}
                         <li class="image"><img src="{% facebook_picture user.facebook_id "square" %}" alt="{% trans "User picture" %}"/></li>
+                    {% else %}
+                        <li class="image"><img src="http://127.0.0.1:8000/static/piplmesh/images/unknown.png" height="50" width="50"/></li>
                     {% endif %}
                     <li class="username"><a href="/profile/{{user.username }}/">{{ user.username }}<a/></li>
                     <li class="last">

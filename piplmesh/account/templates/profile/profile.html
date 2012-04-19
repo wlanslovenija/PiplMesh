@@ -14,10 +14,10 @@
         {% endif %}
     </div>
     <div id="pic" >
-        {% if profile.facebook_id == None %}
-            <img src="{% facebook_picture profile.username "large" %}" alt="{% trans "User picture" %}"/>
-        {% else %}
+        {% if profile.facebook_id %}
             <img src="{% facebook_picture profile.facebook_id "large" %}" alt="{% trans "User picture" %}"/>
+        {% else %}
+            <img src="http://127.0.0.1:8000/static/piplmesh/images/unknown.png" height="300" width="200"/>
         {% endif %}
     </div>
     <div id="profile">
