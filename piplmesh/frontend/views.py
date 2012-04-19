@@ -4,7 +4,6 @@ from django import dispatch
 from django.views import generic as generic_views
 
 from pushserver import signals
-from pushserver.utils import updates
 
 from piplmesh.account import models
 
