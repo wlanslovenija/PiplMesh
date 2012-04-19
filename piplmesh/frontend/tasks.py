@@ -13,6 +13,7 @@ CHECK_ONLINE_USERS_RECONNECT_TIMEOUT = 2 * settings.CHECK_ONLINE_USERS_INTERVAL
 
 @task.task
 def check_online_users():
+    # TODO: Iterating over all users in Python could become really slow once there are millions of users, much better is to limit the query only to potentially interesting users (conditions are already bellow)
     for user in models.User.objects():
         if models.User.objects(
             id=user.id,
