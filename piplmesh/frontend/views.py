@@ -7,6 +7,8 @@ from pushserver import signals
 
 from piplmesh.account import models
 
+HOME_CHANNEL_ID = 'home'
+
 @dispatch.receiver(signals.channel_subscribe)
 def process_channel_subscribe(sender, request, channel_id, **kwargs):
     request.user.update(
