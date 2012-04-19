@@ -5,6 +5,9 @@
 {% block title %}{% trans "Search" %}{% endblock %}
 
 {% block content %}
+    {% if "q" in request.GET %}
+        <div id="google_query">{% trans "Results for:" %} <span class="google_query_text">{{ request.GET.q }}</span></div>
+    {% endif %}
     <div id="cse" class="result"></div>
     <script src="https://www.google.com/jsapi" type="text/javascript"></script>
     <script type="text/javascript">

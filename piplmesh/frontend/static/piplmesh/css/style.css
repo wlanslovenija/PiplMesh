@@ -91,6 +91,16 @@ td.gsc-clear-button, table.gsc-branding {
     display: none;
 }
 
+/* Google search CSS */
+#google_query {
+    margin-bottom: -10px;
+    margin-left: 110px;
+}
+
+.google_query_text {
+    font-weight: bold;
+}
+
 #gsc-i-id1 {
     border-color: #969696;
     border-bottom-left-radius: 2px;
