@@ -183,6 +183,8 @@ PUSH_SERVER = {
     ),
 }
 
+CHECK_ONLINE_USERS_INTERVAL = 10
+
 CELERY_RESULT_BACKEND = 'mongodb'
 CELERY_MONGODB_BACKEND_SETTINGS = {
     'host': '127.0.0.1',
@@ -203,9 +205,9 @@ CELERY_IMPORTS = (
 )
 
 CELERYBEAT_SCHEDULE = {
-    'runs-every-10-seconds': {
-        'task': 'piplmesh.frontend.tasks.prune_users',
-        'schedule': datetime.timedelta(seconds=10),
+    'check_online_users': {
+        'task': 'piplmesh.frontend.tasks.check_online_users',
+        'schedule': datetime.timedelta(seconds=CHECK_ONLINE_USERS_INTERVAL),
         'args': (),
     },
 }
