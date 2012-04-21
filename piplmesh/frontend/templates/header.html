@@ -30,7 +30,8 @@
                     {% if user.facebook_id %}
                         <li class="image"><img src="{% facebook_picture user.facebook_id "square" %}" alt="{% trans "User picture" %}" /></li>
                     {% else %}
-                        <li class="image"><img src="{{ STATIC_URL }}piplmesh/images/unknown.png" height="50" width="50" alt="{% trans "User picture" %}" /></li>
+                        {% load gravatar %}
+                        {% gravatar user 50 %}
                     {% endif %}
                     <li class="username">{{ user.username }}</li>
                     <li class="last">
