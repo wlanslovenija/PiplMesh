@@ -2,7 +2,7 @@
 #
 # Development Django settings for PiplMesh project.
 
-import os.path
+import datetime, os.path
 
 MONGODB_DATABASE = 'PiplMesh'
 
@@ -152,7 +152,65 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
+
+    'pushserver',
+    'djcelery',
 )
+
+PUSH_SERVER = {
+    'port': 8001,
+    'address': '127.0.0.1',
+    'store': {
+        'type': 'memory',
+        'min_messages': 0,
+        'max_messages': 100,
+        'message_timeout': 10,
+    },
+    'locations': (
+        {
+            'type': 'subscriber',
+            'url': r'/updates/([^/]+)',
+            'polling': 'long',
+            'create_on_get': True,
+            'allow_origin': 'http://127.0.0.1:8000',
+            'allow_credentials': True,
+            'passthrough': 'http://127.0.0.1:8000/passthrough',
+        },
+        {
+            'type': 'publisher',
+            'url': r'/send-update/([^/]+)',
+        },
+    ),
+}
+
+CHECK_ONLINE_USERS_INTERVAL = 10
+
+CELERY_RESULT_BACKEND = 'mongodb'
+CELERY_MONGODB_BACKEND_SETTINGS = {
+    'host': '127.0.0.1',
+    'port': 27017,
+    'database': 'celery',
+    'taskmeta_collection': 'celery_taskmeta',
+}
+
+BROKER_BACKEND = 'mongodb'
+BROKER_HOST = 'localhost'
+BROKER_PORT = 27017
+BROKER_USER = ''
+BROKER_PASSWORD = ''
+BROKER_VHOST = 'celery'
+
+CELERY_IMPORTS = (
+    'piplmesh.frontend.tasks',
+)
+
+CELERYBEAT_SCHEDULE = {
+    'check_online_users': {
+        'task': 'piplmesh.frontend.tasks.check_online_users',
+        'schedule': datetime.timedelta(seconds=CHECK_ONLINE_USERS_INTERVAL),
+        'args': (),
+    },
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

@@ -1,1 +1,2 @@
-<img src="{{ gravatar.url }}" width="{{ gravatar.size }}" height="{{ gravatar.size }}" class="gravatar" />
+{% load i18n %}
+<img src="{{ gravatar.url }}" height="{{ gravatar.size }}" width="{{ gravatar.size }}" alt="{% trans "User picture" %}" />

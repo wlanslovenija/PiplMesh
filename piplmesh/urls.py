@@ -1,7 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
 
-from django.conf import settings
-
 from piplmesh.account import views as account_views
 from piplmesh.frontend import views as frontend_views
 
@@ -10,6 +8,7 @@ urlpatterns = patterns('',
 
     url(r'^search', frontend_views.SearchView.as_view(), name='search'),
     url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^passthrough', include('pushserver.urls')),
 
     # Registration, login, logout
     url(r'^register/$', account_views.RegistrationView.as_view(), name='registration'),

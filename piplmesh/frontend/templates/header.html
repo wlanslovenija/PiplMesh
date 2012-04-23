@@ -1,4 +1,4 @@
-{% load i18n facebook %}
+{% load i18n facebook gravatar %}
 <div id="container">
     <div id="header">
         <div id="logo">
@@ -6,8 +6,8 @@
                 <img src="{{ STATIC_URL }}piplmesh/images/logo-{{ LANGUAGE_CODE }}.png" alt="PiplMesh" />
             </a>
         </div>
-        {% include "messages.html" %}
         <div id="search">
+            <img id="search_logo" src="{{ STATIC_URL }}piplmesh/images/google.png" alt="Google" />
             <div id="cse_search_form"></div>
             <script src="https://www.google.com/jsapi" type="text/javascript"></script>
             <script type="text/javascript">
@@ -23,27 +23,29 @@
         {% with next|default:redirect_to|default:request.get_full_path as next_url %}
             <ul class="user">
                 {% comment %}
-                    This list is used for registration and log in link.
+                    This list is used for registration and login link.
                     If user is already logged in, logout link is shown instead.
                 {% endcomment %}
                 {% if user.is_authenticated %}
-                    {% if user.facebook_id %}
-                        <li class="image"><img src="{% facebook_picture user.facebook_id "square" %}" alt="{% trans "User picture" %}"/></li>
-                    {% else %}
-                        <li class="image"><img src="http://127.0.0.1:8000/static/piplmesh/images/unknown.png" height="50" width="50"/></li>
-                    {% endif %}
+                    <li class="image">
+                        {% if user.facebook_id %}
+                            <img src="{% facebook_picture user.facebook_id "square" %}" alt="{% trans "User picture" %}" />
+                        {% else %}
+                            {% gravatar user 50 %}
+                        {% endif %}
+                    </li>
                     <li class="username"><a href="/profile/{{user.username }}/">{{ user.username }}<a/></li>
                     <li class="last">
                         <form method="post" action="{% url logout %}" id="logout_form">
                             {% csrf_token %}
                             <div>
                                 <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
-                                <button type="submit" class="auth_button" value="value">{% trans "Log out" %}</button>
+                                <button type="submit" class="auth_button" value="value">{% trans "Logout" %}</button>
                             </div>
                         </form>
                     </li>
                 {% else %}
-                    <li><a href="{% url login %}?{{ REDIRECT_FIELD_NAME }}={{ next_url }}">{% trans "Log in" %}</a></li>
+                    <li><a href="{% url login %}?{{ REDIRECT_FIELD_NAME }}={{ next_url }}">{% trans "Login" %}</a></li>
                     <li class="last"><a href="{% url registration %}">{% trans "Register" %}</a></li>
                 {% endif %}
             </ul>

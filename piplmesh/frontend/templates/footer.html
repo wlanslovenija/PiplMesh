@@ -2,7 +2,7 @@
 <div id="footer">
     <hr class="hidden" />
     <div id="footer_nav">
-        <a href="http://wlan-si.net/">wlan slovenija</a> | <a href="https://nodes.wlan-si.net/">node database</a> | <a href="http://dev.wlan-si.net/">development</a> | <a href="http://grow.wlan-si.net/">growing</a>
+        <a href="http://wlan-si.net/">wlan slovenija</a> | <a href="https://nodes.wlan-si.net/">{% trans "node database" %}</a> | <a href="http://dev.wlan-si.net/">{% trans "development" %}</a> | <a href="http://grow.wlan-si.net/">{% trans "growing" %}</a>
     </div>
     <div id="language">
         <ul>
@@ -18,7 +18,7 @@
                                 <input type="hidden" value="{{ request.get_full_path }}" />
                                 <input type="hidden" name="language" value="{{ lang.0 }}" />
                                 <button type="submit" class="text_button">{{ lang_info.name_local }}</button>
-                            </div>                       
+                            </div>
                         </form>
                     </li>
                 {% endif %}
