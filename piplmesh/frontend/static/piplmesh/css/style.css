@@ -344,12 +344,11 @@ input.gsc-search-button {
     padding: 4px;
     text-align: center;
     list-style-type: none;
-<<<<<<< HEAD
 }
 
 /* --------------------- PROFILE ------------------------ */
 #profile {
-    margin-left: 60%;
+    margin-left: 40%;
     display: inline-block;
     text-align: center;
 }
@@ -377,8 +376,3 @@ input.gsc-search-button {
 
 
 
-=======
-    margin-left: 20px;
-    margin-right: 20px;
-}
->>>>>>> master

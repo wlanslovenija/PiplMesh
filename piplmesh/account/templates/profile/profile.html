@@ -4,7 +4,7 @@
 
 {% block content %}
 
-{% load i18n facebook %}
+{% load i18n facebook gravatar %}
 
 <div id="main">
     <div id="settings">
@@ -17,20 +17,22 @@
         {% if profile.facebook_id %}
             <img src="{% facebook_picture profile.facebook_id "large" %}" alt="{% trans "User picture" %}"/>
         {% else %}
-            <img src="http://127.0.0.1:8000/static/piplmesh/images/unknown.png" height="300" width="200"/>
+            {% gravatar user 200 %}
         {% endif %}
     </div>
     <div id="profile">
-        <p>Username: {{ profile.username }}</p>
-        <p>first name: {{ profile.first_name }}</p>
-        <p>last name: {{ profile.last_name }}</p>
+        <p>username: {{ profile.username }}</p>
+        <p>name: {{ profile.first_name }} {{ profile.last_name }}</p>
         <p>gender: {{ profile.gender }}</p>
         <p>birthdate: {{ profile.birthdate }}</p>
         <p>email: {{ profile.email }}</p>
         <p>last login: {{ profile.last_login }}</p>
-        <p>fb id: {{ profile.facebook_id }}</p>
-        <p>language: {{  profile.language }}</p>
-        <p>id: {{  profile.id }}</p>
+        {% if profile.facebook_id %}
+            <p><a href="{{  profile.facebook_link }}"><img src="{{ STATIC_URL }}piplmesh/images/fb_logo.png" height="30" width="30" alt="Facebook link" /></a></p>
+        {% endif %}
+        <br>
+        <br>
+        <br>
         <br>
         <br>
         <br>

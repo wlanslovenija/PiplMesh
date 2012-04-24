@@ -130,7 +130,7 @@ class ChangeView(edit_views.UpdateView):
     success_url = urlresolvers.reverse_lazy('home')
     #user = User.objects.get(username="martin")
     form_class = forms.UpdateForm2
-    object = User.objects.get(username="janez")
+    #object = User.objects.get(username="janez")
 
 
 
