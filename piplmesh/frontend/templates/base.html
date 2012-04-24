@@ -10,7 +10,9 @@
         <script type="text/javascript" src="{{ STATIC_URL }}pushserver/updates.js"></script>
         <script src="{{ STATIC_URL }}piplmesh/js/home.js" type="text/javascript"></script>
         <script type="text/javascript">
-            var updates_url = '{% filter escapejs %}{% updates_url HOME_CHANNEL_ID %}{% endfilter %}';
+            $.updates.subscribe({
+                'home_channel': '{% filter escapejs %}{% channel_url HOME_CHANNEL_ID %}{% endfilter %}'
+            });
         </script>
         {% block extrahead %}{% endblock %}
         {% block js %}{% endblock %}

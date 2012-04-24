@@ -1,5 +1,5 @@
-Translation of PiplMesh
-=======================
+Translation
+===========
 
 Making strings translatable
 ---------------------------
@@ -14,10 +14,12 @@ Creation of translation files
    
 .. warning:: It is important to run folowing commands from repository root directory!
 
-Add your wanted language(s) in ``settings.py`` under ``LANGUAGES`` and make sure your Django applications
-you want translated have a directory called ``locale`` (if not, you should create one).
+Add your wanted language(s) in ``settings.py`` under ``LANGUAGES`` and make
+sure your Django applications you want translated have a directory called
+``locale`` (if not, you should create one).
 
-When all string are marked for translation and settings are prepared run command::
+When all string are marked for translation and settings are prepared run
+command::
 
     ../manage.py makemessages -l <language code>
 
@@ -32,9 +34,10 @@ This will create file ``django.po`` under ``locale/sl/LC_MESSAGES/``
 Translation
 -----------
 
-Open file ``django.po`` with text editor or with special translation tool (Poedit_ for example) and
-translate strings. Original string is named ``msgid "Some string"`` and under it there is
-``msgstr`` which contains an empty string where you should write your translation.
+Open file ``django.po`` with text editor or with special translation tool
+(Poedit_ for example) and translate strings. Original string is named ``msgid
+"Some string"`` and under it there is ``msgstr`` which contains an empty string
+where you should write your translation.
 
 .. _Poedit: http://www.poedit.net/
 

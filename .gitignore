@@ -20,3 +20,6 @@ Thumbs.db
 
 # Generated documentation
 /docs/_build/
+
+# Celery
+celerybeat-schedule
