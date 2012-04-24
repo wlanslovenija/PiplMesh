@@ -130,7 +130,7 @@ class UpdateForm(auth_forms.PasswordChangeForm):
 
 
 
-class UpdateForm2(auth_forms.UserCreationForm):
+class UpdateForm2(auth_forms.UserChangeForm):
 
     email = forms.EmailField(label=_("E-mail"))
     first_name = forms.CharField(label=_("First name"))

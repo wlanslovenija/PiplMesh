@@ -129,24 +129,53 @@ class ChangeView(edit_views.UpdateView):
     template_name = 'profile/settings.html'
     success_url = urlresolvers.reverse_lazy('home')
     #user = User.objects.get(username="martin")
-    form_class = forms.UpdateForm
-    #object = User.objects.get(username="martin")
+    form_class = forms.UpdateForm2
+    object = User.objects.get(username="janez")
 
 
-    def get_object(self, queryset=None):
-        user = User.objects.get(username=self.request.user.username)
-        #user = User.objects.get(username="martin")
-        return user
 
-    def form_valid(self, form):
-        # saves new password
-        print "DONE"
-        return super(ChangeView, self).form_valid(form)
 
-    def get(self, request, **kwargs):
-        self.object = User.objects.get(username=self.request.user)
+
+    def get(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        context = self.get_context_data(object=self.object, form=form)
-        return self.render_to_response(context)
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_form_kwargs(self):
+        """
+        Returns the keyword arguments for instanciating the form.
+        """
+
+        kwargs = {'initial': self.get_initial()}
+        if self.request.method in ('POST', 'PUT'):
+            kwargs.update({
+                'data': self.request.POST,
+                'files': self.request.FILES,
+                })
+
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = kwargs
+        print "m"
+        print self.object
+        if self.object:
+            context['object'] = self.object
+            context_object_name = "Janez"
+            if context_object_name:
+                context[context_object_name] = self.object
+        return context
+
+
+    def render_to_response(self, context, **response_kwargs):
+        """
+        Returns a response with a template rendered with the given context.
+        """
+        return self.response_class(
+            request = self.request,
+            template = self.template_name,
+            context = context,
+            **response_kwargs
+        )
+
 
