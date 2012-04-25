@@ -1,6 +1,6 @@
-import urllib
+import datetime, urllib
 
-from django import http
+from django import dispatch, http
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth import views as auth_views
@@ -8,9 +8,12 @@ from django.core import exceptions, urlresolvers
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 
+from pushserver import signals
 from pushserver.utils import updates
 
-from piplmesh.account import forms, signals
+from piplmesh.account import forms, models
+
+HOME_CHANNEL_ID = 'home'
 
 class RegistrationView(edit_views.FormView):
     """
@@ -78,3 +81,27 @@ def logout(request):
         return auth_views.logout_then_login(request, url)
     else:
         raise exceptions.PermissionDenied
+
+@dispatch.receiver(signals.channel_subscribe)
+def process_channel_subscribe(sender, request, channel_id, **kwargs):
+    request.user.update(
+        push__connections={
+            'http_if_none_match': request.META['HTTP_IF_NONE_MATCH'],
+            'http_if_modified_since': request.META['HTTP_IF_MODIFIED_SINCE'],
+            'channel_id': channel_id,
+        }
+    )
+
+@dispatch.receiver(signals.channel_unsubscribe)
+def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
+    models.User.objects(
+        id=request.user.id,
+        connections__http_if_none_match=request.META['HTTP_IF_NONE_MATCH'],
+        connections__http_if_modified_since=request.META['HTTP_IF_MODIFIED_SINCE'],
+        connections__channel_id=channel_id,
+    ).update_one(unset__connections__S=1)
+
+    request.user.update(
+        pull__connections=None,
+        set__connection_last_unsubscribe=datetime.datetime.now(),
+    )
