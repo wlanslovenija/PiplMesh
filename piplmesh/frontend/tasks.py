@@ -14,12 +14,13 @@ CHECK_ONLINE_USERS_RECONNECT_TIMEOUT = 2 * settings.CHECK_ONLINE_USERS_INTERVAL
 @task.task
 def check_online_users():
     # TODO: Iterating over all users in Python could become really slow once there are millions of users, much better is to limit the query only to potentially interesting users (conditions are already bellow)
-    for user in [users for users in models.User.objects(
+    for user in models.User.objects(
             is_online=True,
             connections=[],
             connection_last_unsubscribe__lt=datetime.datetime.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
-            ) if users.update(set__is_online=False)]:
-        updates.send_update(
+            ):
+        if user.update(set__is_online=False):
+            updates.send_update(
                 views.HOME_CHANNEL_ID,
                 {
                     'type': 'userlist',
@@ -27,10 +28,11 @@ def check_online_users():
                     'username': user.username,
                 }
         )
-    for user in [users for users in models.User.objects(
+    for user in models.User.objects(
             is_online=False,
             connections__ne=[],
-            ) if users.update(set__is_online=True)]:
+            ):
+        if user.update(set__is_online=True):
             updates.send_update(
                 views.HOME_CHANNEL_ID,
                 {
