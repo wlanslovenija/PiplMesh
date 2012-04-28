@@ -9,6 +9,7 @@
     <div class="login">
         <div class="login_form">
             <form method="post" action="{% url login %}">
+                {{ form.non_field_errors }}
                 {% csrf_token %}
                 {% with next|default:redirect_to|default:LOGIN_REDIRECT_URL as next_url %}
                     <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
@@ -16,7 +17,7 @@
                 <ul class="form_fields">
                     {% for field in form %}
                         <li class="field_error">
-                            {{ field.errors.as_text }}
+                            {{ field.errors }}
                         </li>
                         <li class="field">
                             <label for="{{ field.id_for_label }}">
@@ -30,7 +31,7 @@
                         </li> 
                     {% endfor %} 
                 </ul>
-                <div class="button"><button type="submit" class="auth_button" value="value">{% trans "Login" %}</button></div>
+                <div class="button"><input type="submit"  value="{% trans "Login" %}"></div>
             </form>
         </div>
         <div id="other_login_options">
@@ -38,7 +39,7 @@
                 <li>
                     <form method="post" action="{% url facebook_login %}" id="fb_login_form2">
                         {% csrf_token %}
-                         <p><button type="submit" class="fb_login_button" value="value"><span class="fb_button_text">{% trans "Log in with Facebook" %}</span></button></p>
+                         <p><button type="submit" class="fb_login_button" value=""><span class="fb_button_text">{% trans "Log in with Facebook" %}</span></button></p>
                     </form>
                   </li>
                 <li>{% comment %}Place for OpenID button.{% endcomment %}</li>

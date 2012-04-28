@@ -7,11 +7,12 @@
 {% block content %}
 <div class="registration">
     <form method="post" action="{% url registration %}">
+        {{ form.non_field_errors }}
         {% csrf_token %}
         <ul class="form_fields">
             {% for field in form %}    
                 <li class="field_error">
-                    {{ field.errors.as_text }}
+                    {{ field.errors }}
                 </li>     
                 <li class="field">
                     <label for="{{ field.id_for_label }}">
@@ -26,10 +27,8 @@
             {% endfor %}            
         </ul>
         <div class="button">
-            <ul>
-                <li><input type="submit" value="{% trans "Register" %}" /></li>
-                <li><input type="reset" value="{% trans "Reset" %}" /></li>
-            </ul>
+            <input type="submit" value="{% trans "Register" %}" />
+            <input type="reset" value="{% trans "Reset" %}" />
         </div>
     </form>
 </div>
