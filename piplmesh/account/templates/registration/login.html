@@ -39,7 +39,7 @@
                 <li>
                     <form method="post" action="{% url facebook_login %}" id="fb_login_form2">
                         {% csrf_token %}
-                         <p><button type="submit" class="fb_login_button" value=""><span class="fb_button_text">{% trans "Log in with Facebook" %}</span></button></p>
+                        <p><button type="submit" class="fb_login_button" value=""><span class="fb_button_text">{% trans "Log in with Facebook" %}</span></button></p>
                     </form>
                   </li>
                 <li>{% comment %}Place for OpenID button.{% endcomment %}</li>
