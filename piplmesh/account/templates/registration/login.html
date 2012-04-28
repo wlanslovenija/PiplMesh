@@ -10,6 +10,9 @@
         <div class="login_form">
             <form method="post" action="{% url login %}">
                 {% csrf_token %}
+                {% with next|default:redirect_to|default:LOGIN_REDIRECT_URL as next_url %}
+                    <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
+                {% endwith %}
                 <ul class="form_fields">
                     {% for field in form %}
                         <li class="field_error">

@@ -26,7 +26,7 @@ For development GitHub_ is used, so source code and issue tracker is found
 there_.
 
 .. _GitHub: https://github.com/
-.. _there: https://github.com/mitar/PiplMesh
+.. _there: https://github.com/wlanslovenija/PiplMesh
 
 Indices and tables
 ==================

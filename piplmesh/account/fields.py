@@ -11,6 +11,9 @@ GENDER_CHOICES = (
 )
 
 def limit_date(value, lower_limit, upper_limit, error):
+    if not value:
+        return
+    
     if upper_limit:
         tmp_value = value
         tmp_upper_limit = upper_limit
