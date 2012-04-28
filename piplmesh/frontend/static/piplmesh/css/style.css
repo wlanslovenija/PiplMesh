@@ -324,22 +324,22 @@ input.gsc-search-button {
 }
 
 /* buttons */
-.button {
+.buttons {
     padding-top: 20px;
     margin-left: 270px;
 }
 
-.button input {
+.buttons input {
     height: 30px;
     width: 100px;
 }
 
-.button ul {
+.buttons ul {
     list-style-type: none;
     overflow: hidden;
 }
 
-.button li {
+.buttons li {
     float: left;
     padding-right: 4px;
 }
