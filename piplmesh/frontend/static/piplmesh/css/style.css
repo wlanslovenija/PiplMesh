@@ -277,7 +277,7 @@ input.gsc-search-button {
 }
 
 .fb_login_button:hover {
-    background: #29447E url('../images/fb_login_button_hover.png');
+    background-position: -163px;
 }
 
 .fb_button_text {
