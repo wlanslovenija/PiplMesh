@@ -5,31 +5,31 @@
 {% block title %}{% trans "Registration" %}{% endblock %}
 
 {% block content %}
-<div class="registration">
-    <form method="post" action="{% url registration %}">
-        {{ form.non_field_errors }}
-        {% csrf_token %}
-        <ul class="form_fields">
-            {% for field in form %}    
-                <li class="field_error">
-                    {{ field.errors }}
-                </li>     
-                <li class="field">
-                    <label for="{{ field.id_for_label }}">
-                        {% if field.field.required %}
-                            <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
-                        {% else %}
-                            {{ field.label }}
-                        {% endif %}
-                    </label>
-                    {{ field }} 
-                </li> 
-            {% endfor %}            
-        </ul>
-        <div class="buttons">
-            <input type="submit" value="{% trans "Register" %}" />
-            <input type="reset" value="{% trans "Reset" %}" />
-        </div>
-    </form>
-</div>
+    <div class="registration">
+        <form method="post" action="{% url registration %}">
+            {{ form.non_field_errors }}
+            {% csrf_token %}
+            <ul class="form_fields">
+                {% for field in form %}    
+                    <li class="field_error">
+                        {{ field.errors }}
+                    </li>     
+                    <li class="field">
+                        <label for="{{ field.id_for_label }}">
+                            {% if field.field.required %}
+                                <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
+                        </label>
+                        {{ field }} 
+                    </li> 
+                {% endfor %}            
+            </ul>
+            <div class="buttons">
+                <input type="submit" value="{% trans "Register" %}" />
+                <input type="reset" value="{% trans "Reset" %}" />
+            </div>
+        </form>
+    </div>
 {% endblock %}

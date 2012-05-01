@@ -5,47 +5,47 @@
 {% block title %}{% trans "Login" %}{% endblock %}
 
 {% block content %}
-<div id="main">
-    <div class="login">
-        <div class="login_form">
-            <form method="post" action="{% url login %}">
-                {{ form.non_field_errors }}
-                {% csrf_token %}
-                {% with next|default:redirect_to|default:LOGIN_REDIRECT_URL as next_url %}
-                    <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
-                {% endwith %}
-                <ul class="form_fields">
-                    {% for field in form %}
-                        <li class="field_error">
-                            {{ field.errors }}
-                        </li>
-                        <li class="field">
-                            <label for="{{ field.id_for_label }}">
-                                {% if field.field.required %}
-                                    <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
-                                {% else %}
-                                    {{ field.label }}
-                                {% endif %}
-                            </label>
-                            {{ field }} 
-                        </li> 
-                    {% endfor %} 
+    <div id="main">
+        <div class="login">
+            <div class="login_form">
+                <form method="post" action="{% url login %}">
+                    {{ form.non_field_errors }}
+                    {% csrf_token %}
+                    {% with next|default:redirect_to|default:LOGIN_REDIRECT_URL as next_url %}
+                        <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
+                    {% endwith %}
+                    <ul class="form_fields">
+                        {% for field in form %}
+                            <li class="field_error">
+                                {{ field.errors }}
+                            </li>
+                            <li class="field">
+                                <label for="{{ field.id_for_label }}">
+                                    {% if field.field.required %}
+                                        <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
+                                    {% else %}
+                                        {{ field.label }}
+                                    {% endif %}
+                                </label>
+                                {{ field }} 
+                            </li> 
+                        {% endfor %} 
+                    </ul>
+                    <div class="button"><input type="submit"  value="{% trans "Login" %}"></div>
+                </form>
+            </div>
+            <div id="other_login_options">
+                <ul>
+                    <li>
+                        <form method="post" action="{% url facebook_login %}" id="fb_login_form2">
+                            {% csrf_token %}
+                            <p><button type="submit" class="fb_login_button" value=""><span class="fb_button_text">{% trans "Log in with Facebook" %}</span></button></p>
+                        </form>
+                      </li>
+                    <li>{% comment %}Place for OpenID button.{% endcomment %}</li>
+                    <li><a href="{% url registration %}">{% trans "Register" %}</a></li>
                 </ul>
-                <div class="button"><input type="submit"  value="{% trans "Login" %}"></div>
-            </form>
-        </div>
-        <div id="other_login_options">
-            <ul>
-                <li>
-                    <form method="post" action="{% url facebook_login %}" id="fb_login_form2">
-                        {% csrf_token %}
-                        <p><button type="submit" class="fb_login_button" value=""><span class="fb_button_text">{% trans "Log in with Facebook" %}</span></button></p>
-                    </form>
-                  </li>
-                <li>{% comment %}Place for OpenID button.{% endcomment %}</li>
-                <li><a href="{% url registration %}">{% trans "Register" %}</a></li>
-            </ul>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
