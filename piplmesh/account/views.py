@@ -88,94 +88,44 @@ def logout(request):
 
 
 
-def profile(request, username):
+def profile(request, usrnm):
     """
     This view checks if user exist in database and returns his profile.
     """
 
     try:
-        profile = User.objects.get(username=username)
+        profile = User.objects.get(username=usrnm)
         return render_to_response('profile/profile.html',{'profile': profile}, context_instance=RequestContext(request))
     except Exception, e:
-        signals.user_not_found_message(request,username)
+        print e
+        signals.user_not_found_message(request,usrnm)
         return render_to_response('home.html', context_instance=RequestContext(request))
 
 
 
-
-"""def settings(request, username):
-
-    #This view checks if user has permission to access settings page
-
-
-    for user in User.objects:
-        if str(user) == str(username):
-            if request.user.username == str(username):
-                return render_to_response('profile/settings.html',{'user': request.user}, context_instance=RequestContext(request))
-            else:
-                signals.no_permission_message(request)
-                return render_to_response('home.html', context_instance=RequestContext(request))
-    signals.user_not_found_message(request,username)
-    return render_to_response('home.html', context_instance=RequestContext(request))
-"""
-
-
-
-class ChangeView(edit_views.UpdateView):
+class SettingsView(generic_views.View):
     """
-
+    Setings view ...
     """
 
     template_name = 'profile/settings.html'
     success_url = urlresolvers.reverse_lazy('home')
-    #user = User.objects.get(username="martin")
-    form_class = forms.UpdateForm2
-    #object = User.objects.get(username="janez")
 
 
 
-
-
-    def get(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        return self.render_to_response(self.get_context_data(form=form))
-
-    def get_form_kwargs(self):
-        """
-        Returns the keyword arguments for instanciating the form.
-        """
-
-        kwargs = {'initial': self.get_initial()}
-        if self.request.method in ('POST', 'PUT'):
-            kwargs.update({
-                'data': self.request.POST,
-                'files': self.request.FILES,
-                })
-
-        return kwargs
-
-    def get_context_data(self, **kwargs):
-        context = kwargs
-        print "m"
-        print self.object
-        if self.object:
-            context['object'] = self.object
-            context_object_name = "Janez"
-            if context_object_name:
-                context[context_object_name] = self.object
-        return context
-
-
-    def render_to_response(self, context, **response_kwargs):
-        """
-        Returns a response with a template rendered with the given context.
-        """
-        return self.response_class(
-            request = self.request,
-            template = self.template_name,
-            context = context,
-            **response_kwargs
-        )
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.username == kwargs["username"]:
+            form = forms.UpdateForm({
+                'first_name': request.user.first_name,
+                'last_name': request.user.last_name,
+                'email': request.user.email,
+                'gender': request.user.gender,
+                'birthdate': request.user.birthdate,
+                'avatar': "unknown.png"
+            })
+            return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+        else:
+            signals.no_permission_message(request)
+            return render_to_response('home.html', context_instance=RequestContext(request))
 
 

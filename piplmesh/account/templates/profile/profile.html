@@ -17,7 +17,7 @@
         {% if profile.facebook_id %}
             <img src="{% facebook_picture profile.facebook_id "large" %}" alt="{% trans "User picture" %}"/>
         {% else %}
-            {% gravatar user 200 %}
+            {% gravatar profile 200 %}
         {% endif %}
     </div>
     <div id="profile">

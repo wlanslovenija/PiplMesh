@@ -103,7 +103,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
 
 
 
-class UpdateForm(auth_forms.PasswordChangeForm):
+class UpdateForm3(auth_forms.PasswordChangeForm):
 
     # Required data
     old_password = forms.CharField(label=_("Old password"), widget=forms.PasswordInput)
@@ -130,8 +130,37 @@ class UpdateForm(auth_forms.PasswordChangeForm):
 
 
 
-class UpdateForm2(auth_forms.UserChangeForm):
+class UpdateForm(forms.Form):
 
-    email = forms.EmailField(label=_("E-mail"))
     first_name = forms.CharField(label=_("First name"))
     last_name = forms.CharField(label=_("Last name"))
+    email = forms.EmailField(label=_("E-mail"))
+    gender = forms.ChoiceField(
+        label=_("Gender"),
+        required=False,
+        choices=fields.GENDER_CHOICES,
+        widget=forms.RadioSelect(renderer=RadioFieldRenderer),
+    )
+    birthdate = form_fields.LimitedDateTimeField(
+        upper_limit=datetime.datetime.today(),
+        lower_limit=datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT),
+        label=_("Birth date"),
+        required=False,
+        widget=extras_widgets.SelectDateWidget(
+            years=[
+            y for y in range(
+                datetime.datetime.today().year,
+                (datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT)).year,
+                -1,
+            )
+            ],
+        ),
+    )
+
+    avatar = forms.CharField(label=_("Avatar"))
+
+    new_password1 = forms.CharField(label=_("New password"), widget=forms.PasswordInput)
+    new_password2 = forms.CharField(label=_("Repeat password"), widget=forms.PasswordInput)
+
+    old_password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
+

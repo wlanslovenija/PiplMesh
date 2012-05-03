@@ -372,6 +372,37 @@ input.gsc-search-button {
     text-decoration: underline;
 }
 
+/* --------------------- SETTINGS ------------------------ */
+
+
+#settings1 {
+    position: absolute;
+    /*border: 2px solid blue;*/
+}
+
+#settings2 {
+    margin-left: 50%;
+    /*border: 2px solid blue;*/
+}
+
+#avatar1 {
+    margin-top: 12%;
+    /*border: 2px solid blue;*/
+}
+
+#button1 {
+    margin-top: 8%;
+    /*border: 2px solid blue;*/
+}
+
+.form_textbox2 {
+    width: 160px;
+    text-align: left;
+}
+
+#image2 {
+    /*border: 1px dashed black;*/
+}
 
 
 

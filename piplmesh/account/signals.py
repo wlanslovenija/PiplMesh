@@ -32,7 +32,7 @@ def user_not_found_message(request,username):
 
 def no_permission_message(request):
     """
-    Shows user not found message.
+    Shows no permission message.
     """
     messages.success(request, _("You do not have permission to view this page."), fail_silently=True)
 
