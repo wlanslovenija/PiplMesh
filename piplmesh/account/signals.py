@@ -22,15 +22,9 @@ def user_logout_message(sender, request, user, **kwargs):
 signals.user_logged_out.connect(user_logout_message, dispatch_uid=__name__ + '.user_logout_message')
 
 
-def user_not_found_message(request,username):
+def error_message(request,message):
     """
-    Shows user not found message.
+    Shows error message.
     """
-    messages.success(request, _("User "+username+" not found."), fail_silently=True)
-
-def no_permission_message(request):
-    """
-    Shows no permission message.
-    """
-    messages.success(request, _("You do not have permission to view this page."), fail_silently=True)
+    messages.success(request, _(message), fail_silently=True)
 

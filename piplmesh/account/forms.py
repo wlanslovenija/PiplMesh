@@ -9,6 +9,7 @@ from django.utils import encoding, safestring
 from django.utils.translation import ugettext_lazy as _
 
 from piplmesh.account import fields, form_fields, models
+from piplmesh.account.models import User
 
 class RadioFieldRenderer(widgets.RadioFieldRenderer):
     """
@@ -133,12 +134,10 @@ class UpdateForm(forms.Form):
 
     avatar = forms.CharField(label=_("Avatar"))
 
-    new_password1 = forms.CharField(label=_("New password"), widget=forms.PasswordInput)
-    new_password2 = forms.CharField(label=_("Repeat password"), widget=forms.PasswordInput)
+    new_password1 = forms.CharField(label=_("New password"), widget=forms.PasswordInput, required=False)
+    new_password2 = forms.CharField(label=_("Repeat password"), widget=forms.PasswordInput, required=False)
 
-    old_password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
-
-
+    old_password = forms.CharField(label=_("Password"), widget=forms.PasswordInput, required=False)
 
 
 
@@ -146,45 +145,26 @@ class UpdateForm(forms.Form):
 
 
 
+    def update(self, user):
+        try:
+            self.is_valid()
+            if user.check_password(self.cleaned_data['old_password']):
+                user.first_name=self.cleaned_data['first_name']
+                user.last_name=self.cleaned_data['last_name']
+                user.email=self.cleaned_data['email']
+                user.gender=self.cleaned_data['gender']
+                user.birthdate=self.cleaned_data['birthdate']
+                if self.cleaned_data['new_password1'] and self.cleaned_data['new_password1'] == self.cleaned_data['new_password2']:
+                    user.set_password(self.cleaned_data['new_password1'])
+                # TODO MESSAGE IF PASSWORDS DOESNT MATCH
+                user.save()
+                return ""
+            else:
+                return "You have entered invalid password"
+        except Exception, e:
+            print e
+            return "Error"
 
 
 
-
-    def update(self):
-        """# We first have to save user to database
-        new_user = models.User(
-            username=self.cleaned_data['username'],
-            first_name=self.cleaned_data['first_name'],
-            last_name=self.cleaned_data['last_name'],
-            email=self.cleaned_data['email'],
-            gender=self.cleaned_data['gender'],
-            birthdate=self.cleaned_data['birthdate'],
-        )"""
-
-
-
-        return "validated"
-
-    """def validate_unique(self):
-        # validate_unique() is called on model instance and our MongoEngine
-        # objects do not have this, so this function doesn't do anything
-        pass
-
-
-    def clean_oldpassword(self):
-        if self.clean_data.get('oldpassword') and not self.user.check_password(self.clean_data['oldpassword']):
-            raise ValidationError('Please type your current password.')
-        return self.clean_data['oldpassword']
-
-    def clean_password2(self):
-        if self.clean_data.get('password1') and self.clean_data.get('password2') and self.clean_data['password1'] != self.clean_data['password2']:
-            raise ValidationError('The new passwords are not the same')
-        return self.clean_data['password2']
-
-
-    def clean_password2(self):
-        # This method checks whether the passwords match
-        if self.cleaned_data.has_key('password1') and self.cleaned_data['password1'] == self.cleaned_data['password2']:
-            return self.cleaned_data['password2']
-        raise forms.ValidationError(_("Passwords do not match."))"""
 

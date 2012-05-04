@@ -344,6 +344,8 @@ input.gsc-search-button {
     padding: 4px;
     text-align: center;
     list-style-type: none;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 /* --------------------- PROFILE ------------------------ */
@@ -373,8 +375,6 @@ input.gsc-search-button {
 }
 
 /* --------------------- SETTINGS ------------------------ */
-
-
 #settings1 {
     position: absolute;
     /*border: 2px solid blue;*/

@@ -15,7 +15,6 @@ from pushserver.utils import updates
 from piplmesh.account import forms, signals
 from piplmesh.account.models import User
 
-
 class RegistrationView(edit_views.FormView):
     """
     This view checks if form data are valid, saves new user.
@@ -83,9 +82,6 @@ def logout(request):
     else:
         raise exceptions.PermissionDenied
 
-
-
-
 def profile(request, usrnm):
     """
     This view checks if user exist in database and returns his profile.
@@ -95,11 +91,9 @@ def profile(request, usrnm):
         profile = User.objects.get(username=usrnm)
         return render_to_response('profile/profile.html',{'profile': profile}, context_instance=RequestContext(request))
     except Exception, e:
-        print e
-        signals.user_not_found_message(request,usrnm)
+        message = "User "+usrnm+" not found."
+        signals.error_message(request,message)
         return render_to_response('home.html', context_instance=RequestContext(request))
-
-
 
 class SettingsView(generic_views.View):
     """
@@ -108,16 +102,18 @@ class SettingsView(generic_views.View):
 
     template_name = 'profile/settings.html'
 
-
-
-
     def dispatch(self, request, *args, **kwargs):
         if request.user.username == kwargs["username"]:
             if request.method == 'POST':
                 form = forms.UpdateForm(request.POST)
-                print form.update()
-                url = "/profile/"+request.user.username
-                return redirect(url)
+                error=form.update(request.user)
+                if error:
+                    signals.error_message(request,error)
+                    return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+                else:
+                    url = "/profile/"+request.user.username
+                    signals.error_message(request,"You have successfully modified your settings")
+                    return redirect(url)
             else:
                 form = forms.UpdateForm({
                     'first_name': request.user.first_name,
@@ -129,7 +125,7 @@ class SettingsView(generic_views.View):
                 })
                 return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
         else:
-            signals.no_permission_message(request)
+            signals.error_message(request,"You do not have permission to view this page.")
             return render_to_response('home.html', context_instance=RequestContext(request))
 
 

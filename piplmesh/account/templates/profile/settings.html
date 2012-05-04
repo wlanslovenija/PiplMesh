@@ -30,13 +30,11 @@
                     {% endif %}
                 {% endfor %}
             </div>
-
             <div id="settings2">
                 <label>{% trans "Change your password" %}</label>
-
                 {% for field in form %}
                     {% if field.name == "new_password1" or field.name == "new_password2" %}
-
+                        {{ field.errors }}
                         <ul class="form_field">
                             <li class="form_label">
                                 <label for="{{ field.id_for_label }}">
