@@ -58,7 +58,7 @@ class FacebookBackend(MongoEngineBackend):
         # Retrieve user's public profile information
         data = urllib.urlopen('https://graph.facebook.com/me?access_token=%s' % access_token)
         fb = json.load(data)
-        print fb
+
         # TODO: Check if id and other fields are returned
         # TODO: Move user retrieval/creation to User document/manager
         user, created = self.user_class.objects.get_or_create(

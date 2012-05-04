@@ -22,8 +22,6 @@ def user_logout_message(sender, request, user, **kwargs):
 signals.user_logged_out.connect(user_logout_message, dispatch_uid=__name__ + '.user_logout_message')
 
 
-
-
 def user_not_found_message(request,username):
     """
     Shows user not found message.

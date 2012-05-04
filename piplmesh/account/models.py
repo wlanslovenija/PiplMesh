@@ -24,4 +24,3 @@ class User(auth.User):
     connections = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Connection))
     connection_last_unsubscribe = mongoengine.DateTimeField()
     is_online = mongoengine.BooleanField(default=False)
-
