@@ -9,7 +9,8 @@ from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
+
 from django.template import RequestContext
 from piplmesh.account.models import User
 
@@ -109,21 +110,27 @@ class SettingsView(generic_views.View):
     """
 
     template_name = 'profile/settings.html'
-    success_url = urlresolvers.reverse_lazy('home')
+
 
 
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.username == kwargs["username"]:
-            form = forms.UpdateForm({
-                'first_name': request.user.first_name,
-                'last_name': request.user.last_name,
-                'email': request.user.email,
-                'gender': request.user.gender,
-                'birthdate': request.user.birthdate,
-                'avatar': "unknown.png"
-            })
-            return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+            if request.method == 'POST':
+                form = forms.UpdateForm(request.POST)
+                print form.update()
+                url = "/profile/"+request.user.username
+                return redirect(url)
+            else:
+                form = forms.UpdateForm({
+                    'first_name': request.user.first_name,
+                    'last_name': request.user.last_name,
+                    'email': request.user.email,
+                    'gender': request.user.gender,
+                    'birthdate': request.user.birthdate,
+                    'avatar': "unknown.png"
+                })
+                return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
         else:
             signals.no_permission_message(request)
             return render_to_response('home.html', context_instance=RequestContext(request))

@@ -13,7 +13,7 @@
         <p id="cur">settings</p>
     </div>
     <div class="registration">
-        <form method="post" action="{% url home %}">
+        <form method="post" action="">
             <div id="settings1">
                 {% csrf_token %}
                 {% for field in form %}

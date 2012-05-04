@@ -103,32 +103,6 @@ class RegistrationForm(auth_forms.UserCreationForm):
 
 
 
-class UpdateForm3(auth_forms.PasswordChangeForm):
-
-    # Required data
-    old_password = forms.CharField(label=_("Old password"), widget=forms.PasswordInput)
-    new_password1 = forms.CharField(label=_("New password"), widget=forms.PasswordInput)
-    new_password2 = forms.CharField(label=_("New password"), widget=forms.PasswordInput)
-
-
-
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
-        super(UpdateForm, self).__init__(*args, **kwargs)
-
-
-
-    def clean_oldpassword(self):
-        if self.clean_data.get('oldpassword') and not self.user.check_password(self.clean_data['oldpassword']):
-            raise ValidationError('Please type your current password.')
-        return self.clean_data['oldpassword']
-
-    def clean_password2(self):
-        if self.clean_data.get('password1') and self.clean_data.get('password2') and self.clean_data['password1'] != self.clean_data['password2']:
-            raise ValidationError('The new passwords are not the same')
-        return self.clean_data['password2']
-
-
 
 class UpdateForm(forms.Form):
 
@@ -163,4 +137,54 @@ class UpdateForm(forms.Form):
     new_password2 = forms.CharField(label=_("Repeat password"), widget=forms.PasswordInput)
 
     old_password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def update(self):
+        """# We first have to save user to database
+        new_user = models.User(
+            username=self.cleaned_data['username'],
+            first_name=self.cleaned_data['first_name'],
+            last_name=self.cleaned_data['last_name'],
+            email=self.cleaned_data['email'],
+            gender=self.cleaned_data['gender'],
+            birthdate=self.cleaned_data['birthdate'],
+        )"""
+
+
+
+        return "validated"
+
+    """def validate_unique(self):
+        # validate_unique() is called on model instance and our MongoEngine
+        # objects do not have this, so this function doesn't do anything
+        pass
+
+
+    def clean_oldpassword(self):
+        if self.clean_data.get('oldpassword') and not self.user.check_password(self.clean_data['oldpassword']):
+            raise ValidationError('Please type your current password.')
+        return self.clean_data['oldpassword']
+
+    def clean_password2(self):
+        if self.clean_data.get('password1') and self.clean_data.get('password2') and self.clean_data['password1'] != self.clean_data['password2']:
+            raise ValidationError('The new passwords are not the same')
+        return self.clean_data['password2']
+
+
+    def clean_password2(self):
+        # This method checks whether the passwords match
+        if self.cleaned_data.has_key('password1') and self.cleaned_data['password1'] == self.cleaned_data['password2']:
+            return self.cleaned_data['password2']
+        raise forms.ValidationError(_("Passwords do not match."))"""
 
