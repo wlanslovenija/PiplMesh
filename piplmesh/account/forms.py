@@ -101,11 +101,10 @@ class RegistrationForm(auth_forms.UserCreationForm):
         # objects do not have this, so this function doesn't do anything
         pass
 
-
-
-
-
 class UpdateForm(forms.Form):
+    """
+    Class with user settings form.
+    """
 
     first_name = forms.CharField(label=_("First name"))
     last_name = forms.CharField(label=_("Last name"))
@@ -131,19 +130,10 @@ class UpdateForm(forms.Form):
             ],
         ),
     )
-
     avatar = forms.CharField(label=_("Avatar"))
-
     new_password1 = forms.CharField(label=_("New password"), widget=forms.PasswordInput, required=False)
     new_password2 = forms.CharField(label=_("Repeat password"), widget=forms.PasswordInput, required=False)
-
     old_password = forms.CharField(label=_("Password"), widget=forms.PasswordInput, required=False)
-
-
-
-
-
-
 
     def update(self, user):
         try:
@@ -154,17 +144,17 @@ class UpdateForm(forms.Form):
                 user.email=self.cleaned_data['email']
                 user.gender=self.cleaned_data['gender']
                 user.birthdate=self.cleaned_data['birthdate']
-                if self.cleaned_data['new_password1'] and self.cleaned_data['new_password1'] == self.cleaned_data['new_password2']:
-                    user.set_password(self.cleaned_data['new_password1'])
-                # TODO MESSAGE IF PASSWORDS DOESNT MATCH
+                if self.cleaned_data['new_password1']:
+                    if self.cleaned_data['new_password1'] == self.cleaned_data['new_password2']:
+                        user.set_password(self.cleaned_data['new_password1'])
+                    else:
+                        return "Passwords do not match."
                 user.save()
+                # TODO: Change user avatar
+                avatar = self.cleaned_data['avatar']
                 return ""
             else:
                 return "You have entered invalid password"
         except Exception, e:
             print e
             return "Error"
-
-
-
-

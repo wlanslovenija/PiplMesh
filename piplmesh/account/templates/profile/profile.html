@@ -1,46 +1,41 @@
 {% extends "plain.html" %}
 
-{% block fulltitle %}wlan slovenija{% endblock %}
-
-{% block content %}
-
 {% load i18n facebook gravatar %}
 
+{% block title %}{{ profile.username }}{% endblock %}
+
+{% block content %}
 <div id="main">
     <div id="settings">
-        <p id="cur">profile</p>
+        <p id="cur">{% trans "Profile" %}</p>
         {% if user.username == profile.username %}
-            <p><a href="/profile/{{user.username }}/settings">settings<a/></p>
+            <p><a href="/profile/{{user.username }}/settings">{% trans "Settings" %}<a/></p>
         {% endif %}
     </div>
     <div id="pic" >
         {% if profile.facebook_id %}
-            <img src="{% facebook_picture profile.facebook_id "large" %}" alt="{% trans "User picture" %}"/>
+            <img src="{% facebook_picture profile.facebook_id "large" %}" alt="{% trans "User picture" %}" />
         {% else %}
             {% gravatar profile 200 %}
         {% endif %}
     </div>
     <div id="profile">
-        <p>username: {{ profile.username }}</p>
-        <p>name: {{ profile.first_name }} {{ profile.last_name }}</p>
-        <p>gender: {{ profile.gender }}</p>
-        <p>birthdate: {{ profile.birthdate }}</p>
-        <p>email: {{ profile.email }}</p>
-        <p>last login: {{ profile.last_login }}</p>
+        <p>{% trans "username" %}: {{ profile.username }}</p>
+        <p>{% trans "name" %}: {{ profile.first_name }} {{ profile.last_name }}</p>
+        <p>{% trans "gender" %}: {{ profile.gender }}</p>
+        <p>{% trans "birthdate" %}: {{ profile.birthdate }}</p>
+        <p>{% trans "email" %}: {{ profile.email }}</p>
+        <p>{% trans "last login" %}: {{ profile.last_login }}</p>
         {% if profile.facebook_id %}
-            <p><a href="{{  profile.facebook_link }}"><img src="{{ STATIC_URL }}piplmesh/images/fb_logo.png" height="30" width="30" alt="Facebook link" /></a></p>
+            <p><a href="{{  profile.facebook_link }}"><img src="{{ STATIC_URL }}piplmesh/images/fb_logo.png" height="30" width="30" alt="{% trans "Facebook link" %}" /></a></p>
         {% endif %}
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
     </div>
 </div>
 {% endblock %}
-
-

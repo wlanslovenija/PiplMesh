@@ -21,10 +21,10 @@ def user_logout_message(sender, request, user, **kwargs):
 
 signals.user_logged_out.connect(user_logout_message, dispatch_uid=__name__ + '.user_logout_message')
 
-
 def error_message(request,message):
     """
     Shows error message.
     """
+
     messages.success(request, _(message), fail_silently=True)
 

@@ -2,15 +2,13 @@
 
 {% load i18n gravatar %}
 
-{% block fulltitle %}wlan slovenija{% endblock %}
+{% block title %}{% trans "Settings" %}{% endblock %}
 
 {% block content %}
-
-
 <div id="main">
     <div id="settings">
-        <p><a href="/profile/{{user.username }}/">profile<a/></p>
-        <p id="cur">settings</p>
+        <p><a href="/profile/{{user.username }}/">{% trans "Profile" %}<a/></p>
+        <p id="cur">{% trans "Settings" %}</p>
     </div>
     <div class="registration">
         <form method="post" action="">
@@ -47,31 +45,28 @@
                 {% endfor %}
             </div>
             <div id="avatar1">
-                {% for field in form %}
-                    {% if field.name == "avatar" %}
-                        {{ field.errors }}
-                        <ul class="form_field">
-                            <li class="form_label">
-                                <label for="{{ field.id_for_label }}">
-                                    {{ field.label }}
-                                </label>
-                            </li>
-                            <li class="form_textbox2">{{ field }}</li>
-                            <li id="image2">
-                                {% gravatar user 50 %}
-                            </li>
-                        </ul>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <div id="button1">
+                {{ form.avatar.errors }}
                 <ul class="form_field">
                     <li class="form_label">
-                        <label>{% trans "Password" %}</label>
+                        <label for="{{ form.avatar.id_for_label }}">
+                            {{ form.avatar.label }}
+                        </label>
                     </li>
-                    <li id="form_textbox2">
-                        <input type="password" name="old_password" id="id_old_password">
+                    <li class="form_textbox2">{{ form.avatar }}</li>
+                    <li id="image2">
+                        {% gravatar user 50 %}
                     </li>
+                </ul>
+            </div>
+            <div id="button1">
+                {{ form.old_password.errors }}
+                <ul class="form_field">
+                    <li class="form_label">
+                        <label for="{{ form.old_password.id_for_label }}">
+                            {{ form.old_password.label }}
+                        </label>
+                    </li>
+                    <li id="form_textbox2">{{ form.old_password }}</li>
                     <li><input type="submit" value="{% trans "Save Changes" %}" /></li>
                 </ul>
             </div>

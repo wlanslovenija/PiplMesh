@@ -82,50 +82,58 @@ def logout(request):
     else:
         raise exceptions.PermissionDenied
 
-def profile(request, usrnm):
+def profile(request, username):
     """
     This view checks if user exist in database and returns his profile.
     """
 
     try:
-        profile = User.objects.get(username=usrnm)
+        profile = User.objects.get(username=username)
         return render_to_response('profile/profile.html',{'profile': profile}, context_instance=RequestContext(request))
     except Exception, e:
-        message = "User "+usrnm+" not found."
+        message = "User "+username+" not found."
         signals.error_message(request,message)
+        # TODO: Redirect user to page where he came from
         return render_to_response('home.html', context_instance=RequestContext(request))
 
 class SettingsView(generic_views.View):
     """
-    Setings view ...
+    This view displays form for updating user settings. It checks if all fields are valid and updates user.
+    It also prevents unauthorised access to user settings page.
     """
 
     template_name = 'profile/settings.html'
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.username == kwargs["username"]:
-            if request.method == 'POST':
-                form = forms.UpdateForm(request.POST)
-                error=form.update(request.user)
-                if error:
-                    signals.error_message(request,error)
-                    return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
-                else:
-                    url = "/profile/"+request.user.username
-                    signals.error_message(request,"You have successfully modified your settings")
-                    return redirect(url)
+            url = "/profile/"+request.user.username
+            if request.user.facebook_id:
+                # TODO: Settings for users with Facebook login
+                signals.error_message(request,"Settings for users with Facebook login are not available at this moment")
+                return redirect(url)
             else:
-                form = forms.UpdateForm({
-                    'first_name': request.user.first_name,
-                    'last_name': request.user.last_name,
-                    'email': request.user.email,
-                    'gender': request.user.gender,
-                    'birthdate': request.user.birthdate,
-                    'avatar': "unknown.png"
-                })
-                return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+                if request.method == 'POST':
+                    form = forms.UpdateForm(request.POST)
+                    error = form.update(request.user)
+                    if error:
+                        signals.error_message(request,error)
+                        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+                    else:
+                        signals.error_message(request,"You have successfully modified your settings")
+                        return redirect(url)
+                else:
+                    form = forms.UpdateForm({
+                        'first_name': request.user.first_name,
+                        'last_name': request.user.last_name,
+                        'email': request.user.email,
+                        'gender': request.user.gender,
+                        'birthdate': request.user.birthdate,
+                        # TODO: Path to user current avatar
+                        'avatar': "unknown.png"
+                    })
+                    #print form.avatar
+                    return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
         else:
             signals.error_message(request,"You do not have permission to view this page.")
+            # TODO: Redirect user to page where he came from
             return render_to_response('home.html', context_instance=RequestContext(request))
-
-
