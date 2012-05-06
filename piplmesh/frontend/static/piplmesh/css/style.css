@@ -348,6 +348,7 @@ input.gsc-search-button {
     margin-right: 20px;
 }
 
+/* TODO: Create better and less confusing css for profile and settings
 /* --------------------- PROFILE ------------------------ */
 #profile {
     margin-left: 50%;
@@ -400,11 +401,3 @@ input.gsc-search-button {
     width: 160px;
     text-align: left;
 }
-
-#image2 {
-    /*border: 1px dashed black;*/
-}
-
-
-
-

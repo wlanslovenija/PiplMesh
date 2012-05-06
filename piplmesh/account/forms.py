@@ -9,7 +9,6 @@ from django.utils import encoding, safestring
 from django.utils.translation import ugettext_lazy as _
 
 from piplmesh.account import fields, form_fields, models
-from piplmesh.account.models import User
 
 class RadioFieldRenderer(widgets.RadioFieldRenderer):
     """
