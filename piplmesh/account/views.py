@@ -92,7 +92,7 @@ def process_channel_subscribe(sender, request, channel_id, **kwargs):
             'http_if_none_match': request.META['HTTP_IF_NONE_MATCH'],
             'http_if_modified_since': request.META['HTTP_IF_MODIFIED_SINCE'],
             'channel_id': channel_id,
-            }
+        }
     )
 
 @dispatch.receiver(signals.channel_unsubscribe)
