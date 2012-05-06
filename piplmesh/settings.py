@@ -11,6 +11,9 @@ mongoengine.connect(MONGODB_DATABASE)
 
 settings_dir = os.path.abspath(os.path.dirname(__file__))
 
+import djcelery
+djcelery.setup_loader()
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 

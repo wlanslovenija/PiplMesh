@@ -1,6 +1,6 @@
-import urllib
+import datetime, urllib
 
-from django import http
+from django import dispatch, http
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth import views as auth_views
@@ -10,10 +10,13 @@ from django.views.generic import simple, edit as edit_views
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 
+from pushserver import signals
 from pushserver.utils import updates
 
-from piplmesh.account import forms, signals
+from piplmesh.account import forms, models, signals as message_signals
 from piplmesh.account.models import User
+
+HOME_CHANNEL_ID = 'home'
 
 class RegistrationView(edit_views.FormView):
     """
@@ -82,6 +85,30 @@ def logout(request):
     else:
         raise exceptions.PermissionDenied
 
+@dispatch.receiver(signals.channel_subscribe)
+def process_channel_subscribe(sender, request, channel_id, **kwargs):
+    request.user.update(
+        push__connections={
+            'http_if_none_match': request.META['HTTP_IF_NONE_MATCH'],
+            'http_if_modified_since': request.META['HTTP_IF_MODIFIED_SINCE'],
+            'channel_id': channel_id,
+            }
+    )
+
+@dispatch.receiver(signals.channel_unsubscribe)
+def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
+    models.User.objects(
+        id=request.user.id,
+        connections__http_if_none_match=request.META['HTTP_IF_NONE_MATCH'],
+        connections__http_if_modified_since=request.META['HTTP_IF_MODIFIED_SINCE'],
+        connections__channel_id=channel_id,
+    ).update_one(unset__connections__S=1)
+
+    request.user.update(
+        pull__connections=None,
+        set__connection_last_unsubscribe=datetime.datetime.now(),
+    )
+
 def profile(request, username):
     """
     This view checks if user exist in database and returns his profile.
@@ -92,7 +119,7 @@ def profile(request, username):
         return render_to_response('profile/profile.html',{'profile': profile}, context_instance=RequestContext(request))
     except Exception, e:
         message = "User "+username+" not found."
-        signals.error_message(request,message)
+        message_signals.error_message(request,message)
         # TODO: Redirect user to page where he came from
         return render_to_response('home.html', context_instance=RequestContext(request))
 
@@ -109,17 +136,17 @@ class SettingsView(generic_views.View):
             url = "/profile/"+request.user.username
             if request.user.facebook_id:
                 # TODO: Settings for users with Facebook login
-                signals.error_message(request,"Settings for users with Facebook login are not available at this moment")
+                message_signals.error_message(request,"Settings for users with Facebook login are not available at this moment")
                 return redirect(url)
             else:
                 if request.method == 'POST':
                     form = forms.UpdateForm(request.POST)
                     error = form.update(request.user)
                     if error:
-                        signals.error_message(request,error)
+                        message_signals.error_message(request,error)
                         return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
                     else:
-                        signals.error_message(request,"You have successfully modified your settings")
+                        message_signals.error_message(request,"You have successfully modified your settings")
                         return redirect(url)
                 else:
                     form = forms.UpdateForm({
@@ -131,9 +158,9 @@ class SettingsView(generic_views.View):
                         # TODO: Path to user current avatar
                         'avatar': "unknown.png"
                     })
-                    #print form.avatar
                     return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
         else:
-            signals.error_message(request,"You do not have permission to view this page.")
+            message_signals.error_message(request,"You do not have permission to view this page.")
             # TODO: Redirect user to page where he came from
             return render_to_response('home.html', context_instance=RequestContext(request))
+
