@@ -60,9 +60,9 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
         self.upper_limit = upper_limit
         self.lower_limit = lower_limit
 
-        if self.upper_limit and not isinstance(self.upper_limit, (datetime.datetime, datetime.date)):
+        if self.upper_limit and not callable(self.upper_limit) and not isinstance(self.upper_limit, (datetime.datetime, datetime.date)):
             self.error(u"Invalid upper_limit argument.")
-        if self.lower_limit and not isinstance(self.lower_limit, (datetime.datetime, datetime.date)):
+        if self.lower_limit and not callable(self.upper_limit) and not isinstance(self.lower_limit, (datetime.datetime, datetime.date)):
             self.error(u"Invalid lower_limit argument.")
 
         super(LimitedDateTimeField, self).__init__(*args, **kwargs)
