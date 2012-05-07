@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib import auth
 
-from piplmesh.frontend import views
+from piplmesh.account import views
 
 def global_vars(request):
     """
