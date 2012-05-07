@@ -79,5 +79,12 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
                 raise Exception("Callable did not return datetime.date or datetime.datetime object.")
         else:
             upper_limit = self.upper_limit
-        
-        limit_date(value, self.lower_limit, self.upper_limit, error)
+            
+        if callable(self.lower_limit):
+            lower_limit = self.lower_limit()
+            if not isinstance(self.lower_limit, (datetime.datetime, datetime.date)):
+                raise Exception("Callable did not return datetime.date or datetime.datetime object.")
+        else:
+            lower_limit = self.lower_limit
+            
+        limit_date(value, lower_limit, upper_limit, error)
