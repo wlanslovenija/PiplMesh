@@ -73,4 +73,11 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
         def error():
             self.error(u"Value is out of bounds.")
         
+        if callable(self.upper_limit):
+            upper_limit = self.upper_limit()
+            if not isinstance(self.upper_limit, (datetime.datetime, datetime.date)):
+                raise Exception("Callable did not return datetime.date or datetime.datetime object.")
+        else:
+            upper_limit = self.upper_limit
+        
         limit_date(value, self.lower_limit, self.upper_limit, error)
