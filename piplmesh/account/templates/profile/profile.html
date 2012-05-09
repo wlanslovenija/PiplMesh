@@ -9,7 +9,7 @@
     <div id="settings">
         <p id="cur">{% trans "Profile" %}</p>
         {% if user.username == profile.username %}
-            <p><a href="/profile/{{user.username }}/settings">{% trans "Settings" %}<a/></p>
+            <p><a href="{% url settings username=user.username %}">{% trans "Settings" %}<a/></p>
         {% endif %}
     </div>
     <div id="pic" >

@@ -2,7 +2,7 @@ import datetime, urllib
 
 from django import dispatch, http
 from django.conf import settings
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.contrib.auth import views as auth_views
 from django.core import exceptions, urlresolvers
 from django.views import generic as generic_views
@@ -13,7 +13,7 @@ from django.template import RequestContext
 from pushserver import signals
 from pushserver.utils import updates
 
-from piplmesh.account import forms, models, signals as message_signals
+from piplmesh.account import forms, models
 from piplmesh.account.models import User
 
 HOME_CHANNEL_ID = 'home'
@@ -119,7 +119,7 @@ def profile(request, username):
         return render_to_response('profile/profile.html',{'profile': profile}, context_instance=RequestContext(request))
     except Exception, e:
         message = "User "+username+" not found."
-        message_signals.error_message(request,message)
+        messages.error(request,message)
         # TODO: Redirect user to page where he came from
         return render_to_response('home.html', context_instance=RequestContext(request))
 
@@ -136,17 +136,17 @@ class SettingsView(generic_views.View):
             url = "/profile/"+request.user.username
             if request.user.facebook_id:
                 # TODO: Settings for users with Facebook login
-                message_signals.error_message(request,"Settings for users with Facebook login are not available at this moment")
+                messages.error(request,"Settings for users with Facebook login are not available at this moment")
                 return redirect(url)
             else:
                 if request.method == 'POST':
                     form = forms.UpdateForm(request.POST)
                     error = form.update(request.user)
                     if error:
-                        message_signals.error_message(request,error)
+                        messages.error(request,error)
                         return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
                     else:
-                        message_signals.error_message(request,"You have successfully modified your settings")
+                        messages.error(request,"You have successfully modified your settings")
                         return redirect(url)
                 else:
                     form = forms.UpdateForm({
@@ -160,7 +160,7 @@ class SettingsView(generic_views.View):
                     })
                     return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
         else:
-            message_signals.error_message(request,"You do not have permission to view this page.")
+            messages.error(request,"You do not have permission to view this page.")
             # TODO: Redirect user to page where he came from
             return render_to_response('home.html', context_instance=RequestContext(request))
 
