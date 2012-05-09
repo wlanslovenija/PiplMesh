@@ -105,3 +105,9 @@ def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
         pull__connections=None,
         set__connection_last_unsubscribe=datetime.datetime.now(),
     )
+
+def get_logged_in_users():
+    users = models.User.objects(
+        is_online = True
+    )
+    return users
