@@ -133,26 +133,3 @@ class UpdateForm(forms.Form):
     new_password1 = forms.CharField(label=_("New password"), widget=forms.PasswordInput, required=False)
     new_password2 = forms.CharField(label=_("Repeat password"), widget=forms.PasswordInput, required=False)
     old_password = forms.CharField(label=_("Password"), widget=forms.PasswordInput, required=False)
-
-    def update(self, user):
-        try:
-            self.is_valid()
-            if user.check_password(self.cleaned_data['old_password']):
-                user.first_name=self.cleaned_data['first_name']
-                user.last_name=self.cleaned_data['last_name']
-                user.email=self.cleaned_data['email']
-                user.gender=self.cleaned_data['gender']
-                user.birthdate=self.cleaned_data['birthdate']
-                if self.cleaned_data['new_password1']:
-                    if self.cleaned_data['new_password1'] == self.cleaned_data['new_password2']:
-                        user.set_password(self.cleaned_data['new_password1'])
-                    else:
-                        return "Passwords do not match."
-                user.save()
-                # TODO: Change user image
-                profile_image = self.cleaned_data['profile_image']
-                return ""
-            else:
-                return "You have entered invalid password"
-        except Exception, e:
-            return "Error"

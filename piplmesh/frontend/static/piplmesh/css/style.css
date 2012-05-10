@@ -348,7 +348,8 @@ input.gsc-search-button {
     margin-right: 20px;
 }
 
-/* TODO: Create better and less confusing css for profile and settings
+/* TODO: Create better and less confusing css for profile and settings.
+/* TODO: Correct appearance of non-valid form (divs get slightly out of their position)
 /* --------------------- PROFILE ------------------------ */
 #profile {
     margin-left: 50%;

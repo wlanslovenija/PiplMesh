@@ -130,37 +130,50 @@ class SettingsView(edit_views.FormView):
     """
 
     template_name = 'profile/settings.html'
+    form_class = forms.UpdateForm
+    user = models.User
+
+    def form_valid(self, form):
+        if self.user.check_password(form.cleaned_data['old_password']):
+            self.user.first_name=form.cleaned_data['first_name']
+            self.user.last_name=form.cleaned_data['last_name']
+            self.user.email=form.cleaned_data['email']
+            self.user.gender=form.cleaned_data['gender']
+            self.user.birthdate=form.cleaned_data['birthdate']
+            # TODO: Change user image
+            profile_image = form.cleaned_data['profile_image']
+            self.user.save()
+            if form.cleaned_data['new_password1']:
+                if form.cleaned_data['new_password1'] == form.cleaned_data['new_password2']:
+                    self.user.set_password(form.cleaned_data['new_password1'])
+                else:
+                    messages.error(self.request,"Passwords do not match")
+                    return super(SettingsView, self).form_invalid(form)
+            messages.error(self.request,"You have successfully modified your settings")
+            return super(SettingsView, self).form_valid(form)
+        else:
+            messages.error(self.request,"You have entered invalid password")
+            return super(SettingsView, self).form_invalid(form)
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.username == kwargs["username"]:
-            url = urlresolvers.reverse_lazy('profile', kwargs={'username': request.user.username})
+            self.success_url = urlresolvers.reverse_lazy('profile', kwargs={'username': request.user.username})
             if request.user.facebook_id:
                 # TODO: Settings for users with Facebook login
                 messages.error(request,"Settings for users with Facebook login are not available at this moment")
-                return shortcuts.redirect(url)
-            else:
-                if request.method == 'POST':
-                    form = forms.UpdateForm(request.POST)
-                    error = form.update(request.user)
-                    if error:
-                        messages.error(request,error)
-                        return shortcuts.render_to_response(self.template_name, {'form': form}, context_instance=template.RequestContext(request))
-                    else:
-                        messages.error(request,"You have successfully modified your settings")
-                        return shortcuts.redirect(url)
-                else:
-                    form = forms.UpdateForm({
-                        'first_name': request.user.first_name,
-                        'last_name': request.user.last_name,
-                        'email': request.user.email,
-                        'gender': request.user.gender,
-                        'birthdate': request.user.birthdate,
-                        # TODO: Path to user current avatar
-                        'profile_image': "unknown.png"
-                    })
-                    return shortcuts.render_to_response(self.template_name, {'form': form}, context_instance=template.RequestContext(request))
+                return shortcuts.redirect(self.success_url)
+            self.user = models.User.objects.get(username=request.user.username)
+            self.initial = {
+                'first_name': request.user.first_name,
+                'last_name': request.user.last_name,
+                'email': request.user.email,
+                'gender': request.user.gender,
+                'birthdate': request.user.birthdate,
+                # TODO: Path to user current avatar
+                'profile_image': "unknown.png"
+            }
+            return super(SettingsView, self).dispatch(request, *args, **kwargs)
         else:
             messages.error(request,"You do not have permission to view this page.")
             # TODO: Redirect user to page where he came from
             return shortcuts.render_to_response('home.html', context_instance=template.RequestContext(request))
-
