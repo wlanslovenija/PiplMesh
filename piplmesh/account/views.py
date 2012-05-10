@@ -1,20 +1,17 @@
 import datetime, urllib
 
-from django import dispatch, http
+from django import dispatch, http, shortcuts, template
 from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth import views as auth_views
 from django.core import exceptions, urlresolvers
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
-from django.shortcuts import render_to_response, redirect
-from django.template import RequestContext
 
 from pushserver import signals
 from pushserver.utils import updates
 
 from piplmesh.account import forms, models
-from piplmesh.account.models import User
 
 HOME_CHANNEL_ID = 'home'
 
@@ -109,21 +106,24 @@ def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
         set__connection_last_unsubscribe=datetime.datetime.now(),
     )
 
-def profile(request, username):
+class ProfileView(generic_views.View):
     """
     This view checks if user exist in database and returns his profile.
     """
 
-    try:
-        profile = User.objects.get(username=username)
-        return render_to_response('profile/profile.html',{'profile': profile}, context_instance=RequestContext(request))
-    except Exception, e:
-        message = "User "+username+" not found."
-        messages.error(request,message)
-        # TODO: Redirect user to page where he came from
-        return render_to_response('home.html', context_instance=RequestContext(request))
+    template_name = 'profile/profile.html'
 
-class SettingsView(generic_views.View):
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            profile = models.User.objects.get(username=kwargs['username'])
+            return shortcuts.render_to_response(self.template_name,{'profile': profile}, context_instance=template.RequestContext(request))
+        except Exception, e:
+            message = "User "+kwargs['username']+" not found."
+            messages.error(request,message)
+            # TODO: Redirect user to page where he came from
+            return shortcuts.render_to_response('home.html', context_instance=template.RequestContext(request))
+
+class SettingsView(edit_views.FormView):
     """
     This view displays form for updating user settings. It checks if all fields are valid and updates user.
     It also prevents unauthorised access to user settings page.
@@ -133,21 +133,21 @@ class SettingsView(generic_views.View):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.username == kwargs["username"]:
-            url = "/profile/"+request.user.username
+            url = urlresolvers.reverse_lazy('profile', kwargs={'username': request.user.username})
             if request.user.facebook_id:
                 # TODO: Settings for users with Facebook login
                 messages.error(request,"Settings for users with Facebook login are not available at this moment")
-                return redirect(url)
+                return shortcuts.redirect(url)
             else:
                 if request.method == 'POST':
                     form = forms.UpdateForm(request.POST)
                     error = form.update(request.user)
                     if error:
                         messages.error(request,error)
-                        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+                        return shortcuts.render_to_response(self.template_name, {'form': form}, context_instance=template.RequestContext(request))
                     else:
                         messages.error(request,"You have successfully modified your settings")
-                        return redirect(url)
+                        return shortcuts.redirect(url)
                 else:
                     form = forms.UpdateForm({
                         'first_name': request.user.first_name,
@@ -156,11 +156,11 @@ class SettingsView(generic_views.View):
                         'gender': request.user.gender,
                         'birthdate': request.user.birthdate,
                         # TODO: Path to user current avatar
-                        'avatar': "unknown.png"
+                        'profile_image': "unknown.png"
                     })
-                    return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+                    return shortcuts.render_to_response(self.template_name, {'form': form}, context_instance=template.RequestContext(request))
         else:
             messages.error(request,"You do not have permission to view this page.")
             # TODO: Redirect user to page where he came from
-            return render_to_response('home.html', context_instance=RequestContext(request))
+            return shortcuts.render_to_response('home.html', context_instance=template.RequestContext(request))
 

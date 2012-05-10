@@ -6,13 +6,13 @@
 
 {% block content %}
 <div id="main">
-    <div id="settings">
-        <p id="cur">{% trans "Profile" %}</p>
+    <div id="menu_list">
+        <p id="current_item">{% trans "Profile" %}</p>
         {% if user.username == profile.username %}
             <p><a href="{% url settings username=user.username %}">{% trans "Settings" %}<a/></p>
         {% endif %}
     </div>
-    <div id="pic" >
+    <div id="picture" >
         {% if profile.facebook_id %}
             <img src="{% facebook_picture profile.facebook_id "large" %}" alt="{% trans "User picture" %}" />
         {% else %}

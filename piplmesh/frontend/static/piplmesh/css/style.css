@@ -357,14 +357,14 @@ input.gsc-search-button {
     text-align: center;
 }
 
-#settings {
+#menu_list {
     text-align: left;
     display: inline-block;
     position: absolute;
     margin-top: 5%;
 }
 
-#pic {
+#picture {
     margin-left: 30%;
     margin-top: 8%;
     text-align: left;
@@ -372,32 +372,28 @@ input.gsc-search-button {
     position: absolute;
 }
 
-#cur{
+#current_item {
     text-decoration: underline;
 }
 
 /* --------------------- SETTINGS ------------------------ */
-#settings1 {
+#settings_basic {
     position: absolute;
-    /*border: 2px solid blue;*/
 }
 
-#settings2 {
+#settings_password {
     margin-left: 50%;
-    /*border: 2px solid blue;*/
 }
 
-#avatar1 {
+#settings_image {
     margin-top: 12%;
-    /*border: 2px solid blue;*/
 }
 
-#button1 {
+#settings_button {
     margin-top: 8%;
-    /*border: 2px solid blue;*/
 }
 
-.form_textbox2 {
+.form_textbox_settings {
     width: 160px;
     text-align: left;
 }

@@ -6,16 +6,16 @@
 
 {% block content %}
 <div id="main">
-    <div id="settings">
+    <div id="menu_list">
         <p><a href="{% url profile username=user.username %}">{% trans "Profile" %}<a/></p>
-        <p id="cur">{% trans "Settings" %}</p>
+        <p id="current_item">{% trans "Settings" %}</p>
     </div>
     <div class="registration">
         <form method="post" action="">
-            <div id="settings1">
+            <div id="settings_basic">
                 {% csrf_token %}
                 {% for field in form %}
-                    {% if field.name != "new_password1" and field.name != "new_password2" and field.name != "old_password" and field.name != "avatar" %}
+                    {% if field.name != "new_password1" and field.name != "new_password2" and field.name != "old_password" and field.name != "profile_image" %}
                         {{ field.errors }}
                         <ul class="form_field">
                             <li class="form_label">
@@ -28,7 +28,7 @@
                     {% endif %}
                 {% endfor %}
             </div>
-            <div id="settings2">
+            <div id="settings_password">
                 <label>{% trans "Change your password" %}</label>
                 {% for field in form %}
                     {% if field.name == "new_password1" or field.name == "new_password2" %}
@@ -44,21 +44,21 @@
                     {% endif %}
                 {% endfor %}
             </div>
-            <div id="avatar1">
-                {{ form.avatar.errors }}
+            <div id="settings_image">
+                {{ form.profile_image.errors }}
                 <ul class="form_field">
                     <li class="form_label">
-                        <label for="{{ form.avatar.id_for_label }}">
-                            {{ form.avatar.label }}
+                        <label for="{{ form.profile_image.id_for_label }}">
+                            {{ form.profile_image.label }}
                         </label>
                     </li>
-                    <li class="form_textbox2">{{ form.avatar }}</li>
-                    <li id="image2">
+                    <li class="form_textbox_settings">{{ form.profile_image }}</li>
+                    <li id="image">
                         {% gravatar user 50 %}
                     </li>
                 </ul>
             </div>
-            <div id="button1">
+            <div id="settings_button">
                 {{ form.old_password.errors }}
                 <ul class="form_field">
                     <li class="form_label">
@@ -66,7 +66,7 @@
                             {{ form.old_password.label }}
                         </label>
                     </li>
-                    <li id="form_textbox2">{{ form.old_password }}</li>
+                    <li id="form_textbox_settings">{{ form.old_password }}</li>
                     <li><input type="submit" value="{% trans "Save Changes" %}" /></li>
                 </ul>
             </div>

@@ -129,7 +129,7 @@ class UpdateForm(forms.Form):
             ],
         ),
     )
-    avatar = forms.CharField(label=_("Avatar"))
+    profile_image = forms.CharField(label=_("Profile image"))
     new_password1 = forms.CharField(label=_("New password"), widget=forms.PasswordInput, required=False)
     new_password2 = forms.CharField(label=_("Repeat password"), widget=forms.PasswordInput, required=False)
     old_password = forms.CharField(label=_("Password"), widget=forms.PasswordInput, required=False)
@@ -149,11 +149,10 @@ class UpdateForm(forms.Form):
                     else:
                         return "Passwords do not match."
                 user.save()
-                # TODO: Change user avatar
-                avatar = self.cleaned_data['avatar']
+                # TODO: Change user image
+                profile_image = self.cleaned_data['profile_image']
                 return ""
             else:
                 return "You have entered invalid password"
         except Exception, e:
-            print e
             return "Error"
