@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     url(r'^facebook/login/$', account_views.FacebookLoginView.as_view(), name='facebook_login'),
     url(r'^facebook/callback/$', account_views.FacebookCallbackView.as_view(), name='facebook_callback'),
 
-    # Profile, Settings
+    # Profile, Account
     url(r'^profile/(?P<username>[A-Za-z0-9_.]+)/$', account_views.ProfileView.as_view(), name='profile'),
-    url(r'^profile/(?P<username>[A-Za-z0-9_.]+)/settings/$', account_views.SettingsView.as_view(), name='settings'),
+    url(r'^account/$', account_views.AccountView.as_view(), name='account'),
 )

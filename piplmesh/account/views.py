@@ -106,7 +106,7 @@ def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
         set__connection_last_unsubscribe=datetime.datetime.now(),
     )
 
-class ProfileView(generic_views.View):
+class ProfileView(generic_views.DetailView):
     """
     This view checks if user exist in database and returns his profile.
     """
@@ -121,15 +121,15 @@ class ProfileView(generic_views.View):
             message = "User "+kwargs['username']+" not found."
             messages.error(request,message)
             # TODO: Redirect user to page where he came from
-            return shortcuts.render_to_response('home.html', context_instance=template.RequestContext(request))
+            return shortcuts.redirect('home')
 
-class SettingsView(edit_views.FormView):
+class AccountView(edit_views.FormView):
     """
     This view displays form for updating user settings. It checks if all fields are valid and updates user.
     It also prevents unauthorised access to user settings page.
     """
 
-    template_name = 'profile/settings.html'
+    template_name = 'profile/account.html'
     form_class = forms.UpdateForm
     user = models.User
 
@@ -148,15 +148,15 @@ class SettingsView(edit_views.FormView):
                     self.user.set_password(form.cleaned_data['new_password1'])
                 else:
                     messages.error(self.request,"Passwords do not match")
-                    return super(SettingsView, self).form_invalid(form)
+                    return super(AccountView, self).form_invalid(form)
             messages.error(self.request,"You have successfully modified your settings")
-            return super(SettingsView, self).form_valid(form)
+            return super(AccountView, self).form_valid(form)
         else:
             messages.error(self.request,"You have entered invalid password")
-            return super(SettingsView, self).form_invalid(form)
+            return super(AccountView, self).form_invalid(form)
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.username == kwargs["username"]:
+        if request.user.is_authenticated():
             self.success_url = urlresolvers.reverse_lazy('profile', kwargs={'username': request.user.username})
             if request.user.facebook_id:
                 # TODO: Settings for users with Facebook login
@@ -172,8 +172,8 @@ class SettingsView(edit_views.FormView):
                 # TODO: Path to user current avatar
                 'profile_image': "unknown.png"
             }
-            return super(SettingsView, self).dispatch(request, *args, **kwargs)
+            return super(AccountView, self).dispatch(request, *args, **kwargs)
         else:
-            messages.error(request,"You do not have permission to view this page.")
-            # TODO: Redirect user to page where he came from
-            return shortcuts.render_to_response('home.html', context_instance=template.RequestContext(request))
+            return shortcuts.redirect('login')
+
+

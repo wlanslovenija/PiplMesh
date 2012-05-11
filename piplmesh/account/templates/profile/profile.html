@@ -7,9 +7,9 @@
 {% block content %}
 <div id="main">
     <div id="menu_list">
-        <p id="current_item">{% trans "Profile" %}</p>
         {% if user.username == profile.username %}
-            <p><a href="{% url settings username=user.username %}">{% trans "Settings" %}<a/></p>
+            <p id="current_item">{% trans "Profile" %}</p>
+            <p><a href="{% url account %}">{% trans "Account" %}<a/></p>
         {% endif %}
     </div>
     <div id="picture" >
@@ -20,14 +20,14 @@
         {% endif %}
     </div>
     <div id="profile">
-        <p>{% trans "username" %}: {{ profile.username }}</p>
-        <p>{% trans "name" %}: {{ profile.first_name }} {{ profile.last_name }}</p>
-        <p>{% trans "gender" %}: {{ profile.gender }}</p>
-        <p>{% trans "birthdate" %}: {{ profile.birthdate }}</p>
-        <p>{% trans "email" %}: {{ profile.email }}</p>
-        <p>{% trans "last login" %}: {{ profile.last_login }}</p>
+        <p>{% trans "Username:" %} {{ profile.username }}</p>
+        <p>{% trans "Name:" %} {{ profile.get_full_name }}</p>
+        <p>{% trans "Gender:" %} {{ profile.gender }}</p>
+        <p>{% trans "Birthdate:" %} {{ profile.birthdate }}</p>
+        <p>{% trans "E-mail:" %} {{ profile.email }}</p>
+        <p>{% trans "Last login:" %} {{ profile.last_login }}</p>
         {% if profile.facebook_id %}
-            <p><a href="{{  profile.facebook_link }}"><img src="{{ STATIC_URL }}piplmesh/images/fb_logo.png" height="30" width="30" alt="{% trans "Facebook link" %}" /></a></p>
+            <p><a href="{{ profile.facebook_link }}"><img src="{{ STATIC_URL }}piplmesh/images/fb_logo.png" height="30" width="30" alt="{% trans "Facebook link" %}" /></a></p>
         {% endif %}
         <br/>
         <br/>
