@@ -18,7 +18,7 @@ def check_online_users():
         connections__ne=[],
     ):
         if models.User.objects(
-            pk=user.id,
+            pk=user.pk,
             is_online=False,
             connections__ne=[],
         ).update(set__is_online=True):
@@ -37,7 +37,7 @@ def check_online_users():
         connection_last_unsubscribe__lt=datetime.datetime.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
     ):
         if models.User.objects(
-            pk=user.id,
+            pk=user.pk,
             is_online=True,
             connections=[],
             connection_last_unsubscribe__lt=datetime.datetime.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
