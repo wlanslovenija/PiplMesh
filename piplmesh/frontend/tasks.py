@@ -18,17 +18,17 @@ def check_online_users():
         connections__ne=[],
     ):
         if models.User.objects(
-            id=user.id,
+            pk=user.id,
             is_online=False,
             connections__ne=[],
         ).update(set__is_online=True):
             updates.send_update(
                 views.HOME_CHANNEL_ID,
-                    {
+                {
                     'type': 'userlist',
                     'action': 'JOIN',
                     'username': user.username,
-                    }
+                }
             )
 
     for user in models.User.objects(
@@ -37,7 +37,7 @@ def check_online_users():
         connection_last_unsubscribe__lt=datetime.datetime.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
     ):
         if models.User.objects(
-            id=user.id,
+            pk=user.id,
             is_online=True,
             connections=[],
             connection_last_unsubscribe__lt=datetime.datetime.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
