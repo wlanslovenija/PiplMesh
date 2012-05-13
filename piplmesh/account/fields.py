@@ -6,8 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 import mongoengine
 
 GENDER_CHOICES = (
-    ('male', _('male')),
-    ('female', _('female'))
+    ('male', _("male")),
+    ('female', _("female"))
 )
 
 ERROR_MESSAGES = {
