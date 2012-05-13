@@ -7,11 +7,11 @@ from piplmesh.account import fields
 
 LOWER_DATE_LIMIT = 366 * 120
 
-def lower_date_limit():
-    return datetime.datetime.today() - datetime.timedelta(LOWER_DATE_LIMIT);
-
 def upper_date_limit():
-    return datetime.datetime.today();
+    return datetime.datetime.today()
+
+def lower_date_limit():
+    return datetime.datetime.today() - datetime.timedelta(LOWER_DATE_LIMIT)
 
 class Connection(mongoengine.EmbeddedDocument):
     http_if_none_match = mongoengine.StringField()
