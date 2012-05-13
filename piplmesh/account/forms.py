@@ -18,20 +18,20 @@ class RadioFieldRenderer(widgets.RadioFieldRenderer):
 
     def _render_widgets(self):
         for i, w in enumerate(self):
-            classes = []
-            if i == 0:
+            classes=[]
+            if i==0:
                 classes.append('first')
-            if i == len(self.choices) - 1:
+            if i==len(self.choices)-1:
                 classes.append('last')
 
-            cls = ''
+            cls=''
             if classes:
-                cls = u' class="%s"' % (u' '.join(classes),)
+                cls=u' class="%s"'%(u' '.join(classes),)
 
-            yield u'<li%s>%s</li>' % (cls, encoding.force_unicode(w))
+            yield u'<li%s>%s</li>'%(cls, encoding.force_unicode(w))
 
     def render(self):
-        return safestring.mark_safe(u'<ul>\n%s\n</ul>' % (u'\n'.join(self._render_widgets())),)
+        return safestring.mark_safe(u'<ul>\n%s\n</ul>'%(u'\n'.join(self._render_widgets())),)
 
 class RegistrationForm(auth_forms.UserCreationForm):
     """
@@ -39,18 +39,18 @@ class RegistrationForm(auth_forms.UserCreationForm):
     """
 
     # Required data
-    email = forms.EmailField(label=_("E-mail"))
-    first_name = forms.CharField(label=_("First name"))
-    last_name = forms.CharField(label=_("Last name"))
+    email=forms.EmailField(label=_("E-mail"))
+    first_name=forms.CharField(label=_("First name"))
+    last_name=forms.CharField(label=_("Last name"))
 
     # Additional information
-    gender = forms.ChoiceField(
+    gender=forms.ChoiceField(
         label=_("Gender"),
         required=False,
         choices=fields.GENDER_CHOICES,
         widget=forms.RadioSelect(renderer=RadioFieldRenderer),
     )
-    birthdate = form_fields.LimitedDateTimeField(
+    birthdate=form_fields.LimitedDateTimeField(
         upper_limit=models.upper_birthdate_limit,
         lower_limit=models.lower_birthdate_limit,
         label=_("Birth date"),
@@ -60,7 +60,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
                 y for y in range(
                     models.upper_birthdate_limit().year,
                     models.lower_birthdate_limit().year,
-                    - 1,
+                    -1,
                 )
             ],
         ),
@@ -68,20 +68,20 @@ class RegistrationForm(auth_forms.UserCreationForm):
 
     def clean_password2(self):
         # This method checks whether the passwords match
-        if self.cleaned_data.has_key('password1') and self.cleaned_data['password1'] == self.cleaned_data['password2']:
+        if self.cleaned_data.has_key('password1') and self.cleaned_data['password1']==self.cleaned_data['password2']:
             return self.cleaned_data['password2']
         raise forms.ValidationError(_("Passwords do not match."))
 
     def clean_username(self):
         # This method checks whether the username exists in case-insensitive manner
-        username = self.cleaned_data['username']
+        username=self.cleaned_data['username']
         if models.User.objects(username__iexact=username).count():
             raise forms.ValidationError(_("A user with that username already exists."))
         return username
 
     def save(self):
         # We first have to save user to database
-        new_user = models.User(
+        new_user=models.User(
             username=self.cleaned_data['username'],
             first_name=self.cleaned_data['first_name'],
             last_name=self.cleaned_data['last_name'],
