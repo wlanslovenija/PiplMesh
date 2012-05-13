@@ -43,7 +43,7 @@ def limit_date(value, lower_limit, upper_limit, error):
         if callable(lower_limit):
             tmp_lower_limit = lower_limit()
             if not isinstance(tmp_lower_limit, (datetime.datetime, datetime.date)):
-                error("callable")
+                error('callable')
         else:
             temp_lower_limit = lower_limit
 
@@ -53,7 +53,7 @@ def limit_date(value, lower_limit, upper_limit, error):
             tmp_value = tmp_value.date()
 
         if tmp_value < tmp_lower_limit:
-            error("bounds")
+            error('bounds')
 
 def get_initial_language(request=None):
     return settings.LANGUAGE_CODE
