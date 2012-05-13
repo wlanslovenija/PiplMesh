@@ -23,14 +23,14 @@ def check_online_users():
         ).update(set__is_online=True):
             updates.send_update(
                 views.HOME_CHANNEL_ID,
-                    {
+                {
                     'type': 'userlist',
                     'action': 'JOIN',
                     'username': user.username,
                     # TODO get user image
                     'image': '',
                     'id': user.id,
-                    }
+                }
             )
 
     for user in models.User.objects(
@@ -46,12 +46,12 @@ def check_online_users():
         ).update(set__is_online=False):
             updates.send_update(
                 views.HOME_CHANNEL_ID,
-                    {
+                {
                     'type': 'userlist',
                     'action': 'PART',
                     'username': user.username,
                     # TODO get user image
                     'image': '',
                     'id': user.id,
-                    }
+                }
             )
