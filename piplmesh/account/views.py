@@ -61,30 +61,6 @@ def logout(request):
     else:
         raise exceptions.PermissionDenied
 
-@dispatch.receiver(signals.channel_subscribe)
-def process_channel_subscribe(sender, request, channel_id, **kwargs):
-    request.user.update(
-        push__connections={
-            'http_if_none_match': request.META['HTTP_IF_NONE_MATCH'],
-            'http_if_modified_since': request.META['HTTP_IF_MODIFIED_SINCE'],
-            'channel_id': channel_id,
-        }
-    )
-
-@dispatch.receiver(signals.channel_unsubscribe)
-def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
-    models.User.objects(
-        id=request.user.id,
-        connections__http_if_none_match=request.META['HTTP_IF_NONE_MATCH'],
-        connections__http_if_modified_since=request.META['HTTP_IF_MODIFIED_SINCE'],
-        connections__channel_id=channel_id,
-    ).update_one(unset__connections__S=1)
-
-    request.user.update(
-        pull__connections=None,
-        set__connection_last_unsubscribe=datetime.datetime.now(),
-    )
-
 class ProfileView(generic_views.DetailView):
     """
     This view checks if user exist in database and returns his profile.
@@ -132,7 +108,6 @@ class RegistrationView(edit_views.FormView):
             return simple.redirect_to(request, url=self.get_success_url(), permanent=False)
         return super(RegistrationView, self).dispatch(request, *args, **kwargs)
 
-
 class AccountView(edit_views.FormView):
     """
     This view displays form for updating user settings. It checks if all fields are valid and updates user.
@@ -143,17 +118,18 @@ class AccountView(edit_views.FormView):
     user = models.User
 
     def form_valid(self, form):
-        if self.user.check_password(form.cleaned_data['old_password']):
-            self.user.first_name=form.cleaned_data['first_name']
-            self.user.last_name=form.cleaned_data['last_name']
-            self.user.email=form.cleaned_data['email']
-            self.user.gender=form.cleaned_data['gender']
-            self.user.birthdate=form.cleaned_data['birthdate']
+        user = self.request.user
+        if user.check_password(form.cleaned_data['old_password']):
+            user.first_name=form.cleaned_data['first_name']
+            user.last_name=form.cleaned_data['last_name']
+            user.email=form.cleaned_data['email']
+            user.gender=form.cleaned_data['gender']
+            user.birthdate=form.cleaned_data['birthdate']
             # TODO: Change user image
             profile_image = form.cleaned_data['profile_image']
-            self.user.save()
+            user.save()
             if form.cleaned_data['password1']:
-                self.user.set_password(form.cleaned_data['password1'])
+                user.set_password(form.cleaned_data['password1'])
             messages.error(self.request,"You have successfully modified your settings")
             return super(AccountView, self).form_valid(form)
         else:
@@ -162,21 +138,48 @@ class AccountView(edit_views.FormView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
-            self.success_url = urlresolvers.reverse_lazy('profile', kwargs={'username': request.user.username})
             if request.user.facebook_id:
                 # TODO: Settings for users with Facebook login
                 messages.error(request,"Settings for users with Facebook login are not available at this moment")
                 return shortcuts.redirect(self.success_url)
-            self.user = models.User.objects.get(username=request.user.username)
-            self.initial = {
-                'first_name': request.user.first_name,
-                'last_name': request.user.last_name,
-                'email': request.user.email,
-                'gender': request.user.gender,
-                'birthdate': request.user.birthdate,
-                # TODO: Path to user current avatar
-                'profile_image': "unknown.png"
-            }
             return super(AccountView, self).dispatch(request, *args, **kwargs)
         else:
             return shortcuts.redirect('login')
+
+    def get_success_url(self):
+        return urlresolvers.reverse_lazy('profile', kwargs={'username': self.request.user.username})
+
+    def get_initial(self):
+        return {
+            'first_name': self.request.user.first_name,
+            'last_name': self.request.user.last_name,
+            'email': self.request.user.email,
+            'gender': self.request.user.gender,
+            'birthdate': self.request.user.birthdate,
+            # TODO: Path to user current avatar
+            'profile_image': "unknown.png"
+        }
+
+@dispatch.receiver(signals.channel_subscribe)
+def process_channel_subscribe(sender, request, channel_id, **kwargs):
+    request.user.update(
+        push__connections={
+            'http_if_none_match': request.META['HTTP_IF_NONE_MATCH'],
+            'http_if_modified_since': request.META['HTTP_IF_MODIFIED_SINCE'],
+            'channel_id': channel_id,
+            }
+    )
+
+@dispatch.receiver(signals.channel_unsubscribe)
+def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
+    models.User.objects(
+        id=request.user.id,
+        connections__http_if_none_match=request.META['HTTP_IF_NONE_MATCH'],
+        connections__http_if_modified_since=request.META['HTTP_IF_MODIFIED_SINCE'],
+        connections__channel_id=channel_id,
+    ).update_one(unset__connections__S=1)
+
+    request.user.update(
+        pull__connections=None,
+        set__connection_last_unsubscribe=datetime.datetime.now(),
+    )
