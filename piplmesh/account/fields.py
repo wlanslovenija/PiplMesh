@@ -13,28 +13,42 @@ GENDER_CHOICES = (
 def limit_date(value, lower_limit, upper_limit, error):
     if not value:
         return
-    
+
     if upper_limit:
         tmp_value = value
         tmp_upper_limit = upper_limit
-        if not isinstance(value, datetime.datetime) or not isinstance(upper_limit, datetime.datetime):
-            if isinstance(upper_limit, datetime.datetime):
-                tmp_upper_limit = upper_limit.date()
-            elif isinstance(tmp_value, datetime.datetime):
-                tmp_value = value.date()
+        if callable(upper_limit):
+            tmp_upper_limit = upper_limit()
+            if not isinstance(tmp_upper_limit, (datetime.datetime, datetime.date)):
+                error(u"Callable did not return datetime.date or datetime.datetime object.");
+        else:
+            temp_upper_limit = upper_limit
+
+        if isinstance(tmp_upper_limit, datetime.datetime):
+            tmp_upper_limit = tmp_upper_limit.date()
+        if isinstance(tmp_value, datetime.datetime):
+            tmp_value = tmp_value.date()
+
         if tmp_value > tmp_upper_limit:
-            error()
-                
+            error(u"Value is out of bounds.")
+
     if lower_limit:
         tmp_value = value
         tmp_lower_limit = lower_limit
-        if not isinstance(value, datetime.datetime) or not isinstance(lower_limit, datetime.datetime):
-            if isinstance(lower_limit, datetime.datetime):
-                tmp_lower_limit = lower_limit.date()
-            elif isinstance(tmp_value, datetime.datetime):
-                tmp_value = value.date()
+        if callable(lower_limit):
+            tmp_lower_limit = lower_limit()
+            if not isinstance(tmp_lower_limit, (datetime.datetime, datetime.date)):
+                error(u"Callable did not return datetime.date or datetime.datetime object.");
+        else:
+            temp_lower_limit = lower_limit
+
+        if isinstance(tmp_lower_limit, datetime.datetime):
+            tmp_lower_limit = tmp_lower_limit.date()
+        if isinstance(tmp_value, datetime.datetime):
+            tmp_value = tmp_value.date()
+
         if tmp_value < tmp_lower_limit:
-            error()
+            error(u"Value is out of bounds.")
 
 def get_initial_language(request=None):
     return settings.LANGUAGE_CODE
@@ -44,7 +58,7 @@ class LanguageField(mongoengine.StringField):
         kwargs.setdefault('max_length', 5)
         kwargs.setdefault('choices', settings.LANGUAGES)
         kwargs.setdefault('default', get_initial_language)
-        
+
         super(LanguageField, self).__init__(*args, **kwargs)
 
 class GenderField(mongoengine.StringField):
@@ -52,7 +66,7 @@ class GenderField(mongoengine.StringField):
         kwargs.setdefault('max_length', 6)
         kwargs.setdefault('choices', GENDER_CHOICES)
         kwargs.setdefault('default', GENDER_CHOICES[1][0])
-        
+
         super(GenderField, self).__init__(*args, **kwargs)
 
 class LimitedDateTimeField(mongoengine.DateTimeField):
@@ -66,25 +80,11 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
             self.error(u"Invalid lower_limit argument.")
 
         super(LimitedDateTimeField, self).__init__(*args, **kwargs)
-   
+
     def validate(self, value):
         super(LimitedDateTimeField, self).validate(value)
 
-        def error():
-            self.error(u"Value is out of bounds.")
-        
-        if callable(self.upper_limit):
-            upper_limit = self.upper_limit()
-            if not isinstance(upper_limit, (datetime.datetime, datetime.date)):
-                raise Exception("Callable did not return datetime.date or datetime.datetime object.")
-        else:
-            upper_limit = self.upper_limit
-            
-        if callable(self.lower_limit):
-            lower_limit = self.lower_limit()
-            if not isinstance(lower_limit, (datetime.datetime, datetime.date)):
-                raise Exception("Callable did not return datetime.date or datetime.datetime object.")
-        else:
-            lower_limit = self.lower_limit
-            
+        def error(message):
+            self.error(message)
+
         limit_date(value, lower_limit, upper_limit, error)
