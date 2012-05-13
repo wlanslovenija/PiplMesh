@@ -61,6 +61,7 @@ class FacebookBackend(MongoEngineBackend):
         
         # TODO: Check if id and other fields are returned
         # TODO: Move user retrieval/creation to User document/manager
+        # TODO: get_or_create implementation has in fact a race condition, is this a problem?
         user, created = self.user_class.objects.get_or_create(
             facebook_id=fb.get('id'),
             defaults={
