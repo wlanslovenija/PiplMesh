@@ -11,8 +11,8 @@ GENDER_CHOICES = (
 )
 
 ERROR_MESSAGES = {
-                  'bounds': _(u"Value is out of bounds."),
-                  'callable': _(u"Callable did not return datetime.date or datetime.datetime object.")
+    'bounds': _(u"Value is out of bounds."),
+    'callable': _(u"Callable did not return datetime.date or datetime.datetime object."),
 }
 
 def limit_date(value, lower_limit, upper_limit, error):
@@ -25,7 +25,7 @@ def limit_date(value, lower_limit, upper_limit, error):
         if callable(upper_limit):
             tmp_upper_limit = upper_limit()
             if not isinstance(tmp_upper_limit, (datetime.datetime, datetime.date)):
-                error("callable")
+                error('callable')
         else:
             temp_upper_limit = upper_limit
 
@@ -35,7 +35,7 @@ def limit_date(value, lower_limit, upper_limit, error):
             tmp_value = tmp_value.date()
 
         if tmp_value > tmp_upper_limit:
-            error("bounds")
+            error('bounds')
 
     if lower_limit:
         tmp_value = value
