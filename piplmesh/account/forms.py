@@ -24,7 +24,7 @@ class RadioFieldRenderer(widgets.RadioFieldRenderer):
             if i == len(self.choices) - 1:
                 classes.append('last')
 
-            cls=''
+            cls = ''
             if classes:
                 cls = u' class="%s"' % (u' '.join(classes),)
 
@@ -74,7 +74,7 @@ class RegistrationForm(auth_forms.UserCreationForm):
 
     def clean_username(self):
         # This method checks whether the username exists in case-insensitive manner
-        username=self.cleaned_data['username']
+        username = self.cleaned_data['username']
         if models.User.objects(username__iexact=username).count():
             raise forms.ValidationError(_("A user with that username already exists."))
         return username

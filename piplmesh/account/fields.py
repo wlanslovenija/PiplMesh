@@ -28,7 +28,7 @@ def limit_date(value, lower_limit, upper_limit, error):
         else:
             tmp_upper_limit = upper_limit
 
-        if not isinstance(value, datetime.datetime) or not isinstance(tmp_upper_limit, datetime.datetime):
+        if not isinstance(tmp_value, datetime.datetime) or not isinstance(tmp_upper_limit, datetime.datetime):
             if isinstance(tmp_upper_limit, datetime.datetime):
                 tmp_upper_limit = tmp_upper_limit.date()
             elif isinstance(tmp_value, datetime.datetime):
@@ -46,7 +46,7 @@ def limit_date(value, lower_limit, upper_limit, error):
         else:
             tmp_lower_limit = lower_limit
 
-        if not isinstance(value, datetime.datetime) or not isinstance(tmp_lower_limit, datetime.datetime):
+        if not isinstance(tmp_value, datetime.datetime) or not isinstance(tmp_lower_limit, datetime.datetime):
             if isinstance(tmp_lower_limit, datetime.datetime):
                 tmp_lower_limit = tmp_lower_limit.date()
             elif isinstance(tmp_value, datetime.datetime):
