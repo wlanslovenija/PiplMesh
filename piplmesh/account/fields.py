@@ -10,6 +10,11 @@ GENDER_CHOICES = (
     ('female', _('female'))
 )
 
+ERROR_MESSAGES = {
+                  'bounds': _(u"Value is out of bounds."),
+                  'callable': _(u"Callable did not return datetime.date or datetime.datetime object.")
+}
+
 def limit_date(value, lower_limit, upper_limit, error):
     if not value:
         return
@@ -85,8 +90,6 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
         super(LimitedDateTimeField, self).validate(value)
 
         def error(message):
-            error_message = {'bounds': u"Value is out of bounds.",
-                             'callable': u"Callable did not return datetime.date or datetime.datetime object."}
-            self.error(error_messages[message])
+            self.error(ERROR_MESSAGES[message])
 
         limit_date(value, lower_limit, upper_limit, error)

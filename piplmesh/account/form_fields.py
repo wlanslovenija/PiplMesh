@@ -7,10 +7,7 @@ from piplmesh.account import fields
 
 class LimitedDateTimeField(forms.DateTimeField):
     default_error_messages = forms.DateTimeField.default_error_messages.copy()
-    default_error_messages.update({
-        'bounds': _(u"Value is out of bounds."),
-        'callable': _(u"Callable did not return datetime.date or datetime.datetime object.")
-    })
+    default_error_messages.update(fields.ERROR_MESSAGES)
 
     def __init__(self, upper_limit=None, lower_limit=None, input_formats=None, *args, **kwargs):
         self.upper_limit = upper_limit
