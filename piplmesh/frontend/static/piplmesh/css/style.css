@@ -347,3 +347,53 @@ input.gsc-search-button {
     margin-left: 20px;
     margin-right: 20px;
 }
+
+/* ------------------- USER LIST ------------------- */
+#userlist {
+    color: #68AE2C;
+    text-decoration: none;
+    list-style: none;
+    overflow-y: scroll;
+    height: 200px;
+}
+
+#userlist li {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#userlist img {
+    height: 25px;
+    width: 25px;
+    float: left;
+}
+
+#userlist .userInfo {
+    font-size: 8px;
+    color: #333333;
+}
+
+#userlist a:active, #userlist a:hover {
+    color: #006600;
+}
+
+/* BOXES */
+.box {
+    width: 260px;
+}
+
+.boxHeader {
+    color: #FCFCFC;
+    height: 20px;
+    text-align: center;
+    background-color: #68AE2C;
+    cursor: pointer;
+}
+
+.box input {
+    width: 80%;
+}
+
+.box img {
+    padding-right: 5px;
+}
