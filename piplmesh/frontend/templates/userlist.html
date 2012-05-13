@@ -1,3 +1,7 @@
 <div>
-    <ul id="userlist"></ul>
+    <ul id="userlist">
+        {% for user in online_users %}
+            <li>{{ user }}</li>
+        {% endfor %}
+    </ul>
 </div>
