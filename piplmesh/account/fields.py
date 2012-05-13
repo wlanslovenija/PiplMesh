@@ -20,7 +20,7 @@ def limit_date(value, lower_limit, upper_limit, error):
         if callable(upper_limit):
             tmp_upper_limit = upper_limit()
             if not isinstance(tmp_upper_limit, (datetime.datetime, datetime.date)):
-                error(u"Callable did not return datetime.date or datetime.datetime object.");
+                error("callable")
         else:
             temp_upper_limit = upper_limit
 
@@ -30,7 +30,7 @@ def limit_date(value, lower_limit, upper_limit, error):
             tmp_value = tmp_value.date()
 
         if tmp_value > tmp_upper_limit:
-            error(u"Value is out of bounds.")
+            error("bounds")
 
     if lower_limit:
         tmp_value = value
@@ -38,7 +38,7 @@ def limit_date(value, lower_limit, upper_limit, error):
         if callable(lower_limit):
             tmp_lower_limit = lower_limit()
             if not isinstance(tmp_lower_limit, (datetime.datetime, datetime.date)):
-                error(u"Callable did not return datetime.date or datetime.datetime object.");
+                error("callable")
         else:
             temp_lower_limit = lower_limit
 
@@ -48,7 +48,7 @@ def limit_date(value, lower_limit, upper_limit, error):
             tmp_value = tmp_value.date()
 
         if tmp_value < tmp_lower_limit:
-            error(u"Value is out of bounds.")
+            error("bounds")
 
 def get_initial_language(request=None):
     return settings.LANGUAGE_CODE
@@ -85,6 +85,8 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
         super(LimitedDateTimeField, self).validate(value)
 
         def error(message):
-            self.error(message)
+            error_message = {'bounds': u"Value is out of bounds.",
+                             'callable': u"Callable did not return datetime.date or datetime.datetime object."}
+            self.error(error_messages[message])
 
         limit_date(value, lower_limit, upper_limit, error)
