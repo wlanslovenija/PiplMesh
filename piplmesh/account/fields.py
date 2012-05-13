@@ -21,6 +21,7 @@ def limit_date(value, lower_limit, upper_limit, error):
 
     if upper_limit:
         tmp_value = value
+        #if upper_limit is callable, function is called and output saved to tmp_upper_limit.
         if callable(upper_limit):
             tmp_upper_limit = upper_limit()
             if not isinstance(tmp_upper_limit, (datetime.datetime, datetime.date)):
@@ -28,6 +29,7 @@ def limit_date(value, lower_limit, upper_limit, error):
         else:
             tmp_upper_limit = upper_limit
 
+        #if one object doesn't have data about hour (is date type), convert the other one to date object
         if not isinstance(tmp_value, datetime.datetime) or not isinstance(tmp_upper_limit, datetime.datetime):
             if isinstance(tmp_upper_limit, datetime.datetime):
                 tmp_upper_limit = tmp_upper_limit.date()
@@ -39,13 +41,15 @@ def limit_date(value, lower_limit, upper_limit, error):
 
     if lower_limit:
         tmp_value = value
-        if callable(lower_limit):
+        #if lower_limit is callable, function is called and output saved to tmp_lower_limit.
+        if callable(lower_limit): 
             tmp_lower_limit = lower_limit()
             if not isinstance(tmp_lower_limit, (datetime.datetime, datetime.date)):
                 error('callable')
         else:
             tmp_lower_limit = lower_limit
 
+        #if one doesn't have data about hour (is date type), convert the other one to date object
         if not isinstance(tmp_value, datetime.datetime) or not isinstance(tmp_lower_limit, datetime.datetime):
             if isinstance(tmp_lower_limit, datetime.datetime):
                 tmp_lower_limit = tmp_lower_limit.date()
