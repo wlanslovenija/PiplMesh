@@ -1,8 +1,6 @@
 import datetime
 
 from django import forms
-from django.conf import settings
-from django.contrib.auth import forms as auth_forms
 from django.forms import widgets
 from django.forms.extras import widgets as extras_widgets
 from django.utils import encoding, safestring
@@ -33,76 +31,65 @@ class RadioFieldRenderer(widgets.RadioFieldRenderer):
     def render(self):
         return safestring.mark_safe(u'<ul>\n%s\n</ul>' % (u'\n'.join(self._render_widgets())),)
 
-class RegistrationForm(auth_forms.UserCreationForm):
+class UserUsernameForm(forms.Form):
     """
-    Class with user registration form.
+    Class with username form
     """
 
-    # Required data
-    email = forms.EmailField(label=_("E-mail"))
-    first_name = forms.CharField(label=_("First name"))
-    last_name = forms.CharField(label=_("Last name"))
+    username = forms.RegexField(label=_("Username"), max_length=30,
+        regex=r'^[\w.@+-]+$',
+        help_text = _("Required. 30 characters or fewer. Letters, digits and "
+                      "@/./+/-/_ only."),
+        error_messages = {
+            'invalid': _("This value may contain only letters, numbers and "
+                         "@/./+/-/_ characters.")})
 
-    # Additional information
-    gender = forms.ChoiceField(
-        label=_("Gender"),
-        required=False,
-        choices=fields.GENDER_CHOICES,
-        widget=forms.RadioSelect(renderer=RadioFieldRenderer),
-    )
-    birthdate = form_fields.LimitedDateTimeField(
-        upper_limit=datetime.datetime.today(),
-        lower_limit=datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT),
-        label=_("Birth date"),
-        required=False,
-        widget=extras_widgets.SelectDateWidget(
-            years=[
-                y for y in range(
-                    datetime.datetime.today().year,
-                    (datetime.datetime.today() - datetime.timedelta(models.LOWER_DATE_LIMIT)).year,
-                    -1,
-                )
-            ],
-        ),
-    )
-    
-    def clean_password2(self):
-        # This method checks whether the passwords match
-        if self.cleaned_data.has_key('password1') and self.cleaned_data['password1'] == self.cleaned_data['password2']:
-            return self.cleaned_data['password2']
-        raise forms.ValidationError(_("Passwords do not match."))
-       
     def clean_username(self):
         # This method checks whether the username exists in case-insensitive manner
         username = self.cleaned_data['username']
         if models.User.objects(username__iexact=username).count():
             raise forms.ValidationError(_("A user with that username already exists."))
         return username
-      
-    def save(self):
-        # We first have to save user to database
-        new_user = models.User(
-            username=self.cleaned_data['username'],
-            first_name=self.cleaned_data['first_name'],
-            last_name=self.cleaned_data['last_name'],
-            email=self.cleaned_data['email'],
-            gender=self.cleaned_data['gender'],
-            birthdate=self.cleaned_data['birthdate'],
-        )
-                                    
-        new_user.set_password(self.cleaned_data['password2'])
-        new_user.save()
 
-        return self.cleaned_data['username'], self.cleaned_data['password2']
-    
-    def validate_unique(self):
-        # validate_unique() is called on model instance and our MongoEngine 
-        # objects do not have this, so this function doesn't do anything
-        pass
-
-class UpdateForm(forms.Form):
+class UserPasswordForm(forms.Form):
     """
-    Class with user settings form.
+    Class with user password form
+    """
+
+    password1 = forms.CharField(label=_("Password"),
+        widget=forms.PasswordInput)
+    password2 = forms.CharField(label=_("Password confirmation"),
+        widget=forms.PasswordInput,
+        help_text = _("Enter the same password as above, for verification."))
+
+    def clean_password2(self):
+        # This method checks whether the passwords match
+        if self.cleaned_data.has_key('password1') and self.cleaned_data['password1'] == self.cleaned_data['password2']:
+            return self.cleaned_data['password2']
+        raise forms.ValidationError(_("Passwords do not match."))
+
+class UserNewPasswordForm(forms.Form):
+    """
+    Class with user new password form
+    """
+    # TODO: Try to inherit UserPasswordForm and just override the settings ? Is that possible ?
+    password1 = forms.CharField(label=_("New Password"),
+        widget=forms.PasswordInput,
+        required=False)
+    password2 = forms.CharField(label=_("New Password confirmation"),
+        widget=forms.PasswordInput,
+        required=False,
+        help_text = _("Enter the same password as above, for verification."))
+
+    def clean_password2(self):
+        # This method checks whether the passwords match
+        if self.cleaned_data.has_key('password1') and self.cleaned_data['password1'] == self.cleaned_data['password2']:
+            return self.cleaned_data['password2']
+        raise forms.ValidationError(_("Passwords do not match."))
+
+class UserBasicInfoForm(forms.Form):
+    """
+    Class with user basic information form
     """
 
     first_name = forms.CharField(label=_("First name"))
@@ -129,7 +116,24 @@ class UpdateForm(forms.Form):
             ],
         ),
     )
-    profile_image = forms.CharField(label=_("Profile image"))
-    new_password1 = forms.CharField(label=_("New password"), widget=forms.PasswordInput, required=False)
-    new_password2 = forms.CharField(label=_("Repeat password"), widget=forms.PasswordInput, required=False)
-    old_password = forms.CharField(label=_("Password"), widget=forms.PasswordInput, required=False)
+
+class UserAdditionalInfoForm(forms.Form):
+    """
+    Class with user additional information form
+    """
+
+    profile_image = forms.CharField(label=_("Profile image"),required=False)
+
+class UserRegistrationForm(UserUsernameForm,UserPasswordForm,UserBasicInfoForm):
+    """
+    Class with Registration form
+    """
+
+class AccountForm(UserBasicInfoForm,UserAdditionalInfoForm,UserNewPasswordForm):
+    """
+    Class with account form
+    """
+
+    old_password = forms.CharField(label=_("Password"),
+        widget=forms.PasswordInput,
+        help_text = _("Enter your current password, for verification."))

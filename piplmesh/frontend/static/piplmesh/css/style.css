@@ -348,8 +348,6 @@ input.gsc-search-button {
     margin-right: 20px;
 }
 
-/* TODO: Create better and less confusing css for profile and settings */
-/* TODO: Correct appearance of non-valid form (divs get slightly out of their position) */
 /* --------------------- PROFILE ------------------------ */
 #profile {
     margin-left: 50%;
@@ -375,26 +373,4 @@ input.gsc-search-button {
 
 #current_item {
     text-decoration: underline;
-}
-
-/* --------------------- ACCOUNT ------------------------ */
-#account_basic {
-    position: absolute;
-}
-
-#account_password {
-    margin-left: 50%;
-}
-
-#account_image {
-    margin-top: 12%;
-}
-
-#account_button {
-    margin-top: 8%;
-}
-
-.form_textbox_account {
-    width: 160px;
-    text-align: left;
 }

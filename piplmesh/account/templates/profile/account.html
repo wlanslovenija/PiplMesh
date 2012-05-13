@@ -12,64 +12,37 @@
     </div>
     <div class="registration">
         <form method="post" action="">
-            <div id="account_basic">
-                {% csrf_token %}
-                {% for field in form %}
-                    {% if field.name != "new_password1" and field.name != "new_password2" and field.name != "old_password" and field.name != "profile_image" %}
+            {% csrf_token %}
+            {% for field in form %}
+                {% if forloop.last %}
+                    <div id="account_button">
                         {{ field.errors }}
                         <ul class="form_field">
                             <li class="form_label">
-                                <label for="{{ field.id_for_label }}">
-                                    {{ field.label }}
+                                <label for="{{ form.old_password.id_for_label }}">
+                                    <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
                                 </label>
                             </li>
-                            <li class="form_textbox">{{ field }}</li>
+                            <li id="form_textbox_account">{{ form.old_password }}</li>
+                            <li><input type="submit" value="{% trans "Save Changes" %}" /></li>
                         </ul>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <div id="account_password">
-                <label>{% trans "Change your password" %}</label>
-                {% for field in form %}
-                    {% if field.name == "new_password1" or field.name == "new_password2" %}
-                        {{ field.errors }}
-                        <ul class="form_field">
-                            <li class="form_label">
-                                <label for="{{ field.id_for_label }}">
+                    </div>
+                {% else %}
+                    {{ field.errors }}
+                    <ul class="form_field">
+                        <li class="form_label">
+                            <label for="{{ field.id_for_label }}">
+                                {% if field.field.required %}
+                                    <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
+                                {% else %}
                                     {{ field.label }}
-                                </label>
-                            </li>
-                            <li class="form_textbox">{{ field }}</li>
-                        </ul>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <div id="account_image">
-                {{ form.profile_image.errors }}
-                <ul class="form_field">
-                    <li class="form_label">
-                        <label for="{{ form.profile_image.id_for_label }}">
-                            {{ form.profile_image.label }}
-                        </label>
-                    </li>
-                    <li class="form_textbox_account">{{ form.profile_image }}</li>
-                    <li id="image">
-                        {% gravatar user 50 %}
-                    </li>
-                </ul>
-            </div>
-            <div id="account_button">
-                {{ form.old_password.errors }}
-                <ul class="form_field">
-                    <li class="form_label">
-                        <label for="{{ form.old_password.id_for_label }}">
-                            {{ form.old_password.label }}
-                        </label>
-                    </li>
-                    <li id="form_textbox_account">{{ form.old_password }}</li>
-                    <li><input type="submit" value="{% trans "Save Changes" %}" /></li>
-                </ul>
-            </div>
+                                {% endif %}
+                            </label>
+                        </li>
+                        <li class="form_textbox">{{ field }}</li>
+                    </ul>
+                {% endif %}
+            {% endfor %}
         </form>
     </div>
 </div>

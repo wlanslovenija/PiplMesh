@@ -15,27 +15,6 @@ from piplmesh.account import forms, models
 
 HOME_CHANNEL_ID = 'home'
 
-class RegistrationView(edit_views.FormView):
-    """
-    This view checks if form data are valid, saves new user.
-    New user is authenticated, logged in and redirected to home page.
-    """
-
-    template_name = 'registration/registration.html'
-    success_url = urlresolvers.reverse_lazy('home')
-    form_class = forms.RegistrationForm
-
-    def form_valid(self, form):
-        username, password = form.save()
-        new_user = auth.authenticate(username=username, password=password)
-        auth.login(self.request, new_user)
-        return super(RegistrationView, self).form_valid(form)
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
-            return simple.redirect_to(request, url=self.get_success_url(), permanent=False)
-        return super(RegistrationView, self).dispatch(request, *args, **kwargs)
-
 class FacebookLoginView(generic_views.RedirectView):
     """ 
     This view authenticates the user via Facebook.
@@ -123,14 +102,44 @@ class ProfileView(generic_views.DetailView):
             # TODO: Redirect user to page where he came from
             return shortcuts.redirect('home')
 
+class RegistrationView(edit_views.FormView):
+    """
+    This view checks if form data are valid, saves new user.
+    New user is authenticated, logged in and redirected to home page.
+    """
+
+    template_name = 'registration/registration.html'
+    success_url = urlresolvers.reverse_lazy('home')
+    form_class = forms.UserRegistrationForm
+
+    def form_valid(self, form):
+        new_user = models.User(
+            username=form.cleaned_data['username'],
+            first_name=form.cleaned_data['first_name'],
+            last_name=form.cleaned_data['last_name'],
+            email=form.cleaned_data['email'],
+            gender=form.cleaned_data['gender'],
+            birthdate=form.cleaned_data['birthdate'],
+        )
+        new_user.set_password(form.cleaned_data['password2'])
+        new_user.save()
+        new_user = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password2'])
+        auth.login(self.request, new_user)
+        return super(RegistrationView, self).form_valid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return simple.redirect_to(request, url=self.get_success_url(), permanent=False)
+        return super(RegistrationView, self).dispatch(request, *args, **kwargs)
+
+
 class AccountView(edit_views.FormView):
     """
     This view displays form for updating user settings. It checks if all fields are valid and updates user.
-    It also prevents unauthorised access to user settings page.
     """
 
     template_name = 'profile/account.html'
-    form_class = forms.UpdateForm
+    form_class = forms.AccountForm
     user = models.User
 
     def form_valid(self, form):
@@ -143,12 +152,8 @@ class AccountView(edit_views.FormView):
             # TODO: Change user image
             profile_image = form.cleaned_data['profile_image']
             self.user.save()
-            if form.cleaned_data['new_password1']:
-                if form.cleaned_data['new_password1'] == form.cleaned_data['new_password2']:
-                    self.user.set_password(form.cleaned_data['new_password1'])
-                else:
-                    messages.error(self.request,"Passwords do not match")
-                    return super(AccountView, self).form_invalid(form)
+            if form.cleaned_data['password1']:
+                self.user.set_password(form.cleaned_data['password1'])
             messages.error(self.request,"You have successfully modified your settings")
             return super(AccountView, self).form_valid(form)
         else:
@@ -175,5 +180,3 @@ class AccountView(edit_views.FormView):
             return super(AccountView, self).dispatch(request, *args, **kwargs)
         else:
             return shortcuts.redirect('login')
-
-
