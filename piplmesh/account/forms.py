@@ -51,15 +51,15 @@ class RegistrationForm(auth_forms.UserCreationForm):
         widget=forms.RadioSelect(renderer=RadioFieldRenderer),
     )
     birthdate = form_fields.LimitedDateTimeField(
-        upper_limit=models.upper_date_limit,
-        lower_limit=models.lower_date_limit,
+        upper_limit=models.upper_birthdate_limit,
+        lower_limit=models.lower_birthdate_limit,
         label=_("Birth date"),
         required=False,
         widget=extras_widgets.SelectDateWidget(
             years=[
                 y for y in range(
-                    models.upper_date_limit().year,
-                    models.lower_date_limit().year,
+                    models.upper_birthdate_limit().year,
+                    models.lower_birthdate_limit().year,
                     - 1,
                 )
             ],

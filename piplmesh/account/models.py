@@ -7,10 +7,10 @@ from piplmesh.account import fields
 
 LOWER_DATE_LIMIT = 366 * 120
 
-def upper_date_limit():
+def upper_birthdate_limit():
     return datetime.datetime.today()
 
-def lower_date_limit():
+def lower_birthdate_limit():
     return datetime.datetime.today() - datetime.timedelta(LOWER_DATE_LIMIT)
 
 class Connection(mongoengine.EmbeddedDocument):
@@ -19,7 +19,7 @@ class Connection(mongoengine.EmbeddedDocument):
     channel_id = mongoengine.StringField()
 
 class User(auth.User):
-    birthdate = fields.LimitedDateTimeField(upper_limit=upper_date_limit, lower_limit=lower_date_limit)
+    birthdate = fields.LimitedDateTimeField(upper_limit=upper_birthdate_limit, lower_limit=lower_birthdate_limit)
     gender = fields.GenderField()
     language = fields.LanguageField()
 
