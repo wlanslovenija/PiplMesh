@@ -7,7 +7,7 @@ import mongoengine
 
 GENDER_CHOICES = (
     ('male', _("male")),
-    ('female', _("female"))
+    ('female', _("female")),
 )
 
 ERROR_MESSAGES = {
