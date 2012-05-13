@@ -26,8 +26,6 @@ def limit_date(value, lower_limit, upper_limit, error):
             tmp_upper_limit = upper_limit()
             if not isinstance(tmp_upper_limit, (datetime.datetime, datetime.date)):
                 error('callable')
-        else:
-            temp_upper_limit = upper_limit
 
         if isinstance(tmp_upper_limit, datetime.datetime):
             tmp_upper_limit = tmp_upper_limit.date()
@@ -44,8 +42,6 @@ def limit_date(value, lower_limit, upper_limit, error):
             tmp_lower_limit = lower_limit()
             if not isinstance(tmp_lower_limit, (datetime.datetime, datetime.date)):
                 error('callable')
-        else:
-            temp_lower_limit = lower_limit
 
         if isinstance(tmp_lower_limit, datetime.datetime):
             tmp_lower_limit = tmp_lower_limit.date()
@@ -92,4 +88,4 @@ class LimitedDateTimeField(mongoengine.DateTimeField):
         def error(message):
             self.error(ERROR_MESSAGES[message])
 
-        limit_date(value, lower_limit, upper_limit, error)
+        limit_date(value, self.lower_limit, self.upper_limit, error)

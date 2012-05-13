@@ -13,9 +13,9 @@ class LimitedDateTimeField(forms.DateTimeField):
         self.upper_limit = upper_limit
         self.lower_limit = lower_limit
 
-        if self.upper_limit and not isinstance(self.upper_limit, (datetime.datetime, datetime.date)):
+        if self.upper_limit and not (isinstance(self.upper_limit, (datetime.datetime, datetime.date)) or callable(self.upper_limit)):
             raise AttributeError
-        if self.lower_limit and not isinstance(self.lower_limit, (datetime.datetime, datetime.date)):
+        if self.lower_limit and not (isinstance(self.lower_limit, (datetime.datetime, datetime.date)) or callable(self.lower_limit)):
             raise AttributeError
 
         super(LimitedDateTimeField, self).__init__(input_formats=None, *args, **kwargs)

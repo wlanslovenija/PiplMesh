@@ -24,5 +24,5 @@ Thumbs.db
 # Celery
 celerybeat-schedule
 
-# Celerybeat.pid
+# Celerybeat
 *.pid
