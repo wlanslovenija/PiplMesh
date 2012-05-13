@@ -8,42 +8,37 @@
 <div id="main">
     <div id="menu_list">
         <p><a href="{% url profile username=user.username %}">{% trans "Profile" %}<a/></p>
-        <p id="current_item">{% trans "Account" %}</p>
+        <p id="current_item"><a href="{% url account %}">{% trans "Account" %}<a/></p>
     </div>
     <div class="registration">
         <form method="post" action="">
             {% csrf_token %}
             {% for field in form %}
-                {% if forloop.last %}
-                    <div id="account_button">
-                        {{ field.errors }}
-                        <ul class="form_field">
-                            <li class="form_label">
-                                <label for="{{ form.old_password.id_for_label }}">
-                                    <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
-                                </label>
-                            </li>
-                            <li id="form_textbox_account">{{ form.old_password }}</li>
-                            <li><input type="submit" value="{% trans "Save Changes" %}" /></li>
-                        </ul>
-                    </div>
-                {% else %}
-                    {{ field.errors }}
-                    <ul class="form_field">
-                        <li class="form_label">
-                            <label for="{{ field.id_for_label }}">
-                                {% if field.field.required %}
-                                    <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
-                                {% else %}
-                                    {{ field.label }}
-                                {% endif %}
-                            </label>
-                        </li>
-                        <li class="form_textbox">{{ field }}</li>
-                    </ul>
-                {% endif %}
+                {{ field.errors }}
+                <ul class="form_field">
+                    <li class="form_label">
+                        <label for="{{ field.id_for_label }}">
+                            {% if field.field.required %}
+                            <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
+                            {% else %}
+                            {{ field.label }}
+                            {% endif %}
+                        </label>
+                    </li>
+                    <li id="form_textbox">{{ field }}</li>
+                </ul>
             {% endfor %}
+            <div class="button_account">
+                <ul>
+                    <li><input type="submit" value="{% trans "Change" %}" /></li>
+                </ul>
+            </div>
         </form>
+        {% if form.name != "password_form" %}
+        <div id="password_change">
+            <a href="{% url password_change %}">{% trans "Change your password" %}</a></p>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

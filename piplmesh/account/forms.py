@@ -68,25 +68,6 @@ class UserPasswordForm(forms.Form):
             return self.cleaned_data['password2']
         raise forms.ValidationError(_("Passwords do not match."))
 
-class UserNewPasswordForm(forms.Form):
-    """
-    Class with user new password form
-    """
-    # TODO: Try to inherit UserPasswordForm and just override the settings ? Is that possible ?
-    password1 = forms.CharField(label=_("New Password"),
-        widget=forms.PasswordInput,
-        required=False)
-    password2 = forms.CharField(label=_("New Password confirmation"),
-        widget=forms.PasswordInput,
-        required=False,
-        help_text = _("Enter the same password as above, for verification."))
-
-    def clean_password2(self):
-        # This method checks whether the passwords match
-        if self.cleaned_data.has_key('password1') and self.cleaned_data['password1'] == self.cleaned_data['password2']:
-            return self.cleaned_data['password2']
-        raise forms.ValidationError(_("Passwords do not match."))
-
 class UserBasicInfoForm(forms.Form):
     """
     Class with user basic information form
@@ -129,11 +110,21 @@ class UserRegistrationForm(UserUsernameForm,UserPasswordForm,UserBasicInfoForm):
     Class with Registration form
     """
 
-class AccountForm(UserBasicInfoForm,UserAdditionalInfoForm,UserNewPasswordForm):
+class AccountForm(UserBasicInfoForm,UserAdditionalInfoForm):
     """
     Class with account form
     """
 
     old_password = forms.CharField(label=_("Password"),
+        widget=forms.PasswordInput,
+        help_text = _("Enter your current password, for verification."))
+
+class PasswordChangeForm(UserPasswordForm):
+    """
+    Class with change password form
+    """
+
+    name = "password_form"
+    old_password = forms.CharField(label=_("Old Password"),
         widget=forms.PasswordInput,
         help_text = _("Enter your current password, for verification."))

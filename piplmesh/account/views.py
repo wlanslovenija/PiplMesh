@@ -115,7 +115,6 @@ class AccountView(edit_views.FormView):
 
     template_name = 'profile/account.html'
     form_class = forms.AccountForm
-    user = models.User
 
     def form_valid(self, form):
         user = self.request.user
@@ -128,8 +127,6 @@ class AccountView(edit_views.FormView):
             # TODO: Change user image
             profile_image = form.cleaned_data['profile_image']
             user.save()
-            if form.cleaned_data['password1']:
-                user.set_password(form.cleaned_data['password1'])
             messages.error(self.request,"You have successfully modified your settings")
             return super(AccountView, self).form_valid(form)
         else:
@@ -141,7 +138,7 @@ class AccountView(edit_views.FormView):
             if request.user.facebook_id:
                 # TODO: Settings for users with Facebook login
                 messages.error(request,"Settings for users with Facebook login are not available at this moment")
-                return shortcuts.redirect(self.success_url)
+                return shortcuts.redirect(urlresolvers.reverse_lazy('profile', kwargs={'username': request.user.username}))
             return super(AccountView, self).dispatch(request, *args, **kwargs)
         else:
             return shortcuts.redirect('login')
@@ -159,6 +156,18 @@ class AccountView(edit_views.FormView):
             # TODO: Path to user current avatar
             'profile_image': "unknown.png"
         }
+
+class PasswordChangeView(AccountView):
+    """
+    This view displays form for changing password.
+    """
+
+    form_class = forms.PasswordChangeForm
+
+    def form_valid(self, form):
+        self.request.user.set_password(form.cleaned_data['password1'])
+        messages.error(self.request,"You have successfully changed your password")
+        return super(AccountView, self).form_valid(form)
 
 @dispatch.receiver(signals.channel_subscribe)
 def process_channel_subscribe(sender, request, channel_id, **kwargs):

@@ -21,4 +21,5 @@ urlpatterns = patterns('',
     # Profile, Account
     url(r'^profile/(?P<username>[A-Za-z0-9_.]+)/$', account_views.ProfileView.as_view(), name='profile'),
     url(r'^account/$', account_views.AccountView.as_view(), name='account'),
+    url(r'^account/password/change$', account_views.PasswordChangeView.as_view(), name='password_change'),
 )
