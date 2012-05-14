@@ -118,30 +118,24 @@ class AccountView(edit_views.FormView):
 
     def form_valid(self, form):
         user = self.request.user
-        if user.check_password(form.cleaned_data['old_password']):
-            user.first_name=form.cleaned_data['first_name']
-            user.last_name=form.cleaned_data['last_name']
-            user.email=form.cleaned_data['email']
-            user.gender=form.cleaned_data['gender']
-            user.birthdate=form.cleaned_data['birthdate']
-            # TODO: Change user image
-            profile_image = form.cleaned_data['profile_image']
-            user.save()
-            messages.error(self.request,"You have successfully modified your settings")
-            return super(AccountView, self).form_valid(form)
-        else:
-            messages.error(self.request,"You have entered invalid password")
-            return super(AccountView, self).form_invalid(form)
+        user.first_name=form.cleaned_data['first_name']
+        user.last_name=form.cleaned_data['last_name']
+        user.email=form.cleaned_data['email']
+        user.gender=form.cleaned_data['gender']
+        user.birthdate=form.cleaned_data['birthdate']
+        # TODO: Change user image
+        profile_image = form.cleaned_data['profile_image']
+        user.save()
+        messages.error(self.request,"You have successfully modified your settings")
+        return super(AccountView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
-            if request.user.facebook_id:
-                # TODO: Settings for users with Facebook login
-                messages.error(request,"Settings for users with Facebook login are not available at this moment")
-                return shortcuts.redirect(urlresolvers.reverse_lazy('profile', kwargs={'username': request.user.username}))
-            return super(AccountView, self).dispatch(request, *args, **kwargs)
-        else:
+        if not request.user.is_authenticated():
             return shortcuts.redirect('login')
+        return super(AccountView, self).dispatch(request, *args, **kwargs)
+
+    def get_form(self, form_class):
+        return form_class(self.request.user,**self.get_form_kwargs())
 
     def get_success_url(self):
         return urlresolvers.reverse_lazy('profile', kwargs={'username': self.request.user.username})
