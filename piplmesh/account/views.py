@@ -7,6 +7,7 @@ from django.contrib.auth import views as auth_views
 from django.core import exceptions, urlresolvers
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
+from django.utils.translation import ugettext_lazy as _
 
 from pushserver import signals
 from pushserver.utils import updates
@@ -73,14 +74,15 @@ class ProfileView(generic_views.DetailView):
             profile = models.User.objects.get(username=kwargs['username'])
             return shortcuts.render_to_response(self.template_name,{'profile': profile}, context_instance=template.RequestContext(request))
         except Exception, e:
-            message = "User "+kwargs['username']+" not found."
-            messages.error(request,message)
+            message = _("User "+kwargs['username']+" not found.")
+            messages.error(request, message)
             # TODO: Redirect user to page where he came from
             return shortcuts.redirect('home')
 
 class RegistrationView(edit_views.FormView):
     """
     This view checks if form data are valid, saves new user.
+
     New user is authenticated, logged in and redirected to home page.
     """
 
@@ -99,8 +101,7 @@ class RegistrationView(edit_views.FormView):
         )
         new_user.set_password(form.cleaned_data['password2'])
         new_user.save()
-        new_user = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password2'])
-        auth.login(self.request, new_user)
+        auth.login(self.request, auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password2']))
         return super(RegistrationView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
@@ -123,10 +124,8 @@ class AccountView(edit_views.FormView):
         user.email=form.cleaned_data['email']
         user.gender=form.cleaned_data['gender']
         user.birthdate=form.cleaned_data['birthdate']
-        # TODO: Change user image
-        profile_image = form.cleaned_data['profile_image']
         user.save()
-        messages.error(self.request,"You have successfully modified your settings")
+        messages.success(self.request, _("You have successfully modified your settings"))
         return super(AccountView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
@@ -147,21 +146,31 @@ class AccountView(edit_views.FormView):
             'email': self.request.user.email,
             'gender': self.request.user.gender,
             'birthdate': self.request.user.birthdate,
-            # TODO: Path to user current avatar
-            'profile_image': "unknown.png"
         }
 
-class PasswordChangeView(AccountView):
+class PasswordChangeView(edit_views.FormView):
     """
     This view displays form for changing password.
     """
 
+    template_name = 'profile/password_change.html'
     form_class = forms.PasswordChangeForm
 
     def form_valid(self, form):
         self.request.user.set_password(form.cleaned_data['password1'])
-        messages.error(self.request,"You have successfully changed your password")
-        return super(AccountView, self).form_valid(form)
+        messages.success(self.request, _("You have successfully changed your password"))
+        return super(PasswordChangeView, self).form_valid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return shortcuts.redirect('login')
+        return super(PasswordChangeView, self).dispatch(request, *args, **kwargs)
+
+    def get_form(self, form_class):
+        return form_class(self.request.user,**self.get_form_kwargs())
+
+    def get_success_url(self):
+        return urlresolvers.reverse_lazy('profile', kwargs={'username': self.request.user.username})
 
 @dispatch.receiver(signals.channel_subscribe)
 def process_channel_subscribe(sender, request, channel_id, **kwargs):

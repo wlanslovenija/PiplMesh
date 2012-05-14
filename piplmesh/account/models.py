@@ -6,6 +6,7 @@ from mongoengine.django import auth
 from piplmesh.account import fields
 
 LOWER_DATE_LIMIT = 366 * 120
+USERNAME_REGEX = r'^[\w.@+-]+$'
 
 def upper_birthdate_limit():
     return datetime.datetime.today()

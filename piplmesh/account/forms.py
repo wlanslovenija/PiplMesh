@@ -37,27 +37,41 @@ class RadioFieldRenderer(widgets.RadioFieldRenderer):
     def render(self):
         return safestring.mark_safe(u'<ul>\n%s\n</ul>' % (u'\n'.join(self._render_widgets())),)
 
+class ErrorMessages():
+    """
+    Class with error messages.
+    """
+
+    error_messages = {
+        'password_mismatch': _("Passwords do not match."),
+        'password_wrong': _("You have entered invalid Password."),
+        'not_unique': _("A user with that username already exists."),
+        }
+
 class UserUsernameForm(forms.Form):
     """
     Class with username form.
     """
 
-    username = forms.RegexField(label=_("Username"), max_length=30,
-        regex=r'^[\w.@+-]+$',
-        help_text = _("Required. 30 characters or fewer. Letters, digits and "
-                      "@/./+/-/_ only."),
-        error_messages = {
-            'invalid': _("This value may contain only letters, numbers and "
-                         "@/./+/-/_ characters.")})
+    username = forms.RegexField(
+        label=_("Username"),
+        max_length=30,
+        regex=models.USERNAME_REGEX,
+        help_text=_("Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."),
+        error_messages={
+            'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters.")
+        }
+    )
 
     def clean_username(self):
         """
         This method checks whether the username exists in case-insensitive manner
         """
 
-        username = self.cleaned_data['username']
+        username = self.cleaned_data.get('username')
         if models.User.objects(username__iexact=username).count():
-            raise forms.ValidationError(_("A user with that username already exists."))
+            print self.error_messages
+            raise forms.ValidationError(self.error_messages['not_unique'])
         return username
 
 class UserPasswordForm(forms.Form):
@@ -65,11 +79,15 @@ class UserPasswordForm(forms.Form):
     Class with user password form.
     """
 
-    password1 = forms.CharField(label=_("Password"),
-        widget=forms.PasswordInput)
-    password2 = forms.CharField(label=_("Password confirmation"),
+    password1 = forms.CharField(
+        label=_("Password"),
         widget=forms.PasswordInput,
-        help_text = _("Enter the same password as above, for verification."))
+    )
+    password2 = forms.CharField(
+        label=_("Password confirmation"),
+        widget=forms.PasswordInput,
+        help_text=_("Enter the same password as above, for verification."),
+    )
 
     def clean_password2(self):
         """
@@ -80,16 +98,18 @@ class UserPasswordForm(forms.Form):
         password2 = self.cleaned_data.get('password2')
         if password1 and password1 == password2:
             return password1
-        raise forms.ValidationError(_("Passwords do not match."))
+        raise forms.ValidationError(self.error_messages['password_mismatch'])
 
 class UserCurrentPasswordForm(forms.Form):
     """
     Class with user current password form.
     """
 
-    current_password = forms.CharField(label=_("Current Password"),
+    current_password = forms.CharField(
+        label=_("Current Password"),
         widget=forms.PasswordInput,
-        help_text = _("Enter your current password, for verification."))
+        help_text=_("Enter your current password, for verification."),
+    )
 
     def clean_current_password(self):
         """
@@ -99,7 +119,7 @@ class UserCurrentPasswordForm(forms.Form):
         password = self.cleaned_data.get('current_password')
         if self.user.check_password(password):
             return password
-        raise forms.ValidationError(_("You have entered invalid Password."))
+        raise forms.ValidationError(self.error_messages['password_wrong'])
 
 class UserBasicInfoForm(forms.Form):
     """
@@ -111,7 +131,6 @@ class UserBasicInfoForm(forms.Form):
     email = forms.EmailField(label=_("E-mail"))
     gender = forms.ChoiceField(
         label=_("Gender"),
-        required=False,
         choices=fields.GENDER_CHOICES,
         widget=forms.RadioSelect(renderer=RadioFieldRenderer),
     )
@@ -122,11 +141,11 @@ class UserBasicInfoForm(forms.Form):
         required=False,
         widget=extras_widgets.SelectDateWidget(
             years=[
-            y for y in range(
-                models.upper_birthdate_limit().year,
-                models.lower_birthdate_limit().year,
-                -1,
-            )
+                y for y in range(
+                    models.upper_birthdate_limit().year,
+                    models.lower_birthdate_limit().year,
+                    -1,
+                )
             ],
         ),
     )
@@ -136,14 +155,12 @@ class UserAdditionalInfoForm(forms.Form):
     Class with user additional information form.
     """
 
-    profile_image = forms.CharField(label=_("Profile image"),required=False)
-
-class UserRegistrationForm(UserUsernameForm, UserPasswordForm, UserBasicInfoForm):
+class UserRegistrationForm(UserUsernameForm, UserPasswordForm, UserBasicInfoForm, ErrorMessages):
     """
     Class with Registration form.
     """
 
-class AccountForm(UserBasicInfoForm, UserAdditionalInfoForm, UserCurrentPasswordForm):
+class AccountForm(UserBasicInfoForm, UserAdditionalInfoForm, UserCurrentPasswordForm, ErrorMessages):
     """
     Class with account form.
     """
@@ -152,7 +169,7 @@ class AccountForm(UserBasicInfoForm, UserAdditionalInfoForm, UserCurrentPassword
         self.user = user
         super(AccountForm, self).__init__(*args, **kwargs)
 
-class PasswordChangeForm(UserPasswordForm, UserCurrentPasswordForm):
+class PasswordChangeForm(UserPasswordForm, UserCurrentPasswordForm, ErrorMessages):
     """
     Class with change password form.
     """
