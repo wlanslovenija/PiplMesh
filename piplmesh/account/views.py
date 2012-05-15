@@ -12,6 +12,8 @@ from django.utils.translation import ugettext_lazy as _
 from pushserver import signals
 from pushserver.utils import updates
 
+from mongogeneric import detail
+
 from piplmesh.account import forms, models
 
 HOME_CHANNEL_ID = 'home'
@@ -62,21 +64,23 @@ def logout(request):
     else:
         raise exceptions.PermissionDenied
 
-class ProfileView(generic_views.DetailView):
+class ProfileView(detail.DetailView):
     """
     This view checks if user exist in database and returns his profile.
     """
 
     template_name = 'profile/profile.html'
 
+    def get_object(self):
+        return self.profile
+
     def dispatch(self, request, *args, **kwargs):
         try:
-            profile = models.User.objects.get(username=kwargs['username'])
-            return shortcuts.render_to_response(self.template_name,{'profile': profile}, context_instance=template.RequestContext(request))
+            self.profile = models.User.objects.get(username=kwargs['username'])
+            return super(ProfileView, self).dispatch(request, *args, **kwargs)
         except Exception, e:
             message = _("User "+kwargs['username']+" not found.")
             messages.error(request, message)
-            # TODO: Redirect user to page where he came from
             return shortcuts.redirect('home')
 
 class RegistrationView(edit_views.FormView):
