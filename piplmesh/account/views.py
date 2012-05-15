@@ -8,6 +8,7 @@ from django.core import exceptions, urlresolvers
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 from django.utils.translation import ugettext_lazy as _
+from django.http import Http404
 
 from pushserver import signals
 from pushserver.utils import updates
@@ -72,16 +73,10 @@ class ProfileView(detail.DetailView):
     template_name = 'profile/profile.html'
 
     def get_object(self):
-        return self.profile
-
-    def dispatch(self, request, *args, **kwargs):
         try:
-            self.profile = models.User.objects.get(username=kwargs['username'])
-            return super(ProfileView, self).dispatch(request, *args, **kwargs)
+            return models.User.objects.get(username=self.kwargs['username'])
         except Exception, e:
-            message = _("User "+kwargs['username']+" not found.")
-            messages.error(request, message)
-            return shortcuts.redirect('home')
+            raise Http404(_(u"User %(name)s not found") % {'name': self.kwargs['username']})
 
 class RegistrationView(edit_views.FormView):
     """
