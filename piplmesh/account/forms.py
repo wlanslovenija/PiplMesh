@@ -14,12 +14,6 @@ class RadioFieldRenderer(widgets.RadioFieldRenderer):
     to first and last radio widgets.
     """
 
-    class RadioFieldRenderer(widgets.RadioFieldRenderer):
-        """
-        RadioSelect renderer which adds ``first`` and ``last`` style classes
-        to first and last radio widgets.
-        """
-
     def _render_widgets(self):
         for i, w in enumerate(self):
             classes = []
@@ -37,41 +31,29 @@ class RadioFieldRenderer(widgets.RadioFieldRenderer):
     def render(self):
         return safestring.mark_safe(u'<ul>\n%s\n</ul>' % (u'\n'.join(self._render_widgets())),)
 
-class ErrorMessages():
-    """
-    Class with error messages.
-    """
-
-    error_messages = {
-        'password_mismatch': _("Passwords do not match."),
-        'password_wrong': _("You have entered invalid Password."),
-        'not_unique': _("A user with that username already exists."),
-        }
-
 class UserUsernameForm(forms.Form):
     """
     Class with username form.
     """
-
+    
     username = forms.RegexField(
         label=_("Username"),
         max_length=30,
-        regex='^'+models.USERNAME_REGEX+'$',
+        regex='^' + models.USERNAME_REGEX + '$',
         help_text=_("Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."),
         error_messages={
-            'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters.")
+            'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters."),
         }
     )
 
     def clean_username(self):
         """
-        This method checks whether the username exists in case-insensitive manner
+        This method checks whether the username exists in a case-insensitive manner.
         """
 
         username = self.cleaned_data.get('username')
         if models.User.objects(username__iexact=username).count():
-            print self.error_messages
-            raise forms.ValidationError(self.error_messages['not_unique'])
+            raise forms.ValidationError(_("A user with that username already exists."), code='username_exists')
         return username
 
 class UserPasswordForm(forms.Form):
@@ -98,7 +80,7 @@ class UserPasswordForm(forms.Form):
         password2 = self.cleaned_data.get('password2')
         if password1 and password1 == password2:
             return password1
-        raise forms.ValidationError(self.error_messages['password_mismatch'])
+        raise forms.ValidationError(_("Passwords do not match."), code="password_mismatch")
 
 class UserCurrentPasswordForm(forms.Form):
     """
@@ -119,7 +101,7 @@ class UserCurrentPasswordForm(forms.Form):
         password = self.cleaned_data.get('current_password')
         if self.user.check_password(password):
             return password
-        raise forms.ValidationError(self.error_messages['password_wrong'])
+        raise forms.ValidationError(_("You have entered invalid password."), code='wrong_password')
 
 class UserBasicInfoForm(forms.Form):
     """
@@ -155,12 +137,12 @@ class UserAdditionalInfoForm(forms.Form):
     Class with user additional information form.
     """
 
-class UserRegistrationForm(UserUsernameForm, UserPasswordForm, UserBasicInfoForm, ErrorMessages):
+class UserRegistrationForm(UserUsernameForm, UserPasswordForm, UserBasicInfoForm):
     """
     Class with Registration form.
     """
 
-class AccountForm(UserBasicInfoForm, UserAdditionalInfoForm, UserCurrentPasswordForm, ErrorMessages):
+class AccountForm(UserBasicInfoForm, UserAdditionalInfoForm, UserCurrentPasswordForm):
     """
     Class with account form.
     """
@@ -169,7 +151,7 @@ class AccountForm(UserBasicInfoForm, UserAdditionalInfoForm, UserCurrentPassword
         self.user = user
         super(AccountForm, self).__init__(*args, **kwargs)
 
-class PasswordChangeForm(UserPasswordForm, UserCurrentPasswordForm, ErrorMessages):
+class PasswordChangeForm(UserPasswordForm, UserCurrentPasswordForm):
     """
     Class with change password form.
     """
