@@ -70,6 +70,54 @@ class FacebookCallbackView(generic_views.RedirectView):
             # TODO: Message user that they have not been logged in because they cancelled the facebook app
             # TODO: Use information provided from facebook as to why the login was not successful
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
+import tweepy
+import urllib
+global sis
+class TwitterLoginView(generic_views.RedirectView):
+
+    permanent = False
+    global authi
+    authi = tweepy.OAuthHandler(settings.CONSUMER_KEY, settings.CONSUMER_SECRET, 'http://127.0.0.1:8000/twitter/oauth')
+
+    def get_redirect_url(self, **kwargs):
+        redirect_url = authi.get_authorization_url()
+        self.request.session['request_token'] = (authi.request_token.key, authi.request_token.secret)
+        return redirect_url
+
+
+
+
+
+class TwitterCallbackView(generic_views.RedirectView):
+
+    permanent = False
+    # TODO: Redirect users to the page they initially came from
+    url = settings.FACEBOOK_LOGIN_REDIRECT
+
+    def get(self, request, *args, **kwargs):
+        if 'oauth_verifier' in request.GET:
+            # TODO: Add security measures to prevent attackers from sending a redirect to this url with a forged 'code'
+            verifier=request.GET['oauth_verifier']
+
+            authi = tweepy.OAuthHandler(settings.CONSUMER_KEY, settings.CONSUMER_SECRET)
+            tokens = request.session.get('request_token')
+            request.session.delete('request_token')
+            authi.set_request_token(tokens[0], tokens[1])
+            authi.get_access_token(verifier=verifier)
+            key = authi.access_token.key
+            secret = authi.access_token.secret
+            authi = tweepy.OAuthHandler(settings.CONSUMER_KEY, settings.CONSUMER_SECRET)
+            authi.set_access_token(key, secret)
+
+            user = auth.authenticate(access_token=authi, request=request)
+            auth.login(request, user)
+
+            return super(TwitterCallbackView, self).get(request, *args, **kwargs)
+        else:
+            # TODO: Message user that they have not been logged in because they cancelled the facebook app
+            # TODO: Use information provided from facebook as to why the login was not successful
+            return super(FacebookCallbackView, self).get(request, *args, **kwargs)
+
 
 def logout(request):
     """
