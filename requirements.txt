@@ -7,3 +7,4 @@ docutils==0.8.1
 celery==2.5.3
 django-celery==2.5.5
 django-pushserver==0.1.8
+tweepy
