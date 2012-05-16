@@ -145,17 +145,17 @@ class UserAdditionalInfoForm(forms.Form):
     Class with user additional information form.
     """
 
-class UserRegistrationForm(UserUsernameForm, UserPasswordForm, UserBasicInfoForm):
+class RegistrationForm(UserUsernameForm, UserPasswordForm, UserBasicInfoForm):
     """
     Class with registration form.
     """
 
-class UserAccountChangeForm(UserBasicInfoForm, UserAdditionalInfoForm, UserCurrentPasswordForm):
+class AccountChangeForm(UserBasicInfoForm, UserAdditionalInfoForm, UserCurrentPasswordForm):
     """
-    Class with account form.
+    Class with form for changing your account settings.
     """
 
 class PasswordChangeForm(UserCurrentPasswordForm, UserPasswordForm):
     """
-    Class with change password form.
+    Class with form for changing password.
     """

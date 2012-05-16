@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^facebook/callback/$', account_views.FacebookCallbackView.as_view(), name='facebook_callback'),
 
     # Profile, Account
-    url(r'^profile/(?P<username>' + models.USERNAME_REGEX + ')/$', account_views.ProfileView.as_view(), name='profile'),
+    url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', account_views.UserView.as_view(), name='user'),
     url(r'^account/$', account_views.AccountView.as_view(), name='account'),
     url(r'^account/password/change/$', account_views.PasswordChangeView.as_view(), name='password_change'),
 )

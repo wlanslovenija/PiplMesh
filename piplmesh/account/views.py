@@ -65,12 +65,12 @@ def logout(request):
     else:
         raise exceptions.PermissionDenied
 
-class ProfileView(detail.DetailView):
+class UserView(detail.DetailView):
     """
-    This view checks if user exist in database and returns his profile.
+    This view checks if user exist in database and returns his user page.
     """
 
-    template_name = 'profile/profile.html'
+    template_name = 'user/user.html'
 
     def get_object(self):
         try:
@@ -87,7 +87,7 @@ class RegistrationView(edit_views.FormView):
 
     template_name = 'registration/registration.html'
     success_url = urlresolvers.reverse_lazy('home')
-    form_class = forms.UserRegistrationForm
+    form_class = forms.RegistrationForm
 
     def form_valid(self, form):
         new_user = models.User(
@@ -113,8 +113,8 @@ class AccountView(edit_views.FormView):
     This view displays form for updating user settings. It checks if all fields are valid and updates user.
     """
 
-    template_name = 'profile/account.html'
-    form_class = forms.UserAccountChangeForm
+    template_name = 'user/account.html'
+    form_class = forms.AccountChangeForm
 
     def form_valid(self, form):
         user = self.request.user
@@ -136,7 +136,7 @@ class AccountView(edit_views.FormView):
         return form_class(self.request.user,**self.get_form_kwargs())
 
     def get_success_url(self):
-        return urlresolvers.reverse_lazy('profile', kwargs={'username': self.request.user.username})
+        return urlresolvers.reverse_lazy('user', kwargs={'username': self.request.user.username})
 
     def get_initial(self):
         return {
@@ -152,7 +152,7 @@ class PasswordChangeView(edit_views.FormView):
     This view displays form for changing password.
     """
 
-    template_name = 'profile/password_change.html'
+    template_name = 'user/password_change.html'
     form_class = forms.PasswordChangeForm
 
     def form_valid(self, form):
@@ -169,7 +169,7 @@ class PasswordChangeView(edit_views.FormView):
         return form_class(self.request.user,**self.get_form_kwargs())
 
     def get_success_url(self):
-        return urlresolvers.reverse_lazy('profile', kwargs={'username': self.request.user.username})
+        return urlresolvers.reverse_lazy('user', kwargs={'username': self.request.user.username})
 
 @dispatch.receiver(signals.channel_subscribe)
 def process_channel_subscribe(sender, request, channel_id, **kwargs):
