@@ -35,10 +35,11 @@ class UserUsernameForm(forms.Form):
     """
     Class with username form.
     """
-    
+
     username = forms.RegexField(
         label=_("Username"),
         max_length=30,
+        min_length=4,
         regex='^' + models.USERNAME_REGEX + '$',
         help_text=_("Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."),
         error_messages={
@@ -51,7 +52,7 @@ class UserUsernameForm(forms.Form):
         This method checks whether the username exists in a case-insensitive manner.
         """
 
-        username = self.cleaned_data.get('username')
+        username = self.cleaned_data['username']
         if models.User.objects(username__iexact=username).count():
             raise forms.ValidationError(_("A user with that username already exists."), code='username_exists')
         return username
@@ -63,24 +64,27 @@ class UserPasswordForm(forms.Form):
 
     password1 = forms.CharField(
         label=_("Password"),
+        min_length=6,
         widget=forms.PasswordInput,
     )
     password2 = forms.CharField(
-        label=_("Password confirmation"),
+        label=_("Password (repeat)"),
+        min_length=6,
         widget=forms.PasswordInput,
         help_text=_("Enter the same password as above, for verification."),
     )
 
     def clean_password2(self):
         """
-        This method checks whether the passwords match
+        This method checks whether the passwords match.
         """
 
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
-        if password1 and password1 == password2:
-            return password1
-        raise forms.ValidationError(_("Passwords do not match."), code="password_mismatch")
+        if password1 and password1 != password2:
+            raise forms.ValidationError(_("The two password fields did not match."), code='password_mismatch')
+        return password2
+
 
 class UserCurrentPasswordForm(forms.Form):
     """
@@ -88,20 +92,24 @@ class UserCurrentPasswordForm(forms.Form):
     """
 
     current_password = forms.CharField(
-        label=_("Current Password"),
+        label=_("Current password"),
         widget=forms.PasswordInput,
         help_text=_("Enter your current password, for verification."),
     )
 
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(UserCurrentPasswordForm, self).__init__(*args, **kwargs)
+
     def clean_current_password(self):
         """
-        This method checks if user password is correct
+        This method checks if user password is correct.
         """
 
-        password = self.cleaned_data.get('current_password')
+        password = self.cleaned_data['current_password']
         if self.user.check_password(password):
             return password
-        raise forms.ValidationError(_("You have entered invalid password."), code='wrong_password')
+        raise forms.ValidationError(_("Your old password was entered incorrectly."), code='password_incorrect')
 
 class UserBasicInfoForm(forms.Form):
     """
@@ -139,25 +147,15 @@ class UserAdditionalInfoForm(forms.Form):
 
 class UserRegistrationForm(UserUsernameForm, UserPasswordForm, UserBasicInfoForm):
     """
-    Class with Registration form.
+    Class with registration form.
     """
 
-class AccountForm(UserBasicInfoForm, UserAdditionalInfoForm, UserCurrentPasswordForm):
+class UserAccountChangeForm(UserBasicInfoForm, UserAdditionalInfoForm, UserCurrentPasswordForm):
     """
     Class with account form.
     """
 
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
-        super(AccountForm, self).__init__(*args, **kwargs)
-
-class PasswordChangeForm(UserPasswordForm, UserCurrentPasswordForm):
+class PasswordChangeForm(UserCurrentPasswordForm, UserPasswordForm):
     """
     Class with change password form.
     """
-
-    name = "password_form"
-
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
-        super(PasswordChangeForm, self).__init__(*args, **kwargs)

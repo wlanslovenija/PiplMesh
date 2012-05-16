@@ -114,7 +114,7 @@ class AccountView(edit_views.FormView):
     """
 
     template_name = 'profile/account.html'
-    form_class = forms.AccountForm
+    form_class = forms.UserAccountChangeForm
 
     def form_valid(self, form):
         user = self.request.user
