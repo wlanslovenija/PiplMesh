@@ -1,0 +1,18 @@
+{% extends "plain.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Account" %}{% endblock %}
+
+{% block content %}
+    <div id="menu_list">
+        <p><a href="{% url user username=user.username %}">{% trans "Profile" %}<a/></p>
+        <p id="current_item"><a href="{% url account %}">{% trans "Account" %}<a/></p>
+    </div>
+    <div class="registration">
+        {% include "form/form.html" %}
+    </div>
+    <div id="password_change">
+        <a href="{% url password_change %}">{% trans "Change your password" %}</a></p>
+    </div>
+{% endblock %}

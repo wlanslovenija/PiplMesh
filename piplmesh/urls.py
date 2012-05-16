@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
 
-from piplmesh.account import views as account_views
+from piplmesh.account import models, views as account_views
 from piplmesh.frontend import views as frontend_views
 
 urlpatterns = patterns('',
@@ -17,4 +17,9 @@ urlpatterns = patterns('',
     # Facebook
     url(r'^facebook/login/$', account_views.FacebookLoginView.as_view(), name='facebook_login'),
     url(r'^facebook/callback/$', account_views.FacebookCallbackView.as_view(), name='facebook_callback'),
+
+    # Profile, Account
+    url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', account_views.UserView.as_view(), name='user'),
+    url(r'^account/$', account_views.AccountView.as_view(), name='account'),
+    url(r'^account/password/change/$', account_views.PasswordChangeView.as_view(), name='password_change'),
 )
