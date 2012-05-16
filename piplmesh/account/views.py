@@ -72,6 +72,7 @@ class UserView(detail.DetailView):
     template_name = 'user/user.html'
     document = models.User
     slug_field = 'username'
+    slug_url_kwarg = 'username'
 
 class RegistrationView(edit_views.FormView):
     """
@@ -95,7 +96,9 @@ class RegistrationView(edit_views.FormView):
         )
         new_user.set_password(form.cleaned_data['password2'])
         new_user.save()
-        auth.login(self.request, auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password2']))
+        # We update user with authentication data
+        newuser = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password2'])
+        auth.login(self.request, newuser)
         return super(RegistrationView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
@@ -119,7 +122,7 @@ class AccountView(edit_views.FormView):
         user.gender=form.cleaned_data['gender']
         user.birthdate=form.cleaned_data['birthdate']
         user.save()
-        messages.success(self.request, _("You have successfully modified your settings"))
+        messages.success(self.request, _("You have successfully modified your settings."))
         return super(AccountView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
@@ -128,10 +131,10 @@ class AccountView(edit_views.FormView):
         return super(AccountView, self).dispatch(request, *args, **kwargs)
 
     def get_form(self, form_class):
-        return form_class(self.request.user,**self.get_form_kwargs())
+        return form_class(self.request.user, **self.get_form_kwargs())
 
     def get_success_url(self):
-        return urlresolvers.reverse_lazy('user', kwargs={'slug': self.request.user.username})
+        return urlresolvers.reverse_lazy('account')
 
     def get_initial(self):
         return {
@@ -152,7 +155,7 @@ class PasswordChangeView(edit_views.FormView):
 
     def form_valid(self, form):
         self.request.user.set_password(form.cleaned_data['password1'])
-        messages.success(self.request, _("You have successfully changed your password"))
+        messages.success(self.request, _("You have successfully changed your password."))
         return super(PasswordChangeView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
@@ -161,10 +164,10 @@ class PasswordChangeView(edit_views.FormView):
         return super(PasswordChangeView, self).dispatch(request, *args, **kwargs)
 
     def get_form(self, form_class):
-        return form_class(self.request.user,**self.get_form_kwargs())
+        return form_class(self.request.user, **self.get_form_kwargs())
 
     def get_success_url(self):
-        return urlresolvers.reverse_lazy('user', kwargs={'slug': self.request.user.username})
+        return urlresolvers.reverse_lazy('account')
 
 @dispatch.receiver(signals.channel_subscribe)
 def process_channel_subscribe(sender, request, channel_id, **kwargs):

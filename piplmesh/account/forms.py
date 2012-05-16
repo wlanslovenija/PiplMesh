@@ -69,7 +69,6 @@ class UserPasswordForm(forms.Form):
     )
     password2 = forms.CharField(
         label=_("Password (repeat)"),
-        min_length=6,
         widget=forms.PasswordInput,
         help_text=_("Enter the same password as above, for verification."),
     )

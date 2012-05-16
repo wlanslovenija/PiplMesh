@@ -5,7 +5,6 @@
 {% block title %}{{ object.username }}{% endblock %}
 
 {% block content %}
-<div id="main">
     <div id="menu_list">
         {% if user.username == object.username %}
             <p id="current_item">{% trans "Profile" %}</p>
@@ -37,5 +36,4 @@
         <br/>
         <br/>
     </div>
-</div>
 {% endblock %}
