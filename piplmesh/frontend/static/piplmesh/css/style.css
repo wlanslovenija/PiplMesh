@@ -377,12 +377,12 @@ input.gsc-search-button {
     color: #006600;
 }
 
-/* BOXES */
-.box {
+/* ------------------ PANELS ---------------------------- */
+.panel {
     width: 260px;
 }
 
-.boxHeader {
+.panel .header {
     color: #FCFCFC;
     height: 20px;
     text-align: center;
@@ -390,10 +390,10 @@ input.gsc-search-button {
     cursor: pointer;
 }
 
-.box input {
+.panel input {
     width: 80%;
 }
 
-.box img {
+.panel img {
     padding-right: 5px;
 }

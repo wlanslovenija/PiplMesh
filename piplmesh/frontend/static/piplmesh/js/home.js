@@ -48,7 +48,7 @@ $(document).ready(function () {
     searchUsers = "";
     $.updates.registerProcessor('home_channel', 'userlist', updateUserList);
 
-    $(".box .boxHeader").click(function () {
+    $(".panel .header").click(function () {
         $(this).next("ul").slideToggle("slow");
     });
 
