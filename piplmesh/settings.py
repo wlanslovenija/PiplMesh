@@ -257,6 +257,12 @@ FACEBOOK_SCOPE = 'email' # You may add additional parameters
 FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
 FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
 
+
+CONSUMER_KEY = 'yeZOtec5ol5I9BGCCKpcw'
+CONSUMER_SECRET = 'Dv80Q51jx8FWDInmZCGZs8AKDnRwAdrS0lxgZA4NWs'
+REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token'
+
+
 # You can set up your own custom search engine on: http://www.google.com/cse/
 # just register with you google account and crate new search engine.
 # When you create new search engine, switch uniqe id with your own and new settings will apply.
