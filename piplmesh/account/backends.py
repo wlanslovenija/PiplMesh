@@ -76,3 +76,23 @@ class FacebookBackend(MongoEngineBackend):
         user.save()
 
         return user
+
+
+
+import tweepy
+
+class TwitterBackend(MongoEngineBackend):
+    """TwitterBackend for authentication
+    """
+    def authenticate(self, access_token=None, request=None):
+        user, created = self.user_class.objects.get_or_create(
+            facebook_id = request.GET['user_id'],
+            defaults = {
+                'username' : request.GET['screen_name'],
+            }
+        )
+        user.facebook_token = (access_token.key, access_token.secret)
+        user.save()
+        return user
+
+
