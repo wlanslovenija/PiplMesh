@@ -40,8 +40,8 @@ class UserUsernameForm(forms.Form):
         label=_("Username"),
         max_length=30,
         min_length=4,
-        regex='^' + models.USERNAME_REGEX + '$',
-        help_text=_("Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."),
+        regex=r'^' + models.USERNAME_REGEX + r'$',
+        help_text=_("Required. Minimal of 4 characters and maximum of 30. Letters, digits and @/./+/-/_ only."),
         error_messages={
             'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters."),
         }
@@ -107,9 +107,9 @@ class UserCurrentPasswordForm(forms.Form):
         """
 
         password = self.cleaned_data['current_password']
-        if self.user.check_password(password):
-            return password
-        raise forms.ValidationError(_("Your old password was entered incorrectly."), code='password_incorrect')
+        if not self.user.check_password(password):
+            raise forms.ValidationError(_("Your current password was entered incorrectly."), code='password_incorrect')
+        return password
 
 class UserBasicInfoForm(forms.Form):
     """

@@ -1,6 +1,6 @@
 import datetime, urllib
 
-from django import dispatch, http, shortcuts, template
+from django import dispatch, shortcuts
 from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth import views as auth_views
@@ -8,7 +8,6 @@ from django.core import exceptions, urlresolvers
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 from django.utils.translation import ugettext_lazy as _
-from django.http import Http404
 
 from pushserver import signals
 from pushserver.utils import updates
@@ -67,16 +66,12 @@ def logout(request):
 
 class UserView(detail.DetailView):
     """
-    This view checks if user exist in database and returns his user page.
+    This view checks if user exist in database and returns his user page (profile).
     """
 
     template_name = 'user/user.html'
-
-    def get_object(self):
-        try:
-            return models.User.objects.get(username=self.kwargs['username'])
-        except Exception, e:
-            raise Http404(_(u"User %(name)s not found") % {'name': self.kwargs['username']})
+    document = models.User
+    slug_field = 'username'
 
 class RegistrationView(edit_views.FormView):
     """
@@ -136,7 +131,7 @@ class AccountView(edit_views.FormView):
         return form_class(self.request.user,**self.get_form_kwargs())
 
     def get_success_url(self):
-        return urlresolvers.reverse_lazy('user', kwargs={'username': self.request.user.username})
+        return urlresolvers.reverse_lazy('user', kwargs={'slug': self.request.user.username})
 
     def get_initial(self):
         return {
@@ -169,7 +164,7 @@ class PasswordChangeView(edit_views.FormView):
         return form_class(self.request.user,**self.get_form_kwargs())
 
     def get_success_url(self):
-        return urlresolvers.reverse_lazy('user', kwargs={'username': self.request.user.username})
+        return urlresolvers.reverse_lazy('user', kwargs={'slug': self.request.user.username})
 
 @dispatch.receiver(signals.channel_subscribe)
 def process_channel_subscribe(sender, request, channel_id, **kwargs):
