@@ -82,6 +82,7 @@ class RegistrationView(edit_views.FormView):
     """
 
     template_name = 'registration/registration.html'
+    # TODO: Redirect users to the page they initially came from
     success_url = urlresolvers.reverse_lazy('home')
     form_class = forms.RegistrationForm
 
@@ -98,7 +99,9 @@ class RegistrationView(edit_views.FormView):
         new_user.save()
         # We update user with authentication data
         newuser = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password2'])
+        assert newuser is not None, form.cleaned_data['username']
         auth.login(self.request, newuser)
+        messages.success(self.request, _("Your registration was successful."))
         return super(RegistrationView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
@@ -113,6 +116,7 @@ class AccountView(edit_views.FormView):
 
     template_name = 'user/account.html'
     form_class = forms.AccountChangeForm
+    success_url = urlresolvers.reverse_lazy('account')
 
     def form_valid(self, form):
         user = self.request.user
@@ -122,7 +126,7 @@ class AccountView(edit_views.FormView):
         user.gender=form.cleaned_data['gender']
         user.birthdate=form.cleaned_data['birthdate']
         user.save()
-        messages.success(self.request, _("You have successfully modified your settings."))
+        messages.success(self.request, _("You have successfully modified your account."))
         return super(AccountView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
@@ -132,9 +136,6 @@ class AccountView(edit_views.FormView):
 
     def get_form(self, form_class):
         return form_class(self.request.user, **self.get_form_kwargs())
-
-    def get_success_url(self):
-        return urlresolvers.reverse_lazy('account')
 
     def get_initial(self):
         return {
@@ -152,6 +153,7 @@ class PasswordChangeView(edit_views.FormView):
 
     template_name = 'user/password_change.html'
     form_class = forms.PasswordChangeForm
+    success_url = urlresolvers.reverse_lazy('account')
 
     def form_valid(self, form):
         self.request.user.set_password(form.cleaned_data['password1'])
@@ -165,9 +167,6 @@ class PasswordChangeView(edit_views.FormView):
 
     def get_form(self, form_class):
         return form_class(self.request.user, **self.get_form_kwargs())
-
-    def get_success_url(self):
-        return urlresolvers.reverse_lazy('account')
 
 @dispatch.receiver(signals.channel_subscribe)
 def process_channel_subscribe(sender, request, channel_id, **kwargs):
