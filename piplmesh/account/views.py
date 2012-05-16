@@ -126,7 +126,7 @@ class AccountChangeView(edit_views.FormView):
         user.gender=form.cleaned_data['gender']
         user.birthdate=form.cleaned_data['birthdate']
         user.save()
-        messages.success(self.request, _("Changes to your account have been successfully saved."))
+        messages.success(self.request, _("Your account has been successfully updated."))
         return super(AccountChangeView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
