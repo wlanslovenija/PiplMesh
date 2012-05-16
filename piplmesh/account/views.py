@@ -12,11 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 from pushserver import signals
 from pushserver.utils import updates
 
-from mongogeneric import detail
-
 from piplmesh.account import forms, models
-
-HOME_CHANNEL_ID = 'home'
 
 class FacebookLoginView(generic_views.RedirectView):
     """ 
@@ -64,16 +60,6 @@ def logout(request):
     else:
         raise exceptions.PermissionDenied
 
-class UserView(detail.DetailView):
-    """
-    This view checks if user exist in database and returns his user page (profile).
-    """
-
-    template_name = 'user/user.html'
-    document = models.User
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
-
 class RegistrationView(edit_views.FormView):
     """
     This view checks if form data are valid, saves new user.
@@ -81,7 +67,7 @@ class RegistrationView(edit_views.FormView):
     New user is authenticated, logged in and redirected to home page.
     """
 
-    template_name = 'registration/registration.html'
+    template_name = 'user/registration.html'
     # TODO: Redirect users to the page they initially came from
     success_url = urlresolvers.reverse_lazy('home')
     form_class = forms.RegistrationForm

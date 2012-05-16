@@ -6,7 +6,8 @@ from celery import task
 
 from pushserver.utils import updates
 
-from piplmesh.account import models, views
+from piplmesh.account import models
+from piplmesh.frontend import views
 
 CHECK_ONLINE_USERS_RECONNECT_TIMEOUT = 2 * settings.CHECK_ONLINE_USERS_INTERVAL
 
