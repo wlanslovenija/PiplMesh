@@ -1,50 +1,44 @@
+// TODO add users already online to this array
 var users = new Array();
 var searchUsers;
 var alphabeticalOrder = false;
 var userList;
-
 function updateUserList(data) {
     if (data.action == 'JOIN') {
         users[users.length] = data;
-        if (alphabeticalOrder) {
-            rebuildUserList();
-        } else {
-            addUserOnList(data);
+        redrawUserList();
+    } else if (data.action == 'PART') {
+        var index = users.indexOf(data);
+        if (index != -1) {
+            users.splice(index, 1);
+            redrawUserList();
         }
-    }else if (data.action == 'PART') {
-        users.splice(users.indexOf(data), 1);
-        $("#userlist #" + data.id).remove();
     }
 }
 
-// adds one user to UserList
-function addUserOnList(user) {
-    if (user.username.indexOf(searchUsers) != -1) {
-        userlist.append("<li id=\"" + user.id + "\">" +
-            "<img src=\"" + user.image + "\" alt=\"image\">" + user.username +
-            "<div class=\"userInfo\">" + user.info + "</div>" +
-            "</li>");
-    }
-}
-
-// rebuilds userList
-function rebuildUserList() {
-    var tmpusers = users;
+// redraws userList
+function redrawUserList() {
+    var tmpUsers = users.slice();
     userList.empty();
     if (alphabeticalOrder) {
-        tmpusers.sort(function (user1, user2) {
+        tmpUsers.sort(function (user1, user2) {
             if (user1.username.toUpperCase() < user2.username.toUpperCase()) return -1;
             if (user1.username.toUpperCase() > user2.username.toUpperCase()) return 1;
             return 0;
         });
     }
-    for (user in tmpusers) {
-        addUserOnList(user);
+    for (user in tmpUsers) {
+        if (user.username.indexOf(searchUsers) != -1) {
+            userlist.append("<li>" +
+                "<img src=\"" + user.image + "\" alt=\"image\">" + user.username +
+                "<div class=\"userInfo\">" + user.info + "</div>" +
+                "</li>");
+        }
     }
 }
 
 $(document).ready(function () {
-    var userList = $("#userlist");
+    userList = $("#userlist");
     searchUsers = "";
     $.updates.registerProcessor('home_channel', 'userlist', updateUserList);
 
@@ -54,7 +48,7 @@ $(document).ready(function () {
 
     $("#search_users").keyup(function () {
         searchUsers = $(this).val();
-        rebuildUserList();
+        redrawUserList();
     });
 
     $("#alphabet_order").change(function () {
@@ -62,6 +56,6 @@ $(document).ready(function () {
         if ($("#alphabet_order").is(":checked")) {
             alphabeticalOrder = true;
         }
-        rebuildUserList();
+        redrawUserList();
     });
 });
