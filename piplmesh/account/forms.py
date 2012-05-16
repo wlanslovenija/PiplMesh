@@ -106,7 +106,7 @@ class UserCurrentPasswordForm(forms.Form):
 
         password = self.cleaned_data['current_password']
         if not self.user.check_password(password):
-            raise forms.ValidationError(_("Your current password was entered incorrectly."), code='password_incorrect')
+            raise forms.ValidationError(_("Your current password was incorrect."), code='password_incorrect')
         return password
 
 class UserBasicInfoForm(forms.Form):

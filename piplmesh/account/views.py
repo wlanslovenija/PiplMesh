@@ -101,7 +101,7 @@ class RegistrationView(edit_views.FormView):
         newuser = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password2'])
         assert newuser is not None, form.cleaned_data['username']
         auth.login(self.request, newuser)
-        messages.success(self.request, _("Your registration was successful."))
+        messages.success(self.request, _("Registration has been successful."))
         return super(RegistrationView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
@@ -109,9 +109,9 @@ class RegistrationView(edit_views.FormView):
             return simple.redirect_to(request, url=self.get_success_url(), permanent=False)
         return super(RegistrationView, self).dispatch(request, *args, **kwargs)
 
-class AccountView(edit_views.FormView):
+class AccountChangeView(edit_views.FormView):
     """
-    This view displays form for updating user settings. It checks if all fields are valid and updates user.
+    This view displays form for updating user account. It checks if all fields are valid and updates it.
     """
 
     template_name = 'user/account.html'
@@ -126,13 +126,13 @@ class AccountView(edit_views.FormView):
         user.gender=form.cleaned_data['gender']
         user.birthdate=form.cleaned_data['birthdate']
         user.save()
-        messages.success(self.request, _("You have successfully modified your account."))
-        return super(AccountView, self).form_valid(form)
+        messages.success(self.request, _("Changes to your account have been successfully saved."))
+        return super(AccountChangeView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated():
             return shortcuts.redirect('login')
-        return super(AccountView, self).dispatch(request, *args, **kwargs)
+        return super(AccountChangeView, self).dispatch(request, *args, **kwargs)
 
     def get_form(self, form_class):
         return form_class(self.request.user, **self.get_form_kwargs())
@@ -157,7 +157,7 @@ class PasswordChangeView(edit_views.FormView):
 
     def form_valid(self, form):
         self.request.user.set_password(form.cleaned_data['password1'])
-        messages.success(self.request, _("You have successfully changed your password."))
+        messages.success(self.request, _("Your password has been successfully changed."))
         return super(PasswordChangeView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
