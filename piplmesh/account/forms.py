@@ -84,7 +84,6 @@ class UserPasswordForm(forms.Form):
             raise forms.ValidationError(_("The two password fields did not match."), code='password_mismatch')
         return password2
 
-
 class UserCurrentPasswordForm(forms.Form):
     """
     Class with user current password form.
