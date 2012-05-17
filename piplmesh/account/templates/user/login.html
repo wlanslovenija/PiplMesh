@@ -14,23 +14,7 @@
                     {% with next|default:redirect_to|default:LOGIN_REDIRECT_URL as next_url %}
                         <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
                     {% endwith %}
-                    <ul class="form_fields">
-                        {% for field in form %}
-                            <li class="field_error">
-                                {{ field.errors }}
-                            </li>
-                            <li class="field">
-                                <label for="{{ field.id_for_label }}">
-                                    {% if field.field.required %}
-                                        <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
-                                    {% else %}
-                                        {{ field.label }}
-                                    {% endif %}
-                                </label>
-                                {{ field }} 
-                            </li> 
-                        {% endfor %} 
-                    </ul>
+                    {% include "form/form.html" %}
                     <div class="buttons"><input type="submit" value="{% trans "Login" %}"></div>
                 </form>
             </div>

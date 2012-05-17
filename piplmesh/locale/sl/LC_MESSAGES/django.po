@@ -72,6 +72,10 @@ msgstr "Prijava uspešna."
 msgid "You have been successfully logged out."
 msgstr "Odjava uspešna."
 
+#: account/templates/forms/form.html:11
+msgid "Required"
+msgstr "Obvezno"
+
 #: account/templates/registration/login.html:5
 #: account/templates/registration/login.html:17
 #: frontend/templates/header.html:43
@@ -91,10 +95,6 @@ msgstr "Registriraj se"
 #: account/templates/registration/registration.html:5
 msgid "Registration"
 msgstr "Registracija"
-
-#: account/templates/registration/registration.html:17
-msgid "Required"
-msgstr "Obvezno"
 
 #: account/templates/registration/registration.html:29
 msgid "Reset"
