@@ -26,10 +26,12 @@ def check_online_users():
                 {
                     'type': 'userlist',
                     'action': 'JOIN',
-                    'username': user.username,
-                    # TODO get user image
-                    'image': '',
-                    'id': user.id,
+                    'user': {
+                        'username': user.username,
+                        'profile_url': urlresolvers.reverse('user', kwargs={'username': user.username}),
+                        # TODO get user image
+                        'image_url': '',
+                    },
                 }
             )
 
@@ -49,9 +51,11 @@ def check_online_users():
                 {
                     'type': 'userlist',
                     'action': 'PART',
-                    'username': user.username,
-                    # TODO get user image
-                    'image': '',
-                    'id': user.id,
+                    'user': {
+                        'username': user.username,
+                        'profile_url': urlresolvers.reverse('user', kwargs={'username': user.username}),
+                        # TODO get user image
+                        'image_url': '',
+                    },
                 }
             )

@@ -3,10 +3,14 @@ var users = new Array();
 var searchUsers;
 var alphabeticalOrder = false;
 var userList;
+
 function updateUserList(data) {
     if (data.action == 'JOIN') {
-        users[users.length] = data;
-        redrawUserList();
+        var index = users.indexOf(data);
+        if (index == -1) {
+            users[users.length] = data;
+            redrawUserList();
+        }
     } else if (data.action == 'PART') {
         var index = users.indexOf(data);
         if (index != -1) {
