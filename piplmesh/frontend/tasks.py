@@ -30,7 +30,7 @@ def check_online_users():
                     'user': {
                         'username': user.username,
                         'profile_url': urlresolvers.reverse('user', kwargs={'username': user.username}),
-                        # TODO get user image
+                        # TODO: Get real user image
                         'image_url': '',
                     },
                 }
@@ -55,7 +55,7 @@ def check_online_users():
                     'user': {
                         'username': user.username,
                         'profile_url': urlresolvers.reverse('user', kwargs={'username': user.username}),
-                        # TODO get user image
+                        # TODO: Get real user image
                         'image_url': '',
                     },
                 }

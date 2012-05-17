@@ -30,7 +30,7 @@ function redrawUserList() {
             var image = $('<img/>').attrs({'src':user.image_url, 'alt':'User image'});
             li.append(image);
             li.append(user.username);
-            var div = $('<div/>').attrs({'class':'userInfo'});
+            var div = $('<div/>').attrs({'class':'info'});
             div.append(user.info);
             li.append(div);
             $("#userlist").append(li);

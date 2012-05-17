@@ -2,11 +2,7 @@
 
 <div class="panel">
     <div class="header" title="{% trans "Show/Hide Users" %}">{% trans "Active Users" %}</div>
-    <ul id="userlist">
-        {% for user in online_users %}
-            <li>{{ user }}</li>
-        {% endfor %}
-    </ul>
+    <ul id="userlist"></ul>
     <form action="">
         <img src="{{ STATIC_URL }}piplmesh/images/magnifying_glass.png" alt="magnifying_glass" />
         <input type="text" id="search_users" />
