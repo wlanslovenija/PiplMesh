@@ -8,15 +8,9 @@
     <div id="main">
         <div class="login">
             <div class="login_form">
-                <form method="post" action="{% url login %}">
-                    {{ form.non_field_errors }}
-                    {% csrf_token %}
-                    {% with next|default:redirect_to|default:LOGIN_REDIRECT_URL as next_url %}
-                        <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
-                    {% endwith %}
-                    {% include "form/form.html" %}
-                    <div class="buttons"><input type="submit" value="{% trans "Login" %}"></div>
-                </form>
+                {% url login as form_action %}
+                {% trans "Login" as form_submit %}
+                {% include "form/form.html"  %}
             </div>
             <div id="other_login_options">
                 <ul>

@@ -6,13 +6,8 @@
 
 {% block content %}
     <div class="registration">
-        <form method="post" action="{% url registration %}">
-            {{ form.non_field_errors }}
-            {% csrf_token %}
-            {% include "form/form.html" %}
-            <div class="buttons">
-                <input type="submit" value="{% trans "Register" %}" />
-            </div>
-        </form>
+        {% url registration as form_action %}
+        {% trans "Register" as form_submit %}
+        {% include "form/form.html" %}
     </div>
 {% endblock %}
