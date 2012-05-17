@@ -4,7 +4,8 @@ PiplMesh's documentation
 PiplMash is the project of students at `Faculty of Computer and Information
 Science`_ of `University of Ljubljana`_ and `wlan slovenija`_ open wireless
 network. Its main goal is the development of an open source social networking
-portal for wireless networks used as a `wlan slovenija`'s welcome page.
+and info portal for wireless networks used as a `wlan slovenija`'s welcome
+page.
 
 .. _Faculty of Computer and Information Science: http://www.fri.uni-lj.si/
 .. _University of Ljubljana: http://www.uni-lj.si/

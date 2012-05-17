@@ -1,0 +1,11 @@
+{% extends "plain.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Registration" %}{% endblock %}
+
+{% block content %}
+    <div class="registration">
+        {% include "form/form.html" %}
+    </div>
+{% endblock %}

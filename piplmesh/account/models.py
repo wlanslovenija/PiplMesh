@@ -6,6 +6,13 @@ from mongoengine.django import auth
 from piplmesh.account import fields
 
 LOWER_DATE_LIMIT = 366 * 120
+USERNAME_REGEX = r'[\w.@+-]+'
+
+def upper_birthdate_limit():
+    return datetime.datetime.today()
+
+def lower_birthdate_limit():
+    return datetime.datetime.today() - datetime.timedelta(LOWER_DATE_LIMIT)
 
 class Connection(mongoengine.EmbeddedDocument):
     http_if_none_match = mongoengine.StringField()
@@ -13,12 +20,13 @@ class Connection(mongoengine.EmbeddedDocument):
     channel_id = mongoengine.StringField()
 
 class User(auth.User):
-    birthdate = fields.LimitedDateTimeField(upper_limit=datetime.datetime.today(), lower_limit=datetime.datetime.today() - datetime.timedelta(LOWER_DATE_LIMIT))
+    birthdate = fields.LimitedDateTimeField(upper_limit=upper_birthdate_limit, lower_limit=lower_birthdate_limit)
     gender = fields.GenderField()
     language = fields.LanguageField()
 
     facebook_id = mongoengine.IntField()
     facebook_token = mongoengine.StringField(max_length=150)
+    facebook_link = mongoengine.StringField(max_length=100)
 
     connections = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Connection))
     connection_last_unsubscribe = mongoengine.DateTimeField()

@@ -6,18 +6,40 @@ from celery import task
 
 from pushserver.utils import updates
 
-from piplmesh.account import models, views
+from piplmesh.account import models
+from piplmesh.frontend import views
 
 CHECK_ONLINE_USERS_RECONNECT_TIMEOUT = 2 * settings.CHECK_ONLINE_USERS_INTERVAL
 
 @task.task
 def check_online_users():
-    # TODO: Iterating over all users in Python could become really slow once there are millions of users, much better is to limit the query only to potentially interesting users (conditions are already bellow)
-    for user in models.User.objects():
+    for user in models.User.objects(
+        is_online=False,
+        connections__not__in=([], None), # None if field is missing altogether, not__in seems not to be equal to nin
+    ):
         if models.User.objects(
-            id=user.id,
+            pk=user.pk,
+            is_online=False,
+            connections__not__in=([], None), # None if field is missing altogether, not__in seems not to be equal to nin
+        ).update(set__is_online=True):
+            updates.send_update(
+                views.HOME_CHANNEL_ID,
+                {
+                    'type': 'userlist',
+                    'action': 'JOIN',
+                    'username': user.username,
+                }
+            )
+
+    for user in models.User.objects(
+        is_online=True,
+        connections__in=([], None), # None if field is missing altogether
+        connection_last_unsubscribe__lt=datetime.datetime.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
+    ):
+        if models.User.objects(
+            pk=user.pk,
             is_online=True,
-            connections=[],
+            connections__in=([], None), # None if field is missing altogether
             connection_last_unsubscribe__lt=datetime.datetime.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
         ).update(set__is_online=False):
             updates.send_update(
@@ -25,19 +47,6 @@ def check_online_users():
                 {
                     'type': 'userlist',
                     'action': 'PART',
-                    'username': user.username,
-                }
-            )
-        elif models.User.objects(
-            id=user.id,
-            is_online=False,
-            connections__ne=[],
-        ).update(set__is_online=True):
-            updates.send_update(
-                views.HOME_CHANNEL_ID,
-                {
-                    'type': 'userlist',
-                    'action': 'JOIN',
                     'username': user.username,
                 }
             )
