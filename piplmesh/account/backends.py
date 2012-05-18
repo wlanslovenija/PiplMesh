@@ -1,4 +1,4 @@
-import json, urlparse, urllib, tweepy
+import json, tweepy, urlparse, urllib
 
 from django.conf import settings
 from django.core import urlresolvers
@@ -78,7 +78,8 @@ class FacebookBackend(MongoEngineBackend):
         return user
 
 class TwitterBackend(MongoEngineBackend):
-    """TwitterBackend for authentication
+    """
+    TwitterBackend for authentication.
     """
     def authenticate(self, access_token=None, request=None):
         twitter_auth = tweepy.OAuthHandler(settings.CONSUMER_KEY, settings.CONSUMER_SECRET)
@@ -97,5 +98,3 @@ class TwitterBackend(MongoEngineBackend):
 
         user.save()
         return user
-
-
