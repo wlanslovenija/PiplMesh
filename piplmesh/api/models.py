@@ -26,6 +26,10 @@ class Post(mongoengine.Document):
     updated_time = mongoengine.DateTimeField()
     comments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Comment))
 
+    meta = {
+        'allow_inheritance': True,
+    }
+
 class TextPost(Post):
     """
     This class defines document type for text posts.
