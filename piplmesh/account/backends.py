@@ -1,9 +1,10 @@
-import json, tweepy, urlparse, urllib
+import json, urlparse, urllib
 
 from django.conf import settings
 from django.core import urlresolvers
 
 from mongoengine.django import auth
+import tweepy
 
 from piplmesh.account import models
 
@@ -81,6 +82,7 @@ class TwitterBackend(MongoEngineBackend):
     """
     TwitterBackend for authentication.
     """
+
     def authenticate(self, access_token=None, request=None):
         twitter_auth = tweepy.OAuthHandler(settings.CONSUMER_KEY, settings.CONSUMER_SECRET)
         twitter_auth.set_access_token(access_token[0], access_token[1])
@@ -89,12 +91,11 @@ class TwitterBackend(MongoEngineBackend):
         user, created = self.user_class.objects.get_or_create(
             twitter_id = twitter_user.id,
             defaults = {
-                'username' : twitter_user.screen_name,
-                'name': twitter_user.name,
+                'username': twitter_user.screen_name,
+                'first_name': twitter_user.name,
             }
         )
         user.twitter_token_key = access_token[0]
         user.twitter_token_secret = access_token[1]
-
         user.save()
         return user
