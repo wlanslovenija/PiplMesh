@@ -252,10 +252,10 @@ TEST_RUNNER_FILTER = (
     'piplmesh.',
 )
 
-# Facebook settings:
+# Facebook settings
 # Site URL for Facebook app is set to http://127.0.0.1:8000/
 # so run your development server on port 8000
-# and access your site by local ip 127.0.0.1:8000 in your browser.
+# and access your site by local ip 127.0.0.1:8000 in your browser
 FACEBOOK_APP_ID = '268978083181801' # Add your app ID/API key
 FACEBOOK_APP_SECRET = '0d86323405308915be0564e8c00bf6e0' # Add your app secret key
 FACEBOOK_SCOPE = 'email' # You may add additional parameters
