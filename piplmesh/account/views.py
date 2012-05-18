@@ -1,4 +1,4 @@
-import datetime, urllib, tweepy
+import datetime, tweepy, urllib
 
 from django import dispatch, http
 from django.conf import settings
@@ -76,9 +76,9 @@ class TwitterLoginView(generic_views.RedirectView):
     permanent = False
 
     def get_redirect_url(self, **kwargs):
-        authi = tweepy.OAuthHandler(settings.CONSUMER_KEY, settings.CONSUMER_SECRET, 'http://127.0.0.1:8000/twitter/oauth')
+        authi = tweepy.OAuthHandler(settings.CONSUMER_KEY, settings.CONSUMER_SECRET, '')
         redirect_url = authi.get_authorization_url()
-        self.request.session['request_token'] = (authi.request_token.key, authi.request_token.secret)
+        self.request.session['request_token'] = (authi.request_token.key, authi.request_token.secret, urlresolvers.reverse('twitter_callback'))
         return redirect_url
 
 class TwitterCallbackView(generic_views.RedirectView):
@@ -107,7 +107,6 @@ class TwitterCallbackView(generic_views.RedirectView):
             # TODO: Message user that they have not been logged in because they cancelled the facebook app
             # TODO: Use information provided from facebook as to why the login was not successful
             return super(TwitterCallbackView, self).get(request, *args, **kwargs)
-
 
 def logout(request):
     """
