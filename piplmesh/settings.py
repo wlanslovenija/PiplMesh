@@ -4,10 +4,10 @@
 
 import datetime, os.path
 
-MONGODB_DATABASE = 'PiplMesh'
+MONGO_DATABASE_NAME = 'PiplMesh'
 
 import mongoengine
-mongoengine.connect(MONGODB_DATABASE)
+mongoengine.connect(MONGO_DATABASE_NAME)
 
 settings_dir = os.path.abspath(os.path.dirname(__file__))
 
@@ -245,6 +245,11 @@ SESSION_ENGINE = 'mongoengine.django.sessions'
 AUTHENTICATION_BACKENDS = (
     'piplmesh.account.backends.MongoEngineBackend',
     'piplmesh.account.backends.FacebookBackend',
+)
+
+TEST_RUNNER = 'piplmesh.test_runner.MongoEngineTestSuiteRunner'
+TEST_RUNNER_FILTER = (
+    'piplmesh.',
 )
 
 # Facebook settings:
