@@ -9,6 +9,8 @@ from pushserver.utils import updates
 from piplmesh.account import models
 from piplmesh.frontend import views
 
+from django.contrib.staticfiles.urls import settings
+
 CHECK_ONLINE_USERS_RECONNECT_TIMEOUT = 2 * settings.CHECK_ONLINE_USERS_INTERVAL
 
 @task.task
@@ -31,7 +33,7 @@ def check_online_users():
                         'username': user.username,
                         'profile_url': urlresolvers.reverse('user', kwargs={'username': user.username}),
                         # TODO: Get real user image
-                        'image_url': django.contrib.staticfiles.storage.staticfiles_storage.url('../images/logo.png'),
+                        'image_url': django.contrib.staticfiles.storage.staticfiles_storage.url('/piplmesh/images/logo.png'),
                     },
                 }
             )
@@ -56,7 +58,7 @@ def check_online_users():
                         'username': user.username,
                         'profile_url': urlresolvers.reverse('user', kwargs={'username': user.username}),
                         # TODO: Get real user image
-                        'image_url': django.contrib.staticfiles.storage.staticfiles_storage.url('../images/logo.png'),
+                        'image_url': django.contrib.staticfiles.storage.staticfiles_storage.url('/piplmesh/images/logo.png'),
                     },
                 }
             )
