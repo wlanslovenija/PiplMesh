@@ -26,6 +26,10 @@ class User(auth.User):
     facebook_id = mongoengine.IntField()
     facebook_token = mongoengine.StringField(max_length=150)
 
+    twitter_id = mongoengine.IntField()
+    twitter_token_key = mongoengine.StringField(max_length=150)
+    twitter_token_secret = mongoengine.StringField(max_length=150)
+
     connections = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Connection))
     connection_last_unsubscribe = mongoengine.DateTimeField()
     is_online = mongoengine.BooleanField(default=False)
