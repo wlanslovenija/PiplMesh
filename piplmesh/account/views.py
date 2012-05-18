@@ -1,4 +1,4 @@
-import datetime, tweepy, urllib
+import datetime, urllib
 
 from django import dispatch, http
 from django.conf import settings
@@ -10,6 +10,7 @@ from django.views.generic import simple, edit as edit_views
 
 from pushserver import signals
 from pushserver.utils import updates
+import tweepy
 
 from piplmesh.account import forms, models
 
@@ -104,8 +105,8 @@ class TwitterCallbackView(generic_views.RedirectView):
 
             return super(TwitterCallbackView, self).get(request, *args, **kwargs)
         else:
-            # TODO: Message user that they have not been logged in because they cancelled the facebook app
-            # TODO: Use information provided from facebook as to why the login was not successful
+            # TODO: Message user that they have not been logged in because they cancelled the twitter app
+            # TODO: Use information provided from twitter as to why the login was not successful
             return super(TwitterCallbackView, self).get(request, *args, **kwargs)
 
 def logout(request):
