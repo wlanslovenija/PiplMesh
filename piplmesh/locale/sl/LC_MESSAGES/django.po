@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
-"Report-Msgid-Bugs-To: https://github.com/wlanslovenija/PiplMesh/\n"
+"Report-Msgid-Bugs-To: https://github.com/wlanslovenija/PiplMesh\n"
 "POT-Creation-Date: 2012-05-17 19:57+0200\n"
 "PO-Revision-Date: 2012-05-18 12:29+0100\n"
 "Last-Translator: Martin Jakomin <martin.jakomin@gmail.com>\n"
@@ -41,8 +41,8 @@ msgid "Username"
 msgstr "Uporabniško ime"
 
 #: .\account\forms.py:44
-msgid "Required. Minimal of 4 characters and maximum of 30. Letters, digits and @/./+/-/_ only."
-msgstr "Obvezno. Najmanj 4 in največ 30 znakov. Samo črke, številke in @/./+/-/_ ."
+msgid "Minimal of 4 characters and maximum of 30. Letters, digits and @/./+/-/_ only."
+msgstr "Najmanj 4 in največ 30 znakov. Samo črke, številke in @/./+/-/_ ."
 
 #: .\account\forms.py:46
 msgid "This value may contain only letters, numbers and @/./+/-/_ characters."
