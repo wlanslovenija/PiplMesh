@@ -1,7 +1,8 @@
-import tweepy
-
 from django import template
 from django.conf import settings
+
+import tweepy
+
 register = template.Library()
 
 @register.simple_tag
