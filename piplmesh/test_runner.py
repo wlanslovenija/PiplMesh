@@ -36,7 +36,7 @@ class MongoEngineTestSuiteRunner(simple.DjangoTestSuiteRunner):
 
     def build_suite(self, test_labels, extra_tests=None, **kwargs):
         suite = super(MongoEngineTestSuiteRunner, self).build_suite(test_labels, extra_tests=None, **kwargs)
-        suite = self._filter_suite(suite)    
+        suite = self._filter_suite(suite)
         return simple.reorder_suite(suite, (testcases.TestCase,))
 
     def setup_databases(self, **kwargs):
@@ -59,22 +59,22 @@ class MongoEngineTestCase(tests.MongoTestCase):
 # We also patch Django so that it supports PATCH requests (used by Tastypie)
 # Taken from https://code.djangoproject.com/attachment/ticket/17797/django-test-client-PATCH.patch
 
-def requestfactory_patch(self, path, data={}, content_type=client.MULTIPART_CONTENT, **extra): 
-    "Construct a PATCH request." 
-     
-    patch_data = self._encode_data(data, content_type) 
+def requestfactory_patch(self, path, data={}, content_type=client.MULTIPART_CONTENT, **extra):
+    "Construct a PATCH request."
+    
+    patch_data = self._encode_data(data, content_type)
 
-    parsed = urlparse.urlparse(path) 
-    r = { 
-        'CONTENT_LENGTH': len(patch_data), 
-        'CONTENT_TYPE': content_type, 
-        'PATH_INFO': self._get_path(parsed), 
-        'QUERY_STRING': parsed[4], 
-        'REQUEST_METHOD': 'PATCH', 
-        'wsgi.input': client.FakePayload(patch_data), 
+    parsed = urlparse.urlparse(path)
+    r = {
+        'CONTENT_LENGTH': len(patch_data),
+        'CONTENT_TYPE': content_type,
+        'PATH_INFO': self._get_path(parsed),
+        'QUERY_STRING': parsed[4],
+        'REQUEST_METHOD': 'PATCH',
+        'wsgi.input': client.FakePayload(patch_data),
     }
     r.update(extra)
-    return self.request(**r) 
+    return self.request(**r)
 
 def client_patch(self, path, data={}, content_type=client.MULTIPART_CONTENT, follow=False, **extra):
     """
