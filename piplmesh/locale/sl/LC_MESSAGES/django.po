@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: https://github.com/wlanslovenija/PiplMesh/\n"
 "POT-Creation-Date: 2012-05-17 19:57+0200\n"
-"PO-Revision-Date: 2012-05-17 20:11+0100\n"
+"PO-Revision-Date: 2012-05-18 12:29+0100\n"
 "Last-Translator: Martin Jakomin <martin.jakomin@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,21 +36,17 @@ msgstr "ženska"
 msgid "Value is out of bounds."
 msgstr "Vrednost je izven meja."
 
-#: .\account\fields.py:15
-msgid "Callable did not return datetime.date or datetime.datetime object."
-msgstr ""
-
 #: .\account\forms.py:40
 msgid "Username"
 msgstr "Uporabniško ime"
 
 #: .\account\forms.py:44
 msgid "Required. Minimal of 4 characters and maximum of 30. Letters, digits and @/./+/-/_ only."
-msgstr "Potrebno. Minimalno 4 znake in maksimalno 30 znakov. Samo črke, številke in @/./+/-/_ ."
+msgstr "Obvezno. Najmanj 4 in največ 30 znakov. Samo črke, številke in @/./+/-/_ ."
 
 #: .\account\forms.py:46
 msgid "This value may contain only letters, numbers and @/./+/-/_ characters."
-msgstr "To polje lahko vsebuje le črke, številke in znake: @/./+/-/_ ."
+msgstr "To polje lahko vsebuje le črke, številke in znake @/./+/-/_ ."
 
 #: .\account\forms.py:57
 msgid "A user with that username already exists."
@@ -66,7 +62,7 @@ msgstr "Geslo (ponovi)"
 
 #: .\account\forms.py:73
 msgid "Enter the same password as above, for verification."
-msgstr "Za potrditev vnesite enako geslo kot prej."
+msgstr "V izogib napakam ponovno vnesi isto geslo kot zgoraj."
 
 #: .\account\forms.py:84
 msgid "The two password fields did not match."
@@ -78,11 +74,11 @@ msgstr "Trenutno geslo"
 
 #: .\account\forms.py:95
 msgid "Enter your current password, for verification."
-msgstr "Za potrditev vnesite trenutno geslo."
+msgstr "Za potrditev vnesi trenutno geslo."
 
 #: .\account\forms.py:109
 msgid "Your current password was incorrect."
-msgstr "Vaše trenutno geslo je nepravilno."
+msgstr "Vnešeno geslo je bilo nepravilno."
 
 #: .\account\forms.py:117
 msgid "First name"
@@ -114,15 +110,15 @@ msgstr "Odjava uspešna."
 
 #: .\account\views.py:90
 msgid "Registration has been successful."
-msgstr "Registracija uspela."
+msgstr "Registracija je bila uspešna."
 
 #: .\account\views.py:115
 msgid "Your account has been successfully updated."
-msgstr "Vaš račun je bil uspešno posodobljen."
+msgstr "Tvoj račun je bil uspešno posodobljen."
 
 #: .\account\views.py:146
 msgid "Your password has been successfully changed."
-msgstr "Vaše geslo je bilo uspešno posodobljeno."
+msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
 #: .\account\templates\user\account.html.py:5
 #: .\account\templates\user\account.html.py:10
@@ -233,6 +229,3 @@ msgstr "Zadnja prijava:"
 #: .\frontend\templates\user\user.html.py:29
 msgid "Facebook link"
 msgstr "Facebook povezava"
-
-#~ msgid "Reset"
-#~ msgstr "Ponastavi"
