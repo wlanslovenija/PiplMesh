@@ -77,9 +77,9 @@ class TwitterLoginView(generic_views.RedirectView):
     permanent = False
 
     def get_redirect_url(self, **kwargs):
-        authi = tweepy.OAuthHandler(settings.CONSUMER_KEY, settings.CONSUMER_SECRET, '')
+        authi = tweepy.OAuthHandler(settings.CONSUMER_KEY, settings.CONSUMER_SECRET, self.request.build_absolute_uri(urlresolvers.reverse('twitter_callback')))
         redirect_url = authi.get_authorization_url()
-        self.request.session['request_token'] = (authi.request_token.key, authi.request_token.secret, urlresolvers.reverse('twitter_callback'))
+        self.request.session['request_token'] = (authi.request_token.key, authi.request_token.secret)
         return redirect_url
 
 class TwitterCallbackView(generic_views.RedirectView):
