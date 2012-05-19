@@ -10,6 +10,7 @@ from django.views.generic import simple, edit as edit_views
 
 from pushserver import signals
 from pushserver.utils import updates
+
 import tweepy
 
 from piplmesh.account import forms, models
@@ -73,16 +74,22 @@ class FacebookCallbackView(generic_views.RedirectView):
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
 
 class TwitterLoginView(generic_views.RedirectView):
+    """
+    This view authenticates the user via Twitter.
+    """
 
     permanent = False
 
     def get_redirect_url(self, **kwargs):
-        authi = tweepy.OAuthHandler(settings.CONSUMER_KEY, settings.CONSUMER_SECRET, self.request.build_absolute_uri(urlresolvers.reverse('twitter_callback')))
-        redirect_url = authi.get_authorization_url()
-        self.request.session['request_token'] = (authi.request_token.key, authi.request_token.secret)
+        twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET, self.request.build_absolute_uri(urlresolvers.reverse('twitter_callback')))
+        redirect_url = twitter_auth.get_authorization_url(signin_with_twitter=True)
+        self.request.session['request_token'] = (twitter_auth.request_token.key, twitter_auth.request_token.secret)
         return redirect_url
 
 class TwitterCallbackView(generic_views.RedirectView):
+    """
+    Authentication callback. Redirects user to TWITTER_LOGIN_REDIRECT.
+    """
 
     permanent = False
     # TODO: Redirect users to the page they initially came from
@@ -90,19 +97,16 @@ class TwitterCallbackView(generic_views.RedirectView):
 
     def get(self, request, *args, **kwargs):
         if 'oauth_verifier' in request.GET:
-            verifier=request.GET['oauth_verifier']
-            twitter_auth = tweepy.OAuthHandler(settings.CONSUMER_KEY, settings.CONSUMER_SECRET)
-            tokens = request.session.get('request_token')
-            request.session.delete('request_token')
-            twitter_auth.set_request_token(tokens[0], tokens[1])
-            twitter_auth.get_access_token(verifier=verifier)
-            key = twitter_auth.access_token.key
-            secret = twitter_auth.access_token.secret
-
-            user = auth.authenticate(access_token=(key, secret), request=request)
-            if user.is_authenticated():
-                auth.login(request, user)
-
+            oauth_verifier = request.GET['oauth_verifier']
+            twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
+            request_token = request.session.pop('request_token')
+            assert (request_token[0] == request.GET['oauth_token'])
+            twitter_auth.set_request_token(request_token[0], request_token[1])
+            twitter_auth.get_access_token(verifier=oauth_verifier)
+            print request.META
+            user = auth.authenticate(twitter_token=(twitter_auth.access_token.key, twitter_auth.access_token.secret), request=request)
+            assert user.is_authenticated()
+            auth.login(request, user)
             return super(TwitterCallbackView, self).get(request, *args, **kwargs)
         else:
             # TODO: Message user that they have not been logged in because they cancelled the twitter app
