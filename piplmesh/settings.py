@@ -259,8 +259,8 @@ FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
 FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
 
 # Twitter settings
-CONSUMER_KEY = 'yeZOtec5ol5I9BGCCKpcw'
-CONSUMER_SECRET = 'Dv80Q51jx8FWDInmZCGZs8AKDnRwAdrS0lxgZA4NWs'
+TWITTER_CONSUMER_KEY = 'yeZOtec5ol5I9BGCCKpcw'
+TWITTER_CONSUMER_SECRET = 'Dv80Q51jx8FWDInmZCGZs8AKDnRwAdrS0lxgZA4NWs'
 TWITTER_LOGIN_REDIRECT = '/'
 
 # You can set up your own custom search engine on: http://www.google.com/cse/
