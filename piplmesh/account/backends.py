@@ -60,7 +60,7 @@ class FacebookBackend(MongoEngineBackend):
         # Retrieve user's public profile information
         data = urllib.urlopen('https://graph.facebook.com/me?access_token=%s' % facebook_token)
         fb = json.load(data)
-        
+
         # TODO: Check if id and other fields are returned
         # TODO: Move user retrieval/creation to User document/manager
         # TODO: get_or_create implementation has in fact a race condition, is this a problem?
@@ -72,6 +72,7 @@ class FacebookBackend(MongoEngineBackend):
                 'last_name': fb.get('last_name'),
                 'email': fb.get('email'),
                 'gender': fb.get('gender'),
+                'facebook_link': fb.get('link'),
             }
         )
         user.facebook_token = facebook_token

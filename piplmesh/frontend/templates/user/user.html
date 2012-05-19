@@ -1,0 +1,39 @@
+{% extends "plain.html" %}
+
+{% load i18n facebook gravatar %}
+
+{% block title %}{{ object.username }}{% endblock %}
+
+{% block content %}
+    <div id="menu_list">
+        {% if user.username == object.username %}
+            <p id="current_item">{% trans "Profile" %}</p>
+            <p><a href="{% url account %}">{% trans "Account" %}<a/></p>
+        {% endif %}
+    </div>
+    <div id="picture" >
+        {% if object.facebook_id %}
+            <img src="{% facebook_picture object.facebook_id "large" %}" alt="{% trans "User picture" %}" />
+        {% else %}
+            {% gravatar object 200 %}
+        {% endif %}
+    </div>
+    <div id="profile">
+        <p>{% trans "Username:" %} {{ object.username }}</p>
+        <p>{% trans "Name:" %} {{ object.get_full_name }}</p>
+        <p>{% trans "Gender:" %} {{ object.gender }}</p>
+        <p>{% trans "Birthdate:" %} {{ object.birthdate }}</p>
+        <p>{% trans "E-mail:" %} {{ object.email }}</p>
+        <p>{% trans "Last login:" %} {{ object.last_login }}</p>
+        {% if object.facebook_id %}
+            <p><a href="{{ object.facebook_link }}"><img src="{{ STATIC_URL }}piplmesh/images/fb_logo.png" height="30" width="30" alt="{% trans "Facebook link" %}" /></a></p>
+        {% endif %}
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+    </div>
+{% endblock %}

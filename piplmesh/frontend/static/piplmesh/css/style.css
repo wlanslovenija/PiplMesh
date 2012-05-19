@@ -347,3 +347,56 @@ input.gsc-search-button {
     margin-left: 20px;
     margin-right: 20px;
 }
+
+/* --------------------- PROFILE ------------------------ */
+#profile {
+    margin-left: 50%;
+    margin-top: 4%;
+    display: inline-block;
+    text-align: center;
+}
+
+#menu_list {
+    text-align: left;
+    display: inline-block;
+    position: absolute;
+    margin-top: 5%;
+}
+
+#picture {
+    margin-left: 30%;
+    margin-top: 8%;
+    text-align: left;
+    display: inline-block;
+    position: absolute;
+}
+
+#current_item {
+    text-decoration: underline;
+}
+
+/* --------------------- ACCOUNT ------------------------ */
+
+#password_change {
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 42%;
+}
+
+.button_account {
+    padding-top: 3px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+
+.button_account input {
+    height: 25px;
+    width: 100px;
+}
+
+.button_account ul {
+    list-style-type: none;
+    overflow: hidden;
+}

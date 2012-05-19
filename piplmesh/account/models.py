@@ -6,6 +6,7 @@ from mongoengine.django import auth
 from piplmesh.account import fields
 
 LOWER_DATE_LIMIT = 366 * 120
+USERNAME_REGEX = r'[\w.@+-]+'
 
 def upper_birthdate_limit():
     return datetime.datetime.today()
@@ -25,6 +26,7 @@ class User(auth.User):
 
     facebook_id = mongoengine.IntField()
     facebook_token = mongoengine.StringField(max_length=150)
+    facebook_link = mongoengine.StringField(max_length=100)
 
     twitter_id = mongoengine.IntField()
     twitter_token_key = mongoengine.StringField(max_length=150)
