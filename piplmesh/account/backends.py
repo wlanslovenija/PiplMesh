@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core import urlresolvers
 
 from mongoengine.django import auth
+
 import tweepy
 
 from piplmesh.account import models
@@ -54,10 +55,10 @@ class FacebookBackend(MongoEngineBackend):
         # Retrieve access token
         url = urllib.urlopen('https://graph.facebook.com/oauth/access_token?%s' % urllib.urlencode(args)).read()
         response = urlparse.parse_qs(url)
-        access_token = response['access_token'][-1]
+        facebook_token = response['access_token'][-1]
     
         # Retrieve user's public profile information
-        data = urllib.urlopen('https://graph.facebook.com/me?access_token=%s' % access_token)
+        data = urllib.urlopen('https://graph.facebook.com/me?access_token=%s' % facebook_token)
         fb = json.load(data)
         
         # TODO: Check if id and other fields are returned
@@ -73,7 +74,7 @@ class FacebookBackend(MongoEngineBackend):
                 'gender': fb.get('gender'),
             }
         )
-        user.facebook_token = access_token
+        user.facebook_token = facebook_token
         user.save()
 
         return user
@@ -83,19 +84,24 @@ class TwitterBackend(MongoEngineBackend):
     TwitterBackend for authentication.
     """
 
-    def authenticate(self, access_token=None, request=None):
-        twitter_auth = tweepy.OAuthHandler(settings.CONSUMER_KEY, settings.CONSUMER_SECRET)
-        twitter_auth.set_access_token(access_token[0], access_token[1])
-        api = tweepy.API(twitter_auth)
-        twitter_user = api.me()
-        user, created = self.user_class.objects.get_or_create(
-            twitter_id = twitter_user.id,
-            defaults = {
-                'username': twitter_user.screen_name,
-                'first_name': twitter_user.name,
-            }
-        )
-        user.twitter_token_key = access_token[0]
-        user.twitter_token_secret = access_token[1]
-        user.save()
-        return user
+    def authenticate(self, twitter_token=None, request=None):
+        try:
+            twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
+            twitter_auth.set_access_token(twitter_token[0], twitter_token[1])
+            api = tweepy.API(twitter_auth)
+            twitter_user = api.me()
+            user, created = self.user_class.objects.get_or_create(
+                twitter_id = twitter_user.id,
+                defaults = {
+                    'username': twitter_user.screen_name,
+                    'first_name': twitter_user.name,
+                }
+            )
+            user.twitter_token_key = twitter_token[0]
+            user.twitter_token_secret = twitter_token[1]
+            user.save()
+            return user
+        except Exception as inst:
+            print type(inst)     # the exception instance
+            print inst.args      # arguments stored in .args
+            print inst
