@@ -14,9 +14,14 @@ urlpatterns = patterns('',
     url(r'^register/$', account_views.RegistrationView.as_view(), name='registration'),
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'user/login.html'}, name='login'),
     url(r'^logout/$', account_views.logout, name='logout'),
+
     # Facebook
     url(r'^facebook/login/$', account_views.FacebookLoginView.as_view(), name='facebook_login'),
     url(r'^facebook/callback/$', account_views.FacebookCallbackView.as_view(), name='facebook_callback'),
+
+    # Twitter
+    url(r'^twitter/login/$', account_views.TwitterLoginView.as_view(), name='twitter_login'),
+    url(r'^twitter/callback/$', account_views.TwitterCallbackView.as_view(), name='twitter_callback'),
 
     # Profile, Account
     url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='user'),
