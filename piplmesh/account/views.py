@@ -61,7 +61,7 @@ class TwitterLoginView(generic_views.RedirectView):
     def get_redirect_url(self, **kwargs):
         twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET, self.request.build_absolute_uri(urlresolvers.reverse('twitter_callback')))
         redirect_url = twitter_auth.get_authorization_url(signin_with_twitter=True)
-        self.request.session['request_token'] = (twitter_auth.request_token.key, twitter_auth.request_token.secret)
+        self.request.session['request_token'] = twitter_auth.request_token
         return redirect_url
 
 class TwitterCallbackView(generic_views.RedirectView):
@@ -78,8 +78,8 @@ class TwitterCallbackView(generic_views.RedirectView):
             oauth_verifier = request.GET['oauth_verifier']
             twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
             request_token = request.session.pop('request_token')
-            assert request_token[0] == request.GET['oauth_token']
-            twitter_auth.set_request_token(request_token[0], request_token[1])
+            assert request_token.key == request.GET['oauth_token']
+            twitter_auth.set_request_token(request_token.key, request_token.secret)
             twitter_auth.get_access_token(verifier=oauth_verifier)
             user = auth.authenticate(twitter_token=twitter_auth.access_token, request=request)
             assert user.is_authenticated()
