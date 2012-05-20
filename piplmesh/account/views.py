@@ -81,7 +81,6 @@ class TwitterCallbackView(generic_views.RedirectView):
             assert (request_token[0] == request.GET['oauth_token'])
             twitter_auth.set_request_token(request_token[0], request_token[1])
             twitter_auth.get_access_token(verifier=oauth_verifier)
-            print request.META
             user = auth.authenticate(twitter_token=(twitter_auth.access_token.key, twitter_auth.access_token.secret), request=request)
             assert user.is_authenticated()
             auth.login(request, user)
