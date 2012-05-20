@@ -43,7 +43,7 @@ class FacebookCallbackView(generic_views.RedirectView):
     def get(self, request, *args, **kwargs):
         if 'code' in request.GET:
             # TODO: Add security measures to prevent attackers from sending a redirect to this url with a forged 'code'
-            user = auth.authenticate(token=request.GET['code'], request=request)
+            user = auth.authenticate(facebook_token=request.GET['code'], request=request)
             auth.login(request, user)
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
         else:
@@ -78,10 +78,10 @@ class TwitterCallbackView(generic_views.RedirectView):
             oauth_verifier = request.GET['oauth_verifier']
             twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
             request_token = request.session.pop('request_token')
-            assert (request_token[0] == request.GET['oauth_token'])
+            assert request_token[0] == request.GET['oauth_token']
             twitter_auth.set_request_token(request_token[0], request_token[1])
             twitter_auth.get_access_token(verifier=oauth_verifier)
-            user = auth.authenticate(twitter_token=(twitter_auth.access_token.key, twitter_auth.access_token.secret), request=request)
+            user = auth.authenticate(twitter_token=twitter_auth.access_token, request=request)
             assert user.is_authenticated()
             auth.login(request, user)
             return super(TwitterCallbackView, self).get(request, *args, **kwargs)
