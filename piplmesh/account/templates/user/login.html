@@ -25,6 +25,12 @@
                             <p><button type="submit" class="fb_login_button" value="value"><span class="fb_button_text">{% trans "Login with Facebook" %}</span></button></p>
                         </form>
                     </li>
+                    <li>
+                        <form method="post" action="{% url twitter_login %}" id="twitter_login_form3">
+                            {% csrf_token %}
+                            <p><button type="submit" class="twitter_login_button" value="value"><span class="twitter_button_text">{% trans "Login with Twitter" %}</span></button></p>
+                        </form>
+                    </li>
                     <li>{% comment %}Place for OpenID button.{% endcomment %}</li>
                     <li><a href="{% url registration %}">{% trans "Register" %}</a></li>
                 </ul>
