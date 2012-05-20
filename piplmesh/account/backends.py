@@ -97,7 +97,7 @@ class TwitterBackend(MongoEngineBackend):
                 'first_name': twitter_user.name,
             }
         )
-        user.twitter_token_key = twitter_token[0]
-        user.twitter_token_secret = twitter_token[1]
+        user.twitter_token_key = twitter_token.key
+        user.twitter_token_secret = twitter_token.secret
         user.save()
         return user
