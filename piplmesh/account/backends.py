@@ -49,7 +49,7 @@ class FacebookBackend(MongoEngineBackend):
             'client_id': settings.FACEBOOK_APP_ID,
             'client_secret': settings.FACEBOOK_APP_SECRET,
             'redirect_uri': request.build_absolute_uri(urlresolvers.reverse('facebook_callback')),
-            'code': token,
+            'code': facebook_token,
         }
     
         # Retrieve access token
