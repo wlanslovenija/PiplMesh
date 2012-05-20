@@ -19,7 +19,6 @@ urlpatterns = patterns('',
     url(r'^facebook/login/$', account_views.FacebookLoginView.as_view(), name='facebook_login'),
     url(r'^facebook/callback/$', account_views.FacebookCallbackView.as_view(), name='facebook_callback'),
 
-
     # Twitter
     url(r'^twitter/login/$', account_views.TwitterLoginView.as_view(), name='twitter_login'),
     url(r'^twitter/callback/$', account_views.TwitterCallbackView.as_view(), name='twitter_callback'),
