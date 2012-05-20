@@ -1,14 +1,21 @@
 from django.conf.urls.defaults import patterns, include, url
 
+from tastypie import api
+
 from piplmesh.account import models, views as account_views
+from piplmesh.api import resources
 from piplmesh.frontend import views as frontend_views
+
+v1_api = api.Api(api_name='v1')
+v1_api.register(resources.UserResource())
+v1_api.register(resources.PostResource())
 
 urlpatterns = patterns('',
     url('^$', frontend_views.HomeView.as_view(), name='home'),
 
-    url(r'^search', frontend_views.SearchView.as_view(), name='search'),
+    url(r'^search/', frontend_views.SearchView.as_view(), name='search'),
     url(r'^i18n/', include('django.conf.urls.i18n')),
-    url(r'^passthrough', include('pushserver.urls')),
+    url(r'^passthrough/', include('pushserver.urls')),
 
     # Registration, login, logout
     url(r'^register/$', account_views.RegistrationView.as_view(), name='registration'),
@@ -27,4 +34,7 @@ urlpatterns = patterns('',
     url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='user'),
     url(r'^account/$', account_views.AccountChangeView.as_view(), name='account'),
     url(r'^account/password/change/$', account_views.PasswordChangeView.as_view(), name='password_change'),
+
+    # RESTful API
+    url(r'^api/', include(v1_api.urls)),
 )

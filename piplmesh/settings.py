@@ -158,6 +158,8 @@ INSTALLED_APPS = (
 
     'pushserver',
     'djcelery',
+    'tastypie',
+    'tastypie_mongoengine',
 )
 
 PUSH_SERVER = {
