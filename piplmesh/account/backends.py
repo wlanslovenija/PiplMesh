@@ -36,7 +36,7 @@ class MongoEngineBackend(auth.MongoEngineBackend):
         return models.User
 
 class FacebookBackend(MongoEngineBackend):
-    def authenticate(self, token=None, request=None):
+    def authenticate(self, facebook_token=None, request=None):
         """
         Facebook authentication.
 
@@ -55,10 +55,10 @@ class FacebookBackend(MongoEngineBackend):
         # Retrieve access token
         url = urllib.urlopen('https://graph.facebook.com/oauth/access_token?%s' % urllib.urlencode(args)).read()
         response = urlparse.parse_qs(url)
-        facebook_token = response['access_token'][-1]
+        access_token = response['access_token'][-1]
     
         # Retrieve user's public profile information
-        data = urllib.urlopen('https://graph.facebook.com/me?access_token=%s' % facebook_token)
+        data = urllib.urlopen('https://graph.facebook.com/me?access_token=%s' % access_token)
         fb = json.load(data)
 
         # TODO: Check if id and other fields are returned
@@ -75,7 +75,7 @@ class FacebookBackend(MongoEngineBackend):
                 'facebook_link': fb.get('link'),
             }
         )
-        user.facebook_token = facebook_token
+        user.facebook_token = access_token
         user.save()
 
         return user
@@ -87,7 +87,7 @@ class TwitterBackend(MongoEngineBackend):
 
     def authenticate(self, twitter_token=None, request=None):
         twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
-        twitter_auth.set_access_token(twitter_token[0], twitter_token[1])
+        twitter_auth.set_access_token(twitter_token.key, twitter_token.secret)
         api = tweepy.API(twitter_auth)
         twitter_user = api.me()
         user, created = self.user_class.objects.get_or_create(
