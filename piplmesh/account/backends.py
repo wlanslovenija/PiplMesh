@@ -86,23 +86,18 @@ class TwitterBackend(MongoEngineBackend):
     """
 
     def authenticate(self, twitter_token=None, request=None):
-        try:
-            twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
-            twitter_auth.set_access_token(twitter_token[0], twitter_token[1])
-            api = tweepy.API(twitter_auth)
-            twitter_user = api.me()
-            user, created = self.user_class.objects.get_or_create(
-                twitter_id = twitter_user.id,
-                defaults = {
-                    'username': twitter_user.screen_name,
-                    'first_name': twitter_user.name,
-                }
-            )
-            user.twitter_token_key = twitter_token[0]
-            user.twitter_token_secret = twitter_token[1]
-            user.save()
-            return user
-        except Exception as inst:
-            print type(inst)     # the exception instance
-            print inst.args      # arguments stored in .args
-            print inst
+        twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
+        twitter_auth.set_access_token(twitter_token[0], twitter_token[1])
+        api = tweepy.API(twitter_auth)
+        twitter_user = api.me()
+        user, created = self.user_class.objects.get_or_create(
+            twitter_id = twitter_user.id,
+            defaults = {
+                'username': twitter_user.screen_name,
+                'first_name': twitter_user.name,
+            }
+        )
+        user.twitter_token_key = twitter_token[0]
+        user.twitter_token_secret = twitter_token[1]
+        user.save()
+        return user
