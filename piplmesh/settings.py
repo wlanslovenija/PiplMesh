@@ -151,6 +151,7 @@ INSTALLED_APPS = (
     'piplmesh.account',
     'piplmesh.api',
     'piplmesh.frontend',
+    'piplmesh.utils',
 
     'django.contrib.messages',
     'django.contrib.sessions',
