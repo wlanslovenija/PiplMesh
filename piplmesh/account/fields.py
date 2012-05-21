@@ -77,6 +77,10 @@ class GenderField(mongoengine.StringField):
         super(GenderField, self).__init__(*args, **kwargs)
 
 class LimitedDateTimeField(mongoengine.DateTimeField):
+    """
+    A datetime field which can check also upper and lower limit arguments.
+    """
+
     def __init__(self, upper_limit=None, lower_limit=None, *args, **kwargs):
         self.upper_limit = upper_limit
         self.lower_limit = lower_limit

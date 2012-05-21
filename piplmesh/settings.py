@@ -4,10 +4,10 @@
 
 import datetime, os.path
 
-MONGODB_DATABASE = 'PiplMesh'
+MONGO_DATABASE_NAME = 'PiplMesh'
 
 import mongoengine
-mongoengine.connect(MONGODB_DATABASE)
+mongoengine.connect(MONGO_DATABASE_NAME)
 
 settings_dir = os.path.abspath(os.path.dirname(__file__))
 
@@ -151,6 +151,7 @@ INSTALLED_APPS = (
     'piplmesh.account',
     'piplmesh.api',
     'piplmesh.frontend',
+    'piplmesh.utils',
 
     'django.contrib.messages',
     'django.contrib.sessions',
@@ -158,6 +159,8 @@ INSTALLED_APPS = (
 
     'pushserver',
     'djcelery',
+    'tastypie',
+    'tastypie_mongoengine',
 )
 
 PUSH_SERVER = {
@@ -245,17 +248,28 @@ SESSION_ENGINE = 'mongoengine.django.sessions'
 AUTHENTICATION_BACKENDS = (
     'piplmesh.account.backends.MongoEngineBackend',
     'piplmesh.account.backends.FacebookBackend',
+    'piplmesh.account.backends.TwitterBackend',
 )
 
-# Facebook settings:
+TEST_RUNNER = 'piplmesh.test_runner.MongoEngineTestSuiteRunner'
+TEST_RUNNER_FILTER = (
+    'piplmesh.',
+)
+
+# Facebook settings
 # Site URL for Facebook app is set to http://127.0.0.1:8000/
 # so run your development server on port 8000
-# and access your site by local ip 127.0.0.1:8000 in your browser.
+# and access your site by local ip 127.0.0.1:8000 in your browser
 FACEBOOK_APP_ID = '268978083181801' # Add your app ID/API key
 FACEBOOK_APP_SECRET = '0d86323405308915be0564e8c00bf6e0' # Add your app secret key
 FACEBOOK_SCOPE = 'email' # You may add additional parameters
 FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
 FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
+
+# Twitter settings
+TWITTER_CONSUMER_KEY = 'yeZOtec5ol5I9BGCCKpcw'
+TWITTER_CONSUMER_SECRET = 'Dv80Q51jx8FWDInmZCGZs8AKDnRwAdrS0lxgZA4NWs'
+TWITTER_LOGIN_REDIRECT = '/'
 
 # You can set up your own custom search engine on: http://www.google.com/cse/
 # just register with you google account and crate new search engine.

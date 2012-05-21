@@ -5,6 +5,8 @@ from django.core import urlresolvers
 
 from mongoengine.django import auth
 
+import tweepy
+
 from piplmesh.account import models
 
 class MongoEngineBackend(auth.MongoEngineBackend):
@@ -34,7 +36,7 @@ class MongoEngineBackend(auth.MongoEngineBackend):
         return models.User
 
 class FacebookBackend(MongoEngineBackend):
-    def authenticate(self, token=None, request=None):
+    def authenticate(self, facebook_token=None, request=None):
         """
         Facebook authentication.
 
@@ -47,7 +49,7 @@ class FacebookBackend(MongoEngineBackend):
             'client_id': settings.FACEBOOK_APP_ID,
             'client_secret': settings.FACEBOOK_APP_SECRET,
             'redirect_uri': request.build_absolute_uri(urlresolvers.reverse('facebook_callback')),
-            'code': token,
+            'code': facebook_token,
         }
     
         # Retrieve access token
@@ -76,4 +78,26 @@ class FacebookBackend(MongoEngineBackend):
         user.facebook_token = access_token
         user.save()
 
+        return user
+
+class TwitterBackend(MongoEngineBackend):
+    """
+    TwitterBackend for authentication.
+    """
+
+    def authenticate(self, twitter_token=None, request=None):
+        twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
+        twitter_auth.set_access_token(twitter_token.key, twitter_token.secret)
+        api = tweepy.API(twitter_auth)
+        twitter_user = api.me()
+        user, created = self.user_class.objects.get_or_create(
+            twitter_id = twitter_user.id,
+            defaults = {
+                'username': twitter_user.screen_name,
+                'first_name': twitter_user.name,
+            }
+        )
+        user.twitter_token_key = twitter_token.key
+        user.twitter_token_secret = twitter_token.secret
+        user.save()
         return user

@@ -5,125 +5,227 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
-"Report-Msgid-Bugs-To: https://github.com/wlanslovenija/PiplMesh/\n"
-"POT-Creation-Date: 2012-04-19 09:54+0200\n"
-"PO-Revision-Date: 2012-03-21 12:18+0100\n"
-"Last-Translator: Aljaz Prijatelj <aljaz.prijatelj@gmail.com>\n"
-"Language: sl\n"
+"Report-Msgid-Bugs-To: https://github.com/wlanslovenija/PiplMesh\n"
+"POT-Creation-Date: 2012-05-17 19:57+0200\n"
+"PO-Revision-Date: 2012-05-18 12:29+0100\n"
+"Last-Translator: Martin Jakomin <martin.jakomin@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
-"%100==4 ? 2 : 3)\n"
+"Language: sl\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)\n"
+"Language-Team: \n"
 
-#: settings.py:42
+#: .\settings.py:45
 msgid "Slovenian"
 msgstr "Slovenščina"
 
-#: settings.py:43
+#: .\settings.py:46
 msgid "English"
 msgstr "Angleščina"
 
-#: account/fields.py:9
+#: .\account\fields.py:9
 msgid "male"
 msgstr "moški"
 
-#: account/fields.py:10
+#: .\account\fields.py:10
 msgid "female"
 msgstr "ženska"
 
-#: account/form_fields.py:11
+#: .\account\fields.py:14
 msgid "Value is out of bounds."
 msgstr "Vrednost je izven meja."
 
-#: account/forms.py:42
-msgid "E-mail"
-msgstr "E-mail"
+#: .\account\forms.py:40
+msgid "Username"
+msgstr "Uporabniško ime"
 
-#: account/forms.py:43
-msgid "First name"
-msgstr "Ime"
+#: .\account\forms.py:44
+msgid "Minimal of 4 characters and maximum of 30. Letters, digits and @/./+/-/_ only."
+msgstr "Najmanj 4 in največ 30 znakov. Samo črke, številke in @/./+/-/_ ."
 
-#: account/forms.py:44
-msgid "Last name"
-msgstr "Priimek"
+#: .\account\forms.py:46
+msgid "This value may contain only letters, numbers and @/./+/-/_ characters."
+msgstr "To polje lahko vsebuje le črke, številke in znake @/./+/-/_ ."
 
-#: account/forms.py:48
-msgid "Gender"
-msgstr "Spol"
-
-#: account/forms.py:56
-msgid "Birth date"
-msgstr "Datum rojstva"
-
-#: account/forms.py:73
-msgid "Passwords do not match."
-msgstr "Gesli se ne ujemata."
-
-#: account/forms.py:79
+#: .\account\forms.py:57
 msgid "A user with that username already exists."
 msgstr "Uporabnik s tem uporabniškim imenom že obstaja."
 
-#: account/signals.py:11
+#: .\account\forms.py:66
+msgid "Password"
+msgstr "Geslo"
+
+#: .\account\forms.py:71
+msgid "Password (repeat)"
+msgstr "Geslo (ponovi)"
+
+#: .\account\forms.py:73
+msgid "Enter the same password as above, for verification."
+msgstr "V izogib napakam ponovno vnesi isto geslo kot zgoraj."
+
+#: .\account\forms.py:84
+msgid "The two password fields did not match."
+msgstr "Gesli se ne ujemata."
+
+#: .\account\forms.py:93
+msgid "Current password"
+msgstr "Trenutno geslo"
+
+#: .\account\forms.py:95
+msgid "Enter your current password, for verification."
+msgstr "Za potrditev vnesi trenutno geslo."
+
+#: .\account\forms.py:109
+msgid "Your current password was incorrect."
+msgstr "Vnešeno geslo je bilo nepravilno."
+
+#: .\account\forms.py:117
+msgid "First name"
+msgstr "Ime"
+
+#: .\account\forms.py:118
+msgid "Last name"
+msgstr "Priimek"
+
+#: .\account\forms.py:119
+msgid "E-mail"
+msgstr "E-mail"
+
+#: .\account\forms.py:121
+msgid "Gender"
+msgstr "Spol"
+
+#: .\account\forms.py:128
+msgid "Birth date"
+msgstr "Datum rojstva"
+
+#: .\account\signals.py:11
 msgid "You have been successfully logged in."
 msgstr "Prijava uspešna."
 
-#: account/signals.py:20
+#: .\account\signals.py:20
 msgid "You have been successfully logged out."
 msgstr "Odjava uspešna."
 
-#: account/templates/registration/login.html:5
-#: account/templates/registration/login.html:17
-#: frontend/templates/header.html:43
+#: .\account\views.py:90
+msgid "Registration has been successful."
+msgstr "Registracija je bila uspešna."
+
+#: .\account\views.py:115
+msgid "Your account has been successfully updated."
+msgstr "Tvoj račun je bil uspešno posodobljen."
+
+#: .\account\views.py:146
+msgid "Your password has been successfully changed."
+msgstr "Tvoje geslo je bilo uspešno posodobljeno."
+
+#: .\account\templates\user\account.html.py:5
+#: .\account\templates\user\account.html.py:10
+#: .\account\templates\user\password_change.html.py:10
+#: .\frontend\templates\user\user.html.py:11
+msgid "Account"
+msgstr "Račun"
+
+#: .\account\templates\user\account.html.py:9
+#: .\account\templates\user\password_change.html.py:9
+#: .\frontend\templates\user\user.html.py:10
+msgid "Profile"
+msgstr "Profil"
+
+#: .\account\templates\user\account.html.py:16
+msgid "Change your password"
+msgstr "Spremeni svoje geslo"
+
+#: .\account\templates\user\login.html.py:5
+#: .\account\templates\user\login.html.py:17
+#: .\frontend\templates\header.html.py:49
 msgid "Login"
 msgstr "Prijavi se"
 
-#: account/templates/registration/login.html:25
+#: .\account\templates\user\login.html.py:25
 msgid "Login with Facebook"
 msgstr "Facebook prijava"
 
-#: account/templates/registration/login.html:30
-#: account/templates/registration/registration.html:28
-#: frontend/templates/header.html:44
+#: .\account\templates\user\login.html.py:30
+#: .\frontend\templates\header.html.py:50
 msgid "Register"
 msgstr "Registriraj se"
 
-#: account/templates/registration/registration.html:5
+#: .\account\templates\user\password_change.html.py:5
+msgid "Change Password"
+msgstr "Spremeni geslo"
+
+#: .\account\templates\user\registration.html.py:5
 msgid "Registration"
 msgstr "Registracija"
 
-#: account/templates/registration/registration.html:17
-msgid "Required"
-msgstr "Obvezno"
-
-#: account/templates/registration/registration.html:29
-msgid "Reset"
-msgstr "Ponastavi"
-
-#: frontend/templates/footer.html:5
+#: .\frontend\templates\footer.html.py:5
 msgid "node database"
 msgstr "baza točk"
 
-#: frontend/templates/footer.html:5
+#: .\frontend\templates\footer.html.py:5
 msgid "development"
 msgstr "razvoj"
 
-#: frontend/templates/footer.html:5
+#: .\frontend\templates\footer.html.py:5
 msgid "growing"
 msgstr "rast"
 
-#: frontend/templates/header.html:20
-msgid "See your query results on "
-msgstr "Poglej zadetke na "
-
-#: frontend/templates/header.html:31
+#: .\frontend\templates\gravatar.html.py:2
+#: .\frontend\templates\header.html.py:33
+#: .\frontend\templates\user\user.html.py:16
 msgid "User picture"
 msgstr "Slika uporabnika"
 
-#: frontend/templates/header.html:38
+#: .\frontend\templates\header.html.py:20
+msgid "See your query results on "
+msgstr "Poglej zadetke na "
+
+#: .\frontend\templates\header.html.py:44
 msgid "Logout"
 msgstr "Odjava"
 
-#: frontend/templates/search.html:5
+#: .\frontend\templates\search.html.py:5
 msgid "Search"
 msgstr "Išči"
+
+#: .\frontend\templates\search.html.py:9
+msgid "Results for:"
+msgstr "Rezultati za:"
+
+#: .\frontend\templates\form\form.html.py:10
+msgid "Required"
+msgstr "Obvezno"
+
+#: .\frontend\templates\form\form.html.py:21
+msgid "Submit"
+msgstr "Pošlji"
+
+#: .\frontend\templates\user\user.html.py:22
+msgid "Username:"
+msgstr "Uporabniško ime:"
+
+#: .\frontend\templates\user\user.html.py:23
+msgid "Name:"
+msgstr "Ime in priimek:"
+
+#: .\frontend\templates\user\user.html.py:24
+msgid "Gender:"
+msgstr "Spol:"
+
+#: .\frontend\templates\user\user.html.py:25
+msgid "Birthdate:"
+msgstr "Datum rojstva:"
+
+#: .\frontend\templates\user\user.html.py:26
+msgid "E-mail:"
+msgstr "E-mail:"
+
+#: .\frontend\templates\user\user.html.py:27
+msgid "Last login:"
+msgstr "Zadnja prijava:"
+
+#: .\frontend\templates\user\user.html.py:29
+msgid "Facebook link"
+msgstr "Facebook povezava"

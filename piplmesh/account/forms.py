@@ -41,7 +41,7 @@ class UserUsernameForm(forms.Form):
         max_length=30,
         min_length=4,
         regex=r'^' + models.USERNAME_REGEX + r'$',
-        help_text=_("Required. Minimal of 4 characters and maximum of 30. Letters, digits and @/./+/-/_ only."),
+        help_text=_("Minimal of 4 characters and maximum of 30. Letters, digits and @/./+/-/_ only."),
         error_messages={
             'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters."),
         }
