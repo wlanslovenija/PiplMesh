@@ -33,7 +33,7 @@ def check_online_users():
                         'username': user.username,
                         'profile_url': urlresolvers.reverse('user', kwargs={'username': user.username}),
                         # TODO: Get real user image
-                        'image_url': staticfiles_storage.url('/static/piplmesh/images/logo.png'),
+                        'image_url': staticfiles_storage.url('piplmesh/images/logo.png'),
                     },
                 }
             )
@@ -58,7 +58,7 @@ def check_online_users():
                         'username': user.username,
                         'profile_url': urlresolvers.reverse('user', kwargs={'username': user.username}),
                         # TODO: Get real user image
-                        'image_url': staticfiles_storage.url('/static/piplmesh/images/logo.png'),
+                        'image_url': staticfiles_storage.url('piplmesh/images/logo.png'),
                     },
                 }
             )
