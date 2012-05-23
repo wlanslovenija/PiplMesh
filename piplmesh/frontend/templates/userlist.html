@@ -3,19 +3,20 @@
 {% block js %}
         <script type="text/javascript">
             /* <![CDATA[ */
-            var onlineUsers = {
+            var onlineUsers = [
                 {% for user in online_users %}
-                    {{ user.username }}:{
-                        'username':{{ user.username }},
-                        'profile_url':{{ user.profile_url }},
-                        'image_url':{{ user.image_url }}
+                    {
+                        'username': '{{ user.username }}',
+                        'profile_url': '{{ user.profile_url }}',
+                        'image_url': '{{ user.image_url }}'
                     }
                     {% if not forloop.last %}, {% endif %}
                 {% endfor %}
-            };
+            ];
             /* ]]> */
         </script>
 {% endblock %}
+
 <div class="panel">
     <div class="header" title="{% trans "Show/Hide Users" %}">{% trans "Online Users" %}</div>
     <ul id="userlist"></ul>
