@@ -1,8 +1,3 @@
-var onlineUsers = {
-    {% for user in online_users %}
-        {{ user.username }}: {{ user }} {% if not forloop.last %}, {% endif %}
-    {% endfor %}
-};
 var searchUsers = '';
 
 function User(data) {

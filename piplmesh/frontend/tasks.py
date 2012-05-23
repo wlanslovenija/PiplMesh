@@ -31,9 +31,8 @@ def check_online_users():
                     'action': 'JOIN',
                     'user': {
                         'username': user.username,
-                        'profile_url': urlresolvers.reverse('user', kwargs={'username': user.username}),
-                        # TODO: Get real user image
-                        'image_url': staticfiles_storage.url('piplmesh/images/logo.png'),
+                        'profile_url': user.profile_url,
+                        'image_url': user.image_url,
                     },
                 }
             )
@@ -56,9 +55,8 @@ def check_online_users():
                     'action': 'PART',
                     'user': {
                         'username': user.username,
-                        'profile_url': urlresolvers.reverse('user', kwargs={'username': user.username}),
-                        # TODO: Get real user image
-                        'image_url': staticfiles_storage.url('piplmesh/images/logo.png'),
+                        'profile_url': user.profile_url,
+                        'image_url': user.image_url,
                     },
                 }
             )
