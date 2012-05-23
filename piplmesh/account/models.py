@@ -9,6 +9,8 @@ from piplmesh.account import fields
 
 from django.contrib.staticfiles.storage import staticfiles_storage
 
+from django.core import urlresolvers
+
 LOWER_DATE_LIMIT = 366 * 120
 USERNAME_REGEX = r'[\w.@+-]+'
 
