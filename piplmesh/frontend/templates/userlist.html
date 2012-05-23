@@ -1,4 +1,5 @@
-{% load i18n %}
+{% load i18n staticfiles %}
+
 {% block js %}
 <script type="text/javascript">
     /* <![CDATA[ */
@@ -16,7 +17,6 @@
 </script>
 {% endblock %}
 
-{% load staticfiles %}
 <div class="panel">
     <div class="header" title="{% trans "Show/Hide Users" %}">{% trans "Online Users" %}</div>
     <ul id="userlist"></ul>
