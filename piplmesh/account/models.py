@@ -49,6 +49,9 @@ class User(auth.User):
     connection_last_unsubscribe = mongoengine.DateTimeField()
     is_online = mongoengine.BooleanField(default=False)
 
-    profile_url = urlresolvers.reverse('user', kwargs={'username': user.username})
+    def get_profile_url(self):
+        return urlresolvers.reverse('user', kwargs={'username': self.username})
+
     # TODO: Get real user image
-    image_url = staticfiles_storage.url('piplmesh/images/logo.png')
+    def get_image_url(self):
+        return staticfiles_storage.url('piplmesh/images/logo.png')
