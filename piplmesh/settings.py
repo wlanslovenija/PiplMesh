@@ -278,3 +278,5 @@ TWITTER_LOGIN_REDIRECT = '/'
 # you will be explicitly warned that you have to change the code to take effect, before you will make the change.
 # Current settings are autocomplete, searching whole web.
 SEARCH_ENGINE_UNIQUE_ID = '003912915932446183218:zeq20qye9oa'
+
+DEFAULT_IMAGE_PATH = 'piplmesh/images/unknown.png'
