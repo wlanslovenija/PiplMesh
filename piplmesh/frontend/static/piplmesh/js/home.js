@@ -1,5 +1,3 @@
-var searchUsers = '';
-
 function User(data) {
     var self = this;
     $.extend(self, data.user);
@@ -19,7 +17,7 @@ function redrawUserList() {
     });
     $('#userlist').empty();
     for (key in keys) {
-        if (searchUsers === '' || key.indexOf(searchUsers) != -1) {
+        if ($('#search_users').val() === '' || key.indexOf($('#search_users').val()) != -1) {
             user = onlineUsers[key];
             var li = $('<li/>');
             var image = $('<img/>').attrs({'src': user.image_url, 'alt': 'User image'});
@@ -39,7 +37,6 @@ function updateUserList(data) {
         onlineUsers[user.username] = user;
         redrawUserList();
     } else if (data.action === 'PART') {
-        var index = onlineUsers.indexOf(data);
         if (onlineUsers[user.username]) {
             delete onlineUsers[user.username];
             redrawUserList();
@@ -55,7 +52,6 @@ $(document).ready(function () {
     });
 
     $('#search_users').change(function () {
-        searchUsers = $(this).val();
         redrawUserList();
     });
 });

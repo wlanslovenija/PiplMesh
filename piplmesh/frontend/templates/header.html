@@ -4,7 +4,7 @@
     <div id="header">
         <div id="logo">
             <a href="{% url home %}">
-                <img src="{{ STATIC_URL }}piplmesh/images/logo-{{ LANGUAGE_CODE }}.png" alt="PiplMesh" />
+                <img src="{% static LANGUAGE_CODE_URL %}" alt="PiplMesh" />
             </a>
         </div>
         <div id="search">

@@ -1,22 +1,5 @@
 {% load i18n staticfiles %}
 
-{% block js %}
-<script type="text/javascript">
-    /* <![CDATA[ */
-    var onlineUsers = [
-        {% for user in online_users %}
-            {
-                'username': '{{ user.username|escapejs }}',
-                'profile_url': '{{ user.get_profile_url|escapejs }}',
-                'image_url': '{{ user.get_image_url|escapejs }}'
-            }
-            {% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ];
-    /* ]]> */
-</script>
-{% endblock %}
-
 <div class="panel">
     <div class="header" title="{% trans "Show/Hide Users" %}">{% trans "Online Users" %}</div>
     <ul id="userlist"></ul>
