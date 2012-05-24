@@ -8,6 +8,7 @@ To make your strings translatable edit them as follows:
 
 - in Django template: ``{% trans "Some string" %}``
 - in Python files: ``_("some string")``
+- in JavaScript files: ``gettext("some string")``
    
 Creation of translation files
 -----------------------------
@@ -19,9 +20,10 @@ sure your Django applications you want translated have a directory called
 ``locale`` (if not, you should create one).
 
 When all string are marked for translation and settings are prepared run
-command::
+command(the second one if you need JavaScript files translated)::
 
     ../manage.py makemessages -l <language code>
+    ../manage.py makemessages -a -d djangojs
 
 *(You should replace <language code> with your preferred language code).*
 Example for Slovenian language::
