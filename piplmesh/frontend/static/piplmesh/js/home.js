@@ -1,15 +1,13 @@
 function User(data) {
     var self = this;
-    $.extend(self, data.user);
+    $.extend(self, data);
 }
 
 function redrawUserList() {
     var keys = [];
-    for (key in onlineUsers) {
-        if (onlineUsers.hasOwnProperty(key)) {
-            keys.push(key);
-        }
-    }
+    $.each(onlineUsers, function(key, value){
+        keys.push(key);
+    });
     keys.sort(function (key1, key2) {
         if (key1.toUpperCase() < key2.toUpperCase()) return -1;
         if (key1.toUpperCase() > key2.toUpperCase()) return 1;
@@ -17,7 +15,8 @@ function redrawUserList() {
     });
     $('#userlist').empty();
     var searchUsers = $('#search_users').val();
-    for (key in keys) {
+
+    $.each(keys, function(index, key){
         if (searchUsers === '' || key.indexOf(searchUsers) != -1) {
             user = onlineUsers[key];
             var li = $('<li/>');
@@ -29,7 +28,7 @@ function redrawUserList() {
             li.append(div);
             $('#userlist').append(li);
         }
-    }
+    });
 }
 
 function updateUserList(data) {
