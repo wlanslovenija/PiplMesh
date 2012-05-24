@@ -78,7 +78,7 @@ form input[type="submit"], form input[type="reset"] {
     margin-left: -13em;
 }
 
-/* Styling nested lists such as radio buttons. */
+/* Styling nested lists such as radio buttons */
 .form_fields .field ul {
     padding-left: 0;
     margin-left: 18em;
