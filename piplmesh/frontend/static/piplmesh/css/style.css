@@ -429,3 +429,55 @@ input.gsc-search-button {
     list-style-type: none;
     overflow: hidden;
 }
+
+/* --------------------- ACCOUNT ------------------------ */
+
+.new_post {
+    border: 1px solid #999;
+    width: 700px;
+    background: #eee;
+}
+
+.new_post form textarea {
+    display: block;
+    background: #eee;
+    min-height: 25px;
+    height: 25px;
+    width: 99%;
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+.new_post .new_post_details  {
+    float: right;
+}
+
+.posts {
+    list-style-type: none;
+    padding: 10px 0;
+    width: 700px;
+    clear: right;
+}
+
+.post {
+    padding: 0 0 10px 0;
+    border-bottom: 1px solid #aaa;
+    background: #ffffff;
+}
+
+.post .author {
+    float: left;
+    font-weight: bold;
+    padding-right: 5px;
+}
+
+.post .content{
+    margin-bottom: 2px;
+}
+
+.post .date {
+    color: #aaa;
+}
