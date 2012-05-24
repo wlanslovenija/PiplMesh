@@ -20,7 +20,7 @@ function redrawUserList() {
         if (searchUsers === '' || key.indexOf(searchUsers) !== -1) {
             user = onlineUsers[key];
             var li = $('<li/>');
-            var image = $('<img/>').attrs({'src': user.image_url, 'alt': 'User image'});
+            var image = $('<img/>').attrs({'src': user.image_url, 'alt': gettext('User image')});
             li.append(image);
             li.append(user.username);
             var div = $('<div/>').attrs({'class': 'info'});

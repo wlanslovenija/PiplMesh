@@ -10,6 +10,11 @@ v1_api = api.Api(api_name='v1')
 v1_api.register(resources.UserResource())
 v1_api.register(resources.PostResource())
 
+js_info_dict = {
+    'domain': 'djangojs',
+    'packages': ('piplmesh.frontend',),
+    }
+
 urlpatterns = patterns('',
     url('^$', frontend_views.HomeView.as_view(), name='home'),
 
@@ -37,4 +42,6 @@ urlpatterns = patterns('',
 
     # RESTful API
     url(r'^api/', include(v1_api.urls)),
+
+    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 )
