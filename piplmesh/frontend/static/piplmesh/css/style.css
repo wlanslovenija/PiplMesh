@@ -435,12 +435,12 @@ input.gsc-search-button {
 .new_post {
     border: 1px solid #999;
     width: 700px;
-    background: #eee;
+    background: #EEE;
 }
 
 .new_post form textarea {
     display: block;
-    background: #eee;
+    background: #EEE;
     min-height: 25px;
     height: 25px;
     width: 99%;
@@ -464,8 +464,8 @@ input.gsc-search-button {
 
 .post {
     padding: 0 0 10px 0;
-    border-bottom: 1px solid #aaa;
-    background: #ffffff;
+    border-bottom: 1px solid #AAA;
+    background: #FFF;
 }
 
 .post .author {
@@ -479,5 +479,5 @@ input.gsc-search-button {
 }
 
 .post .date {
-    color: #aaa;
+    color: #AAA;
 }
