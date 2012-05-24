@@ -11,8 +11,11 @@ v1_api.register(resources.UserResource())
 v1_api.register(resources.PostResource())
 
 js_info_dict = {
-        'packages': ('piplmesh.frontend', 'django.conf',),
-    }
+    'packages': (
+        'django.conf',
+        'piplmesh.frontend',
+    ),
+}
 
 urlpatterns = patterns('',
     url('^$', frontend_views.HomeView.as_view(), name='home'),

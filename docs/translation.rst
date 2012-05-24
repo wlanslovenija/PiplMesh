@@ -6,7 +6,7 @@ Making strings translatable
 
 To make your strings translatable edit them as follows:
 
-- in Django template: ``{% trans "Some string" %}``
+- in Django templates: ``{% trans "Some string" %}``
 - in Python files: ``_("some string")``
 - in JavaScript files: ``gettext("some string")``
    

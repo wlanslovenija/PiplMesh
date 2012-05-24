@@ -7,13 +7,13 @@
 <script type="text/javascript">
     /* <![CDATA[ */
     var onlineUsers = [
-    {% for user in online_users %}
-    {
-        'username': '{{ user.username|escapejs }}',
-        'profile_url': '{{ user.get_profile_url|escapejs }}',
-        'image_url': '{{ user.get_image_url|escapejs }}'
-    }{% if not forloop.last %},{% endif %}
-    {% endfor %}
+        {% for user in online_users %}
+        {
+            'username': '{{ user.username|escapejs }}',
+            'profile_url': '{{ user.get_profile_url|escapejs }}',
+            'image_url': '{{ user.get_image_url|escapejs }}'
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
     ];
     /* ]]> */
 </script>
