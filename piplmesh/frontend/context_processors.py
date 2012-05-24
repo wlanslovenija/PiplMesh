@@ -16,6 +16,6 @@ def global_vars(request):
         'SEARCH_ENGINE_UNIQUE_ID': settings.SEARCH_ENGINE_UNIQUE_ID,
 
         # Variables
-        'logo_url': "piplmesh/images/logo-%s.png" % (settings.LANGUAGE_CODE,),
+        'logo_url': "piplmesh/images/logo-%s.png" % (request.LANGUAGE_CODE),
         'redirect_to': request.REQUEST.get(auth.REDIRECT_FIELD_NAME),
     }
