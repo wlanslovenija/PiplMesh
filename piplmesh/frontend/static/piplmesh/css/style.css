@@ -7,22 +7,98 @@ body {
     margin: 0px;
 }
 
-.hidden {
-    visibility: hidden;
-}
-
 a {
     color: #68AE2C;
     text-decoration: none;
 }
 
+a:hover {
+    text-decoration: underline;
+}
+
+a, button {
+    outline: none;
+}
+
+a img {
+    border: none;
+}
+
+/* Disables 3d push effect on button (IE) */
+button {
+    position: relative;
+}
+
+button span {
+    position: relative;
+    display: block;
+}
+
+.hidden {
+    visibility: hidden;
+}
 .gravatar {
     border: 0px;
 }
 
-/* Styling forms*/
-ul.errorlist {
-    list-style: none;
+/* -------------------- FORMS --------------------- */
+form input[type="submit"], form input[type="reset"] {
+    border: medium none;
+    font-weight: bold;
+    min-width: 105px;
+    padding: 5px;
+}
+
+.form_fields {
+    list-style-type: none;
+}
+
+.form_fields .field {
+    margin: 0.1em 0 0.1em 0;
+    padding: 0.2em 0.3em;
+    clear: left;
+    margin-left: 13em;
+    min-height: 2em;
+}
+
+.form_fields .field input {
+    width: 15.3em;
+    border: 1px solid #AFAFAF;
+}
+
+.form_fields .field input[type="radio"], input[type="checkbox"] {
+    width: auto;
+    border: none;
+}
+
+.form_fields .field label {
+    float: left;
+    width: 16em;
+    padding-right: 2em;
+    margin-left: -13em;
+}
+
+/* Styling nested lists such as radio buttons */
+.form_fields .field ul {
+    padding-left: 0;
+    margin-left: 18em;
+}
+
+.form_fields .field ul li {
+    display: inline;
+}
+
+.errorlist {
+    color: #FF0000;
+    padding: 0.3em;
+}
+
+.form_fields .errorlist {
+    margin-left: 19em;
+}
+
+.form_fields .errorlist li {
+    text-align: left;
 }
 
 /* -------------------- HEADER --------------------- */
@@ -82,7 +158,7 @@ ul.errorlist {
     border-right: none;
 }
 
-#header .user a, .user button {
+#header .user button {
     text-decoration: none;
     font-size: 10px;
 }
@@ -172,16 +248,18 @@ input.gsc-search-button {
     padding: 0px;
     margin: 0px;
     cursor: pointer;
-    cursor: hand;
     color: #68AE2C;
     font-size: 13px;
     text-decoration: none;
 }
 
+.auth_button:hover span {
+    text-decoration: underline;
+}
+
 /* ---------------- FB LOGIN BUTTON ------------------- */
 .fb_login_button {
-    background: #29447E url('../images/fb_sprite.png');
-    background-position: left -188px;
+    background: #29447E url('../images/fb_login_button.png');
     background-repeat: no-repeat;
     cursor: pointer;
     display: inline-block;
@@ -191,18 +269,22 @@ input.gsc-search-button {
     font-size: 11px;
     line-height: 14px;
     margin: 0px;
+    border: 0;
+    height: 22px;
+    width: 163px;
+}
+
+.fb_login_button:hover {
+    background-position: -163px;
 }
 
 .fb_button_text {
-    background: #5F78AB url('../images/fb_sprite.png');
-    border-top: solid 1px #879AC0;
-    border-bottom: solid 1px #1A356E;
     color: white;
     display: block;
     font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
     font-weight: bold;
-    padding: 2px 6px 3px 6px;
-    margin: 1px 1px 0 21px;
+    padding: 4px 6px 3px 6px;
+    margin: -3px 1px 0 21px;
     text-shadow: none;
 }
 
@@ -219,6 +301,8 @@ input.gsc-search-button {
     font-size: 11px;
     line-height: 14px;
     margin: 0px;
+    outline: none;
+    border: 0;
 }
 
 .twitter_button_text {
@@ -261,55 +345,30 @@ input.gsc-search-button {
     list-style-type: none;
 }
 
-#other_login_options ul li p {
-    margin: 0px;
-}
-
-/* ------------------ REGISTRATION ---------------------------- */
 .registration {
     width: 960px;
     margin: auto;
     margin-top: 50px;
 }
 
-.registration .form_field ul {
-    list-style-type: none;
-    padding-top: 5px;
-    overflow: hidden;
-}
-
-.registration .form_field li {
-    display: inline-block;
-    padding-right: 4px;
-    text-align: right;
-}
-
-.registration .form_field .form_label {
-    width: 120px;
-}
-
-.registration .form_field .form_textbox {
-    width: 300px;
-    text-align: left;
-}
-
 /* buttons */
-.button {
+.buttons {
     padding-top: 20px;
-    margin-left: 100px;
+    text-align: right;
+    width: 482px;
 }
 
-.button input {
+.buttons input {
     height: 30px;
     width: 100px;
 }
 
-.button ul {
+.buttons ul {
     list-style-type: none;
     overflow: hidden;
 }
 
-.button li {
+.buttons li {
     float: left;
     padding-right: 4px;
 }
