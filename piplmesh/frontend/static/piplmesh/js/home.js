@@ -10,4 +10,13 @@ function updateUserlist(data) {
 
 $(document).ready(function () {
 	$.updates.registerProcessor('home_channel', 'userlist', updateUserlist);
+
+    $.getJSON('/api/v1/post/',function(data){
+        console.log(data);
+        $.each(data, function(neki){
+            if (neki == 'objects'){
+                //alert(neki.length);
+            }
+        });
+    });
 });
