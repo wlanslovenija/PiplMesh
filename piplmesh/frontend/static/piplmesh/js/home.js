@@ -9,15 +9,15 @@ function redrawUserList() {
         keys.push(key);
     });
     keys.sort(function (key1, key2) {
-        if (key1.toUpperCase() < key2.toUpperCase()) return -1;
-        if (key1.toUpperCase() > key2.toUpperCase()) return 1;
+        if (key1 < key2) return -1;
+        if (key1 > key2) return 1;
         return 0;
     });
     $('#userlist').empty();
-    var searchUsers = $('#search_users').val();
+    var searchUsers = $('#search_users').val().toUpperCase();
 
     $.each(keys, function(index, key){
-        if (searchUsers === '' || key.indexOf(searchUsers) != -1) {
+        if (searchUsers === '' || key.indexOf(searchUsers) !== -1) {
             user = onlineUsers[key];
             var li = $('<li/>');
             var image = $('<img/>').attrs({'src': user.image_url, 'alt': 'User image'});
@@ -34,7 +34,7 @@ function redrawUserList() {
 function updateUserList(data) {
     var user = new User(data.user);
     if (data.action === 'JOIN') {
-        onlineUsers[user.username] = user;
+        onlineUsers[user.username.toUpperCase()] = user;
         redrawUserList();
     } else if (data.action === 'PART') {
         if (onlineUsers[user.username]) {
