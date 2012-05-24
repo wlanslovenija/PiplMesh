@@ -5,7 +5,7 @@ function User(data) {
 
 function redrawUserList() {
     var keys = [];
-    $.each(onlineUsers, function(key, value){
+    $.each(onlineUsers, function (key, value) {
         keys.push(key);
     });
     keys.sort(function (key1, key2) {
@@ -34,7 +34,7 @@ function redrawUserList() {
 function updateUserList(data) {
     var user = new User(data.user);
     if (data.action === 'JOIN') {
-        onlineUsers[user.username.toUpperCase()] = user;
+        onlineUsers[user.username.toLowerCase()] = user;
         redrawUserList();
     } else if (data.action === 'PART') {
         if (onlineUsers[user.username]) {

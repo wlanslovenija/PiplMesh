@@ -20,15 +20,13 @@ sure your Django applications you want translated have a directory called
 ``locale`` (if not, you should create one).
 
 When all string are marked for translation and settings are prepared run
-command(the second one if you need JavaScript files translated)::
+command::
 
-    ../manage.py makemessages -l <language code>
     ../manage.py makemessages -l <language code> -d djangojs
 
 *(You should replace <language code> with your preferred language code).*
 Example for Slovenian language::
 
-    ../manage.py makemessages -l sl
     ../manage.py makemessages -l sl -d djangojs
 
 This will create file ``django.po`` under ``locale/sl/LC_MESSAGES/``

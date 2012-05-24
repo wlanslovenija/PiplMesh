@@ -11,8 +11,7 @@ v1_api.register(resources.UserResource())
 v1_api.register(resources.PostResource())
 
 js_info_dict = {
-    'domain': 'djangojs',
-    'packages': ('piplmesh.frontend',),
+        'packages': ('piplmesh.frontend', 'django.conf',),
     }
 
 urlpatterns = patterns('',
@@ -20,6 +19,7 @@ urlpatterns = patterns('',
 
     url(r'^search/', frontend_views.SearchView.as_view(), name='search'),
     url(r'^i18n/', include('django.conf.urls.i18n')),
+    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     url(r'^passthrough/', include('pushserver.urls')),
 
     # Registration, login, logout
@@ -42,6 +42,4 @@ urlpatterns = patterns('',
 
     # RESTful API
     url(r'^api/', include(v1_api.urls)),
-
-    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 )
