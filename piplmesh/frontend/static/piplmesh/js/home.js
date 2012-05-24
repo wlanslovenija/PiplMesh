@@ -16,8 +16,9 @@ function redrawUserList() {
         return 0;
     });
     $('#userlist').empty();
+    var searchUsers = $('#search_users').val();
     for (key in keys) {
-        if ($('#search_users').val() === '' || key.indexOf($('#search_users').val()) != -1) {
+        if (searchUsers === '' || key.indexOf(searchUsers) != -1) {
             user = onlineUsers[key];
             var li = $('<li/>');
             var image = $('<img/>').attrs({'src': user.image_url, 'alt': 'User image'});
