@@ -301,6 +301,8 @@ input.gsc-search-button {
     font-size: 11px;
     line-height: 14px;
     margin: 0px;
+    outline: none;
+    border: 0;
 }
 
 .twitter_button_text {

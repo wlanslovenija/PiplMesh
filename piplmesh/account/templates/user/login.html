@@ -8,9 +8,10 @@
     <div id="main">
         <div class="login">
             <div class="login_form">
-                {% url login as form_action %}
-                {% trans "Login" as form_submit %}
-                {% include "form/form.html" %}
+                {% with form_submit=_("Login") %}
+                    {% url login as form_action %}
+                    {% include "form/form.html" %}
+                {% endwith %}
             </div>
             <div id="other_login_options">
                 <ul>
@@ -23,7 +24,7 @@
                     <li>
                         <form method="post" action="{% url twitter_login %}" id="twitter_login_form3">
                             {% csrf_token %}
-                            <p><button type="submit" class="twitter_login_button" value="value"><span class="twitter_button_text">{% trans "Login with Twitter" %}</span></button></p>
+                            <p><button type="submit" class="twitter_login_button" value=""><span class="twitter_button_text">{% trans "Login with Twitter" %}</span></button></p>
                         </form>
                     </li>
                     <li>{% comment %}Place for OpenID button.{% endcomment %}</li>
