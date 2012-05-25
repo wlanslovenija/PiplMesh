@@ -1,35 +1,11 @@
 import datetime
 
 from django import forms
-from django.forms import widgets
-from django.forms.extras import widgets as extras_widgets
+from django.forms.extras import widgets
 from django.utils import encoding, safestring
 from django.utils.translation import ugettext_lazy as _
 
 from piplmesh.account import fields, form_fields, models
-
-class RadioFieldRenderer(widgets.RadioFieldRenderer):
-    """
-    RadioSelect renderer which adds ``first`` and ``last`` style classes
-    to first and last radio widgets.
-    """
-
-    def _render_widgets(self):
-        for i, w in enumerate(self):
-            classes = []
-            if i == 0:
-                classes.append('first')
-            if i == len(self.choices) - 1:
-                classes.append('last')
-
-            cls = ''
-            if classes:
-                cls = u' class="%s"' % (u' '.join(classes),)
-
-            yield u'<li%s>%s</li>' % (cls, encoding.force_unicode(w))
-
-    def render(self):
-        return safestring.mark_safe(u'<ul>\n%s\n</ul>' % (u'\n'.join(self._render_widgets())),)
 
 class UserUsernameForm(forms.Form):
     """
@@ -120,14 +96,14 @@ class UserBasicInfoForm(forms.Form):
     gender = forms.ChoiceField(
         label=_("Gender"),
         choices=fields.GENDER_CHOICES,
-        widget=forms.RadioSelect(renderer=RadioFieldRenderer),
+        widget=forms.RadioSelect(),
     )
     birthdate = form_fields.LimitedDateTimeField(
         upper_limit=models.upper_birthdate_limit,
         lower_limit=models.lower_birthdate_limit,
         label=_("Birth date"),
         required=False,
-        widget=extras_widgets.SelectDateWidget(
+        widget=widgets.SelectDateWidget(
             years=[
                 y for y in range(
                     models.upper_birthdate_limit().year,

@@ -21,7 +21,7 @@
                 {% trans "See your query results on " %}<a id="google_results_link">Google</a>.
             {% endif %}
         </div>
-        {% with next|default:redirect_to|default:request.get_full_path as next_url %}
+        {% with next|default:request_get_next|default:request.get_full_path as next_url %}
             <ul class="user">
                 {% comment %}
                     This list is used for registration and login link.
@@ -37,7 +37,7 @@
                             {% gravatar user 50 %}
                         {% endif %}
                     </li>
-                    <li class="username"><a href="{% url user username=user.username %}">{{ user.username }}<a/></li>
+                    <li class="username"><a href="{% url user username=user.username %}">{{ user.username }}</a></li>
                     <li class="last">
                         <form method="post" action="{% url logout %}" id="logout_form">
                             {% csrf_token %}
