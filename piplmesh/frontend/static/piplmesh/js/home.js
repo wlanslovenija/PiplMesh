@@ -1,6 +1,7 @@
 function User(data) {
     var self = this;
     $.extend(self, data);
+    self._key = self.username.toLowerCase();
 }
 
 function redrawUserList() {
@@ -14,8 +15,8 @@ function redrawUserList() {
         return 0;
     });
     $('#userlist').empty();
-    var searchUsers = $('#search_users').val().toUpperCase();
 
+    var searchUsers = $('#search_users').val().toLowerCase();
     $.each(keys, function(index, key){
         if (searchUsers === '' || key.indexOf(searchUsers) !== -1) {
             user = onlineUsers[key];
@@ -34,11 +35,11 @@ function redrawUserList() {
 function updateUserList(data) {
     var user = new User(data.user);
     if (data.action === 'JOIN') {
-        onlineUsers[user.username.toLowerCase()] = user;
+        onlineUsers[user._key] = user;
         redrawUserList();
     } else if (data.action === 'PART') {
-        if (onlineUsers[user.username]) {
-            delete onlineUsers[user.username];
+        if (onlineUsers[user._key]) {
+            delete onlineUsers[user.username.toLowerCase()];
             redrawUserList();
         }
     }
