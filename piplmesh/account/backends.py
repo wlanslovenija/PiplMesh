@@ -1,4 +1,5 @@
 import json, urlparse, urllib
+from httplib import HTTPSConnection
 
 from django.conf import settings
 from django.core import urlresolvers
@@ -99,5 +100,44 @@ class TwitterBackend(MongoEngineBackend):
         )
         user.twitter_token_key = twitter_token.key
         user.twitter_token_secret = twitter_token.secret
+        print type(user.username), "usernaaaaaaame"
+        user.save()
+        return user
+
+class GoogleBackend(MongoEngineBackend):
+    """
+    GoogleBackend for authentication
+    """
+
+    def authenticate(self, google_token=None, request=None):
+        args = {
+            'code': google_token,
+            'client_id': settings.GOOGLE_CLIENT_ID,
+            'client_secret': settings.GOOGLE_CLIENT_SECRET,
+            'redirect_uri': request.build_absolute_uri(urlresolvers.reverse('google_callback')),
+            'grant_type': 'authorization_code',
+        }
+
+        headers = {"Content-type": "application/x-www-form-urlencoded"}
+        conn = HTTPSConnection('accounts.google.com')
+        conn.request("POST", '/o/oauth2/token', urllib.urlencode(args), headers)
+        response = json.loads(conn.getresponse().read())
+        conn.close()
+        access_token = response['access_token']
+
+        data = urllib.urlopen("https://www.googleapis.com/oauth2/v1/userinfo?access_token=%s" % access_token)
+        google_user = json.load(data)
+        user, created = self.user_class.objects.get_or_create(
+            google_id=google_user['id'],
+            defaults = {
+                'username': google_user['given_name']+google_user['family_name'],
+                'first_name': google_user['given_name'],
+                'last_name': google_user['family_name'],
+                'email': google_user['email'],
+                'google_link': google_user['link'],
+                'gender': google_user['gender'],
+            }
+        )
+        user.google_token = access_token
         user.save()
         return user
