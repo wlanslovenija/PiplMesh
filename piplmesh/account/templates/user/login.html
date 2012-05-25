@@ -8,27 +8,24 @@
     <div id="main">
         <div class="login">
             <div class="login_form">
-                <form method="post" action="{% url login %}">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    {% with next|default:redirect_to|default:LOGIN_REDIRECT_URL as next_url %}
-                        <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
-                    {% endwith %}
-                    <p><button type="submit" class="auth_button" value="value">{% trans "Login" %}</button></p>
-                </form>
+                {% with next|default:request_get_next|default:LOGIN_REDIRECT_URL as next %}
+                    {% trans "Login" as form_submit %}
+                    {% url login as form_action %}
+                    {% include "form/form.html" %}
+                {% endwith %}
             </div>
             <div id="other_login_options">
                 <ul>
                     <li>
                         <form method="post" action="{% url facebook_login %}" id="fb_login_form2">
                             {% csrf_token %}
-                            <p><button type="submit" class="fb_login_button" value="value"><span class="fb_button_text">{% trans "Login with Facebook" %}</span></button></p>
+                            <p><button type="submit" class="fb_login_button"><span class="fb_button_text">{% trans "Login with Facebook" %}</span></button></p>
                         </form>
                     </li>
                     <li>
                         <form method="post" action="{% url twitter_login %}" id="twitter_login_form3">
                             {% csrf_token %}
-                            <p><button type="submit" class="twitter_login_button" value="value"><span class="twitter_button_text">{% trans "Login with Twitter" %}</span></button></p>
+                            <p><button type="submit" class="twitter_login_button"><span class="twitter_button_text">{% trans "Login with Twitter" %}</span></button></p>
                         </form>
                     </li>
                     <li>{% comment %}Place for OpenID button.{% endcomment %}</li>

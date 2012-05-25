@@ -6,6 +6,9 @@
 
 {% block content %}
     <div class="registration">
-        {% include "form/form.html" %}
+        {% with form_submit=_("Register") %}
+            {% url registration as form_action %}
+            {% include "form/form.html" %}
+        {% endwith %}
     </div>
 {% endblock %}

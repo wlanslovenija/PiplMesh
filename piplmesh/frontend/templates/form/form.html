@@ -1,24 +1,39 @@
+{% comment %}
+This is a standard template for rendering forms.
+It uses `form` (form object), `form_submit` (submit button label) and `form_action` (form action URL) from
+the context.
+We use `next` from the context or use `request_get_next`, which is set to request's GET `next` argument, to set
+where the form should redirect after submission.
+{% endcomment %}
+
 {% load i18n %}
-<form method="post" action="">
-    {% csrf_token %}
-    {% for field in form %}
-        {{ field.errors }}
-        <ul class="form_field">
-            <li class="form_label">
-                <label for="{{ field.id_for_label }}">
-                    {% if field.field.required %}
-                        <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
-                    {% else %}
-                        {{ field.label }}
-                    {% endif %}
-                </label>
-            </li>
-            <li class="form_textbox">{{ field }}</li>
+
+{% if form.is_multipart %}
+    <form action="{{ form_action }}" method="post" enctype="multipart/form-data">
+{% else %}
+    <form action="{{ form_action }}" method="post">
+{% endif %}
+        {{ form.non_field_errors }}
+        {% csrf_token %}
+        {% with next|default:request_get_next as next_url %}
+            <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
+        {% endwith %}
+        <ul class="form_fields">
+            {% for field in form %}    
+                <li class="field_error">
+                    {{ field.errors }}
+                </li>     
+                <li class="field">
+                    <label for="{{ field.id_for_label }}">
+                        {% if field.field.required %}
+                            <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
+                        {% else %}
+                            {{ field.label }}
+                        {% endif %}
+                    </label>
+                    {{ field }}
+                </li> 
+            {% endfor %}            
         </ul>
-    {% endfor %}
-    <div class="button_account">
-        <ul>
-            <li><input type="submit" value="{% trans "Submit" %}" /></li>
-        </ul>
-    </div>
-</form>
+        <div class="buttons"><input type="submit" value="{{ form_submit }}"></div>
+    </form>

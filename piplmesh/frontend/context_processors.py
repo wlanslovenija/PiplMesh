@@ -14,5 +14,5 @@ def global_vars(request):
         'REDIRECT_FIELD_NAME': auth.REDIRECT_FIELD_NAME,
         'SEARCH_ENGINE_UNIQUE_ID': settings.SEARCH_ENGINE_UNIQUE_ID,
 
-        'redirect_to': request.REQUEST.get(auth.REDIRECT_FIELD_NAME),
+        'request_get_next': request.REQUEST.get(auth.REDIRECT_FIELD_NAME),
     }
