@@ -90,6 +90,41 @@ class TwitterCallbackView(generic_views.RedirectView):
             # TODO: Use information provided from twitter as to why the login was not successful
             return super(TwitterCallbackView, self).get(request, *args, **kwargs)
 
+class GoogleLoginView(generic_views.RedirectView):
+    """
+    This view authenticates the user via Google.
+    """
+
+    permanent = False
+
+    def get_redirect_url(self, **kwargs):
+        args = {
+            'response_type': 'code',
+            'client_id': settings.GOOGLE_CLIENT_ID,
+            'redirect_uri': self.request.build_absolute_uri(urlresolvers.reverse('google_callback')),
+            'scope': settings.GOOGLE_SCOPE,
+        }
+        return "https://accounts.google.com/o/oauth2/auth?%(args)s" % {'args': urllib.urlencode(args)}
+
+class GoogleCallbackView(generic_views.RedirectView):
+    """
+    Authentication callback. Redirects user to GOOGLE_REDIRECT_URL.
+    """
+
+    permanent = False
+    # TODO: Redirect users to the page they initially came from
+    url = settings.GOOGLE_LOGIN_REDIRECT
+
+    def get(self, request, *args, **kwargs):
+        if 'code' in request.GET:
+            user = auth.authenticate(google_token=request.GET['code'], request=request)
+            assert  user.is_authenticated()
+            auth.login(request, user)
+            return super(GoogleCallbackView, self).get(request, *args, **kwargs)
+        else:
+            return super(GoogleCallbackView, self).get(request, *args, **kwargs)
+
+
 def logout(request):
     """
     After user logouts, redirect her back to the page she came from.
