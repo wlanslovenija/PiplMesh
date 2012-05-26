@@ -101,3 +101,42 @@ class TwitterBackend(MongoEngineBackend):
         user.twitter_token_secret = twitter_token.secret
         user.save()
         return user
+
+class FoursquareBackend(MongoEngineBackend):
+    """
+    Foursquare backend for authentication.
+    """
+
+    def authenticate(self, foursquare_token=None, request=None):
+
+        args = {
+            'client_id': settings.FOURSQUARE_CLIENT_ID,
+            'client_secret': settings.FOURSQUARE_CLIENT_SECRET,
+            'grant_type': 'authorization_code',
+            'redirect_uri': request.build_absolute_uri(urlresolvers.reverse('foursquare_callback')),
+            'code': foursquare_token,
+        }
+
+        # Retrieve access token
+        url = urllib.urlopen('https://foursquare.com/oauth2/access_token?%s' % urllib.urlencode(args)).read()
+        response = json.loads(url)
+        access_token = response.get('access_token')
+
+        # Retrieve user's public profile information
+        data = urllib.urlopen('https://api.foursquare.com/v2/users/self?oauth_token=%s' % access_token)
+        foursquare_data = json.load(data)
+        foursquare_data = foursquare_data.get('response').get('user')
+
+        user, created = self.user_class.objects.get_or_create(
+            foursquare_id=foursquare_data.get('id'),
+            defaults={
+                'username': foursquare_data.get('firstName') + foursquare_data.get('lastName'),
+                'first_name': foursquare_data.get('firstName'),
+                'last_name': foursquare_data.get('lastName'),
+                'email': foursquare_data.get('email'),
+                'gender': foursquare_data.get('gender'),
+            }
+        )
+        user.foursquare_token = access_token
+        user.save()
+        return user
