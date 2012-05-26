@@ -249,6 +249,7 @@ AUTHENTICATION_BACKENDS = (
     'piplmesh.account.backends.MongoEngineBackend',
     'piplmesh.account.backends.FacebookBackend',
     'piplmesh.account.backends.TwitterBackend',
+    'piplmesh.account.backends.FoursquareBackend',
 )
 
 TEST_RUNNER = 'piplmesh.test_runner.MongoEngineTestSuiteRunner'
@@ -270,6 +271,11 @@ FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Fac
 TWITTER_CONSUMER_KEY = 'yeZOtec5ol5I9BGCCKpcw'
 TWITTER_CONSUMER_SECRET = 'Dv80Q51jx8FWDInmZCGZs8AKDnRwAdrS0lxgZA4NWs'
 TWITTER_LOGIN_REDIRECT = '/'
+
+#Foursquare settings
+FOURSQUARE_CLIENT_ID = 'IU4LBMWT2DOCQ2JOIN3A04450HBB4GY2D5QX0WYPQ2DLP1DK'
+FOURSQUARE_CLIENT_SECRET = 'UDFGDOKUSOOV0GGGI0JDHR5OOJ1KBVV3OJ50SOGFVFJ3YPKO'
+FOURSQUARE_LOGIN_REDIRECT = '/'
 
 # You can set up your own custom search engine on: http://www.google.com/cse/
 # just register with you google account and crate new search engine.
