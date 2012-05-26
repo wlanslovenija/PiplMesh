@@ -1,4 +1,4 @@
-{% load i18n facebook twitter gravatar %}
+{% load i18n facebook twitter gravatar foursquare %}
 <div id="container">
     <div id="header">
         <div id="logo">
@@ -32,6 +32,8 @@
                             <img src="{% facebook_picture user.facebook_id "square" %}" alt="{% trans "User picture" %}" />
                         {% elif user.twitter_id %}
                             <img src="{% twitter_picture user.twitter_token_key user.twitter_token_secret %}" alt="{% trans "User picture" %}" />
+                        {% elif user.foursquare_id %}
+                            <img src="{% foursquare_picture user.foursquare_token %}" alt="{% trans "User picture" %}" />
                         {% else %}
                             {% gravatar user 50 %}
                         {% endif %}
