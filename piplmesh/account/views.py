@@ -90,6 +90,38 @@ class TwitterCallbackView(generic_views.RedirectView):
             # TODO: Use information provided from twitter as to why the login was not successful
             return super(TwitterCallbackView, self).get(request, *args, **kwargs)
 
+class FoursquareLoginView(generic_views.RedirectView):
+    """
+    This view authenticates the user via Foursquare.
+    """
+
+    permanent = False
+
+    def get_redirect_url(self, **kwargs):
+        args = {
+            'client_id': settings.FOURSQUARE_CLIENT_ID,
+            'response_type': 'code',
+            'redirect_uri': self.request.build_absolute_uri(urlresolvers.reverse('foursquare_callback')),
+        }
+        return "https://foursquare.com/oauth2/authenticate?%(args)s" % {'args': urllib.urlencode(args)}
+
+class FoursquareCallbackView(generic_views.RedirectView):
+    """
+    Authentication callback. Redirects user to LOGIN_REDIRECT_URL.
+    """
+
+    permanent = False
+    # TODO: Redirect users to the page they initially came from
+    url = settings.FOURSQUARE_LOGIN_REDIRECT
+
+    def get(self, request, *args, **kwargs):
+        if 'code' in request.GET:
+            user = auth.authenticate(foursquare_token=request.GET['code'], request=request)
+            auth.login(request, user)
+            return super(FoursquareCallbackView, self).get(request, *args, **kwargs)
+        else:
+            return super(FoursquareCallbackView, self).get(request, *args, **kwargs)
+
 def logout(request):
     """
     After user logouts, redirect her back to the page she came from.
