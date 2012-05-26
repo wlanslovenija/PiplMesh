@@ -43,6 +43,11 @@ class Post(AuthoredDocument):
     comments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Comment), default=lambda: [], required=False)
     attachments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Attachment), default=lambda: [], required=False)
 
+    # TODO: Prevent posting comments if post is not published
+    # TODO: Prevent adding attachments if post is published
+    # TODO: Prevent marking post as unpublished once it was published
+    is_published = mongoengine.BooleanField(default=False, required=True)
+
     def save(self, *args, **kwargs):
         self.updated_time = datetime.datetime.now()
         return super(Post, self).save(*args, **kwargs)
