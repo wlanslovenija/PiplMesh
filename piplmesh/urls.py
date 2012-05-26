@@ -30,6 +30,10 @@ urlpatterns = patterns('',
     url(r'^twitter/login/$', account_views.TwitterLoginView.as_view(), name='twitter_login'),
     url(r'^twitter/callback/$', account_views.TwitterCallbackView.as_view(), name='twitter_callback'),
 
+    # Foursquare
+    url(r'^foursquare/login/$', account_views.FoursquareLoginView.as_view(), name='foursquare_login'),
+    url(r'^foursquare/callback/$', account_views.FoursquareCallbackView.as_view(), name='foursquare_callback'),
+
     # Profile, Account
     url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='user'),
     url(r'^account/$', account_views.AccountChangeView.as_view(), name='account'),
