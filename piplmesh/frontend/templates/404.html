@@ -1,0 +1,13 @@
+{% extends "plain.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Error page" %}{% endblock %}
+
+{% block content %}
+<h2>{% trans "404 Not Found" %}</h2>
+
+<div class="error">
+    <p>{% trans "The page you requested cannot be found." %}</p>
+</div>
+{% endblock %}
