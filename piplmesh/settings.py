@@ -50,9 +50,6 @@ URL_VALIDATOR_USER_AGENT = 'Django'
 
 SITE_ID = 1
 
-# Use SSL for default gravatar URL
-GRAVATAR_HTTPS_DEFAULT = False
-
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
@@ -141,7 +138,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(settings_dir, 'templates'),
+#   os.path.join(settings_dir, 'templates'),
 )
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
