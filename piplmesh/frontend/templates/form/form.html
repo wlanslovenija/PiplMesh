@@ -9,31 +9,31 @@ where the form should redirect after submission.
 {% load i18n %}
 
 {% if form.is_multipart %}
-<form action="{{ form_action }}" method="post" enctype="multipart/form-data">
-    {% else %}
+    <form action="{{ form_action }}" method="post" enctype="multipart/form-data">
+{% else %}
     <form action="{{ form_action }}" method="post">
-        {% endif %}
+{% endif %}
         {{ form.non_field_errors }}
         {% csrf_token %}
         {% with next|default:request_get_next as next_url %}
-        <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
+            <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
         {% endwith %}
         <ul class="form_fields">
-            {% for field in form %}
-            <li class="field_error">
-                {{ field.errors }}
-            </li>
-            <li class="field">
-                <label for="{{ field.id_for_label }}">
-                    {% if field.field.required %}
-                    <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
-                    {% else %}
-                    {{ field.label }}
-                    {% endif %}
-                </label>
-                {{ field }}
-            </li>
-            {% endfor %}
+            {% for field in form %}    
+                <li class="field_error">
+                    {{ field.errors }}
+                </li>     
+                <li class="field">
+                    <label for="{{ field.id_for_label }}">
+                        {% if field.field.required %}
+                            <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
+                        {% else %}
+                            {{ field.label }}
+                        {% endif %}
+                    </label>
+                    {{ field }}
+                </li> 
+            {% endfor %}            
         </ul>
         <div class="buttons"><input type="submit" value="{{ form_submit }}"></div>
     </form>
