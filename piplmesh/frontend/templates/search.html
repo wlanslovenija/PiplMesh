@@ -1,6 +1,6 @@
 {% extends "plain.html" %}
 
-{% load i18n %}
+{% load i18n staticfiles %}
 
 {% block title %}{% trans "Search" %}{% endblock %}
 
@@ -14,5 +14,5 @@
         var language_code = '{{ LANGUAGE_CODE|escapejs }}';
         var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID|escapejs }}';
     </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}piplmesh/js/search_page.js"></script>
+    <script type="text/javascript" src="{% static "piplmesh/js/search_page.js" %}"></script>
 {% endblock %}

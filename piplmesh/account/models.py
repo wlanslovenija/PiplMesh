@@ -7,6 +7,9 @@ from mongoengine.django import auth
 
 from piplmesh.account import fields
 
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.core import urlresolvers
+
 LOWER_DATE_LIMIT = 366 * 120
 USERNAME_REGEX = r'[\w.@+-]+'
 
@@ -46,3 +49,10 @@ class User(auth.User):
     connections = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Connection))
     connection_last_unsubscribe = mongoengine.DateTimeField()
     is_online = mongoengine.BooleanField(default=False)
+
+    def get_profile_url(self):
+        return urlresolvers.reverse('user', kwargs={'username': self.username})
+
+    # TODO: Get real user image
+    def get_image_url(self):
+        return staticfiles_storage.url('piplmesh/images/logo.png')
