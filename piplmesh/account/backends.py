@@ -30,7 +30,6 @@ class MongoEngineBackend(auth.MongoEngineBackend):
         except self.user_class.DoesNotExist:
             return None
 
-
     @property
     def user_class(self):
         return models.User
@@ -82,7 +81,7 @@ class FacebookBackend(MongoEngineBackend):
 
 class TwitterBackend(MongoEngineBackend):
     """
-    TwitterBackend for authentication.
+    Twitter authentication.
     """
 
     def authenticate(self, twitter_token=None, request=None):
