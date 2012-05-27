@@ -29,7 +29,7 @@ class UserView(detail.DetailView):
     slug_field = 'username'
     slug_url_kwarg = 'username'
 	
-def forbidden_view(request, reason=""):
+def forbidden_view(request, reason=''):
     """
     Displays 403 fobidden page. For example, when request fails CSRF protection.
     """
