@@ -175,16 +175,16 @@ PUSH_SERVER = {
     'locations': (
         {
             'type': 'subscriber',
-            'url': r'/updates/([^/]+)',
+            'url': r'/updates/([^/]+)/',
             'polling': 'long',
             'create_on_get': True,
             'allow_origin': 'http://127.0.0.1:8000',
             'allow_credentials': True,
-            'passthrough': 'http://127.0.0.1:8000/passthrough',
+            'passthrough': 'http://127.0.0.1:8000/passthrough/',
         },
         {
             'type': 'publisher',
-            'url': r'/send-update/([^/]+)',
+            'url': r'/send-update/([^/]+)/',
         },
     ),
 }
