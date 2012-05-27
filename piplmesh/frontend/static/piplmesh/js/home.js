@@ -17,9 +17,9 @@ function redrawUserList() {
     $('#userlist').empty();
 
     var searchUsers = $('#search_users').val().toLowerCase();
-    $.each(keys, function(index, key){
+    $.each(keys, function (index, key) {
         if (searchUsers === '' || key.indexOf(searchUsers) !== -1) {
-            user = onlineUsers[key];
+            var user = onlineUsers[key];
             var li = $('<li/>');
             var image = $('<img/>').attrs({'src': user.image_url, 'alt': gettext('User image')});
             li.append(image);
@@ -37,9 +37,10 @@ function updateUserList(data) {
     if (data.action === 'JOIN') {
         onlineUsers[user._key] = user;
         redrawUserList();
-    } else if (data.action === 'PART') {
+    }
+    else if (data.action === 'PART') {
         if (onlineUsers[user._key]) {
-            delete onlineUsers[user.username.toLowerCase()];
+            delete onlineUsers[user._key];
             redrawUserList();
         }
     }
