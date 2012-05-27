@@ -33,7 +33,7 @@
                         {% elif user.twitter_id %}
                             <img src="{% twitter_picture user.twitter_token_key user.twitter_token_secret %}" alt="{% trans "User picture" %}" />
                         {% elif user.google_id %}
-                            <img src="{% google_picture user.google_token %}" height="50" width="50" "{% trans "User picture" %}" />
+                            <img src="{% google_picture user.google_picture_url %}" height="50" width="50" "{% trans "User picture" %}" />
                         {% else %}
                             {% gravatar user 50 %}
                         {% endif %}
