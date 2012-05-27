@@ -13,7 +13,7 @@ function updateUserlist(data) {
 function add_post_to_top(post_location){
     $.getJSON(post_location, function (data){
         var created_time = data.created_time;
-        $("li.post:first").before('<li class="post"><span class="author">'+ data.author['username'] + '</span><p class="content">' + data.message + '</p><span class="date">'+ created_time +'</span></li>');
+        $("li.post:first").before($('<li class="post"><span class="author">'+ data.author['username'] + '</span><p class="content">' + data.message + '</p><span class="date">'+ created_time +'</span></li>').hide().fadeIn("slow"));
     });
 }
 
