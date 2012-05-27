@@ -29,8 +29,8 @@ def check_online_users():
                     'action': 'JOIN',
                     'user': {
                         'username': user.username,
-                        'profile_url': user.profile_url,
-                        'image_url': user.image_url,
+                        'profile_url': user.get_profile_url(),
+                        'image_url': user.get_image_url(),
                     },
                 }
             )
@@ -53,8 +53,8 @@ def check_online_users():
                     'action': 'PART',
                     'user': {
                         'username': user.username,
-                        'profile_url': user.profile_url,
-                        'image_url': user.image_url,
+                        'profile_url': user.get_profile_url(),
+                        'image_url': user.get_image_url(),
                     },
                 }
             )

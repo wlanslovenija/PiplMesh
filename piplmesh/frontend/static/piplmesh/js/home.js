@@ -6,7 +6,7 @@ function User(data) {
 
 function redrawUserList() {
     var keys = [];
-    $.each(onlineUsers, function (key, value) {
+    $.each(onlineUsers, function (key, user) {
         keys.push(key);
     });
     keys.sort(function (key1, key2) {
@@ -17,15 +17,20 @@ function redrawUserList() {
     $('#userlist').empty();
 
     var searchUsers = $('#search_users').val().toLowerCase();
-    $.each(keys, function (index, key) {
+    $.each(keys, function (i, key) {
         if (searchUsers === '' || key.indexOf(searchUsers) !== -1) {
             var user = onlineUsers[key];
             var li = $('<li/>');
-            var image = $('<img/>').attrs({'src': user.image_url, 'alt': gettext('User image')});
+            var image = $('<img/>').prop({
+                'src': user.image_url,
+                'alt': gettext("User image")
+            });
             li.append(image);
             li.append(user.username);
-            var div = $('<div/>').attrs({'class': 'info'});
-            div.append(user.info);
+            var div = $('<div/>').prop({
+                'class': 'info'
+            });
+            div.append($('<a/>').prop('href', user.profile_url).text(gettext("User profile")));
             li.append(div);
             $('#userlist').append(li);
         }
@@ -40,7 +45,7 @@ function updateUserList(data) {
     }
     else if (data.action === 'PART') {
         if (onlineUsers[user._key]) {
-            delete onlineUsers[user.username.toLowerCase()];
+            delete onlineUsers[user._key];
             redrawUserList();
         }
     }
@@ -49,11 +54,11 @@ function updateUserList(data) {
 $(document).ready(function () {
     $.updates.registerProcessor('home_channel', 'userlist', updateUserList);
 
-    $('.panel .header').click(function () {
-        $(this).next('ul').slideToggle('slow');
+    $('.panel .header').click(function (event) {
+        $(this).next('ul').slideToggle('fast');
     });
 
-    $('#search_users').change(function () {
-        redrawUserList();
-    });
+    $('#search_users').change(redrawUserList).keyup(redrawUserList);
+
+    redrawUserList();
 });

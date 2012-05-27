@@ -6,15 +6,16 @@
     {{ block.super }}
     <script type="text/javascript">
         /* <![CDATA[ */
-        var onlineUsers = [
+        var onlineUsers = {
             {% for user in online_users %}
-            {
-                'username': '{{ user.username|escapejs }}',
-                'profile_url': '{{ user.get_profile_url|escapejs }}',
-                'image_url': '{{ user.get_image_url|escapejs }}'
-            }{% if not forloop.last %},{% endif %}
+                '{{ user.username|lower|escapejs }}': {
+                    'username': '{{ user.username|escapejs }}',
+                    'profile_url': '{{ user.get_profile_url|escapejs }}',
+                    'image_url': '{{ user.get_image_url|escapejs }}'
+                }
+                {% if not forloop.last %},{% endif %}
             {% endfor %}
-        ];
+        };
         /* ]]> */
     </script>
 {% endblock %}
