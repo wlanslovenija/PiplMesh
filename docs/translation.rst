@@ -28,6 +28,7 @@ command::
 *(You should replace <language code> with your preferred language code).*
 Example for Slovenian language::
 
+    ../manage.py makemessages -l sl
     ../manage.py makemessages -l sl -d djangojs
 
 This will create file ``django.po`` under ``locale/sl/LC_MESSAGES/``
