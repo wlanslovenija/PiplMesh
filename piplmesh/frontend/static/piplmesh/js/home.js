@@ -10,6 +10,13 @@ function updateUserlist(data) {
     }
 }
 
+function time_diff(post_created_time){
+    var created_time = new Date(post_created_time).getTime();
+    var current_time = new Date().getTime();
+    var diff = current_time - created_time;
+
+}
+
 function add_post_to_top(post_location){
     $.getJSON(post_location, function (data){
         var created_time = data.created_time;
@@ -30,22 +37,25 @@ $(document).ready(function () {
     $.getJSON('/api/v1/post/?limit=1&offset=1',function(data){
         var total_posts = data.meta.total_count;
         var offset = 1;
-        if (total_posts > 20){
-            offset = total_posts - LIMIT;
-            total_posts = 20-1;
-        }
-        $.getJSON('/api/v1/post/?limit=20&offset='+offset, function(data){
-            for (var i = total_posts;i>0;i--){
-                var created_time = data.objects[i].created_time;
-                $(".posts").append('<li class="post"><span class="author">'+ data.objects[i].author['username'] + '</span><p class="content">' + data.objects[i].message + '</p><span class="date">'+ created_time +'</span></li>');
+        if (total_posts > 0){
+            if (total_posts > 20){
+                offset = total_posts - LIMIT;
+                total_posts = 20-1;
             }
-        });
+            $.getJSON('/api/v1/post/?limit=20&offset='+offset, function(data){
+                for (var i = total_posts;i>0;i--){
+                    var created_time = data.objects[i].created_time;
+                    //var created_time = time_diff(data.objects[i].created_time);
+                    $(".posts").append('<li class="post"><span class="author">'+ data.objects[i].author['username'] + '</span><p class="content">' + data.objects[i].message + '</p><span class="date">'+ created_time +'</span></li>');
+                }
+            });
+        }
     });
     $('#submit_post').click(function () {
         $.ajax({
             type: 'POST',
             url: '/api/v1/post/',
-            data: '{"message" : "' + $("#post_text").val() + '"}',
+            data: '{"message" : "' + $("#post_text").val().replace('\r\n', '\\r\\n') + '"}',
             contentType: 'application/json',
             success: function(output, status, header) {
                 add_post_to_top(header.getResponseHeader('Location'));
