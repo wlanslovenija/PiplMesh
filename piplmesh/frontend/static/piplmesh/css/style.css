@@ -321,7 +321,7 @@ input.gsc-search-button {
 /* ---------------- GOOGLE LOGIN BUTTON ------------------- */
 .google_login_button {
     background: #0064D9 url('../images/google_button.png');
-    background-position:  0 0;
+    background-position: 0 0;
     background-repeat: no-repeat;
     cursor: pointer;
     display: inline-block;
