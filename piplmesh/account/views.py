@@ -16,6 +16,9 @@ import tweepy
 
 from piplmesh.account import forms, models
 
+FACEBOOK_SCOPE = 'email' # You may add additional parameters
+GOOGLE_SCOPE = 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
+
 class FacebookLoginView(generic_views.RedirectView):
     """ 
     This view authenticates the user via Facebook.
@@ -26,7 +29,7 @@ class FacebookLoginView(generic_views.RedirectView):
     def get_redirect_url(self, **kwargs):
         args = {
             'client_id': settings.FACEBOOK_APP_ID,
-            'scope': settings.FACEBOOK_SCOPE,
+            'scope': FACEBOOK_SCOPE,
             'redirect_uri': self.request.build_absolute_uri(urlresolvers.reverse('facebook_callback')),
         }
         return "https://www.facebook.com/dialog/oauth?%(args)s" % {'args': urllib.urlencode(args)}
@@ -102,7 +105,7 @@ class GoogleLoginView(generic_views.RedirectView):
             'response_type': 'code',
             'client_id': settings.GOOGLE_CLIENT_ID,
             'redirect_uri': self.request.build_absolute_uri(urlresolvers.reverse('google_callback')),
-            'scope': settings.GOOGLE_SCOPE,
+            'scope': GOOGLE_SCOPE,
         }
         return "https://accounts.google.com/o/oauth2/auth?%(args)s" % {'args': urllib.urlencode(args)}
 
@@ -118,10 +121,12 @@ class GoogleCallbackView(generic_views.RedirectView):
     def get(self, request, *args, **kwargs):
         if 'code' in request.GET:
             user = auth.authenticate(google_token=request.GET['code'], request=request)
-            assert  user.is_authenticated()
+            assert user.is_authenticated()
             auth.login(request, user)
             return super(GoogleCallbackView, self).get(request, *args, **kwargs)
         else:
+            # TODO: Message user that they have not been logged in because they cancelled the google app
+            # TODO: Use information provided from google as to why the login was not successful
             return super(GoogleCallbackView, self).get(request, *args, **kwargs)
 
 
