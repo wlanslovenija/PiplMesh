@@ -1,5 +1,6 @@
-from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
+from django.conf.urls.defaults import patterns, include, url
+
 from tastypie import api
 
 from piplmesh.account import models, views as account_views
@@ -39,13 +40,13 @@ urlpatterns = patterns('',
     url(r'^api/', include(v1_api.urls)),
 )
 
-handler403 = frontend_views.ForbiddenView
+handler403 = frontend_views.forbidden_view
 handler404 = 'django.views.defaults.page_not_found'
 handler500 = 'django.views.defaults.server_error'
 
 if getattr(settings, 'DEBUG', False):
     urlpatterns += patterns('',
-    (r'^403/$', handler403),
-    (r'^404/$', handler404),
-    (r'^500/$', handler500),
+        (r'^403/$', handler403),
+        (r'^404/$', handler404),
+        (r'^500/$', handler500),
     )

@@ -1,8 +1,10 @@
-from django.views import generic as generic_views
-from django.http import HttpResponseForbidden
-from django.template import RequestContext, Context, loader
+from django import http as http_views
 from django.conf import settings
+from django.template import RequestContext, Context, loader
+from django.views import generic as generic_views
+
 from mongogeneric import detail
+
 from piplmesh.account import models
 
 HOME_CHANNEL_ID = 'home'
@@ -28,15 +30,15 @@ class UserView(detail.DetailView):
     slug_field = 'username'
     slug_url_kwarg = 'username'
 	
-def ForbiddenView(request, reason=""):
+def forbidden_view(request, reason=""):
     """
     Displays 403 fobidden page. For example, when request fails CSRF protection.
     """
 
     from django.middleware.csrf import REASON_NO_REFERER
     t = loader.get_template("403.html")
-    return HttpResponseForbidden(t.render(RequestContext(request, {
-        'DEBUG'  : settings.DEBUG,
-        'reason' : reason,
+    return http_views.HttpResponseForbidden(t.render(RequestContext(request, {
+        'DEBUG': settings.DEBUG,
+        'reason': reason,
         'no_referer' : reason == REASON_NO_REFERER,
     })))

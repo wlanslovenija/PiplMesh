@@ -279,4 +279,4 @@ TWITTER_LOGIN_REDIRECT = '/'
 # Current settings are autocomplete, searching whole web.
 SEARCH_ENGINE_UNIQUE_ID = '003912915932446183218:zeq20qye9oa'
 
-CSRF_FAILURE_VIEW = 'frontend.views.ForbiddenView'
+CSRF_FAILURE_VIEW = 'piplmesh.frontend.views.forbidden_view'
