@@ -108,13 +108,12 @@ class FoursquareBackend(MongoEngineBackend):
     """
 
     def authenticate(self, foursquare_token=None, request=None):
-
         args = {
             'client_id': settings.FOURSQUARE_CLIENT_ID,
             'client_secret': settings.FOURSQUARE_CLIENT_SECRET,
-            'grant_type': 'authorization_code',
             'redirect_uri': request.build_absolute_uri(urlresolvers.reverse('foursquare_callback')),
             'code': foursquare_token,
+            'grant_type': 'authorization_code',
         }
 
         # Retrieve access token

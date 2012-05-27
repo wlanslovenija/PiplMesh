@@ -120,6 +120,8 @@ class FoursquareCallbackView(generic_views.RedirectView):
             auth.login(request, user)
             return super(FoursquareCallbackView, self).get(request, *args, **kwargs)
         else:
+            # TODO: Message user that they have not been logged in because they cancelled the foursquare app
+            # TODO: Use information provided from foursquare as to why the login was not successful
             return super(FoursquareCallbackView, self).get(request, *args, **kwargs)
 
 def logout(request):
