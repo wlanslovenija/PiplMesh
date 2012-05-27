@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import auth
+from django.utils import translation
 
 from piplmesh.frontend import views
 
@@ -16,7 +17,7 @@ def global_vars(request):
         'SEARCH_ENGINE_UNIQUE_ID': settings.SEARCH_ENGINE_UNIQUE_ID,
 
         # Variables
-        'logo_url': "piplmesh/images/logo-%s.png" % (request.LANGUAGE_CODE),
+        'logo_url': "piplmesh/images/logo-%s.png" % (translation.get_language(),),
         'redirect_to': request.REQUEST.get(auth.REDIRECT_FIELD_NAME),
         'request_get_next': request.REQUEST.get(auth.REDIRECT_FIELD_NAME),
     }

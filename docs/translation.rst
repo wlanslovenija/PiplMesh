@@ -22,6 +22,7 @@ sure your Django applications you want translated have a directory called
 When all string are marked for translation and settings are prepared run
 command::
 
+    ../manage.py makemessages -l <language code>
     ../manage.py makemessages -l <language code> -d djangojs
 
 *(You should replace <language code> with your preferred language code).*
