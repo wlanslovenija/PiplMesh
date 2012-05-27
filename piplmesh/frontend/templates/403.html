@@ -1,0 +1,13 @@
+{% extends "plain.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "403 Forbidden" %}{% endblock %}
+
+{% block content %}
+<h2>{% trans "403 Forbidden" %}</h2>
+
+<div class="error">
+    <p>{% trans "You don't have permission to access the requested page." %}</p>
+</div>
+{% endblock %}
