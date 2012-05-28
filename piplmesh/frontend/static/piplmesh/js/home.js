@@ -31,13 +31,13 @@ function generate_post_html(data) {
 }
 
 function add_post_to_top(post_location){
-    $.getJSON(post_location, function (data){    
+    $.getJSON(post_location, function (data) {    
         $("li.post:first").before(generate_post_html(data)).hide().fadeIn("slow");
     });
 }
 
 function add_post_to_bottom(post_location){
-    $.getJSON(post_location, function(data){
+    $.getJSON(post_location, function (data) {
         $(".posts").append(generate_post_html(data));
     })
 }
@@ -45,7 +45,7 @@ function add_post_to_bottom(post_location){
 $(document).ready(function () {
     $.updates.registerProcessor('home_channel', 'userlist', updateUserlist);
     $(".posts").empty();
-    $.getJSON('/api/v1/post/?limit=1&offset=1', function (data){
+    $.getJSON('/api/v1/post/?limit=1&offset=1', function (data) {
         var total_posts = data.meta.total_count;
         var offset = 1;
         if (total_posts > 0){
@@ -53,7 +53,7 @@ $(document).ready(function () {
                 offset = total_posts - LIMIT;
                 total_posts = 20-1;
             }
-            $.getJSON('/api/v1/post/?limit=20&offset='+offset, function (data){
+            $.getJSON('/api/v1/post/?limit=20&offset='+offset, function (data) {
                 for (var i = total_posts;i>0;i--){
                     $(".posts").append(generate_post_html(data.objects[i]));
                 }
@@ -67,12 +67,14 @@ $(document).ready(function () {
                 url: '/api/v1/post/',
                 data: '{"message" : "' + $("#post_text").val().replace('\r\n', '\\r\\n') + '"}',
                 contentType: 'application/json',
-                success: function(output, status, header) {
+                success: function (output, status, header) {
                     add_post_to_top(header.getResponseHeader('Location'));
                     $('#post_text').val('Write a post...');
                     $('#post_text').css({'min-height':25});        
                 },
-                error: function(){ alert("Oops, something went wrong... "); },
+                error: function () { 
+                    alert("Oops, something went wrong... "); 
+                },
                 processData:  false
             });                        
         }
@@ -86,10 +88,8 @@ $(document).ready(function () {
         $('#post_text').css({'min-height':50});
     });
     
-    $(window).scroll(function ()
-    {
-        if (document.body.scrollHeight - $(this).scrollTop()  <= $(this).height())
-        {
+    $(window).scroll(function () {
+        if (document.body.scrollHeight - $(this).scrollTop()  <= $(this).height()) {
             alert("TODO: add new posts when the bottom is reached");
         }
     });
