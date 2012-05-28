@@ -10,7 +10,6 @@ from django.views.generic import simple, edit as edit_views
 from django.utils.translation import ugettext_lazy as _
 
 from pushserver import signals
-from pushserver.utils import updates
 
 import tweepy
 
