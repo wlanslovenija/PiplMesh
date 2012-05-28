@@ -52,6 +52,10 @@ class MongoEngineTestCase(tests.MongoTestCase):
     .. _pull request: https://github.com/hmarr/mongoengine/pull/506
     """
 
+    def __init__(self, methodName='runtest'):
+        connection.disconnect()
+        super(MongoEngineTestCase, self).__init__(methodName)
+
     def _post_teardown(self):
         self.db = connection.get_db()
         super(MongoEngineTestCase, self)._post_teardown()
