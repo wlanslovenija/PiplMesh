@@ -39,7 +39,7 @@ Are you sure you want to do this?
 
         if confirm == 'yes':
             try:
-                db = connection.get_db()
+                db = connection.get_db(database)
                 for collection in db.collection_names():
                     if collection == 'system.indexes':
                         continue
