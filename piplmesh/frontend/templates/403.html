@@ -1,0 +1,23 @@
+{% extends "plain.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "403 Forbidden" %}{% endblock %}
+
+{% block extrahead %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+
+{% block content %}
+<h2>{% trans "403 Forbidden" %}</h2>
+
+<div class="error">
+    <p>{% trans "You don't have permission to access the page you requested." %}</p>
+    {% if no_referer %}
+        <p>{% blocktrans %}You are seeing this message because this HTTPS site requires a 'Referer header' to be sent by your Web browser, but none was sent. This header is required for security reasons, to ensure that your browser is not being hijacked by third parties.{% endblocktrans %}</p>
+        <p>{% blocktrans %}If you have configured your browser to disable 'Referer' headers, please re-enable them, at least for this site, or for HTTPS connections, or for 'same-origin' requests.{% endblocktrans %}</p>
+    {% else %}
+        <p>{% trans "For accessing this site and using all features cookies in your browser must be enabled." %}</p>
+    {% endif %}
+</div>
+
+{% if DEBUG and reason %}<p>Reason: {{ reason }}</p>{% endif %}
+{% endblock %}

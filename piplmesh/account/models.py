@@ -9,6 +9,9 @@ from mongoengine.django import auth
 
 from piplmesh.account import fields, utils
 
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.core import urlresolvers
+
 LOWER_DATE_LIMIT = 366 * 120
 USERNAME_REGEX = r'[\w.@+-]+'
 
@@ -49,7 +52,7 @@ class User(auth.User):
     connection_last_unsubscribe = mongoengine.DateTimeField()
     is_online = mongoengine.BooleanField(default=False)
     
-    def image_url(self, default_url=staticfiles_storage.url(settings.DEFAULT_IMAGE_PATH)):
+    def get_image_url(self, default_url=staticfiles_storage.url(settings.DEFAULT_IMAGE_PATH)):
         if self.twitter_id:
             twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
             twitter_auth.set_access_token(self.twitter_token_key, self.twitter_token_secret)

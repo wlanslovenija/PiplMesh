@@ -6,8 +6,9 @@ Making strings translatable
 
 To make your strings translatable edit them as follows:
 
-- in Django template: ``{% trans "Some string" %}``
+- in Django templates: ``{% trans "Some string" %}``
 - in Python files: ``_("some string")``
+- in JavaScript files: ``gettext("some string")``
    
 Creation of translation files
 -----------------------------
@@ -22,11 +23,13 @@ When all string are marked for translation and settings are prepared run
 command::
 
     ../manage.py makemessages -l <language code>
+    ../manage.py makemessages -l <language code> -d djangojs
 
 *(You should replace <language code> with your preferred language code).*
 Example for Slovenian language::
 
     ../manage.py makemessages -l sl
+    ../manage.py makemessages -l sl -d djangojs
 
 This will create file ``django.po`` under ``locale/sl/LC_MESSAGES/``
 *(note: All other Directories are automaticly created.)*

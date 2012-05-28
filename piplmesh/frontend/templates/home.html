@@ -2,6 +2,24 @@
 
 {% block fulltitle %}wlan slovenija{% endblock %}
 
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript">
+        /* <![CDATA[ */
+        var onlineUsers = {
+            {% for user in online_users %}
+                '{{ user.username|lower|escapejs }}': {
+                    'username': '{{ user.username|escapejs }}',
+                    'profile_url': '{{ user.get_profile_url|escapejs }}',
+                    'image_url': '{{ user.get_image_url|escapejs }}'
+                }
+                {% if not forloop.last %},{% endif %}
+            {% endfor %}
+        };
+        /* ]]> */
+    </script>
+{% endblock %}
+
 {% block content %}
     <div id="main">
         <p>

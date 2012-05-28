@@ -1,0 +1,21 @@
+# PiplMesh Slovenian translation
+# Copyright (C) 2012 wlan slovenija, open wireless network of Slovenia
+# This file is distributed under the same license as PiplMesh.
+# Jon Premik <jon.premik@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: piplmesh\n"
+"Report-Msgid-Bugs-To: https://github.com/wlanslovenija/PiplMesh\n"
+"POT-Creation-Date: 2012-05-24 15:16+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Jon Premik <jon.premik@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sl\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)\n"
+"Language-Team: \n"
+
+#: frontend/static/piplmesh/js/home.js:23
+msgid "User image"
+msgstr "Slika uporabnika"
