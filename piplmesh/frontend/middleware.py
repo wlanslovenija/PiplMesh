@@ -23,6 +23,10 @@ class NodesMiddleware(object):
                 # Otherwise we redirect to home
                 return http.HttpResponseRedirect(urlresolvers.reverse('home'))
 
+        for exception in getattr(settings, 'NODES_MIDDLEWARE_EXCEPTIONS', ()):
+            if request.path.startswith(exception):
+                return None
+
         if request.node is None:
             # Outside request and without geolocation data, we redirect
             return http.HttpResponseRedirect(outside_url)

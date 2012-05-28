@@ -97,6 +97,12 @@ STATICFILES_FINDERS = (
 #   'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+# URL prefix for internationalization URLs
+I18N_URL = '/i18n/'
+
+# URL prefix for django-pushserver passthrough callbacks
+PUSH_SERVER_URL = '/passthrough/'
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '02dl2nfiacp)87-1g2$=l@b(q5+qs^)qo=byzdvgx+35q)gw&^'
 
@@ -179,7 +185,7 @@ PUSH_SERVER = {
             'create_on_get': True,
             'allow_origin': 'http://127.0.0.1:8000',
             'allow_credentials': True,
-            'passthrough': 'http://127.0.0.1:8000/passthrough/',
+            'passthrough': 'http://127.0.0.1:8000' + PUSH_SERVER_URL,
         },
         {
             'type': 'publisher',
@@ -257,6 +263,13 @@ TEST_RUNNER_FILTER = (
 
 NODES_BACKENDS = (
     'piplmesh.nodes.backends.RandomNodesBackend',
+)
+
+NODES_MIDDLEWARE_EXCEPTIONS = (
+    MEDIA_URL,
+    STATIC_URL,
+    I18N_URL,
+    PUSH_SERVER_URL,
 )
 
 # Facebook settings

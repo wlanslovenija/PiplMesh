@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.conf.urls import patterns, include, url
+from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
 
 from tastypie import api
 
@@ -18,15 +19,14 @@ js_info_dict = {
     ),
 }
 
+I18N_URL = settings.I18N_URL[1:] # Removing leading /
+PUSH_SERVER_URL = settings.PUSH_SERVER_URL[1:] # Removing leading /
+
 urlpatterns = patterns('',
-    url('^$', frontend_views.HomeView.as_view(), name='home'),
+    url(r'^$', frontend_views.HomeView.as_view(), name='home'),
 
-    url('^outside/$', frontend_views.OutsideView.as_view(), name='outside'),
-
+    url(r'^outside/$', frontend_views.OutsideView.as_view(), name='outside'),
     url(r'^search/', frontend_views.SearchView.as_view(), name='search'),
-    url(r'^i18n/', include('django.conf.urls.i18n')),
-    url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-    url(r'^passthrough/', include('pushserver.urls')),
 
     # Registration, login, logout
     url(r'^register/$', account_views.RegistrationView.as_view(), name='registration'),
@@ -41,13 +41,21 @@ urlpatterns = patterns('',
     url(r'^twitter/login/$', account_views.TwitterLoginView.as_view(), name='twitter_login'),
     url(r'^twitter/callback/$', account_views.TwitterCallbackView.as_view(), name='twitter_callback'),
 
-    # Profile, Account
+    # Profile, account
     url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='user'),
     url(r'^account/$', account_views.AccountChangeView.as_view(), name='account'),
     url(r'^account/password/change/$', account_views.PasswordChangeView.as_view(), name='password_change'),
 
     # RESTful API
     url(r'^api/', include(v1_api.urls)),
+
+    # Internationalization support
+    url(r'^' + I18N_URL, include('django.conf.urls.i18n')),
+    url(r'^' + I18N_URL + 'js/$', 'django.views.i18n.javascript_catalog', js_info_dict),
+
+    # Internals
+    # TODO: Limit only to internal IPs
+    url(r'^' + PUSH_SERVER_URL, include('pushserver.urls')),
 )
 
 handler403 = frontend_views.forbidden_view
@@ -60,3 +68,8 @@ if getattr(settings, 'DEBUG', False):
         (r'^404/$', handler404),
         (r'^500/$', handler500),
     )
+
+# For development, serve static and media files through Django
+if getattr(settings, 'DEBUG', False):
+    urlpatterns += staticfiles_urlpatterns()
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
