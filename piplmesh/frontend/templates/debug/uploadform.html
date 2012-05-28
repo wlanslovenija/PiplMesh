@@ -1,0 +1,12 @@
+{% extends "plain.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Upload form" %}{% endblock %}
+
+{% block content %}
+    {% url upload as upload_url %}
+    {% with form_submit=_("Upload") form_action=upload_url|add:"?format=json" %}
+        {% include "form/form.html" %}
+    {% endwith %}
+{% endblock %}
