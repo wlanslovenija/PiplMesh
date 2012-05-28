@@ -52,9 +52,9 @@ class User(auth.User):
     connection_last_unsubscribe = mongoengine.DateTimeField()
     is_online = mongoengine.BooleanField(default=False)
     
-    def get_image_url(self, default_url=staticfiles_storage.url(settings.DEFAULT_IMAGE_PATH), request=None):
+    def get_image_url(self, default_url=staticfiles_storage.url(settings.DEFAULT_USER_IMAGE_PATH), request=None):
         if request is not None:
-            default_url = request.build_absolute_uri(staticfiles_storage.url(settings.DEFAULT_IMAGE_PATH))
+            default_url = request.build_absolute_uri(default_url)
         
         if self.twitter_id:
             twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
