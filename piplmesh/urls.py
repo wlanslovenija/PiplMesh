@@ -45,6 +45,7 @@ urlpatterns = patterns('',
     url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='user'),
     url(r'^account/$', account_views.AccountChangeView.as_view(), name='account'),
     url(r'^account/password/change/$', account_views.PasswordChangeView.as_view(), name='password_change'),
+    url(r'^account/verification/$', account_views.EmailVerification.as_view(), name='email_verification'),
 
     # RESTful API
     url(r'^api/', include(v1_api.urls)),

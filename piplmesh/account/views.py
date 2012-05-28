@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth import views as auth_views
 from django.core import exceptions, urlresolvers
+from django.core.mail import EmailMultiAlternatives
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 from django.utils.translation import ugettext_lazy as _
@@ -194,6 +195,22 @@ class PasswordChangeView(edit_views.FormView):
 
     def get_form(self, form_class):
         return form_class(self.request.user, **self.get_form_kwargs())
+
+class EmailVerification(generic_views.TemplateView):
+    """
+    This view sends an email to user to verify his email
+    """
+
+    template_name = 'user/email_verification.html'
+
+    subject = 'Verify your email address'
+    from_email = settings.DEFAULT_FROM_EMAIL
+    to = 'email'
+    text_content = 'This message was sent to verify your email address.'
+    html_content = '<p>This message was sent to <strong>verify</strong> your email address.</p>'
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, 'text/html')
+    msg.send()
 
 @dispatch.receiver(signals.channel_subscribe)
 def process_channel_subscribe(sender, request, channel_id, **kwargs):
