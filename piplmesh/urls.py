@@ -20,8 +20,8 @@ js_info_dict = {
     ),
 }
 
-I18N_URL = settings.I18N_URL[1:] # Removing leading /
-PUSH_SERVER_URL = settings.PUSH_SERVER_URL[1:] # Removing leading /
+I18N_URL = settings.I18N_URL.lstrip('/')
+PUSH_SERVER_URL = settings.PUSH_SERVER_URL.lstrip('/')
 
 urlpatterns = patterns('',
     url(r'^$', frontend_views.HomeView.as_view(), name='home'),
@@ -80,4 +80,4 @@ if getattr(settings, 'DEBUG', False):
 # For development, serve static and media files through Django
 if getattr(settings, 'DEBUG', False):
     urlpatterns += staticfiles_urlpatterns()
-    # TODO: Serve files from gridfs
+    urlpatterns += static(settings.MEDIA_URL, 'piplmesh.utils.storage.serve')
