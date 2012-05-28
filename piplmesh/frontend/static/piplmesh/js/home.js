@@ -12,7 +12,7 @@ function updateUserlist(data) {
 
 // Calculates difference between current time and the time when the post was created and generates a message
 function format_post_date(post_date_created) {        
-    // TODO: bug, doesn't work in chrome
+    // TODO: bug, it doesn't work in chrome
     var created_time_diff = (new Date().getTime() - new Date(post_date_created).getTime())/1000/60; 
     if (created_time_diff < 2) {
         msg = "just now";
@@ -45,7 +45,7 @@ function add_post_to_bottom(post_location){
 $(document).ready(function () {
     $.updates.registerProcessor('home_channel', 'userlist', updateUserlist);
     $(".posts").empty();
-    $.getJSON('/api/v1/post/?limit=1&offset=1',function(data){
+    $.getJSON('/api/v1/post/?limit=1&offset=1', function (data){
         var total_posts = data.meta.total_count;
         var offset = 1;
         if (total_posts > 0){
@@ -53,7 +53,7 @@ $(document).ready(function () {
                 offset = total_posts - LIMIT;
                 total_posts = 20-1;
             }
-            $.getJSON('/api/v1/post/?limit=20&offset='+offset, function(data){
+            $.getJSON('/api/v1/post/?limit=20&offset='+offset, function (data){
                 for (var i = total_posts;i>0;i--){
                     $(".posts").append(generate_post_html(data.objects[i]));
                 }
@@ -86,7 +86,7 @@ $(document).ready(function () {
         $('#post_text').css({'min-height':50});
     });
     
-    $(window).scroll(function()
+    $(window).scroll(function ()
     {
         if (document.body.scrollHeight - $(this).scrollTop()  <= $(this).height())
         {
