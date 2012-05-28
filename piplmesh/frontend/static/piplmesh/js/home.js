@@ -1,3 +1,4 @@
+var CURRENT_OFFSET = 1;
 var LIMIT = 20;
 
 function updateUserlist(data) {
@@ -36,10 +37,25 @@ function add_post_to_top(post_location){
     });
 }
 
-function add_post_to_bottom(post_location){
-    $.getJSON(post_location, function (data) {
-        $(".posts").append(generate_post_html(data));
-    })
+function add_post_to_bottom(data){
+    $(".posts").append(generate_post_html(data));
+}
+
+function earlier_posts (){
+    var posts_returned;
+    if (CURRENT_OFFSET < LIMIT){
+        posts_returned = LIMIT-CURRENT_OFFSET;
+        CURRENT_OFFSET = 1;
+    } else {
+        posts_returned = LIMIT;
+        CURRENT_OFFSET -= LIMIT;
+    }
+    $.getJSON('/api/v1/post/?limit='+LIMIT+'&offset='+CURRENT_OFFSET, function (data) {
+        for (var i = posts_returned-1;i>=0;i--){
+            //console.log(data.objects[i]);
+            add_post_to_bottom(data.objects[i]);
+        }
+    });
 }
 
 $(document).ready(function () {
@@ -47,15 +63,14 @@ $(document).ready(function () {
     $(".posts").empty();
     $.getJSON('/api/v1/post/?limit=1&offset=1', function (data) {
         var total_posts = data.meta.total_count;
-        var offset = 1;
         if (total_posts > 0){
             if (total_posts > 20){
-                offset = total_posts - LIMIT;
-                total_posts = 20-1;
+                CURRENT_OFFSET = total_posts - LIMIT;
+                total_posts = LIMIT-1;
             }
-            $.getJSON('/api/v1/post/?limit=20&offset='+offset, function (data) {
-                for (var i = total_posts;i>0;i--){
-                    $(".posts").append(generate_post_html(data.objects[i]));
+            $.getJSON('/api/v1/post/?limit='+LIMIT+'&offset='+CURRENT_OFFSET, function (data) {
+                for (var i = total_posts-1;i>=0;i--){
+                    add_post_to_bottom(data.objects[i]);
                 }
             });
         }
@@ -90,7 +105,7 @@ $(document).ready(function () {
     
     $(window).scroll(function () {
         if (document.body.scrollHeight - $(this).scrollTop()  <= $(this).height()) {
-            alert("TODO: add new posts when the bottom is reached");
+            earlier_posts();
         }
     });
 
