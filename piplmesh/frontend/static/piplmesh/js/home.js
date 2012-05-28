@@ -1,4 +1,4 @@
-var CURRENT_OFFSET = 1;
+var CURRENT_OFFSET = 0;
 var LIMIT = 20;
 
 function updateUserlist(data) {
@@ -43,25 +43,30 @@ function add_post_to_bottom(data){
 
 function earlier_posts (){
     var posts_returned;
-    if (CURRENT_OFFSET < LIMIT){
-        posts_returned = LIMIT-CURRENT_OFFSET;
-        CURRENT_OFFSET = 1;
-    } else {
-        posts_returned = LIMIT;
-        CURRENT_OFFSET -= LIMIT;
-    }
-    $.getJSON('/api/v1/post/?limit='+LIMIT+'&offset='+CURRENT_OFFSET, function (data) {
-        for (var i = posts_returned-1;i>=0;i--){
-            //console.log(data.objects[i]);
-            add_post_to_bottom(data.objects[i]);
+    if (CURRENT_OFFSET != -1){
+        if (CURRENT_OFFSET < LIMIT){
+            posts_returned = CURRENT_OFFSET;
+            CURRENT_OFFSET = 0;
+        } else {
+            posts_returned = LIMIT;
+            CURRENT_OFFSET -= LIMIT;
         }
-    });
+        $.getJSON('/api/v1/post/?limit='+LIMIT+'&offset='+CURRENT_OFFSET, function (data) {
+            for (var i = posts_returned-1;i>=0;i--){
+                add_post_to_bottom(data.objects[i]);
+            }
+        });
+        if (CURRENT_OFFSET == 0){
+            CURRENT_OFFSET = -1;
+        }
+    }
+
 }
 
 $(document).ready(function () {
     $.updates.registerProcessor('home_channel', 'userlist', updateUserlist);
     $(".posts").empty();
-    $.getJSON('/api/v1/post/?limit=1&offset=1', function (data) {
+    $.getJSON('/api/v1/post/?limit=1&offset='+CURRENT_OFFSET, function (data) {
         var total_posts = data.meta.total_count;
         if (total_posts > 0){
             if (total_posts > 20){
