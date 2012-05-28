@@ -58,6 +58,8 @@ def get_node(request):
     Returns ``None`` if no node could be determined.
     """
 
+    # TODO: What if users moves from inside to outside, or outside to inside, inside existing session? How should we invalidate node?
+
     node = None
     try:
         node_id = request.session[SESSION_KEY]
@@ -69,10 +71,12 @@ def get_node(request):
 
     if node is not None:
         node._outside_request = CLOSEST_LATITUDE_SESSION_KEY in request.session or CLOSEST_LONGITUDE_SESSION_KEY in request.session
-        if node.is_inside_request() and LATITUDE_SESSION_KEY not in request.session and LONGITUDE_SESSION_KEY not in request.session:
-            return node
-        elif node.is_outside_request() and request.session.get(CLOSEST_LATITUDE_SESSION_KEY) == request.session.get(LATITUDE_SESSION_KEY) and request.session.get(CLOSEST_LONGITUDE_SESSION_KEY) == request.session.get(LONGITUDE_SESSION_KEY):
-            return node
+        if node.is_inside_request():
+            if LATITUDE_SESSION_KEY not in request.session and LONGITUDE_SESSION_KEY not in request.session:
+                return node
+        elif node.is_outside_request():
+            if request.session.get(CLOSEST_LATITUDE_SESSION_KEY) == request.session.get(LATITUDE_SESSION_KEY) and request.session.get(CLOSEST_LONGITUDE_SESSION_KEY) == request.session.get(LONGITUDE_SESSION_KEY):
+                return node
 
     node = None
     flush_session(request)
