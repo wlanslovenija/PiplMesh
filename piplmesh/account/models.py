@@ -46,7 +46,7 @@ class User(auth.User):
     google_id = mongoengine.StringField(max_length=30)
     google_token = mongoengine.StringField(max_length=150)
     google_link = mongoengine.StringField(max_length=100)
-    google_picture = mongoengine.StringField(max_length=150)
+    google_picture_url = mongoengine.StringField(max_length=150)
 
     connections = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Connection))
     connection_last_unsubscribe = mongoengine.DateTimeField()
