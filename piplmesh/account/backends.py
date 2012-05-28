@@ -1,4 +1,4 @@
-import json, httplib, urlparse, urllib
+import json, urlparse, urllib
 
 from django.conf import settings
 from django.core import urlresolvers
