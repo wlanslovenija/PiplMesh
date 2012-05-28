@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, include, url
 
 from tastypie import api
 
@@ -20,6 +20,8 @@ js_info_dict = {
 
 urlpatterns = patterns('',
     url('^$', frontend_views.HomeView.as_view(), name='home'),
+
+    url('^outside/$', frontend_views.OutsideView.as_view(), name='outside'),
 
     url(r'^search/', frontend_views.SearchView.as_view(), name='search'),
     url(r'^i18n/', include('django.conf.urls.i18n')),

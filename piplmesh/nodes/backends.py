@@ -1,22 +1,19 @@
 from __future__ import absolute_import
 
-import random
+import copy, random
 
 from . import data
 
 class RandomNodesBackend(object):
     def get_source_node(self, request):
         """
-        Returns with 0.2 probability None or selects one node at random.
+        Returns a node at random.
         """
 
-        if random.random() < 0.2:
-            return None
-        else:
-            node_id = random.randrange(len(data.nodes))
-            node = data.nodes[node_id]
-            node.id = node_id
-            return node
+        node_id = random.randrange(len(data.nodes))
+        node = copy.copy(data.nodes[node_id])
+        node.id = node_id
+        return node
 
     def get_closest_node(self, request, latitude, longitude):
         """
@@ -25,12 +22,14 @@ class RandomNodesBackend(object):
         """
 
         node_id = random.randrange(len(data.nodes))
-        node = data.nodes[node_id]
+        node = copy.copy(data.nodes[node_id])
         node.id = node_id
         return node
 
     def get_node(self, node_id):
         try:
-            return data.nodes[node_id]
+            node = copy.copy(data.nodes[node_id])
+            node.id = node_id
+            return node
         except IndexError:
             return None

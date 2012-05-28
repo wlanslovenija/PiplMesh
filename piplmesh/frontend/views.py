@@ -16,6 +16,10 @@ class HomeView(generic_views.TemplateView):
         context['online_users'] = models.User.objects(is_online=True)
         return context
 
+# TODO: Get HTML5 geolocation data and store it into request session
+class OutsideView(generic_views.TemplateView):
+    template_name = 'outside.html'
+
 class SearchView(generic_views.TemplateView):
     template_name = 'search.html'
 

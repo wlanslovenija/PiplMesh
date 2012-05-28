@@ -128,8 +128,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'piplmesh.account.middleware.UserBasedLocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'piplmesh.account.middleware.UserBasedLocaleMiddleware',
+    'piplmesh.frontend.middleware.NodesMiddleware',
 )
 
 ROOT_URLCONF = 'piplmesh.urls'
@@ -252,6 +253,10 @@ AUTHENTICATION_BACKENDS = (
 TEST_RUNNER = 'piplmesh.test_runner.MongoEngineTestSuiteRunner'
 TEST_RUNNER_FILTER = (
     'piplmesh.',
+)
+
+NODES_BACKENDS = (
+    'piplmesh.nodes.backends.RandomNodesBackend',
 )
 
 # Facebook settings
