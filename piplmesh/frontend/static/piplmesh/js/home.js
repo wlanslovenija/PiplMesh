@@ -10,24 +10,35 @@ function updateUserlist(data) {
     }
 }
 
-function time_diff(post_created_time){
-    var created_time = new Date(post_created_time).getTime();
-    var current_time = new Date().getTime();
-    var diff = current_time - created_time;
+// Calculates difference between current time and the time when the post was created and generates a message
+function format_post_date(post_date_created) {        
+    // TODO: bug, doesn't work in chrome
+    var created_time_diff = (new Date().getTime() - new Date(post_date_created).getTime())/1000/60; 
+    if (created_time_diff < 2) {
+        msg = "just now";
+    } else if (created_time_diff >= 60*24) {
+        msg = Math.round(created_time_diff/60/24) + " days ago";
+    } else if (created_time_diff >= 60) {
+        msg = Math.round(created_time_diff/60) + " hours ago";
+    } else {
+        msg = Math.round(created_time_diff) + " minutes ago";
+    }
+    return msg;
+}
 
+function generate_post_html(data) {
+    return '<li class="post"><span class="author">'+ data.author['username'] + '</span><p class="content">' + data.message + '</p><span class="date">'+ format_post_date(data.created_time) +'</span></li>'
 }
 
 function add_post_to_top(post_location){
-    $.getJSON(post_location, function (data){
-        var created_time = data.created_time;
-        $("li.post:first").before($('<li class="post"><span class="author">'+ data.author['username'] + '</span><p class="content">' + data.message + '</p><span class="date">'+ created_time +'</span></li>').hide().fadeIn("slow"));
+    $.getJSON(post_location, function (data){    
+        $("li.post:first").before(generate_post_html(data)).hide().fadeIn("slow");
     });
 }
 
 function add_post_to_bottom(post_location){
     $.getJSON(post_location, function(data){
-        var created_time = data.created_time;
-        $(".posts").append('<li class="post"><span class="author">'+ data.author['username'] + '</span><p class="content">' + data.message + '</p><span class="date">'+ created_time +'</span></li>');
+        $(".posts").append(generate_post_html(data));
     })
 }
 
@@ -44,30 +55,43 @@ $(document).ready(function () {
             }
             $.getJSON('/api/v1/post/?limit=20&offset='+offset, function(data){
                 for (var i = total_posts;i>0;i--){
-                    var created_time = data.objects[i].created_time;
-                    //var created_time = time_diff(data.objects[i].created_time);
-                    $(".posts").append('<li class="post"><span class="author">'+ data.objects[i].author['username'] + '</span><p class="content">' + data.objects[i].message + '</p><span class="date">'+ created_time +'</span></li>');
+                    $(".posts").append(generate_post_html(data.objects[i]));
                 }
             });
         }
     });
     $('#submit_post').click(function () {
-        $.ajax({
-            type: 'POST',
-            url: '/api/v1/post/',
-            data: '{"message" : "' + $("#post_text").val().replace('\r\n', '\\r\\n') + '"}',
-            contentType: 'application/json',
-            success: function(output, status, header) {
-                add_post_to_top(header.getResponseHeader('Location'));
-                $("textarea#post_text").val('Write a post...');
-            },
-            error: function(){ alert("Oops, something went wrong... "); },
-            processData:  false
-        });
+        if ($("#post_text").val().trim() != '') {
+            $.ajax({
+                type: 'POST',
+                url: '/api/v1/post/',
+                data: '{"message" : "' + $("#post_text").val().replace('\r\n', '\\r\\n') + '"}',
+                contentType: 'application/json',
+                success: function(output, status, header) {
+                    add_post_to_top(header.getResponseHeader('Location'));
+                    $('#post_text').val('Write a post...');
+                    $('#post_text').css({'min-height':25});        
+                },
+                error: function(){ alert("Oops, something went wrong... "); },
+                processData:  false
+            });                        
+        }
     });
+    
     $('#post_text').expandingTextArea();
     $('#post_text').click(function () {
-        $('#post_text').html('');
+        if ($('#post_text').val() == 'Write a post...') {
+            $('#post_text').val('');
+        }
         $('#post_text').css({'min-height':50});
     });
+    
+    $(window).scroll(function()
+    {
+        if (document.body.scrollHeight - $(this).scrollTop()  <= $(this).height())
+        {
+            alert("TODO: add new posts when the bottom is reached");
+        }
+    });
+
 });
