@@ -13,7 +13,7 @@ function updateUserlist(data) {
 
 // Calculates difference between current time and the time when the post was created and generates a message
 function format_post_date(post_date_created) {        
-    // TODO: bug, it doesn't work in chrome
+    // TODO: bug, it doesn't work in chrome on windows
     var created_time_diff = (new Date().getTime() - new Date(post_date_created).getTime())/1000/60; 
     if (created_time_diff < 2) {
         msg = "just now";
