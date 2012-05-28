@@ -33,7 +33,7 @@
                         {% elif user.twitter_id %}
                             <img src="{% twitter_picture user.twitter_token_key user.twitter_token_secret %}" alt="{% trans "User picture" %}" />
                         {% elif user.foursquare_id %}
-                            <img src="{% foursquare_picture user.foursquare_token %}" alt="{% trans "User picture" %}" />
+                            <img src="{{ user.foursquare_picture_url }}" height="50" width="50" alt="{% trans "User picture" %}" />
                         {% else %}
                             {% gravatar user 50 %}
                         {% endif %}

@@ -132,8 +132,9 @@ class FoursquareBackend(MongoEngineBackend):
                 'username': foursquare_data.get('firstName') + foursquare_data.get('lastName'),
                 'first_name': foursquare_data.get('firstName'),
                 'last_name': foursquare_data.get('lastName'),
-                'email': foursquare_data.get('email'),
+                'email': foursquare_data.get('contact').get('email'),
                 'gender': foursquare_data.get('gender'),
+                'foursquare_picture_url': foursquare_data.get('photo')
             }
         )
         user.foursquare_token = access_token

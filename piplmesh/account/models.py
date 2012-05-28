@@ -43,8 +43,9 @@ class User(auth.User):
     twitter_token_key = mongoengine.StringField(max_length=150)
     twitter_token_secret = mongoengine.StringField(max_length=150)
 
-    foursquare_id = mongoengine.StringField()
+    foursquare_id = mongoengine.IntField()
     foursquare_token = mongoengine.StringField(max_length=150)
+    foursquare_picture_url = mongoengine.StringField(max_length=150)
 
     connections = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Connection))
     connection_last_unsubscribe = mongoengine.DateTimeField()
