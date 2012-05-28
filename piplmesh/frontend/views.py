@@ -43,6 +43,8 @@ def upload_view(request):
 
     resource = resources.UploadedFileResource()
 
+    # TODO: Provide some user feedback while uploading
+
     uploaded_files = []
     for field, files in request.FILES.iterlists():
         for file in files:
@@ -60,7 +62,7 @@ def upload_view(request):
                 'resource_uri': resource.get_resource_uri(uploaded_file)
             })
 
-    # TODO: Create background task to process uploaded file
+    # TODO: Create background task to process uploaded file (check content type (both in GridFS file and UploadedFile document), resize images)
 
     return resource.create_response(request, uploaded_files, response_class=tastypie_http.HttpAccepted)
 
