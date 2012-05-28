@@ -105,7 +105,7 @@ class TwitterBackend(MongoEngineBackend):
 
 class FoursquareBackend(MongoEngineBackend):
     """
-    Foursquare backend for authentication.
+    Foursquare authentication.
     """
 
     def authenticate(self, foursquare_token=None, request=None):
