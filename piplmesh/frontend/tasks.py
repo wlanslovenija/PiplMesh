@@ -27,7 +27,11 @@ def check_online_users():
                 {
                     'type': 'userlist',
                     'action': 'JOIN',
-                    'username': user.username,
+                    'user': {
+                        'username': user.username,
+                        'profile_url': user.get_profile_url(),
+                        'image_url': user.get_image_url(),
+                    },
                 }
             )
 
@@ -47,6 +51,10 @@ def check_online_users():
                 {
                     'type': 'userlist',
                     'action': 'PART',
-                    'username': user.username,
+                    'user': {
+                        'username': user.username,
+                        'profile_url': user.get_profile_url(),
+                        'image_url': user.get_image_url(),
+                    },
                 }
             )

@@ -17,16 +17,14 @@ def gravatar(context, user, size=50, default_avatar='unknown.png'):
         {% gravatar user_object 50 %}
     """
 
-    schema = 'https' if getattr(settings, 'GRAVATAR_HTTPS_DEFAULT', False) else 'http'
-
     if sites_models.Site._meta.installed:
         domain = sites_models.Site.objects.get_current().domain
     else:
         domain = sites_models.RequestSite(context['request']).domain
 
+    # TODO: Do not concatenate STATIC_URL manually but use staticfiles-provided function
     # Construct the url for gravatar service with default avatar specified
-    default_avatar_url = '%(schema)s://%(domain)s%(static_url)spiplmesh/images/%(default_avatar)s' % {
-        'schema': schema,
+    default_avatar_url = 'https://%(domain)s%(static_url)spiplmesh/images/%(default_avatar)s' % {
         'domain': domain,
         'static_url': settings.STATIC_URL,
         'default_avatar': default_avatar,

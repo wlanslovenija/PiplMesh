@@ -30,19 +30,20 @@ class MongoEngineBackend(auth.MongoEngineBackend):
         except self.user_class.DoesNotExist:
             return None
 
-
     @property
     def user_class(self):
         return models.User
 
 class FacebookBackend(MongoEngineBackend):
+    """
+    Facebook authentication.
+    """
+
     def authenticate(self, facebook_token=None, request=None):
         """
-        Facebook authentication.
-
-        Retrieves an access token and Facebook data. Determine if user already has a
-        profile. If not, a new profile is created using either the user's
-        username or Facebook id. Finally, the user's Facebook data is saved.
+        Retrieves an access token and Facebook data. Determine if user already
+        exists. If not, a new user is created. Finally, the user's Facebook
+        data is saved.
         """
     
         args = {
@@ -82,7 +83,7 @@ class FacebookBackend(MongoEngineBackend):
 
 class TwitterBackend(MongoEngineBackend):
     """
-    TwitterBackend for authentication.
+    Twitter authentication.
     """
 
     def authenticate(self, twitter_token=None, request=None):

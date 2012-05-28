@@ -464,7 +464,6 @@ input.gsc-search-button {
 }
 
 /* --------------------- ACCOUNT ------------------------ */
-
 #password_change {
     margin-top: 3%;
     margin-left: auto;
@@ -487,4 +486,54 @@ input.gsc-search-button {
 .button_account ul {
     list-style-type: none;
     overflow: hidden;
+}
+
+/* ------------------- USER LIST ------------------- */
+#userlist {
+    color: #68AE2C;
+    text-decoration: none;
+    list-style: none;
+    overflow-y: scroll;
+    height: 200px;
+}
+
+#userlist li {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#userlist img {
+    height: 25px;
+    width: 25px;
+    float: left;
+}
+
+#userlist .info {
+    font-size: 8px;
+    color: #333333;
+}
+
+#userlist a:active, #userlist a:hover {
+    color: #006600;
+}
+
+/* ------------------ PANELS ---------------------------- */
+.panel {
+    width: 260px;
+}
+
+.panel .header {
+    color: #FCFCFC;
+    height: 20px;
+    text-align: center;
+    background-color: #68AE2C;
+    cursor: pointer;
+}
+
+.panel input {
+    width: 80%;
+}
+
+.panel img {
+    padding-right: 5px;
 }

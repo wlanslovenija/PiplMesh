@@ -1,7 +1,10 @@
-<div>
-    <ul id="userlist">
-        {% for user in online_users %}
-            <li>{{ user }}</li>
-        {% endfor %}
-    </ul>
+{% load i18n staticfiles %}
+
+<div class="panel">
+    <div class="header" title="{% trans "Show/Hide Users" %}">{% trans "Online Users" %}</div>
+    <ul id="userlist"></ul>
+    <form action="">
+        <img src="{% static "piplmesh/images/magnifying_glass.png" %}" alt="{% trans "Search users" %}" />
+        <input type="text" id="search_users" />
+    </form>
 </div>

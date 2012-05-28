@@ -7,7 +7,8 @@ docutils==0.9
 celery==2.5.3
 django-celery==2.5.5
 django-pushserver==0.1.8
+pymongo==2.1.1
 tweepy==1.9
-django-tastypie-mongoengine==0.2
+django-tastypie-mongoengine==0.2.1
 -e git+https://github.com/mitar/django-mongodbforms.git@01201c7b14127a3cb2cb027965320ed8ec499a4e#egg=mongodbforms-dev
 -e git+https://github.com/mitar/django-mongogeneric.git@0d9d320398865d04e5c9d72b47543ecf68471813#egg=mongogeneric-dev
