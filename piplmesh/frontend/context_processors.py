@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import auth
 from django.utils import translation
 
+from piplmesh import nodes
 from piplmesh.frontend import views
 
 def global_vars(request):
@@ -19,4 +20,5 @@ def global_vars(request):
         # Variables
         'logo_url': "piplmesh/images/logo-%s.png" % (translation.get_language(),),
         'request_get_next': request.REQUEST.get(auth.REDIRECT_FIELD_NAME),
+        'node': nodes.get_node(request),
     }
