@@ -537,3 +537,13 @@ input.gsc-search-button {
 .panel img {
     padding-right: 5px;
 }
+
+/* ------------------ GOOGLE MAPS ---------------------------- */
+#map_canvas {
+    width: 450px;
+    height: 450px;
+}
+
+.node_content {
+    width: 200px;
+}
