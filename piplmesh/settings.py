@@ -297,6 +297,6 @@ TWITTER_LOGIN_REDIRECT = '/'
 # Current settings are autocomplete, searching whole web.
 SEARCH_ENGINE_UNIQUE_ID = '003912915932446183218:zeq20qye9oa'
 
-DEFAULT_USER_IMAGE_PATH = 'piplmesh/images/unknown.png'
+DEFAULT_USER_IMAGE = 'piplmesh/images/unknown.png'
 
 CSRF_FAILURE_VIEW = 'piplmesh.frontend.views.forbidden_view'
