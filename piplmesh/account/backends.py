@@ -125,17 +125,17 @@ class FoursquareBackend(MongoEngineBackend):
         # Retrieve user's public profile information
         data = urllib.urlopen('https://api.foursquare.com/v2/users/self?oauth_token=%s' % access_token)
         foursquare_data = json.load(data)
-        foursquare_data = foursquare_data.get('response').get('user')
+        foursquare_user = foursquare_data['response']['user']
 
         user, created = self.user_class.objects.get_or_create(
-            foursquare_id=foursquare_data.get('id'),
+            foursquare_id=foursquare_user.get('id'),
             defaults={
-                'username': foursquare_data.get('firstName') + foursquare_data.get('lastName'),
-                'first_name': foursquare_data.get('firstName'),
-                'last_name': foursquare_data.get('lastName'),
-                'email': foursquare_data.get('contact').get('email'),
-                'gender': foursquare_data.get('gender'),
-                'foursquare_picture_url': foursquare_data.get('photo')
+                'username': foursquare_user.get('firstName', {}) + foursquare_user.get('lastName', {}),
+                'first_name': foursquare_user.get('firstName', {}),
+                'last_name': foursquare_user.get('lastName', {}),
+                'email': foursquare_user.get('contact', {}).get('email'),
+                'gender': foursquare_user.get('gender', {}),
+                'foursquare_picture_url': foursquare_user.get('photo', {})
             }
         )
         user.foursquare_token = access_token
