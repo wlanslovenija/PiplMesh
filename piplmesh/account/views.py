@@ -116,6 +116,7 @@ class FoursquareCallbackView(generic_views.RedirectView):
     def get(self, request, *args, **kwargs):
         if 'code' in request.GET:
             user = auth.authenticate(foursquare_token=request.GET['code'], request=request)
+            assert user.is_authenticated()
             auth.login(request, user)
             return super(FoursquareCallbackView, self).get(request, *args, **kwargs)
         else:

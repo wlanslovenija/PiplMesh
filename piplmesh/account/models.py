@@ -62,6 +62,9 @@ class User(auth.User):
         elif self.facebook_id:
             return '%s?type=square' % utils.graph_api_url('%s/picture' % self.username)
         
+        elif self.foursquare_id:
+            return self.foursquare_picture_url
+
         else:
             default_url = request.build_absolute_uri(staticfiles_storage.url(settings.DEFAULT_USER_IMAGE))
 
