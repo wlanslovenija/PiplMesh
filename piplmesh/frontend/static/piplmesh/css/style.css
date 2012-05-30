@@ -43,7 +43,7 @@ button span {
 
 /* -------------------- FORMS --------------------- */
 form input[type="submit"], form input[type="reset"] {
-    border: medium none;
+    border: 1px solid gray;
     font-weight: bold;
     min-width: 105px;
     padding: 5px;
