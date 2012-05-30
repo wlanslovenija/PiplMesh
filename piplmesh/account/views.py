@@ -1,6 +1,6 @@
 import datetime, urllib
 
-from django import dispatch, shortcuts
+from django import dispatch, http, shortcuts
 from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth import views as auth_views
@@ -10,7 +10,6 @@ from django.views.generic import simple, edit as edit_views
 from django.utils.translation import ugettext_lazy as _
 
 from pushserver import signals
-from pushserver.utils import updates
 
 import tweepy
 
@@ -95,11 +94,11 @@ def logout(request):
     After user logouts, redirect her back to the page she came from.
     """
     
-    if request.method == 'POST':
-        url = request.POST.get(auth.REDIRECT_FIELD_NAME)
-        return auth_views.logout_then_login(request, url)
-    else:
-        raise exceptions.PermissionDenied
+    if request.method != 'POST':
+        return http.HttpResponseBadRequest()
+
+    url = request.POST.get(auth.REDIRECT_FIELD_NAME)
+    return auth_views.logout_then_login(request, url)
 
 class RegistrationView(edit_views.FormView):
     """

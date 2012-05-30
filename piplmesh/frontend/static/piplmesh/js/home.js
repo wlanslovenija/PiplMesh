@@ -1,20 +1,63 @@
 var CURRENT_OFFSET = 0;
 var LIMIT = 20;
 
-function updateUserlist(data) {
-    if (data.action == 'JOIN') {
-        $('<li/>').text(data.username).appendTo('#userlist');
+function User(data) {
+    var self = this;
+    $.extend(self, data);
+    self._key = self.username.toLowerCase();
+}
+
+function redrawUserList() {
+    var keys = [];
+    $.each(onlineUsers, function (key, user) {
+        keys.push(key);
+    });
+    keys.sort(function (key1, key2) {
+        if (key1 < key2) return -1;
+        if (key1 > key2) return 1;
+        return 0;
+    });
+    $('#userlist').empty();
+
+    var searchUsers = $('#search_users').val().toLowerCase();
+    $.each(keys, function (i, key) {
+        if (searchUsers === '' || key.indexOf(searchUsers) !== -1) {
+            var user = onlineUsers[key];
+            var li = $('<li/>');
+            var image = $('<img/>').prop({
+                'src': user.image_url,
+                'alt': gettext("User image")
+            });
+            li.append(image);
+            li.append(user.username);
+            var div = $('<div/>').prop({
+                'class': 'info'
+            });
+            div.append($('<a/>').prop('href', user.profile_url).text(gettext("User profile")));
+            li.append(div);
+            $('#userlist').append(li);
+        }
+    });
+}
+
+function updateUserList(data) {
+    var user = new User(data.user);
+    if (data.action === 'JOIN') {
+        onlineUsers[user._key] = user;
+        redrawUserList();
     }
-    else if (data.action == 'PART') {
-        // TODO: Improve escape and use more suitable :contains method
-        $('#userlist li:contains(' + escape(data.username) + ')').remove();
+    else if (data.action === 'PART') {
+        if (onlineUsers[user._key]) {
+            delete onlineUsers[user._key];
+            redrawUserList();
+        }
     }
 }
 
 // Calculates difference between current time and the time when the post was created and generates a message
-function format_post_date(post_date_created) {        
+function format_post_date(post_date_created) {
     // TODO: bug, it doesn't work in chrome on windows
-    var created_time_diff = (new Date().getTime() - new Date(post_date_created).getTime())/1000/60; 
+    var created_time_diff = (new Date().getTime() - new Date(post_date_created).getTime())/1000/60;
     if (created_time_diff < 2) {
         msg = "just now";
     } else if (created_time_diff >= 60*24) {
@@ -32,7 +75,7 @@ function generate_post_html(data) {
 }
 
 function add_post_to_top(post_location){
-    $.getJSON(post_location, function (data) {    
+    $.getJSON(post_location, function (data) {
         $("li.post:first").before(generate_post_html(data)).hide().fadeIn("slow");
     });
 }
@@ -64,7 +107,16 @@ function earlier_posts (){
 }
 
 $(document).ready(function () {
-    $.updates.registerProcessor('home_channel', 'userlist', updateUserlist);
+    $.updates.registerProcessor('home_channel', 'userlist', updateUserList);
+
+    $('.panel .header').click(function (event) {
+        $(this).next('ul').slideToggle('fast');
+    });
+
+    $('#search_users').change(redrawUserList).keyup(redrawUserList);
+
+    redrawUserList();
+
     $(".posts").empty();
     $.getJSON('/api/v1/post/?limit=1&offset='+CURRENT_OFFSET, function (data) {
         var total_posts = data.meta.total_count;
@@ -90,16 +142,16 @@ $(document).ready(function () {
                 success: function (output, status, header) {
                     add_post_to_top(header.getResponseHeader('Location'));
                     $('#post_text').val('Write a post...');
-                    $('#post_text').css({'min-height':25});        
+                    $('#post_text').css({'min-height':25});
                 },
-                error: function () { 
-                    alert("Oops, something went wrong... "); 
+                error: function () {
+                    alert("Oops, something went wrong... ");
                 },
-                processData:  false
-            });                        
+                processData:  true
+            });
         }
     });
-    
+
     $('#post_text').expandingTextArea();
     $('#post_text').click(function () {
         if ($('#post_text').val() == 'Write a post...') {
@@ -107,11 +159,11 @@ $(document).ready(function () {
         }
         $('#post_text').css({'min-height':50});
     });
-    
+
     $(window).scroll(function () {
         if (document.body.scrollHeight - $(this).scrollTop()  <= $(this).height()) {
             earlier_posts();
         }
     });
-
+    
 });

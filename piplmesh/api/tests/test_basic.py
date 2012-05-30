@@ -51,6 +51,7 @@ class BasicTest(test_runner.MongoEngineTestCase):
         self.assertNotEqual(response['updated_time'], None)
         self.assertEqual(response['comments'], [])
         self.assertEqual(response['attachments'], [])
+        self.assertEqual(response['is_published'], False)
 
         post_created_time = response['created_time']
         post_updated_time = response['updated_time']
@@ -84,6 +85,17 @@ class BasicTest(test_runner.MongoEngineTestCase):
         self.assertNotEqual(response['updated_time'], post_updated_time)
 
         post_updated_time = response['updated_time']
+
+        # Publishing a post
+
+        response = self.client.patch(post_uri, '{"is_published": true}', content_type='application/json')
+        self.assertEqual(response.status_code, 202)
+
+        response = self.client.get(post_uri)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+
+        self.assertEqual(response['is_published'], True)
 
         # Adding a comment
 

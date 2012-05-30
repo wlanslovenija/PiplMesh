@@ -1,0 +1,14 @@
+{% extends "plain.html" %}
+
+{% load i18n %}
+
+{% block fulltitle %}wlan slovenija{% endblock %}
+
+{% block content %}
+    {% blocktrans %}You are accessing the site outside of the <i>wlan slovenija</i> open wireless network. Because of this your current location cannot be determined automatically and we have to determine it through your browser. By providing us with your location we will be able to deliver you relevant information about your surroundings.{% endblocktrans %}
+    <form method="post" action="" id="geolocation_form">
+        <div class="buttons">
+            <button type="submit">{% trans "Send my current location" %}</button>
+        </div>
+    </form>
+{% endblock %}

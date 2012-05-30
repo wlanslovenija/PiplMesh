@@ -1,5 +1,3 @@
-import datetime
-
 from tastypie import authorization as tastypie_authorization, fields as tastypie_fields
 
 from tastypie_mongoengine import fields, resources
@@ -11,6 +9,11 @@ class UserResource(resources.MongoEngineResource):
     class Meta:
         queryset = account_models.User.objects.all()
         fields = ('username', 'is_online')
+        allowed_methods = ()
+
+class UploadedFileResource(resources.MongoEngineResource):
+    class Meta:
+        queryset = api_models.UploadedFile.objects.all()
         allowed_methods = ()
 
 class AuthoredResource(resources.MongoEngineResource):
@@ -30,6 +33,7 @@ class CommentResource(AuthoredResource):
         authorization = tastypie_authorization.Authorization()
 
 class ImageAttachmentResource(AuthoredResource):
+    image_file = fields.ReferenceField(to='piplmesh.api.resources.UploadedFileResource', attribute='image_file', null=False, full=True)
     image_description = tastypie_fields.CharField(attribute='image_description', default='', null=False, blank=True)
 
     class Meta:
