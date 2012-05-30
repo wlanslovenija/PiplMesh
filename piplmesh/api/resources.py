@@ -59,13 +59,14 @@ class AttachmentResource(AuthoredResource):
         }
 
 class PostResource(AuthoredResource):
+    # TODO: send/create update to pushserver
     updated_time = tastypie_fields.DateTimeField(attribute='updated_time', null=False, readonly=True)
 
     comments = fields.EmbeddedListField(of='piplmesh.api.resources.CommentResource', attribute='comments', default=lambda: [], null=True, full=False)
     attachments = fields.EmbeddedListField(of='piplmesh.api.resources.AttachmentResource', attribute='attachments', default=lambda: [], null=True, full=True)
 
     class Meta:
-        queryset = api_models.Post.objects.all()
+        queryset = api_models.Post.objects.all().order_by('-updated_time')
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         # TODO: Make proper authorization, current implementation is for development use only
         authorization = tastypie_authorization.Authorization()
