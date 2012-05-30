@@ -1,5 +1,6 @@
 var CURRENT_OFFSET = 0;
 var LIMIT = 20;
+var TOTAL_POSTS = 0;
 
 function User(data) {
     var self = this;
@@ -71,12 +72,15 @@ function format_post_date(post_date_created) {
 }
 
 function generate_post_html(data) {
+    var li = $('<li/>').prop();
+
     return '<li class="post"><span class="author">'+ data.author['username'] + '</span><p class="content">' + data.message + '</p><span class="date">'+ format_post_date(data.created_time) +'</span></li>'
 }
 
 function add_post_to_top(post_location){
     $.getJSON(post_location, function (data) {
-        $("li.post:first").before(generate_post_html(data)).hide().fadeIn("slow");
+        $(".posts").prepend(generate_post_html(data));
+        $(".post:first").hide().toggle("slow");
     });
 }
 
@@ -95,7 +99,7 @@ function earlier_posts (){
             CURRENT_OFFSET -= LIMIT;
         }
         $.getJSON('/api/v1/post/?limit='+LIMIT+'&offset='+CURRENT_OFFSET, function (data) {
-            for (var i = posts_returned-1;i>=0;i--){
+            for (var i = 0; posts_returned-1> i;i++){
                 add_post_to_bottom(data.objects[i]);
             }
         });
@@ -104,6 +108,10 @@ function earlier_posts (){
         }
     }
 
+}
+
+function postUpdateList(){
+    // TODO:
 }
 
 $(document).ready(function () {
@@ -116,38 +124,41 @@ $(document).ready(function () {
     $('#search_users').change(redrawUserList).keyup(redrawUserList);
 
     redrawUserList();
+    $.updates.registerProcessor('home_channel', 'post', postUpdateList());
 
     $(".posts").empty();
-    $.getJSON('/api/v1/post/?limit=1&offset='+CURRENT_OFFSET, function (data) {
+    $.getJSON('/api/v1/post/?limit='+LIMIT+'&offset='+CURRENT_OFFSET, function (data) {
         var total_posts = data.meta.total_count;
-        if (total_posts > 0){
-            if (total_posts > 20){
-                CURRENT_OFFSET = total_posts - LIMIT;
-                total_posts = LIMIT-1;
+        if (total_posts >  0){
+            if (total_posts > LIMIT){
+                CURRENT_OFFSET += LIMIT;
+                total_posts = LIMIT;
             }
-            $.getJSON('/api/v1/post/?limit='+LIMIT+'&offset='+CURRENT_OFFSET, function (data) {
-                for (var i = total_posts-1;i>=0;i--){
+            //
+                for (var i = 0; total_posts-1 > i;i++){
                     add_post_to_bottom(data.objects[i]);
                 }
-            });
+            //});
         }
     });
     $('#submit_post').click(function () {
-        if ($("#post_text").val().trim() != '') {
+        var message = $('#post_text').val().trim();
+        if (message != '') {
             $.ajax({
                 type: 'POST',
                 url: '/api/v1/post/',
-                data: '{"message" : "' + $("#post_text").val().replace('\r\n', '\\r\\n') + '"}',
+                data: JSON.stringify({'message': message}),
                 contentType: 'application/json',
+                dataType: "json",
                 success: function (output, status, header) {
                     add_post_to_top(header.getResponseHeader('Location'));
                     $('#post_text').val('Write a post...');
                     $('#post_text').css({'min-height':25});
                 },
-                error: function () {
+                error: function (error) {
+                    console.log(error);
                     alert("Oops, something went wrong... ");
-                },
-                processData:  true
+                }
             });
         }
     });
