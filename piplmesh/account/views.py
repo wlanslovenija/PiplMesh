@@ -222,7 +222,7 @@ def EmailVerificationSend(request):
     activation_key = ''.join(random.choice(string.letters + string.digits) for i in xrange(77))
     text_content += activation_key+"/"
 
-    user.email_validated_key = activation_key
+    user.email_activation_key = activation_key
     user.save()
 
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
@@ -232,7 +232,7 @@ def EmailVerificationSend(request):
     return HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
 
 def EmailVerificationActivate(request, activation_key):
-    if activation_key == request.user.email_validated_key:
+    if activation_key == request.user.email_activation_key:
         user = request.user
         user.email_validated = True
         user.save()

@@ -51,7 +51,7 @@ class User(auth.User):
     is_online = mongoengine.BooleanField(default=False)
 
     email_validated = mongoengine.BooleanField(default=False)
-    email_validated_key = mongoengine.StringField(max_length=77)
+    email_activation_key = mongoengine.StringField(max_length=77)
 
     def get_profile_url(self):
         return urlresolvers.reverse('user', kwargs={'username': self.username})
