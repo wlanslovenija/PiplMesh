@@ -15,25 +15,27 @@ where the form should redirect after submission.
 {% endif %}
         {{ form.non_field_errors }}
         {% csrf_token %}
-        {% with next|default:request_get_next as next_url %}
-            <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
+        {% with next|default:request_get_next|default:"" as next_url %}
+            <div style="display: none;"><input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" /></div>
         {% endwith %}
-        <ul class="form_fields">
-            {% for field in form %}    
-                <li class="field_error">
-                    {{ field.errors }}
-                </li>     
-                <li class="field">
-                    <label for="{{ field.id_for_label }}">
-                        {% if field.field.required %}
-                            <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
-                        {% else %}
-                            {{ field.label }}
-                        {% endif %}
-                    </label>
-                    {{ field }}
-                </li> 
-            {% endfor %}            
-        </ul>
-        <div class="buttons"><input type="submit" value="{{ form_submit }}"></div>
+        {% if form.fields %}
+            <ul class="form_fields">
+                {% for field in form %}
+                    <li class="field_error">
+                        {{ field.errors }}
+                    </li>
+                    <li class="field">
+                        <label for="{{ field.id_for_label }}">
+                            {% if field.field.required %}
+                                <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
+                        </label>
+                        {{ field }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <div class="buttons"><input type="submit" value="{{ form_submit }}" /></div>
     </form>
