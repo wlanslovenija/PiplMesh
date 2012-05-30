@@ -1,6 +1,5 @@
 {% extends "plain.html" %}
 
-{% comment %}{% load i18n facebook gravatar %}{% endcomment %}
 {% load i18n account staticfiles %}
 
 {% block title %}{{ object.username }}{% endblock %}
@@ -12,13 +11,7 @@
             <p><a href="{% url account %}">{% trans "Account" %}</a></p>
         {% endif %}
     </div>
-    <div id="picture" >
-        {% comment %}{% if object.facebook_id %}
-            <img src="{% facebook_picture object.facebook_id "large" %}" alt="{% trans "User picture" %}" />
-        {% else %}
-            {% gravatar object 200 %}
-        {% endif %}{% endcomment %}
-        
+    <div id="picture" >        
         {% user_image object %}
     </div>
     <div id="profile">
