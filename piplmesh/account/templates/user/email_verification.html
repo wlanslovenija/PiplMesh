@@ -6,6 +6,7 @@
 
 {% block content %}
 <div id="main">
-    {% trans "Email verification link has been sent to email you provided." %}
+    <p>{% trans "Clicking the link below will send an email to the address you provided." %}</p>
+    <a href="{% url email_verification_send %}">{% trans "Please verify your email" %}</a>
 </div>
 {% endblock %}

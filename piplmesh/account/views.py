@@ -6,6 +6,7 @@ from django.contrib import auth, messages
 from django.contrib.auth import views as auth_views
 from django.core import exceptions, urlresolvers
 from django.core.mail import EmailMultiAlternatives
+from django.http import HttpResponseRedirect
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 from django.utils.translation import ugettext_lazy as _
@@ -13,6 +14,8 @@ from django.utils.translation import ugettext_lazy as _
 from pushserver import signals
 from pushserver.utils import updates
 
+import random
+import string
 import tweepy
 
 from piplmesh.account import forms, models
@@ -150,7 +153,9 @@ class AccountChangeView(edit_views.FormView):
         user = self.request.user
         user.first_name=form.cleaned_data['first_name']
         user.last_name=form.cleaned_data['last_name']
-        user.email=form.cleaned_data['email']
+        if user.email != form.cleaned_data['email']:
+            user.email_validated=False
+            user.email=form.cleaned_data['email']
         user.gender=form.cleaned_data['gender']
         user.birthdate=form.cleaned_data['birthdate']
         user.save()
@@ -197,20 +202,28 @@ class PasswordChangeView(edit_views.FormView):
         return form_class(self.request.user, **self.get_form_kwargs())
 
 class EmailVerification(generic_views.TemplateView):
+        template_name = 'user/email_verification.html'
+
+def EmailVerificationSend(request):
     """
     This view sends an email to user to verify his email
     """
 
-    template_name = 'user/email_verification.html'
-
     subject = 'Verify your email address'
     from_email = settings.DEFAULT_FROM_EMAIL
-    to = 'email'
-    text_content = 'This message was sent to verify your email address.'
-    html_content = '<p>This message was sent to <strong>verify</strong> your email address.</p>'
+    to = request.user.email
+    # Message content
+    text_content = _('This message was sent to verify your email address.')+'\n\n'
+    text_content += _('Please click the link below to verify your address:')+'\n'
+    # We generate a string with length 77
+    text_content += 'https://www.current_site.com/'
+    text_content += ''.join(random.choice(string.letters + string.digits) for i in xrange(77))
+
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-    msg.attach_alternative(html_content, 'text/html')
     msg.send()
+
+    messages.success(request, _("Email verification link has been sent to email you provided."),fail_silently=True)
+    return HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
 
 @dispatch.receiver(signals.channel_subscribe)
 def process_channel_subscribe(sender, request, channel_id, **kwargs):
