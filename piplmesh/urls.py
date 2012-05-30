@@ -47,6 +47,7 @@ urlpatterns = patterns('',
     url(r'^account/password/change/$', account_views.PasswordChangeView.as_view(), name='password_change'),
     url(r'^account/verification/$', account_views.EmailVerification.as_view(), name='email_verification'),
     url(r'^account/verification/send/$', account_views.EmailVerificationSend, name='email_verification_send'),
+    url(r'^account/verification/(?P<activation_key>\w+)/$', account_views.EmailVerificationActivate),
 
     # RESTful API
     url(r'^api/', include(v1_api.urls)),

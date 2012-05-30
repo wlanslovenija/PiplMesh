@@ -215,14 +215,24 @@ def EmailVerificationSend(request):
     # Message content
     text_content = _('This message was sent to verify your email address.')+'\n\n'
     text_content += _('Please click the link below to verify your address:')+'\n'
+    text_content += 'https://www.current_site.com/account/verification/'
     # We generate a string with length 77
-    text_content += 'https://www.current_site.com/'
-    text_content += ''.join(random.choice(string.letters + string.digits) for i in xrange(77))
+    activation_key = ''.join(random.choice(string.letters + string.digits) for i in xrange(77))
+    text_content += activation_key+"/"
+
+    # DictionaryOfKeys.append(activation_key) # TODO
 
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.send()
 
-    messages.success(request, _("Email verification link has been sent to email you provided."),fail_silently=True)
+    messages.success(request, _("Email verification link has been sent to email you provided.-"), fail_silently=True)
+    return HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
+
+def EmailVerificationActivate(request, activation_key):
+    if activation_key in "DictionaryOfKeys": # TODO
+        messages.success(request, _("You have successfully verified your email"), fail_silently=True)
+    else:
+        messages.error(request, _("Your confirmation email is wrong. Please click 'Please verify your email'"), fail_silently=True)
     return HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
 
 @dispatch.receiver(signals.channel_subscribe)
