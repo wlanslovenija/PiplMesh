@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: https://github.com/wlanslovenija/PiplMesh\n"
 "POT-Creation-Date: 2012-05-31 00:06+0200\n"
 "PO-Revision-Date: 2012-05-18 12:29+0100\n"
 "Last-Translator: Martin Jakomin <martin.jakomin@gmail.com>\n"
@@ -109,7 +109,7 @@ msgstr "Datum rojstva"
 
 #: .\account\models.py:32
 msgid "username"
-msgstr "Uporabniško ime"
+msgstr "uporabniško ime"
 
 #: .\account\signals.py:11
 msgid "You have been successfully logged in."
@@ -224,7 +224,7 @@ msgstr ""
 
 #: .\frontend\templates\404.html.py:13
 msgid "The page you requested cannot be found."
-msgstr "Stran, ki ste jo zahtevali ne obstaja."
+msgstr "Stran, ki ste jo zahtevali, ne obstaja."
 
 #: .\frontend\templates\footer.html.py:6
 msgid "node database"
