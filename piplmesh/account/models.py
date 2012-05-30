@@ -49,7 +49,9 @@ class User(auth.User):
     connections = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Connection))
     connection_last_unsubscribe = mongoengine.DateTimeField()
     is_online = mongoengine.BooleanField(default=False)
+
     email_validated = mongoengine.BooleanField(default=False)
+    email_validated_key = mongoengine.StringField(max_length=77)
 
     def get_profile_url(self):
         return urlresolvers.reverse('user', kwargs={'username': self.username})

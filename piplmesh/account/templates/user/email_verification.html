@@ -6,7 +6,15 @@
 
 {% block content %}
 <div id="main">
-    <p>{% trans "Clicking the link below will send an email to" %} {{ user.email }}</p>
-    <a href="{% url email_verification_send %}">{% trans "Please verify your email" %}</a>
+    {% trans "Clicking the link below will send an email to" %} {{ user.email }}</p>
+    <a href="{% url email_verification_send %}">{% trans "Click here to verify your email" %}</a>
+    <br><br>
+    <div class="FAQ">
+        <div class="question">{% trans "Why should I verify my email address?" %}</div>
+        <div class="content">
+            {% trans "Verifying your email address improves the security of your Account.
+            Once you've verified your email address, you will be able to reset your password." %}
+        </div>
+    </div>
 </div>
 {% endblock %}

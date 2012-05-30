@@ -241,6 +241,19 @@ input.gsc-search-button {
     padding-bottom: 30px;
 }
 
+.FAQ {
+    padding-left: 10px;
+}
+
+.FAQ .question {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.FAQ .content {
+    padding-left: 20px;
+}
+
 /* -------------------- AUTHENTICATION ------------------------ */
 .auth_button {
     background: none;
