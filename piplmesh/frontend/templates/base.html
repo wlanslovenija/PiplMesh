@@ -10,6 +10,7 @@
         <script src="{% url django.views.i18n.javascript_catalog %}" type="text/javascript"></script>
         <script src="{% static "pushserver/updates.js" %}" type="text/javascript"></script>
         <script src="{% static "piplmesh/js/home.js" %}" type="text/javascript"></script>
+        <script src="{% static "piplmesh/js/notifications.js" %}" type="text/javascript"></script>
         <script type="text/javascript">
             $.updates.subscribe({
                 'home_channel': '{% filter escapejs %}{% channel_url HOME_CHANNEL_ID %}{% endfilter %}'
