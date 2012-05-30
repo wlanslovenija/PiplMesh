@@ -1,6 +1,7 @@
 {% extends "plain.html" %}
 
-{% load i18n facebook gravatar %}
+{% comment %}{% load i18n facebook gravatar %}{% endcomment %}
+{% load i18n account staticfiles %}
 
 {% block title %}{{ object.username }}{% endblock %}
 
@@ -12,11 +13,13 @@
         {% endif %}
     </div>
     <div id="picture" >
-        {% if object.facebook_id %}
+        {% comment %}{% if object.facebook_id %}
             <img src="{% facebook_picture object.facebook_id "large" %}" alt="{% trans "User picture" %}" />
         {% else %}
             {% gravatar object 200 %}
-        {% endif %}
+        {% endif %}{% endcomment %}
+        
+        {% user_image object %}
     </div>
     <div id="profile">
         <p>{% trans "Username:" %} {{ object.username }}</p>
