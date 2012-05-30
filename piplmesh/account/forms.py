@@ -1,8 +1,5 @@
-import datetime
-
 from django import forms
 from django.forms.extras import widgets
-from django.utils import encoding, safestring
 from django.utils.translation import ugettext_lazy as _
 
 from piplmesh.account import fields, form_fields, models

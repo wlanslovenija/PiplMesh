@@ -1,6 +1,6 @@
 import datetime, urllib
 
-from django import dispatch, shortcuts
+from django import dispatch, http, shortcuts
 from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth import views as auth_views
@@ -10,7 +10,6 @@ from django.views.generic import simple, edit as edit_views
 from django.utils.translation import ugettext_lazy as _
 
 from pushserver import signals
-from pushserver.utils import updates
 
 import tweepy
 
@@ -125,8 +124,8 @@ class GoogleCallbackView(generic_views.RedirectView):
             auth.login(request, user)
             return super(GoogleCallbackView, self).get(request, *args, **kwargs)
         else:
-            # TODO: Message user that they have not been logged in because they cancelled the google app
-            # TODO: Use information provided from google as to why the login was not successful
+            # TODO: Message user that they have not been logged in because they cancelled the Google app
+            # TODO: Use information provided from Google as to why the login was not successful
             return super(GoogleCallbackView, self).get(request, *args, **kwargs)
 
 
@@ -135,11 +134,11 @@ def logout(request):
     After user logouts, redirect her back to the page she came from.
     """
     
-    if request.method == 'POST':
-        url = request.POST.get(auth.REDIRECT_FIELD_NAME)
-        return auth_views.logout_then_login(request, url)
-    else:
-        raise exceptions.PermissionDenied
+    if request.method != 'POST':
+        return http.HttpResponseBadRequest()
+
+    url = request.POST.get(auth.REDIRECT_FIELD_NAME)
+    return auth_views.logout_then_login(request, url)
 
 class RegistrationView(edit_views.FormView):
     """
