@@ -28,7 +28,7 @@ class FacebookLoginView(generic_views.RedirectView):
             'scope': settings.FACEBOOK_SCOPE,
             'redirect_uri': self.request.build_absolute_uri(urlresolvers.reverse('facebook_callback')),
         }
-        return "https://www.facebook.com/dialog/oauth?%(args)s" % {'args': urllib.urlencode(args)}
+        return 'https://www.facebook.com/dialog/oauth?%s' % urllib.urlencode(args)
 
 class FacebookCallbackView(generic_views.RedirectView):
     """ 

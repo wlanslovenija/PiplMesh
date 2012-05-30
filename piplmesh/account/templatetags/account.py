@@ -8,5 +8,5 @@ def user_image(context, user=None):
         user = context['user']
 
     return {
-        'user_image_url': user.get_image_url(context['request']),
+        'user_image_url': user.get_image_url(),
     }

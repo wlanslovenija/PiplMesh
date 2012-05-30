@@ -97,6 +97,12 @@ STATICFILES_FINDERS = (
 #   'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+# Used to reconstruct absolute/full URLs where request is not available
+DEFAULT_REQUEST = {
+    'SERVER_NAME': '127.0.0.1',
+    'SERVER_PORT': '8000',
+}
+
 DEFAULT_FILE_STORAGE = 'piplmesh.utils.storage.GridFSStorage'
 
 # URL prefix for internationalization URLs

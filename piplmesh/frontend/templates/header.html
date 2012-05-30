@@ -30,7 +30,7 @@
                     <li class="image">
                         {% user_image %}
                     </li>
-                    <li class="username"><a href="{% url user username=user.username %}">{{ user.username }}</a></li>
+                    <li class="username"><a href="{% url profile username=user.username %}">{{ user.username }}</a></li>
                     <li class="last">
                         <form method="post" action="{% url logout %}" id="logout_form">
                             {% csrf_token %}

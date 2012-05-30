@@ -1,7 +1,9 @@
-import datetime, hashlib, tweepy
+import datetime, hashlib, tweepy, urllib
 
 from django.conf import settings
 from django.contrib.staticfiles.storage import staticfiles_storage
+from django.db import models
+from django.test import client
 from django.utils.translation import ugettext_lazy as _
 
 import mongoengine
@@ -48,8 +50,15 @@ class User(auth.User):
     connections = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Connection))
     connection_last_unsubscribe = mongoengine.DateTimeField()
     is_online = mongoengine.BooleanField(default=False)
-    
-    def get_image_url(self, request):
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('profile', (), {'username': self.username})
+
+    def get_profile_url(self):
+        return self.get_absolute_url()
+
+    def get_image_url(self):
         if self.twitter_id:
             twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
             twitter_auth.set_access_token(self.twitter_token_key, self.twitter_token_secret)
@@ -59,9 +68,13 @@ class User(auth.User):
             return '%s?type=square' % utils.graph_api_url('%s/picture' % self.username)
         
         else:
+            request = client.RequestFactory(**settings.DEFAULT_REQUEST).request()
             default_url = request.build_absolute_uri(staticfiles_storage.url(settings.DEFAULT_USER_IMAGE))
 
-            return 'https://secure.gravatar.com/avatar/%(email_hash)s?s=50&d=%(default_url)s' % {
+            return 'https://secure.gravatar.com/avatar/%(email_hash)s?%(args)s' % {
                 'email_hash': hashlib.md5(self.email.lower()).hexdigest(),
-                'default_url': default_url,
+                'args': urllib.urlencode({
+                    'default': default_url,
+                    'size': 50,
+                }),
             }
