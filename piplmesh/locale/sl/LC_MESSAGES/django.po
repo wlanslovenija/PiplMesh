@@ -223,7 +223,6 @@ msgid "Registration"
 msgstr "Registracija"
 
 #: account/templates/user/user_image.html:3
-#, fuzzy
 msgid "User image"
 msgstr "Uporabniško ime"
 
