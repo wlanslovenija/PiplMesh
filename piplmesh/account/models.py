@@ -1,9 +1,12 @@
 import datetime, hashlib, tweepy, urllib
 
 from django.conf import settings
+from django.contrib.auth import hashers, models as auth_models
 from django.contrib.staticfiles.storage import staticfiles_storage
+from django.core import mail
 from django.db import models
 from django.test import client
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 import mongoengine
@@ -58,6 +61,28 @@ class User(auth.User):
     def get_profile_url(self):
         return self.get_absolute_url()
 
+    def is_anonymous(self):
+        return not self.is_authenticated()
+
+    def is_authenticated(self):
+        return self.is_active and (self.has_usable_password() or self.facebook_id is not None or self.twitter_id is not None)
+
+    def check_password(self, raw_password):
+        def setter(raw_password):
+            self.set_password(raw_password)
+        return hashers.check_password(raw_password, self.password, setter)
+
+    def set_unusable_password(self):
+        self.password = hashers.make_password(None)
+        self.save()
+        return self
+
+    def has_usable_password(self):
+        return hashers.is_password_usable(self.password)
+
+    def email_user(self, subject, message, from_email=None):
+        mail.send_mail(subject, message, from_email, [self.email])
+
     def get_image_url(self):
         if self.twitter_id:
             twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
@@ -78,3 +103,23 @@ class User(auth.User):
                     'size': 50,
                 }),
             }
+
+    @classmethod
+    def create_user(cls, username, email=None, password=None):
+        now = timezone.now()
+        if not username:
+            raise ValueError("The given username must be set")
+        email = auth_models.UserManager.normalize_email(email)
+        user = cls(
+            username=username,
+            is_staff=False,
+            is_active=True,
+            is_superuser=False,
+            last_login=now,
+            date_joined=now,
+        )
+        if email:
+            user.email = email
+        user.set_password(password)
+        user.save()
+        return user

@@ -1,12 +1,13 @@
-import datetime, urllib
+import urllib
 
 from django import dispatch, http, shortcuts
 from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth import views as auth_views
-from django.core import exceptions, urlresolvers
+from django.core import urlresolvers
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from pushserver import signals
@@ -215,5 +216,5 @@ def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
 
     request.user.update(
         pull__connections=None,
-        set__connection_last_unsubscribe=datetime.datetime.now(),
+        set__connection_last_unsubscribe=timezone.now(),
     )

@@ -1,6 +1,7 @@
 import datetime
 
 from django.conf import settings
+from django.utils import timezone
 
 from celery import task
 
@@ -38,13 +39,13 @@ def check_online_users():
     for user in models.User.objects(
         is_online=True,
         connections__in=([], None), # None if field is missing altogether
-        connection_last_unsubscribe__lt=datetime.datetime.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
+        connection_last_unsubscribe__lt=timezone.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
     ):
         if models.User.objects(
             pk=user.pk,
             is_online=True,
             connections__in=([], None), # None if field is missing altogether
-            connection_last_unsubscribe__lt=datetime.datetime.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
+            connection_last_unsubscribe__lt=timezone.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
         ).update(set__is_online=False):
             updates.send_update(
                 views.HOME_CHANNEL_ID,

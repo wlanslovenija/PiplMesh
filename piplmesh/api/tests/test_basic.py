@@ -14,7 +14,7 @@ class BasicTest(test_runner.MongoEngineTestCase):
     user_password = 'foobar'
 
     def setUp(self):
-        account_models.User.create_user(self.user_username, self.user_password)
+        account_models.User.create_user(username=self.user_username, password=self.user_password)
 
         self.client = client.Client()
         self.client.login(username=self.user_username, password=self.user_password)
