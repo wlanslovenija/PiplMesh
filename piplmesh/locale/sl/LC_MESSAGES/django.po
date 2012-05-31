@@ -68,7 +68,7 @@ msgstr "Geslo (ponovi)"
 
 #: account/forms.py:49
 msgid "Enter the same password as above, for verification."
-msgstr "V izogib napakam ponovno vnesi isto geslo kot zgoraj."
+msgstr "V izogib napakam ponovno vnesi enako geslo kot zgoraj."
 
 #: account/forms.py:60
 msgid "The two password fields did not match."
@@ -107,7 +107,6 @@ msgid "Birth date"
 msgstr "Datum rojstva"
 
 #: account/models.py:33
-#, fuzzy
 msgid "username"
 msgstr "Uporabniško ime"
 
@@ -144,7 +143,6 @@ msgid "Email verification link has been sent to the email you provided."
 msgstr "Potrditvena povezava je bila poslana na podan email naslov."
 
 #: account/views.py:239
-#, fuzzy
 msgid "You have successfully verified your email"
 msgstr "Odjava uspešna."
 
@@ -184,7 +182,6 @@ msgid "Email Verification"
 msgstr "Potrditev email naslova"
 
 #: account/templates/user/email_verification.html:9
-#, fuzzy
 msgid "Clicking the link below will send a confirmation mail to"
 msgstr "Klik na spodnjo povezavo, bo poslal "
 
@@ -194,7 +191,7 @@ msgstr "Pritisnite tukaj za potrditev vašega email naslova"
 
 #: account/templates/user/email_verification.html:13
 msgid "Why should I verify my email address?"
-msgstr "Zakaj bi "
+msgstr "Zakaj bi potrdil svoj email naslov?"
 
 #: account/templates/user/login.html:5 account/templates/user/login.html:12
 #: frontend/templates/header.html:52
@@ -206,7 +203,6 @@ msgid "Login with Facebook"
 msgstr "Facebook prijava"
 
 #: account/templates/user/login.html:28
-#, fuzzy
 msgid "Login with Twitter"
 msgstr "Facebook prijava"
 
@@ -230,7 +226,7 @@ msgstr ""
 
 #: frontend/templates/403.html:13
 msgid "You don't have permission to access the page you requested."
-msgstr "Nimate pravic dostopa do želene strani."
+msgstr ""
 
 #: frontend/templates/403.html:15
 msgid ""
@@ -259,7 +255,7 @@ msgstr ""
 
 #: frontend/templates/404.html:13
 msgid "The page you requested cannot be found."
-msgstr "Stran, ki jo zahtevate ne obstaja."
+msgstr ""
 
 #: frontend/templates/footer.html:6
 msgid "node database"
@@ -297,7 +293,7 @@ msgstr ""
 
 #: frontend/templates/outside.html:11
 msgid "Send my current location"
-msgstr "Pošlji mojo trenutn"
+msgstr ""
 
 #: frontend/templates/search.html:5
 msgid "Search"
@@ -316,7 +312,6 @@ msgid "Online Users"
 msgstr ""
 
 #: frontend/templates/userlist.html:7
-#, fuzzy
 msgid "Search users"
 msgstr "Išči"
 
