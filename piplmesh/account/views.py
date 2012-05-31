@@ -198,7 +198,7 @@ class PasswordChangeView(edit_views.FormView):
         return form_class(self.request.user, **self.get_form_kwargs())
 
 class EmailVerification(generic_views.TemplateView):
-        template_name = 'user/email_verification.html'
+    template_name = 'user/email_verification.html'
 
 def EmailVerificationSend(request):
     """
