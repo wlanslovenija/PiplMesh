@@ -285,7 +285,7 @@ msgstr "Išči uporabnike"
 
 #: .\frontend\templates\debug\uploadform.html.py:5
 msgid "Upload form"
-msgstr ""
+msgstr "Obrazec za nalaganje"
 
 #: .\frontend\templates\debug\uploadform.html.py:9
 msgid "Upload"
