@@ -118,35 +118,35 @@ msgstr "Prijava uspešna."
 msgid "You have been successfully logged out."
 msgstr "Odjava uspešna."
 
-#: account/views.py:134
+#: account/views.py:131
 msgid "Registration has been successful."
 msgstr "Registracija je bila uspešna."
 
-#: account/views.py:161
+#: account/views.py:158
 msgid "Your account has been successfully updated."
 msgstr "Tvoj račun je bil uspešno posodobljen."
 
-#: account/views.py:192
+#: account/views.py:189
 msgid "Your password has been successfully changed."
 msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
-#: account/views.py:217
+#: account/views.py:214
 msgid "This message was sent to verify your email address."
 msgstr "To sporočilo je bilo poslano, da potrdite svoj email naslov."
 
-#: account/views.py:218
+#: account/views.py:215
 msgid "Please click the link below to verify your email address:"
 msgstr "Prosimo izberite spodnjo povezavo za potrditev vašega email naslova:"
 
-#: account/views.py:230
+#: account/views.py:227
 msgid "Email verification link has been sent to the email you provided."
 msgstr "Potrditvena povezava je bila poslana na podan email naslov."
 
-#: account/views.py:238
+#: account/views.py:235
 msgid "You have successfully verified your email"
 msgstr "Potrditev vašega email naslova je bila uspešna."
 
-#: account/views.py:240
+#: account/views.py:237
 msgid ""
 "Your confirmation code is wrong. Please click 'Please verify your email'"
 msgstr ""
@@ -184,16 +184,24 @@ msgid "Email Verification"
 msgstr "Potrditev email naslova"
 
 #: account/templates/user/email_verification.html:9
-msgid "Clicking the link below will send a confirmation mail to"
-msgstr "Klik na spodnjo povezavo, bo poslal potrditeveno povezavo na"
+msgid "Clicking the button below will send a confirmation mail to"
+msgstr "Klik na spodnji gumb, bo poslal potrditeveno povezavo na"
 
-#: account/templates/user/email_verification.html:10
+#: account/templates/user/email_verification.html:12
 msgid "Click here to verify your email"
 msgstr "Pritisnite tukaj za potrditev vašega email naslova"
 
-#: account/templates/user/email_verification.html:13
+#: account/templates/user/email_verification.html:16
 msgid "Why should I verify my email address?"
 msgstr "Zakaj bi potrdil svoj email naslov?"
+
+#: account/templates/user/email_verification.html:18
+msgid ""
+"Verifying your email address improves the security of your Account. Once "
+"you've verified your email address, you will be able to reset your password."
+msgstr ""
+"Potrditev vašega email naslova poveča varnost vašega računa.Ko bo vaš email "
+"naslov potrjen, boste lahko resetirali vaše geslo."
 
 #: account/templates/user/login.html:5 account/templates/user/login.html:12
 #: frontend/templates/header.html:45

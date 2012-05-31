@@ -1,11 +1,10 @@
-import datetime, urllib
+import datetime, random, string, urllib
 
 from django import dispatch, http, shortcuts
 from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth import views as auth_views
-from django.core import exceptions, urlresolvers
-from django.core.mail import EmailMultiAlternatives
+from django.core import exceptions, urlresolvers, mail
 from django.http import HttpResponseRedirect
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
@@ -13,8 +12,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from pushserver import signals
 
-import random
-import string
 import tweepy
 
 from piplmesh.account import forms, models
@@ -224,7 +221,7 @@ def EmailVerificationSend(request):
     user.email_activation_key = activation_key
     user.save()
 
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg = mail.EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.send()
 
     messages.success(request, _("Email verification link has been sent to the email you provided."), fail_silently=True)

@@ -241,17 +241,13 @@ input.gsc-search-button {
     padding-bottom: 30px;
 }
 
-.FAQ {
+.faq {
     padding-left: 10px;
 }
 
-.FAQ .question {
+.faq dt {
     font-size: 14px;
     font-weight: bold;
-}
-
-.FAQ .content {
-    padding-left: 20px;
 }
 
 /* -------------------- AUTHENTICATION ------------------------ */
