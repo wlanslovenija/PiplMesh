@@ -40,73 +40,73 @@ msgstr "Vrednost je izven meja."
 msgid "Callable did not return datetime.date or datetime.datetime object."
 msgstr "Klicana vrednost ni vrnila datetime.date ali datetime.datetime objekta"
 
-#: account/forms.py:16
+#: account/forms.py:13
 msgid "Username"
 msgstr "Uporabniško ime"
 
-#: account/forms.py:20 account/models.py:34
+#: account/forms.py:17 account/models.py:35
 msgid ""
 "Minimal of 4 characters and maximum of 30. Letters, digits and @/./+/-/_ "
 "only."
 msgstr "Najmanj 4 in največ 30 znakov. Samo črke, številke in @/./+/-/_ ."
 
-#: account/forms.py:22
+#: account/forms.py:19
 msgid "This value may contain only letters, numbers and @/./+/-/_ characters."
 msgstr "To polje lahko vsebuje le črke, številke in znake @/./+/-/_ ."
 
-#: account/forms.py:33
+#: account/forms.py:30
 msgid "A user with that username already exists."
 msgstr "Uporabnik s tem uporabniškim imenom že obstaja."
 
-#: account/forms.py:42
+#: account/forms.py:39
 msgid "Password"
 msgstr "Geslo"
 
-#: account/forms.py:47
+#: account/forms.py:44
 msgid "Password (repeat)"
 msgstr "Geslo (ponovi)"
 
-#: account/forms.py:49
+#: account/forms.py:46
 msgid "Enter the same password as above, for verification."
 msgstr "V izogib napakam ponovno vnesi enako geslo kot zgoraj."
 
-#: account/forms.py:60
+#: account/forms.py:57
 msgid "The two password fields did not match."
 msgstr "Gesli se ne ujemata."
 
-#: account/forms.py:69
+#: account/forms.py:66
 msgid "Current password"
 msgstr "Trenutno geslo"
 
-#: account/forms.py:71
+#: account/forms.py:68
 msgid "Enter your current password, for verification."
 msgstr "Za potrditev vnesi trenutno geslo."
 
-#: account/forms.py:85
+#: account/forms.py:82
 msgid "Your current password was incorrect."
 msgstr "Vnešeno geslo je bilo nepravilno."
 
-#: account/forms.py:93
+#: account/forms.py:90
 msgid "First name"
 msgstr "Ime"
 
-#: account/forms.py:94
+#: account/forms.py:91
 msgid "Last name"
 msgstr "Priimek"
 
-#: account/forms.py:95
+#: account/forms.py:92
 msgid "E-mail"
 msgstr "E-mail"
 
-#: account/forms.py:97
+#: account/forms.py:94
 msgid "Gender"
 msgstr "Spol"
 
-#: account/forms.py:104
+#: account/forms.py:101
 msgid "Birth date"
 msgstr "Datum rojstva"
 
-#: account/models.py:33
+#: account/models.py:34
 msgid "username"
 msgstr "Uporabniško ime"
 
@@ -118,38 +118,40 @@ msgstr "Prijava uspešna."
 msgid "You have been successfully logged out."
 msgstr "Odjava uspešna."
 
-#: account/views.py:135
+#: account/views.py:134
 msgid "Registration has been successful."
 msgstr "Registracija je bila uspešna."
 
-#: account/views.py:162
+#: account/views.py:161
 msgid "Your account has been successfully updated."
 msgstr "Tvoj račun je bil uspešno posodobljen."
 
-#: account/views.py:193
+#: account/views.py:192
 msgid "Your password has been successfully changed."
 msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
-#: account/views.py:218
+#: account/views.py:217
 msgid "This message was sent to verify your email address."
 msgstr "To sporočilo je bilo poslano, da potrdite svoj email naslov."
 
-#: account/views.py:219
+#: account/views.py:218
 msgid "Please click the link below to verify your email address:"
 msgstr "Prosimo izberite spodnjo povezavo za potrditev vašega email naslova:"
 
-#: account/views.py:231
+#: account/views.py:230
 msgid "Email verification link has been sent to the email you provided."
 msgstr "Potrditvena povezava je bila poslana na podan email naslov."
 
-#: account/views.py:239
+#: account/views.py:238
 msgid "You have successfully verified your email"
-msgstr "Odjava uspešna."
+msgstr "Potrditev vašega email naslova je bila uspešna."
 
-#: account/views.py:241
+#: account/views.py:240
 msgid ""
 "Your confirmation code is wrong. Please click 'Please verify your email'"
-msgstr "Vaša potrditvena koda je napačna. Prosimo, da izberete 'Prosimo potrdite svoj email naslov' povezavo"
+msgstr ""
+"Vaša potrditvena koda je napačna. Prosimo, da izberete 'Prosimo potrdite "
+"svoj email naslov' povezavo"
 
 #: account/templates/user/account.html:5
 #: account/templates/user/account.html:10
@@ -183,7 +185,7 @@ msgstr "Potrditev email naslova"
 
 #: account/templates/user/email_verification.html:9
 msgid "Clicking the link below will send a confirmation mail to"
-msgstr "Klik na spodnjo povezavo, bo poslal "
+msgstr "Klik na spodnjo povezavo, bo poslal potrditeveno povezavo na"
 
 #: account/templates/user/email_verification.html:10
 msgid "Click here to verify your email"
@@ -194,7 +196,7 @@ msgid "Why should I verify my email address?"
 msgstr "Zakaj bi potrdil svoj email naslov?"
 
 #: account/templates/user/login.html:5 account/templates/user/login.html:12
-#: frontend/templates/header.html:52
+#: frontend/templates/header.html:45
 msgid "Login"
 msgstr "Prijavi se"
 
@@ -208,7 +210,7 @@ msgstr "Facebook prijava"
 
 #: account/templates/user/login.html:33
 #: account/templates/user/registration.html:9
-#: frontend/templates/header.html:53
+#: frontend/templates/header.html:46
 msgid "Register"
 msgstr "Registriraj se"
 
@@ -219,6 +221,15 @@ msgstr "Spremeni geslo"
 #: account/templates/user/registration.html:5
 msgid "Registration"
 msgstr "Registracija"
+
+#: account/templates/user/user_image.html:3
+#, fuzzy
+msgid "User image"
+msgstr "Uporabniško ime"
+
+#: frontend/debug.py:6
+msgid "File"
+msgstr "Datoteka"
 
 #: frontend/templates/403.html:5 frontend/templates/403.html.py:10
 msgid "403 Forbidden"
@@ -269,16 +280,15 @@ msgstr "razvoj"
 msgid "growing"
 msgstr "rast"
 
-#: frontend/templates/gravatar.html:3 frontend/templates/header.html:34
-#: frontend/templates/header.html.py:36 frontend/templates/user/user.html:16
+#: frontend/templates/gravatar.html:3
 msgid "User picture"
 msgstr "Slika uporabnika"
 
-#: frontend/templates/header.html:21
+#: frontend/templates/header.html:20
 msgid "See your query results on "
 msgstr "Poglej zadetke na "
 
-#: frontend/templates/header.html:47
+#: frontend/templates/header.html:40
 msgid "Logout"
 msgstr "Odjava"
 
@@ -315,34 +325,42 @@ msgstr ""
 msgid "Search users"
 msgstr "Išči"
 
-#: frontend/templates/form/form.html:29
+#: frontend/templates/debug/uploadform.html:5
+msgid "Upload form"
+msgstr ""
+
+#: frontend/templates/debug/uploadform.html:9
+msgid "Upload"
+msgstr ""
+
+#: frontend/templates/form/form.html:30
 msgid "Required"
 msgstr "Obvezno"
 
-#: frontend/templates/user/user.html:22
+#: frontend/templates/user/user.html:18
 msgid "Username:"
 msgstr "Uporabniško ime:"
 
-#: frontend/templates/user/user.html:23
+#: frontend/templates/user/user.html:19
 msgid "Name:"
 msgstr "Ime in priimek:"
 
-#: frontend/templates/user/user.html:24
+#: frontend/templates/user/user.html:20
 msgid "Gender:"
 msgstr "Spol:"
 
-#: frontend/templates/user/user.html:25
+#: frontend/templates/user/user.html:21
 msgid "Birthdate:"
 msgstr "Datum rojstva:"
 
-#: frontend/templates/user/user.html:26
+#: frontend/templates/user/user.html:22
 msgid "E-mail:"
 msgstr "E-mail:"
 
-#: frontend/templates/user/user.html:27
+#: frontend/templates/user/user.html:23
 msgid "Last login:"
 msgstr "Zadnja prijava:"
 
-#: frontend/templates/user/user.html:29
+#: frontend/templates/user/user.html:25
 msgid "Facebook link"
 msgstr "Facebook povezava"
