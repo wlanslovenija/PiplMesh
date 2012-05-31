@@ -1,37 +1,27 @@
+from __future__ import absolute_import
+
 import datetime
 
 import mongoengine
 
-from piplmesh.account import models
+from . import base
 
 POST_MESSAGE_MAX_LENGTH = 500
 COMMENT_MESSAGE_MAX_LENGTH = 300
 
-class AuthoredEmbeddedDocument(mongoengine.EmbeddedDocument):
-    created_time = mongoengine.DateTimeField(default=lambda: datetime.datetime.now(), required=True)
-    author = mongoengine.ReferenceField(models.User, required=True)
-
-class AuthoredDocument(mongoengine.Document):
-    created_time = mongoengine.DateTimeField(default=lambda: datetime.datetime.now(), required=True)
-    author = mongoengine.ReferenceField(models.User, required=True)
-
-    meta = {
-        'abstract': True,
-    }
-
-class Comment(AuthoredEmbeddedDocument):
+class Comment(base.AuthoredEmbeddedDocument):
     """
     This class defines document type for comments on posts.
     """
 
     message = mongoengine.StringField(max_length=COMMENT_MESSAGE_MAX_LENGTH, required=True)
 
-class Attachment(AuthoredEmbeddedDocument):
+class Attachment(base.AuthoredEmbeddedDocument):
     """
     This class defines document type for attachments on posts.
     """
 
-class Post(AuthoredDocument):
+class Post(base.AuthoredDocument):
     """
     This class defines document type for posts.
     """
@@ -52,12 +42,20 @@ class Post(AuthoredDocument):
         self.updated_time = datetime.datetime.now()
         return super(Post, self).save(*args, **kwargs)
 
-class ImageAttachment(Attachment):
+class UploadedFile(base.AuthoredDocument):
     """
-    This class defined document type for image attachments.
+    This class document type for uploaded files.
     """
 
-    image_path = mongoengine.StringField(required=True)
+    filename = mongoengine.StringField(required=True)
+    content_type = mongoengine.StringField()
+
+class ImageAttachment(Attachment):
+    """
+    This class defines document type for image attachments.
+    """
+
+    image_file = mongoengine.ReferenceField(UploadedFile, required=True)
     image_description = mongoengine.StringField(default='', required=True)
 
 class LinkAttachment(Attachment):

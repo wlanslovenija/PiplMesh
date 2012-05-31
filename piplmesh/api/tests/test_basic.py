@@ -120,3 +120,27 @@ class BasicTest(test_runner.MongoEngineTestCase):
         self.assertEqual(response['comments'][0], self.fullURItoAbsoluteURI(comment_uri))
         self.assertEqual(response['created_time'], post_created_time)
         self.assertNotEqual(response['updated_time'], post_updated_time)
+
+    def test_newline_post(self):
+        # Creating a post with a message containing newlines
+
+        post = {
+            'message': "Test post.\nAnother line.\nAnd another.",
+        }
+
+        response = self.client.post(self.resourceListURI('post'), json.dumps(post), content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+
+        post_uri = response['location']
+
+        response = self.client.get(post_uri)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+
+        self.assertEqual(response['message'], post['message'])
+        self.assertEqual(response['author']['username'], self.user_username)
+        self.assertNotEqual(response['created_time'], None)
+        self.assertNotEqual(response['updated_time'], None)
+        self.assertEqual(response['comments'], [])
+        self.assertEqual(response['attachments'], [])
+        self.assertEqual(response['is_published'], False)

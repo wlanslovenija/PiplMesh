@@ -1,14 +1,15 @@
-import datetime
+import datetime, hashlib, tweepy, urllib
 
+from django.conf import settings
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.db import models
+from django.test import client
 from django.utils.translation import ugettext_lazy as _
 
 import mongoengine
 from mongoengine.django import auth
 
-from piplmesh.account import fields
-
-from django.contrib.staticfiles.storage import staticfiles_storage
-from django.core import urlresolvers
+from piplmesh.account import fields, utils
 
 LOWER_DATE_LIMIT = 366 * 120
 USERNAME_REGEX = r'[\w.@+-]+'
@@ -53,9 +54,30 @@ class User(auth.User):
     email_validated = mongoengine.BooleanField(default=False)
     email_activation_key = mongoengine.StringField(max_length=77)
 
-    def get_profile_url(self):
-        return urlresolvers.reverse('user', kwargs={'username': self.username})
+    @models.permalink
+    def get_absolute_url(self):
+        return ('profile', (), {'username': self.username})
 
-    # TODO: Get real user image
+    def get_profile_url(self):
+        return self.get_absolute_url()
+
     def get_image_url(self):
-        return staticfiles_storage.url('piplmesh/images/logo.png')
+        if self.twitter_id:
+            twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
+            twitter_auth.set_access_token(self.twitter_token_key, self.twitter_token_secret)
+            return tweepy.API(twitter_auth).me().profile_image_url
+        
+        elif self.facebook_id:
+            return '%s?type=square' % utils.graph_api_url('%s/picture' % self.username)
+        
+        else:
+            request = client.RequestFactory(**settings.DEFAULT_REQUEST).request()
+            default_url = request.build_absolute_uri(staticfiles_storage.url(settings.DEFAULT_USER_IMAGE))
+
+            return 'https://secure.gravatar.com/avatar/%(email_hash)s?%(args)s' % {
+                'email_hash': hashlib.md5(self.email.lower()).hexdigest(),
+                'args': urllib.urlencode({
+                    'default': default_url,
+                    'size': 50,
+                }),
+            }

@@ -6,10 +6,11 @@ from tastypie import api
 
 from piplmesh.account import models, views as account_views
 from piplmesh.api import resources
-from piplmesh.frontend import views as frontend_views
+from piplmesh.frontend import debug as debug_views, views as frontend_views
 
 v1_api = api.Api(api_name='v1')
 v1_api.register(resources.UserResource())
+v1_api.register(resources.UploadedFileResource())
 v1_api.register(resources.PostResource())
 
 js_info_dict = {
@@ -19,14 +20,16 @@ js_info_dict = {
     ),
 }
 
-I18N_URL = settings.I18N_URL[1:] # Removing leading /
-PUSH_SERVER_URL = settings.PUSH_SERVER_URL[1:] # Removing leading /
+I18N_URL = settings.I18N_URL.lstrip('/')
+PUSH_SERVER_URL = settings.PUSH_SERVER_URL.lstrip('/')
 
 urlpatterns = patterns('',
     url(r'^$', frontend_views.HomeView.as_view(), name='home'),
 
     url(r'^outside/$', frontend_views.OutsideView.as_view(), name='outside'),
     url(r'^search/', frontend_views.SearchView.as_view(), name='search'),
+
+    url(r'^upload/$', frontend_views.upload_view, name='upload'),
 
     # Registration, login, logout
     url(r'^register/$', account_views.RegistrationView.as_view(), name='registration'),
@@ -42,7 +45,7 @@ urlpatterns = patterns('',
     url(r'^twitter/callback/$', account_views.TwitterCallbackView.as_view(), name='twitter_callback'),
 
     # Profile, account
-    url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='user'),
+    url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='profile'),
     url(r'^account/$', account_views.AccountChangeView.as_view(), name='account'),
     url(r'^account/password/change/$', account_views.PasswordChangeView.as_view(), name='password_change'),
     url(r'^account/verification/$', account_views.EmailVerification.as_view(), name='email_verification'),
@@ -61,18 +64,23 @@ urlpatterns = patterns('',
     url(r'^' + PUSH_SERVER_URL, include('pushserver.urls')),
 )
 
+if getattr(settings, 'DEBUG', False):
+    urlpatterns += patterns('',
+        url(r'^uploadform/$', debug_views.UploadFormView.as_view()),
+    )
+
 handler403 = frontend_views.forbidden_view
 handler404 = 'django.views.defaults.page_not_found'
 handler500 = 'django.views.defaults.server_error'
 
 if getattr(settings, 'DEBUG', False):
     urlpatterns += patterns('',
-        (r'^403/$', handler403),
-        (r'^404/$', handler404),
-        (r'^500/$', handler500),
+        url(r'^403/$', handler403),
+        url(r'^404/$', handler404),
+        url(r'^500/$', handler500),
     )
 
 # For development, serve static and media files through Django
 if getattr(settings, 'DEBUG', False):
     urlpatterns += staticfiles_urlpatterns()
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, 'piplmesh.utils.storage.serve')

@@ -6,7 +6,7 @@
 
 {% block content %}
 <div id="main">
-    {% trans "Clicking the link below will send an email to" %} {{ user.email }}</p>
+    {% trans "Clicking the link below will send a confirmation mail to" %} {{ user.email }}</p>
     <a href="{% url email_verification_send %}">{% trans "Click here to verify your email" %}</a>
     <br><br>
     <div class="FAQ">

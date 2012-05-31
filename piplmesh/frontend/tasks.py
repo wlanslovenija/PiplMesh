@@ -53,7 +53,7 @@ def check_online_users():
                     'action': 'PART',
                     'user': {
                         'username': user.username,
-                        'profile_url': user.get_profile_url(),
+                        'profile_url': user.get_absolute_url(),
                         'image_url': user.get_image_url(),
                     },
                 }
