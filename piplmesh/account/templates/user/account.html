@@ -15,7 +15,7 @@
         {% endwith %}
     </div>
     <div id="password_change">
-        <a href="{% url password_change %}">{% trans "Change your password" %}</a></p>
+        <p><a href="{% url password_change %}">{% trans "Change your password" %}</a></p>
         {% if not user.email_validated %}
             <div>
                 <a href="{% url email_verification %}">{% trans "Please verify your email" %}</a>
