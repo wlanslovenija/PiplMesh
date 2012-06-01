@@ -112,7 +112,7 @@ class FoursquareBackend(MongoEngineBackend):
     Foursquare authentication.
     """
 
-    def authenticate(self, foursquare_token=None, request=None):
+    def authenticate(self, foursquare_token, request):
         args = {
             'client_id': settings.FOURSQUARE_CLIENT_ID,
             'client_secret': settings.FOURSQUARE_CLIENT_SECRET,
