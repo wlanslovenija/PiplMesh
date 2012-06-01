@@ -80,9 +80,7 @@ class PostResource(AuthoredResource):
                         'type': 'posts',
                         'action': 'NEW',
                         'post': {
-                            'message': bundle.obj.message,
-                            'author': bundle.obj.author.username,
-                            'created_time': str(bundle.obj.created_time)
+                            'location': self.get_resource_uri(bundle),
                         },
                     }
             )
