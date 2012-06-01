@@ -203,32 +203,28 @@ class PasswordChangeView(edit_views.FormView):
 class emailVerification(generic_views.TemplateView):
     template_name = 'user/email_verification.html'
 
-def emailVerificationSend(request):
-    """
-    This view sends an email to user to verify his email
-    """
+    def post(self, request, *args, **kwargs):
+        subject = 'Verify your e-mail address'
+        from_email = settings.DEFAULT_FROM_EMAIL
+        user = request.user
+        to = user.email
 
-    subject = 'Verify your e-mail address'
-    from_email = settings.DEFAULT_FROM_EMAIL
-    user = request.user
-    to = user.email
+        # Message content
+        text_content = _('This message was sent to verify your e-mail address.')+'\n\n'
+        text_content += _('Please click the link below to verify your e-mail address:')+'\n'
+        text_content += 'https://www.current_site.com/account/verification/'
+        # We generate a string with length 77
+        activation_key = ''.join(random.choice(string.letters + string.digits) for i in xrange(77))
+        text_content += activation_key+"/"
 
-    # Message content
-    text_content = _('This message was sent to verify your e-mail address.')+'\n\n'
-    text_content += _('Please click the link below to verify your e-mail address:')+'\n'
-    text_content += 'https://www.current_site.com/account/verification/'
-    # We generate a string with length 77
-    activation_key = ''.join(random.choice(string.letters + string.digits) for i in xrange(77))
-    text_content += activation_key+"/"
+        user.email_activation_key = activation_key
+        user.save()
 
-    user.email_activation_key = activation_key
-    user.save()
+        msg = mail.EmailMultiAlternatives(subject, text_content, from_email, [to])
+        msg.send()
 
-    msg = mail.EmailMultiAlternatives(subject, text_content, from_email, [to])
-    msg.send()
-
-    messages.success(request, _("Email verification link has been sent to the e-mail address you provided."), fail_silently=True)
-    return http.HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
+        messages.success(request, _("Email verification link has been sent to the e-mail address you provided."), fail_silently=True)
+        return http.HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
 
 def emailVerificationActivate(request, activation_key):
     if activation_key == request.user.email_activation_key:

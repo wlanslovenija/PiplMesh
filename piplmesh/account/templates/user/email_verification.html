@@ -8,7 +8,7 @@
     <p>
         {% blocktrans %}Clicking the button below will send a confirmation mail to {{ user.email }}{% endblocktrans %}
     </p>
-    <form method="post" action="{% url email_verification_send %}" id="email_verification">
+    <form method="post" action="{% url email_verification %}" id="email_verification">
         {% csrf_token %}
         <button type="submit">{% trans "Click here to verify your e-mail address" %}</button>
     </form>
