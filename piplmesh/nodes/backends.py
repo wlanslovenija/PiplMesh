@@ -33,3 +33,6 @@ class RandomNodesBackend(object):
             return node
         except IndexError:
             return None
+
+    def get_all_nodes(self):
+        return range(len(data.nodes))

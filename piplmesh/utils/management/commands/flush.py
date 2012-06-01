@@ -15,7 +15,7 @@ class Command(base.NoArgsCommand):
             help='Tells Django to NOT prompt the user for input of any kind.'),
         make_option('--database', action='store', dest='database',
             default=connection.DEFAULT_CONNECTION_NAME, help='Nominates a database to flush. '
-                'Defaults to the database with alias "%s".' % (connection.DEFAULT_CONNECTION_NAME,)),
+                'Defaults to the database with alias "%s".' % connection.DEFAULT_CONNECTION_NAME),
     )
     help = ('Flushes MongoDB database. This means that all data will be removed from the database.')
 
@@ -49,7 +49,7 @@ Are you sure you want to do this?
 The full error: %s""" % (database, e))
 
             if verbosity > 1:
-                self.stdout.write("Database '%s' flushed.\n" % (database,))
+                self.stdout.write("Database '%s' flushed.\n" % database)
 
         else:
             print "Flush cancelled."
