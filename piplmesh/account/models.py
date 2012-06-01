@@ -69,7 +69,7 @@ class User(auth.User):
         return not self.is_authenticated()
 
     def is_authenticated(self):
-        return self.is_active and (self.has_usable_password() or self.facebook_id is not None or self.twitter_id is not None)
+        return self.is_active and (self.has_usable_password() or self.facebook_id is not None or self.foursquare_id is not None or self.twitter_id is not None)
 
     def check_password(self, raw_password):
         def setter(raw_password):

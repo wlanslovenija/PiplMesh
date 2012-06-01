@@ -127,7 +127,7 @@ class FoursquareBackend(MongoEngineBackend):
         access_token = response.get('access_token')
 
         # Retrieve user's public profile information
-        data = urllib.urlopen('https://api.foursquare.com/v2/users/self?oauth_token=%s' % access_token)
+        data = urllib.urlopen('https://api.foursquare.com/v2/users/self?%s' % urllib.urlencode({'oauth_token': access_token}))
         foursquare_data = json.load(data)
         foursquare_user = foursquare_data['response']['user']
         """
