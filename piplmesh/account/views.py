@@ -103,7 +103,7 @@ class FoursquareLoginView(generic_views.RedirectView):
             'response_type': 'code',
             'redirect_uri': self.request.build_absolute_uri(urlresolvers.reverse('foursquare_callback')),
         }
-        return "https://foursquare.com/oauth2/authenticate?%s" % urllib.urlencode(args)
+        return 'https://foursquare.com/oauth2/authenticate?%s' % urllib.urlencode(args)
 
 class FoursquareCallbackView(generic_views.RedirectView):
     """
