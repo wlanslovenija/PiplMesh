@@ -72,9 +72,15 @@ function format_post_date(post_date_created) {
 }
 
 function generate_post_html(data) {
-    var li = $('<li/>').prop();
-
-    return '<li class="post"><span class="author">'+ data.author['username'] + '</span><p class="content">' + data.message + '</p><span class="date">'+ format_post_date(data.created_time) +'</span></li>'
+    var post = $('<li/>').prop('class', 'post')
+    .append(
+        $('<span />').prop('class', 'author').text(data.author['username'])
+    ).append(
+        $('<p />').prop('class', 'content').text(data.message)
+    ).append(
+        $('<span />').prop('class', 'date').text(format_post_date(data.created_time))
+    );
+    return post;
 }
 
 function add_post_to_top(post_location){
