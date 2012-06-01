@@ -2,12 +2,16 @@ import json, urllib, urlparse
 
 from django.conf import settings
 from django.core import urlresolvers
+from django.utils import crypto
 
+from mongoengine import queryset
 from mongoengine.django import auth
 
 import tweepy
 
 from piplmesh.account import models
+
+LAZYUSER_USERNAME_TEMPLATE = 'guest-%s'
 
 class MongoEngineBackend(auth.MongoEngineBackend):
     # TODO: Implement object permission support
@@ -17,7 +21,7 @@ class MongoEngineBackend(auth.MongoEngineBackend):
     # TODO: Implement inactive user backend
     supports_inactive_user = False
 
-    def authenticate(self, username=None, password=None):
+    def authenticate(self, username, password):
         user = self.user_class.objects(username__iexact=username).first()
         if user:
             if password and user.check_password(password):
@@ -39,7 +43,7 @@ class FacebookBackend(MongoEngineBackend):
     Facebook authentication.
     """
 
-    def authenticate(self, facebook_token=None, request=None):
+    def authenticate(self, facebook_token, request):
         """
         Retrieves an access token and Facebook data. Determine if user already
         exists. If not, a new user is created. Finally, the user's Facebook
@@ -86,7 +90,7 @@ class TwitterBackend(MongoEngineBackend):
     Twitter authentication.
     """
 
-    def authenticate(self, twitter_token=None, request=None):
+    def authenticate(self, twitter_token, request):
         twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
         twitter_auth.set_access_token(twitter_token.key, twitter_token.secret)
         api = tweepy.API(twitter_auth)
@@ -101,4 +105,21 @@ class TwitterBackend(MongoEngineBackend):
         user.twitter_token_key = twitter_token.key
         user.twitter_token_secret = twitter_token.secret
         user.save()
+        return user
+
+class LazyUserBackend(MongoEngineBackend):
+    def authenticate(self):
+        while True:
+            try:
+                username = LAZYUSER_USERNAME_TEMPLATE % crypto.get_random_string(6)
+                user = self.user_class.objects.create(
+                    username=username,
+                )
+                break
+            except queryset.OperationError, e:
+                msg = str(e)
+                if 'E11000' in msg and 'duplicate key error' in msg and 'username' in msg:
+                    continue
+                raise
+
         return user

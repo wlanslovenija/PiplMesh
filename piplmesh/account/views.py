@@ -7,6 +7,7 @@ from django.contrib.auth import views as auth_views
 from django.core import exceptions, urlresolvers, mail
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from pushserver import signals
@@ -131,6 +132,7 @@ class RegistrationView(edit_views.FormView):
         return super(RegistrationView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
+        # TODO: Is this really the correct check? What is user is logged through third-party authentication, but still wants to register with us?
         if request.user.is_authenticated():
             return simple.redirect_to(request, url=self.get_success_url(), permanent=False)
         return super(RegistrationView, self).dispatch(request, *args, **kwargs)
@@ -158,6 +160,7 @@ class AccountChangeView(edit_views.FormView):
         return super(AccountChangeView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
+        # TODO: With lazy user support, we want users to be able to change their account even if not authenticated
         if not request.user.is_authenticated():
             return shortcuts.redirect('login')
         return super(AccountChangeView, self).dispatch(request, *args, **kwargs)
@@ -189,6 +192,7 @@ class PasswordChangeView(edit_views.FormView):
         return super(PasswordChangeView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
+        # TODO: Is this really the correct check? What is user is logged through third-party authentication, but still does not have current password - is not then changing password the same as registration?
         if not request.user.is_authenticated():
             return shortcuts.redirect('login')
         return super(PasswordChangeView, self).dispatch(request, *args, **kwargs)
@@ -257,5 +261,5 @@ def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
 
     request.user.update(
         pull__connections=None,
-        set__connection_last_unsubscribe=datetime.datetime.now(),
+        set__connection_last_unsubscribe=timezone.now(),
     )
