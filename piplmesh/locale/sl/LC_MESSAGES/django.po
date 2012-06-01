@@ -131,6 +131,10 @@ msgstr "Tvoj račun je bil uspešno posodobljen."
 msgid "Your password has been successfully changed."
 msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
+#: account/views.py:207
+msgid "Verify your e-mail address"
+msgstr "Prosimo potrdite svoj e-mail naslov"
+
 #: account/views.py:213
 msgid "This message was sent to verify your e-mail address."
 msgstr "To sporočilo je bilo poslano, da potrdite svoj e-mail naslov."
@@ -144,15 +148,17 @@ msgid ""
 "Email verification link has been sent to the e-mail address you provided."
 msgstr "Potrditvena povezava je bila poslana na podan e-mail naslov."
 
-#: account/views.py:234
+#: account/views.py:237
 msgid "You have successfully verified your e-mail address"
 msgstr "Odjava uspešna."
 
-#: account/views.py:236
+#: account/views.py:239
 msgid ""
 "Your confirmation code is wrong. Please click 'Please verify your e-mail "
 "address'"
-msgstr "Vaša potrditvena koda je napačna. Prosimo, da izberete 'Prosimo potrdite svoj e-mail naslov' povezavo"
+msgstr ""
+"Vaša potrditvena koda je napačna. Prosimo, da izberete 'Prosimo potrdite "
+"svoj e-mail naslov' povezavo"
 
 #: account/templates/user/account.html:5
 #: account/templates/user/account.html:10
@@ -204,7 +210,8 @@ msgid ""
 "Verifying your e-mail address improves the security of your Account. Once "
 "you've verified your e-mail address, you will be able to reset your password."
 msgstr ""
-"Potrditev vašega e-mail naslova poveča varnost vašega računa.Ko bo vaš e-mail naslov potrjen, boste lahko resetirali vaše geslo."
+"Potrditev vašega e-mail naslova poveča varnost vašega računa.Ko bo vaš e-"
+"mail naslov potrjen, boste lahko resetirali vaše geslo."
 
 #: account/templates/user/login.html:5 account/templates/user/login.html:12
 #: frontend/templates/header.html:45

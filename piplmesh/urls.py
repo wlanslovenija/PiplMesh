@@ -49,7 +49,7 @@ urlpatterns = patterns('',
     url(r'^account/$', account_views.AccountChangeView.as_view(), name='account'),
     url(r'^account/password/change/$', account_views.PasswordChangeView.as_view(), name='password_change'),
     url(r'^account/verification/$', account_views.emailVerification.as_view(), name='email_verification'),
-    url(r'^account/verification/(?P<activation_key>\w+)/$', account_views.emailVerificationActivate),
+    url(r'^account/verification/(?P<activation_key>\w+)/$', account_views.emailVerificationActivate.as_view()),
 
     # RESTful API
     url(r'^api/', include(v1_api.urls)),

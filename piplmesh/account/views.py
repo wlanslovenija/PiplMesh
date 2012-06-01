@@ -204,14 +204,14 @@ class emailVerification(generic_views.TemplateView):
     template_name = 'user/email_verification.html'
 
     def post(self, request, *args, **kwargs):
-        subject = 'Verify your e-mail address'
+        subject = _("Verify your e-mail address")
         from_email = settings.DEFAULT_FROM_EMAIL
         user = request.user
         to = user.email
 
         # Message content
-        text_content = _('This message was sent to verify your e-mail address.')+'\n\n'
-        text_content += _('Please click the link below to verify your e-mail address:')+'\n'
+        text_content = _("This message was sent to verify your e-mail address.")+'\n\n'
+        text_content += _("Please click the link below to verify your e-mail address:")+'\n'
         text_content += 'https://www.current_site.com/account/verification/'
         # We generate a string with length 77
         activation_key = ''.join(random.choice(string.letters + string.digits) for i in xrange(77))
@@ -226,15 +226,18 @@ class emailVerification(generic_views.TemplateView):
         messages.success(request, _("Email verification link has been sent to the e-mail address you provided."), fail_silently=True)
         return http.HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
 
-def emailVerificationActivate(request, activation_key):
-    if activation_key == request.user.email_activation_key:
-        user = request.user
-        user.email_validated = True
-        user.save()
-        messages.success(request, _("You have successfully verified your e-mail address"), fail_silently=True)
-    else:
-        messages.error(request, _("Your confirmation code is wrong. Please click 'Please verify your e-mail address'"), fail_silently=True)
-    return http.HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
+class emailVerificationActivate(generic_views.TemplateView):
+    template_name = 'user/account.html'
+
+    def get(self, request, *args, **kwargs):
+        if self.kwargs['activation_key'] == request.user.email_activation_key:
+            user = request.user
+            user.email_validated = True
+            user.save()
+            messages.success(request, _("You have successfully verified your e-mail address"), fail_silently=True)
+        else:
+            messages.error(request, _("Your confirmation code is wrong. Please click 'Please verify your e-mail address'"), fail_silently=True)
+        return http.HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
 
 @dispatch.receiver(signals.channel_subscribe)
 def process_channel_subscribe(sender, request, channel_id, **kwargs):
