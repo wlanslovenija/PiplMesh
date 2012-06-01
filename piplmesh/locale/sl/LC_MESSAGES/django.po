@@ -132,32 +132,32 @@ msgid "Your password has been successfully changed."
 msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
 #: account/views.py:207
-msgid "Verify your e-mail address"
-msgstr "Prosimo potrdite svoj e-mail naslov"
+msgid "Confirm your e-mail address"
+msgstr "Potrdi svoj e-mail naslov"
 
 #: account/views.py:213
-msgid "This message was sent to verify your e-mail address."
-msgstr "To sporočilo je bilo poslano, da potrdite svoj e-mail naslov."
+msgid "This message was sent to you to confirm this e-mail address."
+msgstr "To sporočilo je bilo poslano, da potrdiš svoj e-mail naslov."
 
 #: account/views.py:214
-msgid "Please click the link below to verify your e-mail address:"
-msgstr "Prosimo izberite spodnjo povezavo za potrditev vašega e-mail naslova:"
+msgid "Please click the link below to confirm your e-mail address:"
+msgstr "Prosimo izberi spodnjo povezavo za potrditev tvojega e-mail naslova:"
 
 #: account/views.py:226
 msgid ""
-"Email verification link has been sent to the e-mail address you provided."
+"Email confirmation link has been sent to the e-mail address you provided."
 msgstr "Potrditvena povezava je bila poslana na podan e-mail naslov."
 
 #: account/views.py:237
-msgid "You have successfully verified your e-mail address"
-msgstr "Odjava uspešna."
+msgid "You have successfully confirmed your e-mail address"
+msgstr "Uspešno si potrdil svoj e-mail naslov"
 
 #: account/views.py:239
 msgid ""
-"Your confirmation code is wrong. Please click 'Please verify your e-mail "
+"Your confirmation code is wrong. Please click 'Please confirm your e-mail "
 "address'"
 msgstr ""
-"Vaša potrditvena koda je napačna. Prosimo, da izberete 'Prosimo potrdite "
+"Tvoja potrditvena koda je napačna. Prosimo, da izbereš 'Potrdi "
 "svoj e-mail naslov' povezavo"
 
 #: account/templates/user/account.html:5
@@ -182,36 +182,38 @@ msgstr "Pošlji"
 msgid "Change your password"
 msgstr "Spremeni svoje geslo"
 
-#: account/templates/user/account.html:20
-msgid "Please verify your e-mail address"
-msgstr "Prosimo potrdite svoj e-mail naslov"
+#: account/templates/user/account.html:19
+#: account/templates/user/account.html:21
+msgid "Please confirm your e-mail address"
+msgstr "Prosimo, da potrdiš svoj e-mail naslov"
 
-#: account/templates/user/email_verification.html:5
-msgid "Email Verification"
+#: account/templates/user/email_confirmation.html:5
+msgid "Email Confirmation"
 msgstr "Potrditev email naslova"
 
-#: account/templates/user/email_verification.html:9
+#: account/templates/user/email_confirmation.html:9
 #, python-format
 msgid ""
 "Clicking the button below will send a confirmation mail to %(user.email)s"
 msgstr ""
 "Klik na spodnji gumb, bo poslal potrditveno povezavo na  %(user.email)s"
 
-#: account/templates/user/email_verification.html:13
-msgid "Click here to verify your e-mail address"
-msgstr "Pritisnite tukaj za potrditev vašega e-mail naslova"
+#: account/templates/user/email_confirmation.html:13
+msgid "Click here to confirm your e-mail address"
+msgstr "Pritisni tukaj za potrditev tvojega e-mail naslova"
 
-#: account/templates/user/email_verification.html:16
-msgid "Why should I verify my e-mail address?"
+#: account/templates/user/email_confirmation.html:16
+msgid "Why should I confirm my e-mail address?"
 msgstr "Zakaj bi potrdil svoj e-mail naslov?"
 
-#: account/templates/user/email_verification.html:18
+#: account/templates/user/email_confirmation.html:18
 msgid ""
-"Verifying your e-mail address improves the security of your Account. Once "
-"you've verified your e-mail address, you will be able to reset your password."
+"Confirming your e-mail address improves the security of your Account. Once "
+"you've confirmed your e-mail address, you will be able to reset your "
+"password."
 msgstr ""
-"Potrditev vašega e-mail naslova poveča varnost vašega računa.Ko bo vaš e-"
-"mail naslov potrjen, boste lahko resetirali vaše geslo."
+"Potrditev tvojega e-mail naslova poveča varnost tvojega računa.Ko bo tvoj e-"
+"mail naslov potrjen, boš lahko resetiral/a svoje geslo."
 
 #: account/templates/user/login.html:5 account/templates/user/login.html:12
 #: frontend/templates/header.html:45
