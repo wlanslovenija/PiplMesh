@@ -1,0 +1,21 @@
+{% extends "plain.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Email Verification" %}{% endblock %}
+
+{% block content %}
+    <p>
+        {% blocktrans %}Clicking the button below will send a confirmation mail to {{ user.email }}{% endblocktrans %}
+    </p>
+    <form method="post" action="{% url email_confirmation %}" id="email_confirmation">
+        {% csrf_token %}
+        <button type="submit">{% trans "Click here to confirm your e-mail address" %}</button>
+    </form>
+    <dl class="faq">
+        <dt>{% trans "Why should I confirm my e-mail address?" %}</dt>
+        <dd>
+            {% blocktrans %}Confirming your e-mail address improves the security of your Account. Once you've confirmed your e-mail address, you will be able to reset your password.{% endblocktrans %}
+        </dd>
+    </dl>
+{% endblock %}
