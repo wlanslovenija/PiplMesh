@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-import datetime
+from django.utils import timezone
 
 import mongoengine
 
@@ -39,7 +39,7 @@ class Post(base.AuthoredDocument):
     is_published = mongoengine.BooleanField(default=False, required=True)
 
     def save(self, *args, **kwargs):
-        self.updated_time = datetime.datetime.now()
+        self.updated_time = timezone.now()
         return super(Post, self).save(*args, **kwargs)
 
 class UploadedFile(base.AuthoredDocument):

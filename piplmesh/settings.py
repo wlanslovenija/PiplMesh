@@ -97,6 +97,12 @@ STATICFILES_FINDERS = (
 #   'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+# Used to reconstruct absolute/full URLs where request is not available
+DEFAULT_REQUEST = {
+    'SERVER_NAME': '127.0.0.1',
+    'SERVER_PORT': '8000',
+}
+
 DEFAULT_FILE_STORAGE = 'piplmesh.utils.storage.GridFSStorage'
 
 # URL prefix for internationalization URLs
@@ -136,6 +142,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'piplmesh.account.middleware.LazyUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'piplmesh.account.middleware.UserBasedLocaleMiddleware',
     'piplmesh.frontend.middleware.NodesMiddleware',
@@ -257,6 +264,7 @@ AUTHENTICATION_BACKENDS = (
     'piplmesh.account.backends.FacebookBackend',
     'piplmesh.account.backends.TwitterBackend',
     'piplmesh.account.backends.FoursquareBackend',
+    'piplmesh.account.backends.LazyUserBackend',
 )
 
 TEST_RUNNER = 'piplmesh.test_runner.MongoEngineTestSuiteRunner'

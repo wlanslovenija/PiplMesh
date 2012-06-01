@@ -17,7 +17,7 @@ def valid_token(user):
     """
     
     if user.is_authenticated():
-        url = urllib.urlopen('%s' % graph_api_url('me', user, token=True))
+        url = urllib.urlopen(graph_api_url('me', user, token=True))
         data = json.load(url)
     if not 'error' in data:
         results = True
