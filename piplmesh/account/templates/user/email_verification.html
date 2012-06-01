@@ -5,18 +5,17 @@
 {% block title %}{% trans "Email Verification" %}{% endblock %}
 
 {% block content %}
-<div id="main">
-    {% trans "Clicking the button below will send a confirmation mail to" %} {{ user.email }}</p>
-    <form method="post" action="{% url email_verification_send %}">
+    <p>
+        {% blocktrans %}Clicking the button below will send a confirmation mail to {{ user.email }}{% endblocktrans %}
+    </p>
+    <form method="post" action="{% url email_verification_send %}" id="email_verification">
         {% csrf_token %}
-        <button type="submit">{% trans "Click here to verify your email" %}</button>
+        <button type="submit">{% trans "Click here to verify your e-mail address" %}</button>
     </form>
-    <br><br>
     <dl class="faq">
-        <dt>{% trans "Why should I verify my email address?" %}</dt>
+        <dt>{% trans "Why should I verify my e-mail address?" %}</dt>
         <dd>
-            {% blocktrans %}Verifying your email address improves the security of your Account. Once you've verified your email address, you will be able to reset your password.{% endblocktrans %}
+            {% blocktrans %}Verifying your e-mail address improves the security of your Account. Once you've verified your e-mail address, you will be able to reset your password.{% endblocktrans %}
         </dd>
     </dl>
-</div>
 {% endblock %}

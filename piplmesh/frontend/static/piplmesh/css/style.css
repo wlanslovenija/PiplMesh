@@ -266,6 +266,10 @@ input.gsc-search-button {
     text-decoration: underline;
 }
 
+#email_verification {
+    margin-bottom: 50px;
+}
+
 /* ---------------- FB LOGIN BUTTON ------------------- */
 .fb_login_button {
     background: #29447E url('../images/fb_login_button.png');

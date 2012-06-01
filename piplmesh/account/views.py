@@ -5,7 +5,6 @@ from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth import views as auth_views
 from django.core import exceptions, urlresolvers, mail
-from django.http import HttpResponseRedirect
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 from django.utils.translation import ugettext_lazy as _
@@ -197,22 +196,22 @@ class PasswordChangeView(edit_views.FormView):
     def get_form(self, form_class):
         return form_class(self.request.user, **self.get_form_kwargs())
 
-class EmailVerification(generic_views.TemplateView):
+class emailVerification(generic_views.TemplateView):
     template_name = 'user/email_verification.html'
 
-def EmailVerificationSend(request):
+def emailVerificationSend(request):
     """
     This view sends an email to user to verify his email
     """
 
-    subject = 'Verify your email address'
+    subject = 'Verify your e-mail address'
     from_email = settings.DEFAULT_FROM_EMAIL
     user = request.user
     to = user.email
 
     # Message content
-    text_content = _('This message was sent to verify your email address.')+'\n\n'
-    text_content += _('Please click the link below to verify your email address:')+'\n'
+    text_content = _('This message was sent to verify your e-mail address.')+'\n\n'
+    text_content += _('Please click the link below to verify your e-mail address:')+'\n'
     text_content += 'https://www.current_site.com/account/verification/'
     # We generate a string with length 77
     activation_key = ''.join(random.choice(string.letters + string.digits) for i in xrange(77))
@@ -224,18 +223,18 @@ def EmailVerificationSend(request):
     msg = mail.EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.send()
 
-    messages.success(request, _("Email verification link has been sent to the email you provided."), fail_silently=True)
-    return HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
+    messages.success(request, _("Email verification link has been sent to the e-mail address you provided."), fail_silently=True)
+    return http.HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
 
-def EmailVerificationActivate(request, activation_key):
+def emailVerificationActivate(request, activation_key):
     if activation_key == request.user.email_activation_key:
         user = request.user
         user.email_validated = True
         user.save()
-        messages.success(request, _("You have successfully verified your email"), fail_silently=True)
+        messages.success(request, _("You have successfully verified your e-mail address"), fail_silently=True)
     else:
-        messages.error(request, _("Your confirmation code is wrong. Please click 'Please verify your email'"), fail_silently=True)
-    return HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
+        messages.error(request, _("Your confirmation code is wrong. Please click 'Please verify your e-mail address'"), fail_silently=True)
+    return http.HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
 
 @dispatch.receiver(signals.channel_subscribe)
 def process_channel_subscribe(sender, request, channel_id, **kwargs):

@@ -48,9 +48,9 @@ urlpatterns = patterns('',
     url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='profile'),
     url(r'^account/$', account_views.AccountChangeView.as_view(), name='account'),
     url(r'^account/password/change/$', account_views.PasswordChangeView.as_view(), name='password_change'),
-    url(r'^account/verification/$', account_views.EmailVerification.as_view(), name='email_verification'),
-    url(r'^account/verification/send/$', account_views.EmailVerificationSend, name='email_verification_send'),
-    url(r'^account/verification/(?P<activation_key>\w+)/$', account_views.EmailVerificationActivate),
+    url(r'^account/verification/$', account_views.emailVerification.as_view(), name='email_verification'),
+    url(r'^account/verification/send/$', account_views.emailVerificationSend, name='email_verification_send'),
+    url(r'^account/verification/(?P<activation_key>\w+)/$', account_views.emailVerificationActivate),
 
     # RESTful API
     url(r'^api/', include(v1_api.urls)),

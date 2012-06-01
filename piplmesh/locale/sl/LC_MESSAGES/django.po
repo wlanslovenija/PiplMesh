@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
 "Report-Msgid-Bugs-To: https://github.com/wlanslovenija/PiplMesh\n"
-"POT-Creation-Date: 2012-05-31 11:19+0200\n"
+"POT-Creation-Date: 2012-06-01 10:28+0200\n"
 "PO-Revision-Date: 2012-05-18 12:29+0100\n"
 "Last-Translator: Martin Jakomin <martin.jakomin@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,7 @@ msgstr "Vrednost je izven meja."
 
 #: account/fields.py:15
 msgid "Callable did not return datetime.date or datetime.datetime object."
-msgstr "Klicana vrednost ni vrnila datetime.date ali datetime.datetime objekta"
+msgstr ""
 
 #: account/forms.py:13
 msgid "Username"
@@ -68,7 +68,7 @@ msgstr "Geslo (ponovi)"
 
 #: account/forms.py:46
 msgid "Enter the same password as above, for verification."
-msgstr "V izogib napakam ponovno vnesi enako geslo kot zgoraj."
+msgstr "V izogib napakam ponovno vnesi isto geslo kot zgoraj."
 
 #: account/forms.py:57
 msgid "The two password fields did not match."
@@ -118,40 +118,42 @@ msgstr "Prijava uspešna."
 msgid "You have been successfully logged out."
 msgstr "Odjava uspešna."
 
-#: account/views.py:131
+#: account/views.py:130
 msgid "Registration has been successful."
 msgstr "Registracija je bila uspešna."
 
-#: account/views.py:158
+#: account/views.py:157
 msgid "Your account has been successfully updated."
 msgstr "Tvoj račun je bil uspešno posodobljen."
 
-#: account/views.py:189
+#: account/views.py:188
 msgid "Your password has been successfully changed."
 msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
+#: account/views.py:213
+msgid "This message was sent to verify your e-mail address."
+msgstr "To sporočilo je bilo poslano, da potrdite svoj e-mail naslov."
+
 #: account/views.py:214
-msgid "This message was sent to verify your email address."
-msgstr "To sporočilo je bilo poslano, da potrdite svoj email naslov."
+msgid "Please click the link below to verify your e-mail address:"
+msgstr "Prosimo izberite spodnjo povezavo za potrditev vašega e-mail naslova:"
 
-#: account/views.py:215
-msgid "Please click the link below to verify your email address:"
-msgstr "Prosimo izberite spodnjo povezavo za potrditev vašega email naslova:"
-
-#: account/views.py:227
-msgid "Email verification link has been sent to the email you provided."
-msgstr "Potrditvena povezava je bila poslana na podan email naslov."
-
-#: account/views.py:235
-msgid "You have successfully verified your email"
-msgstr "Potrditev vašega email naslova je bila uspešna."
-
-#: account/views.py:237
+#: account/views.py:226
 msgid ""
-"Your confirmation code is wrong. Please click 'Please verify your email'"
+"Email verification link has been sent to the e-mail address you provided."
+msgstr "Potrditvena povezava je bila poslana na podan e-mail naslov."
+
+#: account/views.py:234
+msgid "You have successfully verified your e-mail address"
+msgstr "Potrditev vašega e-mail naslova je bila uspešna."
+
+#: account/views.py:236
+msgid ""
+"Your confirmation code is wrong. Please click 'Please verify your e-mail "
+"address'"
 msgstr ""
 "Vaša potrditvena koda je napačna. Prosimo, da izberete 'Prosimo potrdite "
-"svoj email naslov' povezavo"
+"svoj e-mail naslov' povezavo"
 
 #: account/templates/user/account.html:5
 #: account/templates/user/account.html:10
@@ -175,33 +177,35 @@ msgstr "Pošlji"
 msgid "Change your password"
 msgstr "Spremeni svoje geslo"
 
-#: account/templates/user/account.html:21
-msgid "Please verify your email"
-msgstr "Prosimo potrdite svoj email naslov"
+#: account/templates/user/account.html:20
+msgid "Please verify your e-mail address"
+msgstr "Prosimo potrdite svoj e-mail naslov"
 
 #: account/templates/user/email_verification.html:5
 msgid "Email Verification"
 msgstr "Potrditev email naslova"
 
 #: account/templates/user/email_verification.html:9
-msgid "Clicking the button below will send a confirmation mail to"
-msgstr "Klik na spodnji gumb, bo poslal potrditeveno povezavo na"
+msgid ""
+"Clicking the button below will send a confirmation mail to %(user.email)s"
+msgstr ""
+"Klik na spodnji gumb, bo poslal potrditveno povezavo na  %(user.email)s"
 
-#: account/templates/user/email_verification.html:12
-msgid "Click here to verify your email"
-msgstr "Pritisnite tukaj za potrditev vašega email naslova"
+#: account/templates/user/email_verification.html:13
+msgid "Click here to verify your e-mail address"
+msgstr "Pritisnite tukaj za potrditev vašega e-mail naslova"
 
 #: account/templates/user/email_verification.html:16
-msgid "Why should I verify my email address?"
-msgstr "Zakaj bi potrdil svoj email naslov?"
+msgid "Why should I verify my e-mail address?"
+msgstr "Zakaj bi potrdil svoj e-mail naslov?"
 
 #: account/templates/user/email_verification.html:18
 msgid ""
-"Verifying your email address improves the security of your Account. Once "
-"you've verified your email address, you will be able to reset your password."
+"Verifying your e-mail address improves the security of your Account. Once "
+"you've verified your e-mail address, you will be able to reset your password."
 msgstr ""
-"Potrditev vašega email naslova poveča varnost vašega računa.Ko bo vaš email "
-"naslov potrjen, boste lahko resetirali vaše geslo."
+"Potrditev vašega e-mail naslova poveča varnost vašega računa.Ko bo vaš e-"
+"mail naslov potrjen, boste lahko resetirali vaše geslo."
 
 #: account/templates/user/login.html:5 account/templates/user/login.html:12
 #: frontend/templates/header.html:45
