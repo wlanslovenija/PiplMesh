@@ -1,6 +1,4 @@
-var CURRENT_OFFSET = 0;
-var LIMIT = 20;
-var TOTAL_POSTS = 0;
+var POSTS_LIMIT = 20;
 
 function User(data) {
     var self = this;
@@ -74,11 +72,11 @@ function format_post_date(post_date_created) {
 function generate_post_html(data) {
     var post = $('<li/>').prop('class', 'post')
     .append(
-        $('<span />').prop('class', 'author').text(data.author['username'])
-    ).append(
-        $('<p />').prop('class', 'content').text(data.message)
-    ).append(
-        $('<span />').prop('class', 'date').text(format_post_date(data.created_time))
+        $('<span/>').prop('class', 'author').text(data.author['username']))
+    .append(
+        $('<p/>').prop('class', 'content').text(data.message))
+    .append(
+        $('<span/>').prop('class', 'date').text(format_post_date(data.created_time))
     );
     return post;
 }
@@ -95,29 +93,23 @@ function add_post_to_bottom(data){
 }
 
 function earlier_posts (){
-    var posts_returned;
-    if (CURRENT_OFFSET != -1){
-        if (CURRENT_OFFSET < LIMIT){
-            posts_returned = CURRENT_OFFSET;
-            CURRENT_OFFSET = 0;
+    var number_of_posts = $(".post").length;
+    $.getJSON('/api/v1/post/?limit='+POSTS_LIMIT+'&offset='+number_of_posts, function (data) {
+        if (data.meta.total_count - number_of_posts >= POSTS_LIMIT) {
+            var posts_returned = POSTS_LIMIT;
         } else {
-            posts_returned = LIMIT;
-            CURRENT_OFFSET -= LIMIT;
+            var posts_returned = data.meta.total_count - number_of_posts;
         }
-        $.getJSON('/api/v1/post/?limit='+LIMIT+'&offset='+CURRENT_OFFSET, function (data) {
-            for (var i = 0; posts_returned-1> i;i++){
-                add_post_to_bottom(data.objects[i]);
-            }
-        });
-        if (CURRENT_OFFSET == 0){
-            CURRENT_OFFSET = -1;
+        for (var i = 0; i < posts_returned; i++){
+            add_post_to_bottom(data.objects[i]);
         }
-    }
-
+    });
 }
 
-function postUpdateList(){
-    // TODO:
+function postUpdateList(data){
+    if (data.action === 'NEW') {
+        add_post_to_top(data.post.location);
+    }    
 }
 
 $(document).ready(function () {
@@ -130,34 +122,32 @@ $(document).ready(function () {
     $('#search_users').change(redrawUserList).keyup(redrawUserList);
 
     redrawUserList();
-    $.updates.registerProcessor('home_channel', 'post', postUpdateList());
-
-    $(".posts").empty();
-    $.getJSON('/api/v1/post/?limit='+LIMIT+'&offset='+CURRENT_OFFSET, function (data) {
-        var total_posts = data.meta.total_count;
-        if (total_posts >  0){
-            if (total_posts > LIMIT){
-                CURRENT_OFFSET += LIMIT;
-                total_posts = LIMIT;
+    
+    $.updates.registerProcessor('home_channel', 'posts', postUpdateList);
+    
+    $.getJSON('/api/v1/post/?limit='+POSTS_LIMIT+'&offset=0', function (data) {
+            if (data.meta.total_count >= POSTS_LIMIT) {
+                var posts_returned = POSTS_LIMIT;
+            } else {
+                var posts_returned = data.meta.total_count;
             }
-            //
-                for (var i = 0; total_posts-1 > i;i++){
-                    add_post_to_bottom(data.objects[i]);
-                }
-            //});
-        }
+            for (var i = 0; i < posts_returned; i++) {
+                add_post_to_bottom(data.objects[i]);
+            }
     });
+    
     $('#submit_post').click(function () {
         var message = $('#post_text').val().trim();
+        var is_published = true;
         if (message != '') {
             $.ajax({
                 type: 'POST',
                 url: '/api/v1/post/',
-                data: JSON.stringify({'message': message}),
+                data: JSON.stringify({'message': message, 'is_published': is_published}),
                 contentType: 'application/json',
                 dataType: "json",
                 success: function (output, status, header) {
-                    add_post_to_top(header.getResponseHeader('Location'));
+                    //add_post_to_top(header.getResponseHeader('Location'));
                     $('#post_text').val('Write a post...');
                     $('#post_text').css({'min-height':25});
                 },
