@@ -92,7 +92,7 @@ class User(auth.User):
         elif self.facebook_id:
             return '%s?type=square' % utils.graph_api_url('%s/picture' % self.username)
         
-        else:
+        elif self.email:
             request = client.RequestFactory(**settings.DEFAULT_REQUEST).request()
             default_url = request.build_absolute_uri(staticfiles_storage.url(settings.DEFAULT_USER_IMAGE))
 
@@ -103,6 +103,9 @@ class User(auth.User):
                     'size': 50,
                 }),
             }
+
+        else:
+            return staticfiles_storage.url(settings.DEFAULT_USER_IMAGE)
 
     @classmethod
     def create_user(cls, username, email=None, password=None):

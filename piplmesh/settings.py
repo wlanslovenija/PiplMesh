@@ -142,6 +142,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'piplmesh.account.middleware.LazyUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'piplmesh.account.middleware.UserBasedLocaleMiddleware',
     'piplmesh.frontend.middleware.NodesMiddleware',
@@ -262,6 +263,7 @@ AUTHENTICATION_BACKENDS = (
     'piplmesh.account.backends.MongoEngineBackend',
     'piplmesh.account.backends.FacebookBackend',
     'piplmesh.account.backends.TwitterBackend',
+    'piplmesh.account.backends.LazyUserBackend',
 )
 
 TEST_RUNNER = 'piplmesh.test_runner.MongoEngineTestSuiteRunner'

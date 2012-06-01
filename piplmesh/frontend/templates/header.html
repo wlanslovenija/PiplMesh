@@ -26,11 +26,11 @@
                     This list is used for registration and login link.
                     If user is already logged in, logout link is shown instead.
                 {% endcomment %}
+                <li class="image">
+                    {% user_image %}
+                </li>
+                <li class="username"><a href="{% url profile username=user.username %}">{{ user.username }}</a></li>
                 {% if user.is_authenticated %}
-                    <li class="image">
-                        {% user_image %}
-                    </li>
-                    <li class="username"><a href="{% url profile username=user.username %}">{{ user.username }}</a></li>
                     <li class="last">
                         <form method="post" action="{% url logout %}" id="logout_form">
                             {% csrf_token %}
