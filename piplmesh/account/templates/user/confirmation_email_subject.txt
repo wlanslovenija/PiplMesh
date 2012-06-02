@@ -1,5 +1,1 @@
-{% load i18n %}
-
-{% blocktrans with site_name=site_name %}
-[{{ site_name }}] Confirm your e-mail address
-{% endblocktrans %}
+{% load i18n %}{% blocktrans with site_name=site_name %}[{{ site_name }}] Confirm your e-mail address{% endblocktrans %}

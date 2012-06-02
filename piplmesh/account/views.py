@@ -205,7 +205,7 @@ class EmailConfirmation(generic_views.TemplateView):
     template_name = 'user/email_confirmation.html'
 
     def post(self, request, *args, **kwargs):
-        subject = loader.get_template('user/confirmation_email.txt')
+        subject = loader.get_template('user/confirmation_email_subject.txt')
         subject = subject.render(template.Context({
             'site_name' : 'PiplMesh',
         }))
@@ -233,11 +233,11 @@ class EmailConfirmation(generic_views.TemplateView):
 class EmailConfirmationActivate(generic_views.TemplateView):
     template_name = 'user/account.html'
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         user=request.user
         if self.kwargs['confirmation_token'] == user.email_confirmation_token:
             if not user.email_confirmation_token_is_valid():
-                messages.success(request, _("The confirmation code has expired. Please click 'Please confirm your e-mail address'"), fail_silently=True)
+                messages.error(request, _("The confirmation code has expired. Please click 'Please confirm your e-mail address'"), fail_silently=True)
             else:
                 user.email_confirmed = True
                 user.save()
