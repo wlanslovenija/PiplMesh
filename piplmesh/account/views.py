@@ -234,7 +234,7 @@ class EmailConfirmationActivate(generic_views.TemplateView):
     def get(self, request, *args, **kwargs):
         user=request.user
         if self.kwargs['activation_key'] == user.email_activation_key:
-            if user.email_activation_key_validity:
+            if not user.email_activation_key_isValid():
                 messages.success(request, _("The confirmation code has expired. Please click 'Please confirm your e-mail address'"), fail_silently=True)
             else:
                 user.email_confirmed = True

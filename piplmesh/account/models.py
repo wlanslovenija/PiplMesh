@@ -62,6 +62,9 @@ class User(auth.User):
     def get_absolute_url(self):
         return ('profile', (), {'username': self.username})
 
+    def email_activation_key_isValid(self):
+        return (datetime.datetime.today() - self.email_activation_key_validity).days
+
     def get_profile_url(self):
         return self.get_absolute_url()
 
