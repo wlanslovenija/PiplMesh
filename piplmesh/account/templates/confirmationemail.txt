@@ -1,4 +1,5 @@
 {% load i18n %}
+
 {% blocktrans with username=username activation_key=activation_key %}
 Hello {{ username }}!
 This message was sent to you to confirm this e-mail address.
