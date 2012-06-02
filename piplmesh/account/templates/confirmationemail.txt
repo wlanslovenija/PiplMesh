@@ -1,9 +1,0 @@
-{% load i18n %}
-
-{% blocktrans with username=username activation_key=activation_key %}
-Hello {{ username }}!
-This message was sent to you to confirm this e-mail address.
-
-Please click the link below to confirm your e-mail address:
-https://www.current_site.com/account/confirmation/{{ activation_key }}/
-{% endblocktrans %}

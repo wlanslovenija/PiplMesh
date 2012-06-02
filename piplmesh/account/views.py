@@ -1,12 +1,11 @@
 import datetime, random, string, urllib
 
-from django import dispatch, http, shortcuts
+from django import dispatch, http, shortcuts, template
 from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth import views as auth_views
 from django.core import exceptions, urlresolvers
-from django.template import Context, loader
-
+from django.template import loader
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 from django.utils import timezone
@@ -206,22 +205,25 @@ class EmailConfirmation(generic_views.TemplateView):
     template_name = 'user/email_confirmation.html'
 
     def post(self, request, *args, **kwargs):
-        subject = _("Confirm your e-mail address")
+        subject = loader.get_template('user/confirmation_email.txt')
+        subject = subject.render(template.Context({
+            'site_name' : 'PiplMesh',
+        }))
+
         from_email = settings.DEFAULT_FROM_EMAIL
         user = request.user
 
         # Message content
-        text_content = loader.get_template('confirmationemail.txt')
+        text_content = loader.get_template('user/confirmation_email.txt')
 
         # We generate a string with length 77
-        activation_key = ''.join(random.choice(string.letters + string.digits) for i in xrange(77))
+        confirmation_token = ''.join(random.choice(string.letters + string.digits) for i in xrange(77))
 
-        text_content = text_content.render(Context({
+        text_content = text_content.render(template.Context({
             'username' : user.username,
-            'activation_key' : activation_key,
+            'confirmation_token' : confirmation_token,
         }))
-        user.email_activation_key = activation_key
-        user.email_activation_key_validity = datetime.datetime.today()
+        user.email_confirmation_token = confirmation_token
         user.save()
         user.email_user(subject, text_content, from_email)
 
@@ -233,8 +235,8 @@ class EmailConfirmationActivate(generic_views.TemplateView):
 
     def get(self, request, *args, **kwargs):
         user=request.user
-        if self.kwargs['activation_key'] == user.email_activation_key:
-            if not user.email_activation_key_isValid():
+        if self.kwargs['confirmation_token'] == user.email_confirmation_token:
+            if not user.email_confirmation_token_is_valid():
                 messages.success(request, _("The confirmation code has expired. Please click 'Please confirm your e-mail address'"), fail_silently=True)
             else:
                 user.email_confirmed = True
