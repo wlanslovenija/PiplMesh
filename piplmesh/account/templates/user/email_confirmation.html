@@ -6,7 +6,7 @@
 
 {% block content %}
     <p>
-        {% blocktrans %}Clicking the button below will send a confirmation mail to {{ user.email }}{% endblocktrans %}
+        {% blocktrans with email=user.email %}Clicking the button below will send a confirmation mail to {{ email }}{% endblocktrans %}
     </p>
     <form method="post" action="{% url email_confirmation %}" id="email_confirmation">
         {% csrf_token %}

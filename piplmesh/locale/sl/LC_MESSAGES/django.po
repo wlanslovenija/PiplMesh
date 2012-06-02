@@ -119,46 +119,63 @@ msgstr "Prijava uspešna."
 msgid "You have been successfully logged out."
 msgstr "Odjava uspešna."
 
-#: account/views.py:131
+#: account/views.py:133
 msgid "Registration has been successful."
 msgstr "Registracija je bila uspešna."
 
-#: account/views.py:159
+#: account/views.py:161
 msgid "Your account has been successfully updated."
 msgstr "Tvoj račun je bil uspešno posodobljen."
 
-#: account/views.py:191
+#: account/views.py:193
 msgid "Your password has been successfully changed."
 msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
-#: account/views.py:207
+#: account/views.py:209
 msgid "Confirm your e-mail address"
 msgstr "Potrdi svoj e-mail naslov"
 
-#: account/views.py:213
-msgid "This message was sent to you to confirm this e-mail address."
-msgstr "To sporočilo je bilo poslano, da potrdiš svoj e-mail naslov."
-
-#: account/views.py:214
-msgid "Please click the link below to confirm your e-mail address:"
-msgstr "Prosimo izberi spodnjo povezavo za potrditev tvojega e-mail naslova:"
-
-#: account/views.py:226
+#: account/views.py:228
 msgid ""
 "Email confirmation link has been sent to the e-mail address you provided."
 msgstr "Potrditvena povezava je bila poslana na podan e-mail naslov."
 
-#: account/views.py:237
+#: account/views.py:238
+msgid ""
+"The confirmation code has expired. Please click 'Please confirm your e-mail "
+"address'"
+msgstr ""
+"Potrditvena koda je potekla. Prosimo, da izbereš 'Potrdi svoj e-mail "
+"naslov'"
+
+#: account/views.py:242
 msgid "You have successfully confirmed your e-mail address"
 msgstr "Uspešno si potrdil svoj e-mail naslov"
 
-#: account/views.py:239
+#: account/views.py:244
 msgid ""
 "Your confirmation code is wrong. Please click 'Please confirm your e-mail "
 "address'"
 msgstr ""
-"Tvoja potrditvena koda je napačna. Prosimo, da izbereš 'Potrdi "
-"svoj e-mail naslov' povezavo"
+"Tvoja potrditvena koda je napačna. Prosimo, da izbereš 'Potrdi svoj e-mail "
+"naslov'"
+
+#: account/templates/confirmationemail.txt:1
+#, python-format
+msgid ""
+"\n"
+"Hello %(username)s!\n"
+"This message was sent to you to confirm this e-mail address.\n"
+"\n"
+"Please click the link below to confirm your e-mail address:\n"
+"https://www.current_site.com/account/confirmation/%(activation_key)s/\n"
+msgstr ""
+"\n"
+"Pozdravljen %(username)s!\n"
+"To sporočilo je bilo poslano, da potrdiš svoj e-mail naslov.\n"
+"\n"
+"Prosimo izberi spodnjo povezavo za potrditev tvojega e-mail naslova:\n"
+"https://www.current_site.com/account/confirmation/%(activation_key)s/\n"
 
 #: account/templates/user/account.html:5
 #: account/templates/user/account.html:10
@@ -192,9 +209,7 @@ msgid "Email Confirmation"
 msgstr "Potrditev email naslova"
 
 #: account/templates/user/email_confirmation.html:9
-#, python-format
-msgid ""
-"Clicking the button below will send a confirmation mail to %(user.email)s"
+msgid "Clicking the button below will send a confirmation mail to %(email)s"
 msgstr ""
 "Klik na spodnji gumb, bo poslal potrditveno povezavo na  %(user.email)s"
 
@@ -383,3 +398,10 @@ msgstr "Zadnja prijava:"
 #: frontend/templates/user/user.html:25
 msgid "Facebook link"
 msgstr "Facebook povezava"
+
+#~ msgid "This message was sent to you to confirm this e-mail address."
+#~ msgstr "To sporočilo je bilo poslano, da potrdiš svoj e-mail naslov."
+
+#~ msgid "Please click the link below to confirm your e-mail address:"
+#~ msgstr ""
+#~ "Prosimo izberi spodnjo povezavo za potrditev tvojega e-mail naslova:"
