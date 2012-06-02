@@ -2,7 +2,7 @@
 #
 # Development Django settings for PiplMesh project.
 
-import datetime, os.path
+import datetime, os
 
 MONGO_DATABASE_NAME = 'PiplMesh'
 
@@ -13,6 +13,9 @@ settings_dir = os.path.abspath(os.path.dirname(__file__))
 
 import djcelery
 djcelery.setup_loader()
+
+# Dummy function, so that "makemessages" can find strings which should be translated.
+_ = lambda s: s
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -37,9 +40,6 @@ TIME_ZONE = 'Europe/Ljubljana'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'sl'
-
-# Dummy function, so that "makemessages" can find strings which should be translated.
-_ = lambda s: s
 
 LANGUAGES = (
     ('sl', _('Slovenian')),
@@ -150,14 +150,14 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'piplmesh.urls'
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 #   os.path.join(settings_dir, 'templates'),
 )
-
-MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 INSTALLED_APPS = (
     # Ours are first so that we can override default templates in other apps
