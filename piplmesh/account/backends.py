@@ -99,7 +99,6 @@ class TwitterBackend(MongoEngineBackend):
         profile_background_color
         profile_link_color
         profile_sidebar_border_color
-        _api: tweepy.api.api object
         friends_count
         followers_count
         statuses_count
@@ -119,9 +118,9 @@ class TwitterBackend(MongoEngineBackend):
         utc_offset: integer
     """
 
-    def authenticate(self, twitter_token, request):
+    def authenticate(self, twitter_access_token, request):
         twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
-        twitter_auth.set_access_token(twitter_token.key, twitter_token.secret)
+        twitter_auth.set_access_token(twitter_access_token.key, twitter_access_token.secret)
         api = tweepy.API(twitter_auth)
         twitter_user = api.me()
 
@@ -133,8 +132,8 @@ class TwitterBackend(MongoEngineBackend):
                 'twitter_picture_url': twitter_user.profile_image_url,
             }
         )
-        user.twitter_token_key = twitter_token.key
-        user.twitter_token_secret = twitter_token.secret
+        user.twitter_token_key = twitter_access_token.key
+        user.twitter_token_secret = twitter_access_token.secret
         user.save()
         return user
 

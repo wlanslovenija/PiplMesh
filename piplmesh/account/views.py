@@ -99,9 +99,12 @@ class TwitterCallbackView(generic_views.RedirectView):
             assert request_token.key == request.GET['oauth_token']
             twitter_auth.set_request_token(request_token.key, request_token.secret)
             twitter_auth.get_access_token(verifier=oauth_verifier)
-            user = auth.authenticate(twitter_token=twitter_auth.access_token, request=request)
+
+            user = auth.authenticate(twitter_access_token=twitter_auth.access_token, request=request)
             assert user.is_authenticated()
+
             auth.login(request, user)
+
             return super(TwitterCallbackView, self).get(request, *args, **kwargs)
         else:
             # TODO: Message user that they have not been logged in because they cancelled the twitter app
