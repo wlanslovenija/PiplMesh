@@ -163,7 +163,7 @@ class GoogleBackend(MongoEngineBackend):
         verified_email: True, if email is verified by Google API
     """
 
-    def authenticate(self, google_token=None, request=None):
+    def authenticate(self, google_token, request):
         args = {
             'client_id': settings.GOOGLE_CLIENT_ID,
             'client_secret': settings.GOOGLE_CLIENT_SECRET,
