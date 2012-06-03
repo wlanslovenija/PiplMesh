@@ -7,6 +7,10 @@ function initialize() {
     var myOptions = {
         zoom: 15,
         center: myLatlng,
+        scrollwheel: false,
+        navigationControl: false,
+        scaleControl: false,
+        draggable: false,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     }
 
