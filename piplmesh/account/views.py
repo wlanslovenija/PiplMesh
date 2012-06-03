@@ -107,7 +107,7 @@ class GoogleLoginView(generic_views.RedirectView):
             'redirect_uri': self.request.build_absolute_uri(urlresolvers.reverse('google_callback')),
             'scope': GOOGLE_SCOPE,
         }
-        return "https://accounts.google.com/o/oauth2/auth?%(args)s" % {'args': urllib.urlencode(args)}
+        return 'https://accounts.google.com/o/oauth2/auth?%s' % urllib.urlencode(args)
 
 class GoogleCallbackView(generic_views.RedirectView):
     """

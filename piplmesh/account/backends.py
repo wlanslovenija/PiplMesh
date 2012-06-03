@@ -88,6 +88,43 @@ class FacebookBackend(MongoEngineBackend):
 class TwitterBackend(MongoEngineBackend):
     """
     Twitter authentication.
+
+    Twitter user fields are:
+        name: User's full name
+        screen_name: User's username
+        profile_image_url
+        profile_background_image_url
+        id: id of Twitter user
+        id_str: String id of Twitter user
+        created_at: Full date of user's registration on Twitter
+        location: User's location
+        time_zone
+        lang: User's preferred language
+        url: url of user's website
+        description: user's description of themselves
+        profile_sidebar_fill_color
+        profile_text_color
+        profile_background_color
+        profile_link_color
+        profile_sidebar_border_color
+        _api: tweepy.api.api object
+        friends_count
+        followers_count
+        statuses_count
+        favourites_count
+        listed_count
+        notifications: boolean value
+        geo_enabled: boolean value
+        following: boolean value
+        follow_request_sent: boolean value
+        profile_use_background_image: boolean value
+        verified: boolean value; checks whether user's email is verified
+        protected: boolean value
+        show_all_inline_media: boolean value
+        is_translator: boolean value
+        profile_background_tile: boolean value
+        contributors_enabled: boolean value
+        utc_offset: integer
     """
 
     def authenticate(self, twitter_token, request):
@@ -95,42 +132,6 @@ class TwitterBackend(MongoEngineBackend):
         twitter_auth.set_access_token(twitter_token.key, twitter_token.secret)
         api = tweepy.API(twitter_auth)
         twitter_user = api.me()
-        # All fields of Twitter user profile:
-        # name: User's full name
-        # screen_name: User's username
-        # profile_image_url
-        # profile_background_image_url
-        # id: id of Twitter user
-        # id_str: String id of Twitter user
-        # created_at: Full date of user's registration on Twitter
-        # location: User's location
-        # time_zone
-        # lang: User's preferred language
-        # url: url of user's website
-        # description: user's description of themselves
-        # profile_sidebar_fill_color
-        # profile_text_color
-        # profile_background_color
-        # profile_link_color
-        # profile_sidebar_border_color
-        # _api: tweepy.api.api object
-        # friends_count
-        # followers_count
-        # statuses_count
-        # favourites_count
-        # listed_count
-        # notifications: boolean value
-        # geo_enabled: boolean value
-        # following: boolean value
-        # follow_request_sent: boolean value
-        # profile_use_background_image: boolean value
-        # verified: boolean value; checks whether user's email is verified
-        # protected: boolean value
-        # show_all_inline_media: boolean value
-        # is_translator: boolean value
-        # profile_background_tile: boolean value
-        # contributors_enabled: boolean value
-        # utc_offset: integer
 
         user, created = self.user_class.objects.get_or_create(
             twitter_id = twitter_user.id,
@@ -148,6 +149,18 @@ class TwitterBackend(MongoEngineBackend):
 class GoogleBackend(MongoEngineBackend):
     """
     Google authentication.
+
+    Google user fields are:
+        family_name: Last name
+        given_name: First name
+        name: Full name
+        link: Url of Google user profile page
+        picture: Url of profile picture
+        locale: the language Google user is using
+        gender: sex of Google user
+        email: Google email of user
+        id: id of Google user; should be a string
+        verified_email: True, if email is verified by Google API
     """
 
     def authenticate(self, google_token=None, request=None):
@@ -162,19 +175,8 @@ class GoogleBackend(MongoEngineBackend):
         token_data = urllib.urlopen('https://accounts.google.com/o/oauth2/token', urllib.urlencode(args)).read()
         access_token = json.loads(token_data)['access_token']
 
-        user_data = urllib.urlopen("https://www.googleapis.com/oauth2/v1/userinfo?access_token=%s" % access_token)
+        user_data = urllib.urlopen('https://www.googleapis.com/oauth2/v1/userinfo?access_token=%s' % access_token)
         google_user = json.load(user_data)
-        # All fields of Google user profile:
-        # family_name: Last name
-        # given_name: First name
-        # name: Full name
-        # link: Url of Google user profile page
-        # picture: Url of profile picture
-        # locale: the language Google user is using
-        # gender: sex of Google user
-        # email: Google email of user
-        # id: id of Google user; should be a string
-        # verified_email: True, if email is verified by Google API
 
         user, created = self.user_class.objects.get_or_create(
             google_id=google_user['id'],
