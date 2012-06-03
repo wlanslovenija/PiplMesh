@@ -121,9 +121,9 @@ def get_node(request):
 
 def get_all_nodes():
     """
-    Returns an iterator over all IDs of all nodes.
+    Returns an iterator over all known nodes.
     """
 
     for backend in get_backends():
-        for node_id in backend.get_all_nodes():
-            yield node_id
+        for node in backend.get_all_nodes():
+            yield node
