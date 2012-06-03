@@ -118,3 +118,12 @@ def get_node(request):
     request.session[CLOSEST_LONGITUDE_SESSION_KEY] = request.session[LONGITUDE_SESSION_KEY]
 
     return node
+
+def get_all_nodes():
+    """
+    Returns an iterator over all known nodes.
+    """
+
+    for backend in get_backends():
+        for node in backend.get_all_nodes():
+            yield node

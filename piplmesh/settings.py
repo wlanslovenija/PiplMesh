@@ -2,7 +2,7 @@
 #
 # Development Django settings for PiplMesh project.
 
-import datetime, os.path
+import datetime, os
 
 MONGO_DATABASE_NAME = 'PiplMesh'
 
@@ -13,6 +13,9 @@ settings_dir = os.path.abspath(os.path.dirname(__file__))
 
 import djcelery
 djcelery.setup_loader()
+
+# Dummy function, so that "makemessages" can find strings which should be translated.
+_ = lambda s: s
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -37,9 +40,6 @@ TIME_ZONE = 'Europe/Ljubljana'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'sl'
-
-# Dummy function, so that "makemessages" can find strings which should be translated.
-_ = lambda s: s
 
 LANGUAGES = (
     ('sl', _('Slovenian')),
@@ -97,6 +97,12 @@ STATICFILES_FINDERS = (
 #   'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+# Used to reconstruct absolute/full URLs where request is not available
+DEFAULT_REQUEST = {
+    'SERVER_NAME': '127.0.0.1',
+    'SERVER_PORT': '8000',
+}
+
 DEFAULT_FILE_STORAGE = 'piplmesh.utils.storage.GridFSStorage'
 
 # URL prefix for internationalization URLs
@@ -136,6 +142,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'piplmesh.account.middleware.LazyUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'piplmesh.account.middleware.UserBasedLocaleMiddleware',
     'piplmesh.frontend.middleware.NodesMiddleware',
@@ -143,14 +150,14 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'piplmesh.urls'
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 #   os.path.join(settings_dir, 'templates'),
 )
-
-MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 INSTALLED_APPS = (
     # Ours are first so that we can override default templates in other apps
@@ -256,6 +263,7 @@ AUTHENTICATION_BACKENDS = (
     'piplmesh.account.backends.MongoEngineBackend',
     'piplmesh.account.backends.FacebookBackend',
     'piplmesh.account.backends.TwitterBackend',
+    'piplmesh.account.backends.LazyUserBackend',
 )
 
 TEST_RUNNER = 'piplmesh.test_runner.MongoEngineTestSuiteRunner'
@@ -296,5 +304,7 @@ TWITTER_LOGIN_REDIRECT = '/'
 # you will be explicitly warned that you have to change the code to take effect, before you will make the change.
 # Current settings are autocomplete, searching whole web.
 SEARCH_ENGINE_UNIQUE_ID = '003912915932446183218:zeq20qye9oa'
+
+DEFAULT_USER_IMAGE = 'piplmesh/images/unknown.png'
 
 CSRF_FAILURE_VIEW = 'piplmesh.frontend.views.forbidden_view'
