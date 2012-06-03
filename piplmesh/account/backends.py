@@ -82,18 +82,18 @@ class TwitterBackend(MongoEngineBackend):
     """
     Twitter authentication.
 
-    Twitter user fields are:
-        name: User's full name
-        screen_name: User's username
+    Twitter profile data fields are:
+        name: user's full name
+        screen_name: user's username
         profile_image_url
         profile_background_image_url
         id: id of Twitter user
-        id_str: String id of Twitter user
-        created_at: Full date of user's registration on Twitter
-        location: User's location
+        id_str: string id of Twitter user
+        created_at: full date of user's registration on Twitter
+        location: user's location
         time_zone
-        lang: User's preferred language
-        url: url of user's website
+        lang: user's preferred language
+        url: URL of user's website
         description: user's description of themselves
         profile_sidebar_fill_color
         profile_text_color
@@ -110,7 +110,7 @@ class TwitterBackend(MongoEngineBackend):
         following: boolean value
         follow_request_sent: boolean value
         profile_use_background_image: boolean value
-        verified: boolean value; checks whether user's email is verified
+        verified: boolean value; tells whether user's email is verified
         protected: boolean value
         show_all_inline_media: boolean value
         is_translator: boolean value
@@ -122,20 +122,29 @@ class TwitterBackend(MongoEngineBackend):
     def authenticate(self, twitter_access_token, request):
         twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
         twitter_auth.set_access_token(twitter_access_token.key, twitter_access_token.secret)
-        api = tweepy.API(twitter_auth)
-        twitter_user = api.me()
+        twitter_api = tweepy.API(twitter_auth)
 
-        user, created = self.user_class.objects.get_or_create(
-            twitter_id = twitter_user.id,
-            defaults = {
-                'username': twitter_user.screen_name,
-                'first_name': twitter_user.name,
-                'twitter_picture_url': twitter_user.profile_image_url,
-            }
-        )
-        user.twitter_token_key = twitter_access_token.key
-        user.twitter_token_secret = twitter_access_token.secret
+        twitter_profile_data = twitter_api.me()
+
+        try:
+            user = self.user_class.objects.get(twitter_profile_data__id=twitter_profile_data.get('id'))
+        except self.user_class.DoesNotExist:
+            # We reload to make sure user object is recent
+            user = request.user.reload()
+            # TODO: Is it OK to override Twitter link if it already exist with some other Twitter user?
+
+        user.twitter_access_token = models.TwitterAccessToken(key=twitter_access_token.key, secret=twitter_access_token.secret)
+        user.twitter_profile_data = twitter_profile_data
+
+        if user.lazyuser_username and twitter_profile_data.get('username'):
+            # TODO: Does Twitter have same restrictions on username content as we do?
+            user.username = twitter_profile_data.get('screen_name')
+            user.lazyuser_username = False
+        if user.first_name is None:
+            user.first_name = twitter_profile_data.get('name') or None
+
         user.save()
+
         return user
 
 class GoogleBackend(MongoEngineBackend):

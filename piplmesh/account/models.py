@@ -28,6 +28,10 @@ class Connection(mongoengine.EmbeddedDocument):
     http_if_modified_since = mongoengine.StringField()
     channel_id = mongoengine.StringField()
 
+class TwitterAccessToken(mongoengine.EmbeddedDocument):
+    key = mongoengine.StringField(max_length=150)
+    secret = mongoengine.StringField(max_length=150)
+
 class User(auth.User):
     username = mongoengine.StringField(
         max_length=30,
@@ -46,10 +50,8 @@ class User(auth.User):
     facebook_access_token = mongoengine.StringField(max_length=150)
     facebook_profile_data = mongoengine.DictField()
 
-    twitter_id = mongoengine.IntField()
-    twitter_token_key = mongoengine.StringField(max_length=150)
-    twitter_token_secret = mongoengine.StringField(max_length=150)
-    twitter_picture_url = mongoengine.StringField(max_length=150)
+    twitter_access_token = mongoengine.EmbeddedDocumentField(TwitterAccessToken)
+    twitter_profile_data = mongoengine.DictField()
 
     google_id = mongoengine.StringField(max_length=30)
     google_token = mongoengine.StringField(max_length=150)
@@ -71,7 +73,7 @@ class User(auth.User):
         return not self.is_authenticated()
 
     def is_authenticated(self):
-        return self.is_active and (self.has_usable_password() or self.facebook_profile_data or self.twitter_id is not None or self.google_id is not None)
+        return self.is_active and (self.has_usable_password() or self.facebook_profile_data or self.twitter_profile_data or self.google_id is not None)
 
     def check_password(self, raw_password):
         def setter(raw_password):
@@ -90,8 +92,8 @@ class User(auth.User):
         mail.send_mail(subject, message, from_email, [self.email])
 
     def get_image_url(self):
-        if self.twitter_id:
-            return self.twitter_picture_url
+        if self.twitter_profile_data:
+            return self.twitter_profile_data.profile_image_url
         
         elif self.facebook_profile_data:
             return '%s?type=square' % utils.graph_api_url('%s/picture' % self.username)
