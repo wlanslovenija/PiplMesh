@@ -37,6 +37,7 @@ class User(auth.User):
         verbose_name=_("username"),
         help_text=_("Minimal of 4 characters and maximum of 30. Letters, digits and @/./+/-/_ only."),
     )
+    lazyuser_username = mongoengine.BooleanField(default=True)
 
     birthdate = fields.LimitedDateTimeField(upper_limit=upper_birthdate_limit, lower_limit=lower_birthdate_limit)
     gender = fields.GenderField()

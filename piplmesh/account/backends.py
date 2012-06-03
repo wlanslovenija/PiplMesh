@@ -58,20 +58,21 @@ class FacebookBackend(MongoEngineBackend):
         user.facebook_access_token = facebook_access_token
         user.facebook_profile_data = facebook_profile_data
 
-        if not user.username:
+        if user.lazyuser_username and facebook_profile_data.get('username'):
             # TODO: Does Facebook have same restrictions on username content as we do?
             user.username = facebook_profile_data.get('username')
-        if not user.first_name:
-            user.first_name = facebook_profile_data.get('first_name')
-        if not user.last_name:
-            user.last_name = facebook_profile_data.get('last_name')
-        if not user.email:
+            user.lazyuser_username = False
+        if user.first_name is None:
+            user.first_name = facebook_profile_data.get('first_name') or None
+        if user.last_name is None:
+            user.last_name = facebook_profile_data.get('last_name') or None
+        if user.email is None:
             # TODO: Do we know if all e-mail addresses given by Facebook are verified?
             # TODO: Does not Facebook support multiple e-mail addresses? Which one is given here?
-            user.email = facebook_profile_data.get('email')
-        if not user.gender:
+            user.email = facebook_profile_data.get('email') or None
+        if user.gender is None:
             # TODO: Does it really map so cleanly?
-            user.gender = facebook_profile_data.get('gender')
+            user.gender = facebook_profile_data.get('gender') or None
 
         user.save()
 
