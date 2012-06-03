@@ -20,5 +20,4 @@ def global_vars(request):
         # Variables
         'logo_url': "piplmesh/images/logo-%s.png" % translation.get_language(),
         'request_get_next': request.REQUEST.get(auth.REDIRECT_FIELD_NAME),
-        'node': nodes.get_node(request),
     }
