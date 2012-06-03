@@ -73,7 +73,7 @@ class User(auth.User):
         return not self.is_authenticated()
 
     def is_authenticated(self):
-        return self.is_active and (self.has_usable_password() or self.facebook_profile_data or self.twitter_profile_data or self.google_id is not None)
+        return self.has_usable_password() or self.facebook_profile_data or self.twitter_profile_data or self.google_id is not None
 
     def check_password(self, raw_password):
         def setter(raw_password):
