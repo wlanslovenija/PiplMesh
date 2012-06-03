@@ -49,6 +49,12 @@ class User(auth.User):
     twitter_id = mongoengine.IntField()
     twitter_token_key = mongoengine.StringField(max_length=150)
     twitter_token_secret = mongoengine.StringField(max_length=150)
+    twitter_picture_url = mongoengine.StringField(max_length=150)
+
+    google_id = mongoengine.StringField(max_length=30)
+    google_token = mongoengine.StringField(max_length=150)
+    google_link = mongoengine.StringField(max_length=100)
+    google_picture_url = mongoengine.StringField(max_length=150)
 
     connections = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Connection))
     connection_last_unsubscribe = mongoengine.DateTimeField()
@@ -65,7 +71,7 @@ class User(auth.User):
         return not self.is_authenticated()
 
     def is_authenticated(self):
-        return self.is_active and (self.has_usable_password() or self.facebook_id is not None or self.twitter_id is not None)
+        return self.is_active and (self.has_usable_password() or self.facebook_id is not None or self.twitter_id is not None or self.google_id is not None)
 
     def check_password(self, raw_password):
         def setter(raw_password):
@@ -85,12 +91,13 @@ class User(auth.User):
 
     def get_image_url(self):
         if self.twitter_id:
-            twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
-            twitter_auth.set_access_token(self.twitter_token_key, self.twitter_token_secret)
-            return tweepy.API(twitter_auth).me().profile_image_url
+            return self.twitter_picture_url
         
         elif self.facebook_id:
             return '%s?type=square' % utils.graph_api_url('%s/picture' % self.username)
+
+        elif self.google_id:
+            return self.google_picture_url
         
         elif self.email:
             request = client.RequestFactory(**settings.DEFAULT_REQUEST).request()
