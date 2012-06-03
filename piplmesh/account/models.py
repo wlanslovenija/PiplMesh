@@ -124,14 +124,13 @@ class User(auth.User):
         email = auth_models.UserManager.normalize_email(email)
         user = cls(
             username=username,
+            email=email or None,
             is_staff=False,
             is_active=True,
             is_superuser=False,
             last_login=now,
             date_joined=now,
         )
-        if email:
-            user.email = email
         user.set_password(password)
         user.save()
         return user
