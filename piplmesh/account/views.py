@@ -1,4 +1,4 @@
-import urllib
+import urllib, urlparse
 
 from django import dispatch, http, shortcuts
 from django.conf import settings
@@ -16,7 +16,7 @@ import tweepy
 
 from piplmesh.account import forms, models
 
-FACEBOOK_SCOPE = 'email' # You may add additional parameters
+FACEBOOK_SCOPE = 'email'
 GOOGLE_SCOPE = 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
 
 class FacebookLoginView(generic_views.RedirectView):
@@ -46,8 +46,23 @@ class FacebookCallbackView(generic_views.RedirectView):
     def get(self, request, *args, **kwargs):
         if 'code' in request.GET:
             # TODO: Add security measures to prevent attackers from sending a redirect to this url with a forged 'code'
-            user = auth.authenticate(facebook_token=request.GET['code'], request=request)
+            args = {
+                'client_id': settings.FACEBOOK_APP_ID,
+                'client_secret': settings.FACEBOOK_APP_SECRET,
+                'redirect_uri': request.build_absolute_uri(urlresolvers.reverse('facebook_callback')),
+                'code': request.GET['code'],
+            }
+
+            # Retrieve access token
+            response = urlparse.parse_qs(urllib.urlopen('https://graph.facebook.com/oauth/access_token?%s' % urllib.urlencode(args)).read())
+            # TODO: Handle error, what if response does not contain access token?
+            access_token = response['access_token'][0]
+
+            user = auth.authenticate(facebook_access_token=access_token, request=request)
+            assert user.is_authenticated()
+
             auth.login(request, user)
+
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
         else:
             # TODO: Message user that they have not been logged in because they cancelled the facebook app

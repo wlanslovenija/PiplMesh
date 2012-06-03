@@ -42,9 +42,8 @@ class User(auth.User):
     gender = fields.GenderField()
     language = fields.LanguageField()
 
-    facebook_id = mongoengine.IntField()
-    facebook_token = mongoengine.StringField(max_length=150)
-    facebook_link = mongoengine.StringField(max_length=100)
+    facebook_access_token = mongoengine.StringField(max_length=150)
+    facebook_profile_data = mongoengine.DictField()
 
     twitter_id = mongoengine.IntField()
     twitter_token_key = mongoengine.StringField(max_length=150)
@@ -71,7 +70,7 @@ class User(auth.User):
         return not self.is_authenticated()
 
     def is_authenticated(self):
-        return self.is_active and (self.has_usable_password() or self.facebook_id is not None or self.twitter_id is not None or self.google_id is not None)
+        return self.is_active and (self.has_usable_password() or self.facebook_profile_data or self.twitter_id is not None or self.google_id is not None)
 
     def check_password(self, raw_password):
         def setter(raw_password):
@@ -93,7 +92,7 @@ class User(auth.User):
         if self.twitter_id:
             return self.twitter_picture_url
         
-        elif self.facebook_id:
+        elif self.facebook_profile_data:
             return '%s?type=square' % utils.graph_api_url('%s/picture' % self.username)
 
         elif self.google_id:
