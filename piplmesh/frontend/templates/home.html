@@ -7,11 +7,11 @@
     <script type="text/javascript">
         /* <![CDATA[ */
         var node = {
-            'name': '{{ node.name|escapejs }}',
-            'latitude': '{{ node.latitude|escapejs }}',
-            'longitude': '{{ node.longitude|escapejs }}',
-            'location': '{{ node.location|escapejs }}',
-            'url': '{{ node.url|escapejs }}'
+            'name': '{{ request.node.name|escapejs }}',
+            'latitude': '{{ request.node.latitude|escapejs }}',
+            'longitude': '{{ request.node.longitude|escapejs }}',
+            'location': '{{ request.node.location|escapejs }}',
+            'url': '{{ request.node.url|escapejs }}'
         }
         
         var onlineUsers = {
