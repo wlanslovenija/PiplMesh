@@ -2,7 +2,6 @@ from django.conf import settings
 from django.contrib import auth
 from django.utils import translation
 
-from piplmesh import nodes
 from piplmesh.frontend import views
 
 def global_vars(request):
