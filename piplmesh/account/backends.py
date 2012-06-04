@@ -1,7 +1,6 @@
-import json, urllib, urlparse
+import json, urllib
 
 from django.conf import settings
-from django.core import urlresolvers
 from django.utils import crypto
 
 from mongoengine import queryset
@@ -151,12 +150,12 @@ class GoogleBackend(MongoEngineBackend):
     """
     Google authentication.
 
-    Google user fields are:
-        family_name: Last name
-        given_name: First name
-        name: Full name
-        link: Url of Google user profile page
-        picture: Url of profile picture
+    Google profile data fields are:
+        family_name: last name
+        given_name: first name
+        name: full name
+        link: URL of Google user profile page
+        picture: URL of profile picture
         locale: the language Google user is using
         gender: sex of Google user
         email: Google email of user
@@ -164,35 +163,33 @@ class GoogleBackend(MongoEngineBackend):
         verified_email: True, if email is verified by Google API
     """
 
-    def authenticate(self, google_token, request):
-        args = {
-            'client_id': settings.GOOGLE_CLIENT_ID,
-            'client_secret': settings.GOOGLE_CLIENT_SECRET,
-            'redirect_uri': request.build_absolute_uri(urlresolvers.reverse('google_callback')),
-            'code': google_token,
-            'grant_type': 'authorization_code',
-        }
+    def authenticate(self, google_access_token, request):
+        # Retrieve user's profile information
+        # TODO: Handle error, what if request was denied?
+        google_profile_data = json.load(urllib.urlopen('https://www.googleapis.com/oauth2/v1/userinfo?access_token=%s' % google_access_token))
 
-        token_data = urllib.urlopen('https://accounts.google.com/o/oauth2/token', urllib.urlencode(args)).read()
-        access_token = json.loads(token_data)['access_token']
+        try:
+            user = self.user_class.objects.get(google_profile_data__id=google_profile_data.get('id'))
+        except self.user_class.DoesNotExist:
+            # We reload to make sure user object is recent
+            user = request.user.reload()
+            # TODO: Is it OK to override Google link if it already exist with some other Google user?
 
-        user_data = urllib.urlopen('https://www.googleapis.com/oauth2/v1/userinfo?access_token=%s' % access_token)
-        google_user = json.load(user_data)
+        user.google_access_token = google_access_token
+        user.google_profile_data = google_profile_data
 
-        user, created = self.user_class.objects.get_or_create(
-            google_id=google_user['id'],
-            defaults = {
-                'username': google_user['given_name'] + google_user['family_name'],
-                'first_name': google_user['given_name'],
-                'last_name': google_user['family_name'],
-                'email': google_user['email'],
-                'gender': google_user['gender'],
-                'google_link': google_user['link'],
-                'google_picture_url': google_user['picture'],
-            }
-        )
-        user.google_token = access_token
+        if user.first_name is None:
+            user.first_name = google_profile_data.get('given_name') or None
+        if user.last_name is None:
+            user.last_name = google_profile_data.get('family_name') or None
+        if user.email is None:
+            user.email = google_profile_data.get('email') or None
+        if user.gender is None:
+            # TODO: Does it really map so cleanly?
+            user.gender = google_profile_data.get('gender') or None
+
         user.save()
+
         return user
 
 class LazyUserBackend(MongoEngineBackend):

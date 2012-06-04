@@ -53,10 +53,8 @@ class User(auth.User):
     twitter_access_token = mongoengine.EmbeddedDocumentField(TwitterAccessToken)
     twitter_profile_data = mongoengine.DictField()
 
-    google_id = mongoengine.StringField(max_length=30)
-    google_token = mongoengine.StringField(max_length=150)
-    google_link = mongoengine.StringField(max_length=100)
-    google_picture_url = mongoengine.StringField(max_length=150)
+    google_access_token = mongoengine.StringField(max_length=150)
+    google_profile_data = mongoengine.DictField()
 
     connections = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Connection))
     connection_last_unsubscribe = mongoengine.DateTimeField()
@@ -73,7 +71,8 @@ class User(auth.User):
         return not self.is_authenticated()
 
     def is_authenticated(self):
-        return self.has_usable_password() or self.facebook_profile_data or self.twitter_profile_data or self.google_id is not None
+        # TODO: Check if *_data fields are really false if not linked with third-party authentication
+        return self.has_usable_password() or self.facebook_profile_data or self.twitter_profile_data or self.google_profile_data
 
     def check_password(self, raw_password):
         def setter(raw_password):
@@ -94,13 +93,13 @@ class User(auth.User):
     def get_image_url(self):
         if self.twitter_profile_data:
             return self.twitter_profile_data.profile_image_url
-        
+
         elif self.facebook_profile_data:
             return '%s?type=square' % utils.graph_api_url('%s/picture' % self.username)
 
-        elif self.google_id:
-            return self.google_picture_url
-        
+        elif self.google_profile_data:
+            return self.google_profile_data.picture
+
         elif self.email:
             request = client.RequestFactory(**settings.DEFAULT_REQUEST).request()
             default_url = request.build_absolute_uri(staticfiles_storage.url(settings.DEFAULT_USER_IMAGE))
