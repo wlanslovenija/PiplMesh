@@ -44,8 +44,9 @@ class FacebookCallbackView(generic_views.RedirectView):
     url = settings.FACEBOOK_LOGIN_REDIRECT
 
     def get(self, request, *args, **kwargs):
+        # TODO: Add security measures to prevent attackers from sending a redirect to this url with a forged 'code' (you can use 'state' parameter to set a random nonce and store it into session)
+
         if 'code' in request.GET:
-            # TODO: Add security measures to prevent attackers from sending a redirect to this url with a forged 'code'
             args = {
                 'client_id': settings.FACEBOOK_APP_ID,
                 'client_secret': settings.FACEBOOK_APP_SECRET,
@@ -65,8 +66,8 @@ class FacebookCallbackView(generic_views.RedirectView):
 
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
         else:
-            # TODO: Message user that they have not been logged in because they cancelled the facebook app
-            # TODO: Use information provided from facebook as to why the login was not successful
+            # TODO: Message user that they have not been logged in because they cancelled the Facebook app
+            # TODO: Use information provided by Facebook as to why the login was not successful
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
 
 class TwitterLoginView(generic_views.RedirectView):
@@ -77,7 +78,11 @@ class TwitterLoginView(generic_views.RedirectView):
     permanent = False
 
     def get_redirect_url(self, **kwargs):
-        twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET, self.request.build_absolute_uri(urlresolvers.reverse('twitter_callback')))
+        twitter_auth = tweepy.OAuthHandler(
+            settings.TWITTER_CONSUMER_KEY,
+            settings.TWITTER_CONSUMER_SECRET,
+            self.request.build_absolute_uri(urlresolvers.reverse('twitter_callback')),
+        )
         redirect_url = twitter_auth.get_authorization_url(signin_with_twitter=True)
         self.request.session['request_token'] = twitter_auth.request_token
         return redirect_url
@@ -124,6 +129,8 @@ class GoogleLoginView(generic_views.RedirectView):
             'scope': GOOGLE_SCOPE,
             'redirect_uri': self.request.build_absolute_uri(urlresolvers.reverse('google_callback')),
             'response_type': 'code',
+            'access_type': 'online',
+            'approval_prompt': 'auto',
         }
         return 'https://accounts.google.com/o/oauth2/auth?%s' % urllib.urlencode(args)
 
@@ -137,6 +144,8 @@ class GoogleCallbackView(generic_views.RedirectView):
     url = settings.GOOGLE_LOGIN_REDIRECT
 
     def get(self, request, *args, **kwargs):
+        # TODO: Add security measures to prevent attackers from sending a redirect to this url with a forged 'code' (you can use 'state' parameter to set a random nonce and store it into session)
+
         if 'code' in request.GET:
             args = {
                 'client_id': settings.GOOGLE_CLIENT_ID,
