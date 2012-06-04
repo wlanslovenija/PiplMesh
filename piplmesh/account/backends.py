@@ -209,17 +209,25 @@ class FoursquareBackend(MongoEngineBackend):
         photo - URL of a profile picture for this user.
         gender - A user's gender: male, female, or none.
         relationship - (Optional) The relationship of the acting user (me) to this user (them).
-
-        Fields present in user details:
-        type, contact, pings, badges, checkins, mayorships, tips, todos, photos, friends, followers, 
-        requests, pageInfo.
+        type - One of page, celebrity, or user. Users can establish following relationships with celebrities.
+        contact - An object containing none, some, or all of twitter, facebook, email, and phone. Both are strings.
+        pings - (Optional) Pings from this user.
+        badges - Contains the count of badges for this user.  May eventually contain some selected badges
+        checkins - Contains the count of checkins by this user. May contain the most recent checkin as an array.
+        mayorships - Contains the count of mayorships for this user and an items array that for now is empty.
+        tips - Contains the count of tips from this user. May contain an array of selected tips as items.
+        todos - Contains the count of todos this user has.  May contain an array of selected todos as items.
+        photos - Contains the count of photos this user has. May contain an array of selected photos as items.
+        friends - Contains count of friends for this user and groups of users who are friends.
+        followers - Contains count of followers for this user, if they are a page or celebrity
+        requests - Contains count of pending friend requests for this user.
+        pageInfo - Contains a detailed page, if they are a page.
     """
 
     def authenticate(self, foursquare_access_token, request):
         # Retrieve user's profile information
         # TODO: Handle error, what if request was denied?
-        foursquare_user_data = json.load(urllib.urlopen('https://api.foursquare.com/v2/users/self?%s' % urllib.urlencode({'oauth_token': foursquare_access_token})))
-        foursquare_profile_data = foursquare_user_data['response']['user']
+        foursquare_profile_data = json.load(urllib.urlopen('https://api.foursquare.com/v2/users/self?%s' % urllib.urlencode({'oauth_token': foursquare_access_token})))['response']['user']
 
         try:
             user = self.user_class.objects.get(foursquare_profile_data__id=foursquare_profile_data.get('id'))
