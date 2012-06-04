@@ -213,11 +213,11 @@ class FoursquareBackend(MongoEngineBackend):
     def authenticate(self, foursquare_access_token, request):
         # Retrieve user's profile information
         # TODO: Handle error, what if request was denied?
-        foursquare_user_data = json.load(urllib.urlopen('https://api.foursquare.com/v2/users/self?%s' % foursquare_access_token))
+        foursquare_user_data = json.load(urllib.urlopen('https://api.foursquare.com/v2/users/self?%s' % urllib.urlencode({'oauth_token': foursquare_access_token})))
         foursquare_profile_data = foursquare_user_data['response']['user']
 
         try:
-            user = self.user_class.objects.get(foursquare_profile_data_id=foursquare_profile_data.get('id'))
+            user = self.user_class.objects.get(foursquare_profile_data__id=foursquare_profile_data.get('id'))
         except self.user_class.DoesNotExist:
             # We reload to make sure user object is recent
             user = request.user.reload()
