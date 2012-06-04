@@ -210,38 +210,34 @@ class FoursquareBackend(MongoEngineBackend):
     requests, pageInfo.
     """
 
-    def authenticate(self, foursquare_token, request):
-        args = {
-            'client_id': settings.FOURSQUARE_CLIENT_ID,
-            'client_secret': settings.FOURSQUARE_CLIENT_SECRET,
-            'redirect_uri': request.build_absolute_uri(urlresolvers.reverse('foursquare_callback')),
-            'code': foursquare_token,
-            'grant_type': 'authorization_code',
-        }
+    def authenticate(self, foursquare_access_token, request):
+        # Retrieve user's profile information
+        # TODO: Handle error, what if request was denied?
+        foursquare_user_data = json.load(urllib.urlopen('https://api.foursquare.com/v2/users/self?%s' % foursquare_access_token))
+        foursquare_profile_data = foursquare_user_data['response']['user']
 
-        # Retrieve access token
-        url = urllib.urlopen('https://foursquare.com/oauth2/access_token?%s' % urllib.urlencode(args)).read()
-        response = json.loads(url)
-        access_token = response.get('access_token')
+        try:
+            user = self.user_class.objects.get(foursquare_profile_data_id=foursquare_profile_data.get('id'))
+        except self.user_class.DoesNotExist:
+            # We reload to make sure user object is recent
+            user = request.user.reload()
+            # TODO: Is it OK to override Foursquare link if it already exist with some other Foursquare user?
 
-        # Retrieve user's public profile information
-        data = urllib.urlopen('https://api.foursquare.com/v2/users/self?%s' % urllib.urlencode({'oauth_token': access_token}))
-        foursquare_data = json.load(data)
-        foursquare_user = foursquare_data['response']['user']
+        user.foursquare_access_token = foursquare_access_token
+        user.foursquare_profile_data = foursquare_profile_data
 
-        user, created = self.user_class.objects.get_or_create(
-            foursquare_id=foursquare_user.get('id'),
-            defaults={
-                'username': foursquare_user.get('firstName', '') + foursquare_user.get('lastName', ''),
-                'first_name': foursquare_user.get('firstName', ''),
-                'last_name': foursquare_user.get('lastName', ''),
-                'email': foursquare_user.get('contact', {}).get('email'),
-                'gender': foursquare_user.get('gender'),
-                'foursquare_picture_url': foursquare_user.get('photo')
-            }
-        )
-        user.foursquare_token = access_token
+        if user.first_name is None:
+            user.first_name = foursquare_profile_data.get('firstName') or None
+        if user.last_name is None:
+            user.last_name = foursquare_profile_data.get('lastName') or None
+        if user.email is None:
+            user.email = foursquare_profile_data.get('contact', {}).get('email') or None
+        if user.gender is None:
+            # TODO: Does it really map so cleanly?
+            user.gender = foursquare_profile_data.get('gender') or None
+
         user.save()
+
         return user
 
 class LazyUserBackend(MongoEngineBackend):

@@ -171,8 +171,8 @@ class FoursquareLoginView(generic_views.RedirectView):
     def get_redirect_url(self, **kwargs):
         args = {
             'client_id': settings.FOURSQUARE_CLIENT_ID,
-            'response_type': 'code',
             'redirect_uri': self.request.build_absolute_uri(urlresolvers.reverse('foursquare_callback')),
+            'response_type': 'code',
         }
         return 'https://foursquare.com/oauth2/authenticate?%s' % urllib.urlencode(args)
 
