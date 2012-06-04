@@ -56,9 +56,8 @@ class User(auth.User):
     google_access_token = mongoengine.StringField(max_length=150)
     google_profile_data = mongoengine.DictField()
 
-    foursquare_id = mongoengine.StringField()
-    foursquare_token = mongoengine.StringField(max_length=150)
-    foursquare_picture_url = mongoengine.StringField(max_length=150)
+    foursquare_access_token = mongoengine.StringField(max_length=150)
+    foursquare_profile_data = mongoengine.DictField()
 
     connections = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Connection))
     connection_last_unsubscribe = mongoengine.DateTimeField()
@@ -76,7 +75,7 @@ class User(auth.User):
 
     def is_authenticated(self):
         # TODO: Check if *_data fields are really false if not linked with third-party authentication
-        return self.has_usable_password() or self.facebook_profile_data or self.twitter_profile_data or self.google_profile_data
+        return self.has_usable_password() or self.facebook_profile_data or self.twitter_profile_data or self.google_profile_data or self.foursquare_profile_data
 
     def check_password(self, raw_password):
         def setter(raw_password):
@@ -101,8 +100,8 @@ class User(auth.User):
         elif self.facebook_profile_data:
             return '%s?type=square' % utils.graph_api_url('%s/picture' % self.username)
 
-        elif self.foursquare_id:
-            return self.foursquare_picture_url
+        elif self.foursquare_profile_data:
+            return self.foursquare_profile_data.photo
         
         elif self.google_profile_data:
             return self.google_profile_data.picture
