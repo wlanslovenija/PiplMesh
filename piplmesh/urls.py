@@ -48,6 +48,10 @@ urlpatterns = patterns('',
     url(r'^foursquare/login/$', account_views.FoursquareLoginView.as_view(), name='foursquare_login'),
     url(r'^foursquare/callback/$', account_views.FoursquareCallbackView.as_view(), name='foursquare_callback'),
 
+    # Google
+    url(r'^google/login/$', account_views.GoogleLoginView.as_view(), name='google_login'),
+    url(r'^google/callback/$', account_views.GoogleCallbackView.as_view(), name='google_callback'),
+
     # Profile, account
     url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='profile'),
     url(r'^account/$', account_views.AccountChangeView.as_view(), name='account'),

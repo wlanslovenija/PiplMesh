@@ -2,7 +2,7 @@
 #
 # Development Django settings for PiplMesh project.
 
-import datetime, os.path
+import datetime, os
 
 MONGO_DATABASE_NAME = 'PiplMesh'
 
@@ -13,6 +13,9 @@ settings_dir = os.path.abspath(os.path.dirname(__file__))
 
 import djcelery
 djcelery.setup_loader()
+
+# Dummy function, so that "makemessages" can find strings which should be translated.
+_ = lambda s: s
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -37,9 +40,6 @@ TIME_ZONE = 'Europe/Ljubljana'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'sl'
-
-# Dummy function, so that "makemessages" can find strings which should be translated.
-_ = lambda s: s
 
 LANGUAGES = (
     ('sl', _('Slovenian')),
@@ -150,14 +150,14 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'piplmesh.urls'
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 #   os.path.join(settings_dir, 'templates'),
 )
-
-MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 INSTALLED_APPS = (
     # Ours are first so that we can override default templates in other apps
@@ -264,6 +264,7 @@ AUTHENTICATION_BACKENDS = (
     'piplmesh.account.backends.FacebookBackend',
     'piplmesh.account.backends.TwitterBackend',
     'piplmesh.account.backends.FoursquareBackend',
+    'piplmesh.account.backends.GoogleBackend',
     'piplmesh.account.backends.LazyUserBackend',
 )
 
@@ -289,7 +290,6 @@ NODES_MIDDLEWARE_EXCEPTIONS = (
 # and access your site by local ip 127.0.0.1:8000 in your browser
 FACEBOOK_APP_ID = '268978083181801' # Add your app ID/API key
 FACEBOOK_APP_SECRET = '0d86323405308915be0564e8c00bf6e0' # Add your app secret key
-FACEBOOK_SCOPE = 'email' # You may add additional parameters
 FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
 FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
 
@@ -302,6 +302,11 @@ TWITTER_LOGIN_REDIRECT = '/'
 FOURSQUARE_CLIENT_ID = 'IU4LBMWT2DOCQ2JOIN3A04450HBB4GY2D5QX0WYPQ2DLP1DK'
 FOURSQUARE_CLIENT_SECRET = 'UDFGDOKUSOOV0GGGI0JDHR5OOJ1KBVV3OJ50SOGFVFJ3YPKO'
 FOURSQUARE_LOGIN_REDIRECT = '/'
+
+# Google settings
+GOOGLE_CLIENT_ID = '961599639127.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET = 'XjLBcVysDl6g0qEx_bnGUPDb'
+GOOGLE_LOGIN_REDIRECT = '/'
 
 # You can set up your own custom search engine on: http://www.google.com/cse/
 # just register with you google account and crate new search engine.

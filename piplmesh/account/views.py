@@ -1,4 +1,4 @@
-import urllib
+import json, urllib, urlparse
 
 from django import dispatch, http, shortcuts
 from django.conf import settings
@@ -16,6 +16,9 @@ import tweepy
 
 from piplmesh.account import forms, models
 
+FACEBOOK_SCOPE = 'email'
+GOOGLE_SCOPE = 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
+
 class FacebookLoginView(generic_views.RedirectView):
     """ 
     This view authenticates the user via Facebook.
@@ -26,7 +29,7 @@ class FacebookLoginView(generic_views.RedirectView):
     def get_redirect_url(self, **kwargs):
         args = {
             'client_id': settings.FACEBOOK_APP_ID,
-            'scope': settings.FACEBOOK_SCOPE,
+            'scope': FACEBOOK_SCOPE,
             'redirect_uri': self.request.build_absolute_uri(urlresolvers.reverse('facebook_callback')),
         }
         return 'https://www.facebook.com/dialog/oauth?%s' % urllib.urlencode(args)
@@ -43,8 +46,23 @@ class FacebookCallbackView(generic_views.RedirectView):
     def get(self, request, *args, **kwargs):
         if 'code' in request.GET:
             # TODO: Add security measures to prevent attackers from sending a redirect to this url with a forged 'code'
-            user = auth.authenticate(facebook_token=request.GET['code'], request=request)
+            args = {
+                'client_id': settings.FACEBOOK_APP_ID,
+                'client_secret': settings.FACEBOOK_APP_SECRET,
+                'redirect_uri': request.build_absolute_uri(urlresolvers.reverse('facebook_callback')),
+                'code': request.GET['code'],
+            }
+
+            # Retrieve access token
+            response = urlparse.parse_qs(urllib.urlopen('https://graph.facebook.com/oauth/access_token?%s' % urllib.urlencode(args)).read())
+            # TODO: Handle error, what if response does not contain access token?
+            access_token = response['access_token'][0]
+
+            user = auth.authenticate(facebook_access_token=access_token, request=request)
+            assert user.is_authenticated()
+
             auth.login(request, user)
+
             return super(FacebookCallbackView, self).get(request, *args, **kwargs)
         else:
             # TODO: Message user that they have not been logged in because they cancelled the facebook app
@@ -81,14 +99,67 @@ class TwitterCallbackView(generic_views.RedirectView):
             assert request_token.key == request.GET['oauth_token']
             twitter_auth.set_request_token(request_token.key, request_token.secret)
             twitter_auth.get_access_token(verifier=oauth_verifier)
-            user = auth.authenticate(twitter_token=twitter_auth.access_token, request=request)
+
+            user = auth.authenticate(twitter_access_token=twitter_auth.access_token, request=request)
             assert user.is_authenticated()
+
             auth.login(request, user)
+
             return super(TwitterCallbackView, self).get(request, *args, **kwargs)
         else:
             # TODO: Message user that they have not been logged in because they cancelled the twitter app
             # TODO: Use information provided from twitter as to why the login was not successful
             return super(TwitterCallbackView, self).get(request, *args, **kwargs)
+
+class GoogleLoginView(generic_views.RedirectView):
+    """
+    This view authenticates the user via Google.
+    """
+
+    permanent = False
+
+    def get_redirect_url(self, **kwargs):
+        args = {
+            'client_id': settings.GOOGLE_CLIENT_ID,
+            'scope': GOOGLE_SCOPE,
+            'redirect_uri': self.request.build_absolute_uri(urlresolvers.reverse('google_callback')),
+            'response_type': 'code',
+        }
+        return 'https://accounts.google.com/o/oauth2/auth?%s' % urllib.urlencode(args)
+
+class GoogleCallbackView(generic_views.RedirectView):
+    """
+    Authentication callback. Redirects user to GOOGLE_REDIRECT_URL.
+    """
+
+    permanent = False
+    # TODO: Redirect users to the page they initially came from
+    url = settings.GOOGLE_LOGIN_REDIRECT
+
+    def get(self, request, *args, **kwargs):
+        if 'code' in request.GET:
+            args = {
+                'client_id': settings.GOOGLE_CLIENT_ID,
+                'client_secret': settings.GOOGLE_CLIENT_SECRET,
+                'redirect_uri': request.build_absolute_uri(urlresolvers.reverse('google_callback')),
+                'code': request.GET['code'],
+                'grant_type': 'authorization_code',
+            }
+
+            response = json.load(urllib.urlopen('https://accounts.google.com/o/oauth2/token', urllib.urlencode(args)))
+            # TODO: Handle error, what if response does not contain access token?
+            access_token = response['access_token']
+
+            user = auth.authenticate(google_access_token=access_token, request=request)
+            assert user.is_authenticated()
+
+            auth.login(request, user)
+
+            return super(GoogleCallbackView, self).get(request, *args, **kwargs)
+        else:
+            # TODO: Message user that they have not been logged in because they cancelled the Google app
+            # TODO: Use information provided from Google as to why the login was not successful
+            return super(GoogleCallbackView, self).get(request, *args, **kwargs)
 
 class FoursquareLoginView(generic_views.RedirectView):
     """

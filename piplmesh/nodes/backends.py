@@ -35,4 +35,7 @@ class RandomNodesBackend(object):
             return None
 
     def get_all_nodes(self):
-        return range(len(data.nodes))
+        for i, node in enumerate(data.nodes):
+            node = copy.copy(node)
+            node.id = i
+            yield node

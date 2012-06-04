@@ -1,7 +1,6 @@
-import json, urllib, urlparse
+import json, urllib
 
 from django.conf import settings
-from django.core import urlresolvers
 from django.utils import crypto
 
 from mongoengine import queryset
@@ -43,44 +42,37 @@ class FacebookBackend(MongoEngineBackend):
     Facebook authentication.
     """
 
-    def authenticate(self, facebook_token, request):
-        """
-        Retrieves an access token and Facebook data. Determine if user already
-        exists. If not, a new user is created. Finally, the user's Facebook
-        data is saved.
-        """
-    
-        args = {
-            'client_id': settings.FACEBOOK_APP_ID,
-            'client_secret': settings.FACEBOOK_APP_SECRET,
-            'redirect_uri': request.build_absolute_uri(urlresolvers.reverse('facebook_callback')),
-            'code': facebook_token,
-        }
-    
-        # Retrieve access token
-        url = urllib.urlopen('https://graph.facebook.com/oauth/access_token?%s' % urllib.urlencode(args)).read()
-        response = urlparse.parse_qs(url)
-        access_token = response['access_token'][-1]
-    
-        # Retrieve user's public profile information
-        data = urllib.urlopen('https://graph.facebook.com/me?%s' % urllib.urlencode({'access_token': access_token}))
-        fb = json.load(data)
+    def authenticate(self, facebook_access_token, request):
+        # Retrieve user's profile information
+        # TODO: Handle error, what if request was denied?
+        facebook_profile_data = json.load(urllib.urlopen('https://graph.facebook.com/me?%s' % urllib.urlencode({'access_token': facebook_access_token})))
 
-        # TODO: Check if id and other fields are returned
-        # TODO: Move user retrieval/creation to User document/manager
-        # TODO: get_or_create implementation has in fact a race condition, is this a problem?
-        user, created = self.user_class.objects.get_or_create(
-            facebook_id=fb.get('id'),
-            defaults={
-                'username': fb.get('username', fb.get('first_name') + fb.get('last_name')),
-                'first_name': fb.get('first_name'),
-                'last_name': fb.get('last_name'),
-                'email': fb.get('email'),
-                'gender': fb.get('gender'),
-                'facebook_link': fb.get('link'),
-            }
-        )
-        user.facebook_token = access_token
+        try:
+            user = self.user_class.objects.get(facebook_profile_data__id=facebook_profile_data.get('id'))
+        except self.user_class.DoesNotExist:
+            # We reload to make sure user object is recent
+            user = request.user.reload()
+            # TODO: Is it OK to override Facebook link if it already exist with some other Facebook user?
+
+        user.facebook_access_token = facebook_access_token
+        user.facebook_profile_data = facebook_profile_data
+
+        if user.lazyuser_username and facebook_profile_data.get('username'):
+            # TODO: Does Facebook have same restrictions on username content as we do?
+            user.username = facebook_profile_data.get('username')
+            user.lazyuser_username = False
+        if user.first_name is None:
+            user.first_name = facebook_profile_data.get('first_name') or None
+        if user.last_name is None:
+            user.last_name = facebook_profile_data.get('last_name') or None
+        if user.email is None:
+            # TODO: Do we know if all e-mail addresses given by Facebook are verified?
+            # TODO: Does not Facebook support multiple e-mail addresses? Which one is given here?
+            user.email = facebook_profile_data.get('email') or None
+        if user.gender is None:
+            # TODO: Does it really map so cleanly?
+            user.gender = facebook_profile_data.get('gender') or None
+
         user.save()
 
         return user
@@ -88,23 +80,116 @@ class FacebookBackend(MongoEngineBackend):
 class TwitterBackend(MongoEngineBackend):
     """
     Twitter authentication.
+
+    Twitter profile data fields are:
+        name: user's full name
+        screen_name: user's username
+        profile_image_url
+        profile_background_image_url
+        id: id of Twitter user
+        id_str: string id of Twitter user
+        created_at: full date of user's registration on Twitter
+        location: user's location
+        time_zone
+        lang: user's preferred language
+        url: URL of user's website
+        description: user's description of themselves
+        profile_sidebar_fill_color
+        profile_text_color
+        profile_background_color
+        profile_link_color
+        profile_sidebar_border_color
+        friends_count
+        followers_count
+        statuses_count
+        favourites_count
+        listed_count
+        notifications: boolean value
+        geo_enabled: boolean value
+        following: boolean value
+        follow_request_sent: boolean value
+        profile_use_background_image: boolean value
+        verified: boolean value; tells whether user's email is verified
+        protected: boolean value
+        show_all_inline_media: boolean value
+        is_translator: boolean value
+        profile_background_tile: boolean value
+        contributors_enabled: boolean value
+        utc_offset: integer
     """
 
-    def authenticate(self, twitter_token, request):
+    def authenticate(self, twitter_access_token, request):
         twitter_auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
-        twitter_auth.set_access_token(twitter_token.key, twitter_token.secret)
-        api = tweepy.API(twitter_auth)
-        twitter_user = api.me()
-        user, created = self.user_class.objects.get_or_create(
-            twitter_id = twitter_user.id,
-            defaults = {
-                'username': twitter_user.screen_name,
-                'first_name': twitter_user.name,
-            }
-        )
-        user.twitter_token_key = twitter_token.key
-        user.twitter_token_secret = twitter_token.secret
+        twitter_auth.set_access_token(twitter_access_token.key, twitter_access_token.secret)
+        twitter_api = tweepy.API(twitter_auth)
+
+        twitter_profile_data = twitter_api.me()
+
+        try:
+            user = self.user_class.objects.get(twitter_profile_data__id=twitter_profile_data.get('id'))
+        except self.user_class.DoesNotExist:
+            # We reload to make sure user object is recent
+            user = request.user.reload()
+            # TODO: Is it OK to override Twitter link if it already exist with some other Twitter user?
+
+        user.twitter_access_token = models.TwitterAccessToken(key=twitter_access_token.key, secret=twitter_access_token.secret)
+        user.twitter_profile_data = twitter_profile_data
+
+        if user.lazyuser_username and twitter_profile_data.get('username'):
+            # TODO: Does Twitter have same restrictions on username content as we do?
+            user.username = twitter_profile_data.get('screen_name')
+            user.lazyuser_username = False
+        if user.first_name is None:
+            user.first_name = twitter_profile_data.get('name') or None
+
         user.save()
+
+        return user
+
+class GoogleBackend(MongoEngineBackend):
+    """
+    Google authentication.
+
+    Google profile data fields are:
+        family_name: last name
+        given_name: first name
+        name: full name
+        link: URL of Google user profile page
+        picture: URL of profile picture
+        locale: the language Google user is using
+        gender: sex of Google user
+        email: Google email of user
+        id: id of Google user; should be a string
+        verified_email: True, if email is verified by Google API
+    """
+
+    def authenticate(self, google_access_token, request):
+        # Retrieve user's profile information
+        # TODO: Handle error, what if request was denied?
+        google_profile_data = json.load(urllib.urlopen('https://www.googleapis.com/oauth2/v1/userinfo?access_token=%s' % google_access_token))
+
+        try:
+            user = self.user_class.objects.get(google_profile_data__id=google_profile_data.get('id'))
+        except self.user_class.DoesNotExist:
+            # We reload to make sure user object is recent
+            user = request.user.reload()
+            # TODO: Is it OK to override Google link if it already exist with some other Google user?
+
+        user.google_access_token = google_access_token
+        user.google_profile_data = google_profile_data
+
+        if user.first_name is None:
+            user.first_name = google_profile_data.get('given_name') or None
+        if user.last_name is None:
+            user.last_name = google_profile_data.get('family_name') or None
+        if user.email is None:
+            user.email = google_profile_data.get('email') or None
+        if user.gender is None:
+            # TODO: Does it really map so cleanly?
+            user.gender = google_profile_data.get('gender') or None
+
+        user.save()
+
         return user
 
 class FoursquareBackend(MongoEngineBackend):
