@@ -101,10 +101,10 @@ class User(auth.User):
             return '%s?type=square' % utils.graph_api_url('%s/picture' % self.username)
 
         elif self.foursquare_profile_data:
-            return self.foursquare_profile_data.photo
+            return self.foursquare_profile_data.get('photo')
         
         elif self.google_profile_data:
-            return self.google_profile_data.picture
+            return self.google_profile_data.get('picture')
 
         elif self.email:
             request = client.RequestFactory(**settings.DEFAULT_REQUEST).request()
