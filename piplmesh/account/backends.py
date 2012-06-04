@@ -197,17 +197,17 @@ class FoursquareBackend(MongoEngineBackend):
     Foursquare authentication.
 
     Foursquare user fields are:
-    id - A unique identifier for this user.
-    firstName - A user's first name.
-    lastName - A user's last name.
-    homeCity - User's home city.
-    photo - URL of a profile picture for this user.
-    gender - A user's gender: male, female, or none.
-    relationship - (Optional) The relationship of the acting user (me) to this user (them).
+        id - A unique identifier for this user.
+        firstName - A user's first name.
+        lastName - A user's last name.
+        homeCity - User's home city.
+        photo - URL of a profile picture for this user.
+        gender - A user's gender: male, female, or none.
+        relationship - (Optional) The relationship of the acting user (me) to this user (them).
 
-    Fields present in user details:
-    type, contact, pings, badges, checkins, mayorships, tips, todos, photos, friends, followers, 
-    requests, pageInfo.
+        Fields present in user details:
+        type, contact, pings, badges, checkins, mayorships, tips, todos, photos, friends, followers, 
+        requests, pageInfo.
     """
 
     def authenticate(self, foursquare_access_token, request):
