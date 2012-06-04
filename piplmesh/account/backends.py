@@ -42,6 +42,8 @@ class FacebookBackend(MongoEngineBackend):
     Facebook authentication.
     """
 
+    # TODO: List all profile data fields we (can) get
+
     def authenticate(self, facebook_access_token, request):
         # Retrieve user's profile information
         # TODO: Handle error, what if request was denied?
@@ -50,6 +52,7 @@ class FacebookBackend(MongoEngineBackend):
         try:
             user = self.user_class.objects.get(facebook_profile_data__id=facebook_profile_data.get('id'))
         except self.user_class.DoesNotExist:
+            # TODO: Based on user preference, we might create a new user here, not just link with existing, if existing user is lazy user
             # We reload to make sure user object is recent
             user = request.user.reload()
             # TODO: Is it OK to override Facebook link if it already exist with some other Facebook user?
@@ -128,6 +131,7 @@ class TwitterBackend(MongoEngineBackend):
         try:
             user = self.user_class.objects.get(twitter_profile_data__id=twitter_profile_data.get('id'))
         except self.user_class.DoesNotExist:
+            # TODO: Based on user preference, we might create a new user here, not just link with existing, if existing user is lazy user
             # We reload to make sure user object is recent
             user = request.user.reload()
             # TODO: Is it OK to override Twitter link if it already exist with some other Twitter user?
@@ -171,6 +175,7 @@ class GoogleBackend(MongoEngineBackend):
         try:
             user = self.user_class.objects.get(google_profile_data__id=google_profile_data.get('id'))
         except self.user_class.DoesNotExist:
+            # TODO: Based on user preference, we might create a new user here, not just link with existing, if existing user is lazy user
             # We reload to make sure user object is recent
             user = request.user.reload()
             # TODO: Is it OK to override Google link if it already exist with some other Google user?

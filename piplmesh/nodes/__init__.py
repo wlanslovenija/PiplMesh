@@ -58,7 +58,8 @@ def get_node(request):
     Returns ``None`` if no node could be determined.
     """
 
-    # TODO: What if users moves from inside to outside, or outside to inside, inside existing session? How should we invalidate node?
+    # TODO: What if user moves from inside to outside, or outside to inside, inside existing session? How should we invalidate node?
+    # TODO: What if user moves between nodes, between outside locations?
 
     node = None
     try:
