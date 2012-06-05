@@ -21,8 +21,8 @@
         <p>{% trans "Birthdate:" %} {{ object.birthdate }}</p>
         <p>{% trans "E-mail:" %} {{ object.email }}</p>
         <p>{% trans "Last login:" %} {{ object.last_login }}</p>
-        {% if object.facebook_id %}
-            <p><a href="{{ object.facebook_link }}"><img src="{{ STATIC_URL }}piplmesh/images/fb_logo.png" height="30" width="30" alt="{% trans "Facebook link" %}" /></a></p>
+        {% if object.facebook_profile_data.link %}
+            <p><a href="{{ object.facebook_profile_data.link }}"><img src="{{ STATIC_URL }}piplmesh/images/fb_logo.png" height="30" width="30" alt="{% trans "Facebook link" %}" /></a></p>
         {% endif %}
         <br/>
         <br/>

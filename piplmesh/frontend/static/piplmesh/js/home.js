@@ -5,7 +5,7 @@ function User(data) {
 }
 
 function redrawUserList() {
-    // TODO: Currently we just remove logged out users from the list, it would be better to fade them out
+    // TODO: Currently we just replace the whole list of users, it would be better to fade gone out, and fade new in
 
     var keys = [];
     $.each(onlineUsers, function (key, user) {
