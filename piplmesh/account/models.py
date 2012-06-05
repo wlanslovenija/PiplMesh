@@ -28,6 +28,10 @@ class Connection(mongoengine.EmbeddedDocument):
     http_if_modified_since = mongoengine.StringField()
     channel_id = mongoengine.StringField()
 
+class EmailConfirmationToken(mongoengine.EmbeddedDocument):
+    value = mongoengine.StringField(max_length=77)
+    date = mongoengine.DateTimeField()
+
 class TwitterAccessToken(mongoengine.EmbeddedDocument):
     key = mongoengine.StringField(max_length=150)
     secret = mongoengine.StringField(max_length=150)
@@ -64,14 +68,14 @@ class User(auth.User):
     is_online = mongoengine.BooleanField(default=False)
 
     email_confirmed = mongoengine.BooleanField(default=False)
-    email_confirmation_token = mongoengine.StringField(max_length=77)
+    email_confirmation_token = mongoengine.EmbeddedDocumentField(EmailConfirmationToken)
 
     @models.permalink
     def get_absolute_url(self):
         return ('profile', (), {'username': self.username})
 
     def email_confirmation_token_is_valid(self):
-        return True
+        return (timezone.now() - self.email_confirmation_token.date).days < 2
 
     def get_profile_url(self):
         return self.get_absolute_url()

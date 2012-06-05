@@ -1,7 +1,4 @@
-{% load i18n %}
-
-{% blocktrans with username=username %}
-Hello {{ username }}!
+{% load i18n %}{% blocktrans with username=username %}Hello {{ username }}!
 This message was sent to you to confirm this e-mail address.
 {% endblocktrans %}
 {% blocktrans with confirmation_token=confirmation_token %}

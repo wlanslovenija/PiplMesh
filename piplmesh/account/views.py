@@ -352,7 +352,7 @@ class EmailConfirmation(generic_views.TemplateView):
             'username' : user.username,
             'confirmation_token' : confirmation_token,
         }))
-        user.email_confirmation_token = confirmation_token
+        user.email_confirmation_token = models.EmailConfirmationToken(value=confirmation_token, date=timezone.now())
         user.save()
         user.email_user(subject, text_content, from_email)
 
@@ -362,9 +362,9 @@ class EmailConfirmation(generic_views.TemplateView):
 class EmailConfirmationActivate(generic_views.TemplateView):
     template_name = 'user/account.html'
 
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         user=request.user
-        if self.kwargs['confirmation_token'] == user.email_confirmation_token:
+        if self.kwargs['confirmation_token'] == user.email_confirmation_token.value:
             if not user.email_confirmation_token_is_valid():
                 messages.error(request, _("The confirmation code has expired. Please click 'Please confirm your e-mail address'"), fail_silently=True)
             else:
