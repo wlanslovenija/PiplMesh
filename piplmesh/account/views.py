@@ -170,6 +170,54 @@ class GoogleCallbackView(generic_views.RedirectView):
             # TODO: Use information provided from Google as to why the login was not successful
             return super(GoogleCallbackView, self).get(request, *args, **kwargs)
 
+class FoursquareLoginView(generic_views.RedirectView):
+    """
+    This view authenticates the user via Foursquare.
+    """
+
+    permanent = False
+
+    def get_redirect_url(self, **kwargs):
+        args = {
+            'client_id': settings.FOURSQUARE_CLIENT_ID,
+            'redirect_uri': self.request.build_absolute_uri(urlresolvers.reverse('foursquare_callback')),
+            'response_type': 'code',
+        }
+        return 'https://foursquare.com/oauth2/authenticate?%s' % urllib.urlencode(args)
+
+class FoursquareCallbackView(generic_views.RedirectView):
+    """
+    Authentication callback. Redirects user to LOGIN_REDIRECT_URL.
+    """
+
+    permanent = False
+    # TODO: Redirect users to the page they initially came from
+    url = settings.FOURSQUARE_LOGIN_REDIRECT
+
+    def get(self, request, *args, **kwargs):
+        if 'code' in request.GET:
+            args = {
+                'client_id': settings.FOURSQUARE_CLIENT_ID,
+                'client_secret': settings.FOURSQUARE_CLIENT_SECRET,
+                'redirect_uri': request.build_absolute_uri(urlresolvers.reverse('foursquare_callback')),
+                'code': request.GET['code'],
+                'grant_type': 'authorization_code',
+            }
+
+            response = json.load(urllib.urlopen('https://foursquare.com/oauth2/access_token', urllib.urlencode(args)))
+            # TODO: Handle error, what if response does not contain access token?
+            access_token = response['access_token']
+
+            user = auth.authenticate(foursquare_access_token=access_token, request=request)
+            assert user.is_authenticated()
+
+            auth.login(request, user)
+
+            return super(FoursquareCallbackView, self).get(request, *args, **kwargs)
+        else:
+            # TODO: Message user that they have not been logged in because they cancelled the foursquare app
+            # TODO: Use information provided from foursquare as to why the login was not successful
+            return super(FoursquareCallbackView, self).get(request, *args, **kwargs)
 
 def logout(request):
     """

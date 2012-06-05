@@ -197,6 +197,62 @@ class GoogleBackend(MongoEngineBackend):
 
         return user
 
+class FoursquareBackend(MongoEngineBackend):
+    """
+    Foursquare authentication.
+
+    Foursquare user fields are:
+        id - A unique identifier for this user.
+        firstName - A user's first name.
+        lastName - A user's last name.
+        homeCity - User's home city.
+        photo - URL of a profile picture for this user.
+        gender - A user's gender: male, female, or none.
+        relationship - (Optional) The relationship of the acting user (me) to this user (them).
+        type - One of page, celebrity, or user. Users can establish following relationships with celebrities.
+        contact - An object containing none, some, or all of twitter, facebook, email, and phone. Both are strings.
+        pings - (Optional) Pings from this user.
+        badges - Contains the count of badges for this user.  May eventually contain some selected badges
+        checkins - Contains the count of checkins by this user. May contain the most recent checkin as an array.
+        mayorships - Contains the count of mayorships for this user and an items array that for now is empty.
+        tips - Contains the count of tips from this user. May contain an array of selected tips as items.
+        todos - Contains the count of todos this user has.  May contain an array of selected todos as items.
+        photos - Contains the count of photos this user has. May contain an array of selected photos as items.
+        friends - Contains count of friends for this user and groups of users who are friends.
+        followers - Contains count of followers for this user, if they are a page or celebrity
+        requests - Contains count of pending friend requests for this user.
+        pageInfo - Contains a detailed page, if they are a page.
+    """
+
+    def authenticate(self, foursquare_access_token, request):
+        # Retrieve user's profile information
+        # TODO: Handle error, what if request was denied?
+        foursquare_profile_data = json.load(urllib.urlopen('https://api.foursquare.com/v2/users/self?%s' % urllib.urlencode({'oauth_token': foursquare_access_token})))['response']['user']
+
+        try:
+            user = self.user_class.objects.get(foursquare_profile_data__id=foursquare_profile_data.get('id'))
+        except self.user_class.DoesNotExist:
+            # We reload to make sure user object is recent
+            user = request.user.reload()
+            # TODO: Is it OK to override Foursquare link if it already exist with some other Foursquare user?
+
+        user.foursquare_access_token = foursquare_access_token
+        user.foursquare_profile_data = foursquare_profile_data
+
+        if user.first_name is None:
+            user.first_name = foursquare_profile_data.get('firstName') or None
+        if user.last_name is None:
+            user.last_name = foursquare_profile_data.get('lastName') or None
+        if user.email is None:
+            user.email = foursquare_profile_data.get('contact', {}).get('email') or None
+        if user.gender is None:
+            # TODO: Does it really map so cleanly?
+            user.gender = foursquare_profile_data.get('gender') or None
+
+        user.save()
+
+        return user
+
 class LazyUserBackend(MongoEngineBackend):
     def authenticate(self):
         while True:
