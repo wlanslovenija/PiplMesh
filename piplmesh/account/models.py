@@ -94,17 +94,17 @@ class User(auth.User):
         mail.send_mail(subject, message, from_email, [self.email])
 
     def get_image_url(self):
-        if self.twitter_profile_data:
-            return self.twitter_profile_data.profile_image_url
+        if self.twitter_profile_data and 'profile_image_url' in self.twitter_profile_data:
+            return self.twitter_profile_data['profile_image_url']
 
         elif self.facebook_profile_data:
             return '%s?type=square' % utils.graph_api_url('%s/picture' % self.username)
 
-        elif self.foursquare_profile_data:
-            return self.foursquare_profile_data.get('photo')
+        elif self.foursquare_profile_data and 'photo' in self.foursquare_profile_data:
+            return self.foursquare_profile_data['photo']
         
-        elif self.google_profile_data:
-            return self.google_profile_data.get('picture')
+        elif self.google_profile_data and 'picture' in self.google_profile_data:
+            return self.google_profile_data['picture']
 
         elif self.email:
             request = client.RequestFactory(**settings.DEFAULT_REQUEST).request()
