@@ -6,6 +6,14 @@
     {{ block.super }}
     <script type="text/javascript">
         /* <![CDATA[ */
+        var node = {
+            'name': '{{ request.node.name|escapejs }}',
+            'latitude': '{{ request.node.latitude|escapejs }}',
+            'longitude': '{{ request.node.longitude|escapejs }}',
+            'location': '{{ request.node.location|escapejs }}',
+            'url': '{{ request.node.url|escapejs }}'
+        }
+        
         var onlineUsers = {
             {% for user in online_users %}
                 '{{ user.username|lower|escapejs }}': {
@@ -42,4 +50,5 @@
         </p>
     </div>
     {% include "userlist.html" %}
+    {% include "map.html" %}
 {% endblock %}
