@@ -16,7 +16,7 @@ function initialize() {
     var map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
     var nodeName = $('<p/>').text(node.name+' | ');
     var nodeWebsite = $('<a/>').prop('href', node.url).text(gettext("more info"));
-	nodeName.append(nodeWebsite);
+    nodeName.append(nodeWebsite);
     $('#map_info').append(nodeName).hide();
     var marker = new google.maps.Marker({
             position: nodeLocation,
