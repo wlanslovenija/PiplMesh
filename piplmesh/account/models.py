@@ -30,7 +30,7 @@ class Connection(mongoengine.EmbeddedDocument):
 
 class EmailConfirmationToken(mongoengine.EmbeddedDocument):
     value = mongoengine.StringField(max_length=77)
-    date = mongoengine.DateTimeField()
+    date_created = mongoengine.DateTimeField()
 
 class TwitterAccessToken(mongoengine.EmbeddedDocument):
     key = mongoengine.StringField(max_length=150)
@@ -75,7 +75,7 @@ class User(auth.User):
         return ('profile', (), {'username': self.username})
 
     def email_confirmation_token_is_valid(self):
-        return (timezone.now() - self.email_confirmation_token.date).days < 2
+        return (timezone.now() - self.email_confirmation_token.date_created).days < 2
 
     def get_profile_url(self):
         return self.get_absolute_url()

@@ -343,16 +343,15 @@ class EmailConfirmation(generic_views.TemplateView):
         user = request.user
 
         # Message content
-        text_content = loader.get_template('user/confirmation_email.txt')
-
-        # We generate a string with length 77
+        # We generate a random string with length 77
         confirmation_token = ''.join(random.choice(string.letters + string.digits) for i in xrange(77))
-
+        text_content = loader.get_template('user/confirmation_email.txt')
         text_content = text_content.render(template.Context({
             'username' : user.username,
             'confirmation_token' : confirmation_token,
         }))
-        user.email_confirmation_token = models.EmailConfirmationToken(value=confirmation_token, date=timezone.now())
+
+        user.email_confirmation_token = models.EmailConfirmationToken(value=confirmation_token, date_created=timezone.now())
         user.save()
         user.email_user(subject, text_content, from_email)
 

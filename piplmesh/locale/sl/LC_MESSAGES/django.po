@@ -45,7 +45,7 @@ msgstr ""
 msgid "Username"
 msgstr "Uporabniško ime"
 
-#: account/forms.py:17 account/models.py:38
+#: account/forms.py:17 account/models.py:46
 msgid ""
 "Minimal of 4 characters and maximum of 30. Letters, digits and @/./+/-/_ "
 "only."
@@ -107,7 +107,7 @@ msgstr "Spol"
 msgid "Birth date"
 msgstr "Datum rojstva"
 
-#: account/models.py:37
+#: account/models.py:45
 msgid "username"
 msgstr "uporabniško ime"
 
@@ -119,63 +119,41 @@ msgstr "Prijava uspešna."
 msgid "You have been successfully logged out."
 msgstr "Odjava uspešna."
 
-#: account/views.py:133
+#: account/views.py:261
 msgid "Registration has been successful."
 msgstr "Registracija je bila uspešna."
 
-#: account/views.py:161
+#: account/views.py:289
 msgid "Your account has been successfully updated."
 msgstr "Tvoj račun je bil uspešno posodobljen."
 
-#: account/views.py:193
+#: account/views.py:321
 msgid "Your password has been successfully changed."
 msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
-#: account/views.py:209
-msgid "Confirm your e-mail address"
-msgstr "Potrdi svoj e-mail naslov"
-
-#: account/views.py:228
+#: account/views.py:358
 msgid ""
 "Email confirmation link has been sent to the e-mail address you provided."
 msgstr "Potrditvena povezava je bila poslana na podan e-mail naslov."
 
-#: account/views.py:238
+#: account/views.py:368
 msgid ""
 "The confirmation code has expired. Please click 'Please confirm your e-mail "
 "address'"
 msgstr ""
-"Potrditvena koda je potekla. Prosimo, da izbereš 'Potrdi svoj e-mail "
-"naslov'"
+"Potrditvena koda je potekla. Prosimo, da izbereš 'Potrdi svoj e-mail naslov'"
 
-#: account/views.py:242
+#: account/views.py:372
 msgid "You have successfully confirmed your e-mail address"
 msgstr "Uspešno si potrdil svoj e-mail naslov"
 
-#: account/views.py:244
+#: account/views.py:374
 msgid ""
 "Your confirmation code is wrong. Please click 'Please confirm your e-mail "
 "address'"
 msgstr ""
 "Tvoja potrditvena koda je napačna. Prosimo, da izbereš 'Potrdi svoj e-mail "
 "naslov'"
-
-#: account/templates/confirmationemail.txt:1
-#, python-format
-msgid ""
-"\n"
-"Hello %(username)s!\n"
-"This message was sent to you to confirm this e-mail address.\n"
-"\n"
-"Please click the link below to confirm your e-mail address:\n"
-"https://www.current_site.com/account/confirmation/%(activation_key)s/\n"
-msgstr ""
-"\n"
-"Pozdravljen %(username)s!\n"
-"To sporočilo je bilo poslano, da potrdiš svoj e-mail naslov.\n"
-"\n"
-"Prosimo izberi spodnjo povezavo za potrditev tvojega e-mail naslova:\n"
-"https://www.current_site.com/account/confirmation/%(activation_key)s/\n"
 
 #: account/templates/user/account.html:5
 #: account/templates/user/account.html:10
@@ -199,10 +177,31 @@ msgstr "Pošlji"
 msgid "Change your password"
 msgstr "Spremeni svoje geslo"
 
-#: account/templates/user/account.html:19
-#: account/templates/user/account.html:21
+#: account/templates/user/account.html:20
 msgid "Please confirm your e-mail address"
 msgstr "Prosimo, da potrdiš svoj e-mail naslov"
+
+#: account/templates/user/confirmation_email.txt:1
+msgid ""
+"Hello %(username)s!\n"
+"This message was sent to you to confirm this e-mail address.\n"
+msgstr ""
+"Pozdravljen %(username)s!\n"
+"To sporočilo je bilo poslano, da potrdiš svoj e-mail naslov."
+
+#: account/templates/user/confirmation_email.txt:4
+msgid ""
+"\n"
+"Please click the link below to confirm your e-mail address:\n"
+"https://www.current_site.com/account/confirmation/%(confirmation_token)s/\n"
+msgstr ""
+"\n"
+"Prosimo izberi spodnjo povezavo za potrditev tvojega e-mail naslova:\n"
+"https://www.current_site.com/account/confirmation/%(activation_key)s/\n"
+
+#: account/templates/user/confirmation_email_subject.txt:1
+msgid "[%(site_name)s] Confirm your e-mail address"
+msgstr "[%(site_name)s] Prosimo, da potrdiš svoj e-mail naslov"
 
 #: account/templates/user/email_confirmation.html:5
 msgid "Email Confirmation"
@@ -211,7 +210,7 @@ msgstr "Potrditev email naslova"
 #: account/templates/user/email_confirmation.html:9
 msgid "Clicking the button below will send a confirmation mail to %(email)s"
 msgstr ""
-"Klik na spodnji gumb, bo poslal potrditveno povezavo na  %(user.email)s"
+"Klik na spodnji gumb, bo poslal potrditveno povezavo na  %(email)s"
 
 #: account/templates/user/email_confirmation.html:13
 msgid "Click here to confirm your e-mail address"
@@ -243,7 +242,15 @@ msgstr "Facebook prijava"
 msgid "Login with Twitter"
 msgstr "Twitter prijava"
 
-#: account/templates/user/login.html:33
+#: account/templates/user/login.html:34
+msgid "Login with Foursquare"
+msgstr "Facebook prijava"
+
+#: account/templates/user/login.html:40
+msgid "Login with Google"
+msgstr "Google prijava"
+
+#: account/templates/user/login.html:45
 #: account/templates/user/registration.html:9
 #: frontend/templates/header.html:46
 msgid "Register"
@@ -398,10 +405,3 @@ msgstr "Zadnja prijava:"
 #: frontend/templates/user/user.html:25
 msgid "Facebook link"
 msgstr "Facebook povezava"
-
-#~ msgid "This message was sent to you to confirm this e-mail address."
-#~ msgstr "To sporočilo je bilo poslano, da potrdiš svoj e-mail naslov."
-
-#~ msgid "Please click the link below to confirm your e-mail address:"
-#~ msgstr ""
-#~ "Prosimo izberi spodnjo povezavo za potrditev tvojega e-mail naslova:"
