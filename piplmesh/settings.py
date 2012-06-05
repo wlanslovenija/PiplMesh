@@ -263,6 +263,8 @@ AUTHENTICATION_BACKENDS = (
     'piplmesh.account.backends.MongoEngineBackend',
     'piplmesh.account.backends.FacebookBackend',
     'piplmesh.account.backends.TwitterBackend',
+    'piplmesh.account.backends.FoursquareBackend',
+    'piplmesh.account.backends.GoogleBackend',
     'piplmesh.account.backends.LazyUserBackend',
 )
 
@@ -288,7 +290,6 @@ NODES_MIDDLEWARE_EXCEPTIONS = (
 # and access your site by local ip 127.0.0.1:8000 in your browser
 FACEBOOK_APP_ID = '268978083181801' # Add your app ID/API key
 FACEBOOK_APP_SECRET = '0d86323405308915be0564e8c00bf6e0' # Add your app secret key
-FACEBOOK_SCOPE = 'email' # You may add additional parameters
 FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
 FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
 
@@ -296,6 +297,16 @@ FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Fac
 TWITTER_CONSUMER_KEY = 'yeZOtec5ol5I9BGCCKpcw'
 TWITTER_CONSUMER_SECRET = 'Dv80Q51jx8FWDInmZCGZs8AKDnRwAdrS0lxgZA4NWs'
 TWITTER_LOGIN_REDIRECT = '/'
+
+# Foursquare settings
+FOURSQUARE_CLIENT_ID = 'IU4LBMWT2DOCQ2JOIN3A04450HBB4GY2D5QX0WYPQ2DLP1DK'
+FOURSQUARE_CLIENT_SECRET = 'UDFGDOKUSOOV0GGGI0JDHR5OOJ1KBVV3OJ50SOGFVFJ3YPKO'
+FOURSQUARE_LOGIN_REDIRECT = '/'
+
+# Google settings
+GOOGLE_CLIENT_ID = '961599639127.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET = 'XjLBcVysDl6g0qEx_bnGUPDb'
+GOOGLE_LOGIN_REDIRECT = '/'
 
 # You can set up your own custom search engine on: http://www.google.com/cse/
 # just register with you google account and crate new search engine.

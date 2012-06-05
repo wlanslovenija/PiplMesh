@@ -7,7 +7,7 @@ def graph_api_url(fb_user_id, user=None, page=None, token=None):
     
     param = ''
     if user and token:
-        param = '?access_token=%s' % user.facebook_token
+        param = '?access_token=%s' % user.facebook_access_token
     results = 'https://graph.facebook.com/%s/%s' % (fb_user_id, param)
     return results
 
