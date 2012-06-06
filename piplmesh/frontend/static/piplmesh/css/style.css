@@ -47,6 +47,7 @@ form input[type="submit"], form input[type="reset"] {
     font-weight: bold;
     min-width: 105px;
     padding: 5px;
+    cursor: pointer;
 }
 
 .form_fields {
