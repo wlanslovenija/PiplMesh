@@ -5,11 +5,16 @@
 {% block title %}{% trans "Confirm your e-mail" %}{% endblock %}
 
 {% block content %}
-<p>
-    {% blocktrans %}You are just one step away from confirming your e-mail. Just click the button bellow.{% endblocktrans %}
-</p>
-<form method="post" action=".">
-    {% csrf_token %}
-    <button type="submit">{% trans "Click here to confirm your e-mail address" %}</button>
-</form>
+    <div id="menu_list">
+        <p><a href="{% url profile username=user.username %}">{% trans "Profile" %}</a></p>
+        <p id="current_item"><a href="{% url account %}">{% trans "Account" %}</a></p>
+    </div>
+    <p>
+        {% blocktrans %}You are just one step away from confirming your e-mail. The confirmation token was sent to the e-mail you provided. If for some reason the input box below is empty paste the code in manually{% endblocktrans %}
+    </p>
+    <div class="registration" id="email_confirmation_final">
+        {% with form_submit=_("Confirm your e-mail") %}
+            {% include "form/form.html" %}
+        {% endwith %}
+    </div>
 {% endblock %}

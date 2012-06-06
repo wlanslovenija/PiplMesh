@@ -267,7 +267,11 @@ input.gsc-search-button {
 }
 
 #email_confirmation {
-    margin-bottom: 50px;
+    margin-bottom: 100px;
+}
+
+#email_confirmation_final input[type=text]  {
+    width: 500px;
 }
 
 /* ---------------- FB LOGIN BUTTON ------------------- */

@@ -330,17 +330,19 @@ class PasswordChangeView(edit_views.FormView):
     def get_form(self, form_class):
         return form_class(self.request.user, **self.get_form_kwargs())
 
-class EmailConfirmation(generic_views.TemplateView):
+class EmailConfirmation(edit_views.FormView):
     template_name = 'user/email_confirmation.html'
+    form_class = forms.EmailConfirmationForm
+    success_url = urlresolvers.reverse_lazy('account')
 
-    def post(self, request, *args, **kwargs):
+    def form_valid(self, form):
         subject = loader.get_template('user/confirmation_email_subject.txt')
         subject = subject.render(template.Context({
             'site_name' : 'PiplMesh',
         }))
 
         from_email = settings.DEFAULT_FROM_EMAIL
-        user = request.user
+        user = self.request.user
 
         # Message content
         # We generate a random string with length 77
@@ -355,24 +357,31 @@ class EmailConfirmation(generic_views.TemplateView):
         user.save()
         user.email_user(subject, text_content, from_email)
 
-        messages.success(request, _("Email confirmation link has been sent to the e-mail address you provided."), fail_silently=True)
-        return http.HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
+        messages.success(self.request, _("Email confirmation link has been sent to the e-mail address you provided."), fail_silently=True)
+        return super(EmailConfirmation, self).form_valid(form)
 
-class EmailConfirmationActivate(generic_views.TemplateView):
+class EmailConfirmationActivate(generic_views.FormView):
     template_name = 'user/email_confirmaton_final.html'
+    form_class = forms.EmailConfirmationActivateForm
+    success_url = urlresolvers.reverse_lazy('account')
 
-    def post(self, request, *args, **kwargs):
-        user=request.user
-        if self.kwargs['confirmation_token'] == user.email_confirmation_token.value:
+    def form_valid(self, form):
+        user = self.request.user
+        if form.cleaned_data['confirmation_token'] == user.email_confirmation_token.value:
             if not user.email_confirmation_token_is_valid():
-                messages.error(request, _("The confirmation code has expired. Please click 'Please confirm your e-mail address'"), fail_silently=True)
+                messages.error(self.request, _("The confirmation code has expired. Please click 'Please confirm your e-mail address'"), fail_silently=True)
             else:
                 user.email_confirmed = True
                 user.save()
-                messages.success(request, _("You have successfully confirmed your e-mail address"), fail_silently=True)
+                messages.success(self.request, _("You have successfully confirmed your e-mail address"), fail_silently=True)
         else:
-            messages.error(request, _("Your confirmation code is wrong. Please click 'Please confirm your e-mail address'"), fail_silently=True)
-        return http.HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
+            messages.error(self.request, _("Your confirmation code is wrong. Please click 'Please confirm your e-mail address'"), fail_silently=True)
+        return super(EmailConfirmationActivate, self).form_valid(form)
+
+    def get_initial(self):
+        return {
+            'confirmation_token': self.kwargs['confirmation_token'],
+        }
 
 @dispatch.receiver(signals.channel_subscribe)
 def process_channel_subscribe(sender, request, channel_id, **kwargs):

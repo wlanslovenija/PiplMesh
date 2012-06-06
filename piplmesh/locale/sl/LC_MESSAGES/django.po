@@ -107,6 +107,14 @@ msgstr "Spol"
 msgid "Birth date"
 msgstr "Datum rojstva"
 
+#: account/forms.py:145
+msgid "Confirmation token"
+msgstr "Potrditvena koda"
+
+#: account/forms.py:149
+msgid "Please paste in the confirmation token we sent to your e-mail."
+msgstr "Prosimo, da prilepiš sem potrditveno kodo, ki smo ti jo poslali. "
+
 #: account/models.py:45
 msgid "username"
 msgstr "uporabniško ime"
@@ -131,23 +139,23 @@ msgstr "Tvoj račun je bil uspešno posodobljen."
 msgid "Your password has been successfully changed."
 msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
-#: account/views.py:358
+#: account/views.py:360
 msgid ""
 "Email confirmation link has been sent to the e-mail address you provided."
 msgstr "Potrditvena povezava je bila poslana na podan e-mail naslov."
 
-#: account/views.py:368
+#: account/views.py:372
 msgid ""
 "The confirmation code has expired. Please click 'Please confirm your e-mail "
 "address'"
 msgstr ""
 "Potrditvena koda je potekla. Prosimo, da izbereš 'Potrdi svoj e-mail naslov'"
 
-#: account/views.py:372
+#: account/views.py:376
 msgid "You have successfully confirmed your e-mail address"
 msgstr "Uspešno si potrdil svoj e-mail naslov"
 
-#: account/views.py:374
+#: account/views.py:378
 msgid ""
 "Your confirmation code is wrong. Please click 'Please confirm your e-mail "
 "address'"
@@ -157,12 +165,16 @@ msgstr ""
 
 #: account/templates/user/account.html:5
 #: account/templates/user/account.html:10
+#: account/templates/user/email_confirmation.html:10
+#: account/templates/user/email_confirmaton_final.html:10
 #: account/templates/user/password_change.html:10
 #: frontend/templates/user/user.html:11
 msgid "Account"
 msgstr "Račun"
 
 #: account/templates/user/account.html:9
+#: account/templates/user/email_confirmation.html:9
+#: account/templates/user/email_confirmaton_final.html:9
 #: account/templates/user/password_change.html:9
 #: frontend/templates/user/user.html:10
 msgid "Profile"
@@ -204,23 +216,22 @@ msgid "[%(site_name)s] Confirm your e-mail address"
 msgstr "[%(site_name)s] Prosimo, da potrdiš svoj e-mail naslov"
 
 #: account/templates/user/email_confirmation.html:5
-msgid "Email Confirmation"
+msgid "E-mail Confirmation"
 msgstr "Potrditev email naslova"
 
-#: account/templates/user/email_confirmation.html:9
+#: account/templates/user/email_confirmation.html:13
 msgid "Clicking the button below will send a confirmation mail to %(email)s"
 msgstr "Klik na spodnji gumb, bo poslal potrditveno povezavo na  %(email)s"
 
-#: account/templates/user/email_confirmation.html:13
-#: account/templates/user/email_confirmaton_final.html:13
+#: account/templates/user/email_confirmation.html:17
 msgid "Click here to confirm your e-mail address"
 msgstr "Pritisni tukaj za potrditev tvojega e-mail naslova"
 
-#: account/templates/user/email_confirmation.html:16
+#: account/templates/user/email_confirmation.html:20
 msgid "Why should I confirm my e-mail address?"
 msgstr "Zakaj bi potrdil svoj e-mail naslov?"
 
-#: account/templates/user/email_confirmation.html:18
+#: account/templates/user/email_confirmation.html:22
 msgid ""
 "Confirming your e-mail address improves the security of your Account. Once "
 "you've confirmed your e-mail address, you will be able to reset your "
@@ -230,14 +241,19 @@ msgstr ""
 "mail naslov potrjen, boš lahko resetiral/a svoje geslo."
 
 #: account/templates/user/email_confirmaton_final.html:5
+#: account/templates/user/email_confirmaton_final.html:16
 msgid "Confirm your e-mail"
 msgstr "Prosimo, da potrdiš svoj e-mail naslov"
 
-#: account/templates/user/email_confirmaton_final.html:9
+#: account/templates/user/email_confirmaton_final.html:13
 msgid ""
-"You are just one step away from confirming your e-mail. Just click the "
-"button bellow."
-msgstr "Si samo korak od potrditve svojega e-mail naslova. Samo klikni spodnji gumb."
+"You are just one step away from confirming your e-mail. The confirmation "
+"token was sent to the e-mail you provided. If for some reason the input box "
+"below is empty paste the code in manually"
+msgstr ""
+"Si samo še korak od potrditve svojega e-mail naslova."
+"Potrditvena koda je bila poslana na tvoj e-mail naslov. Če je spodnje vnosno polje "
+"slučajno prazno, ročno prilepi kodo, ki smo ti jo poslali."
 
 #: account/templates/user/login.html:5 account/templates/user/login.html:12
 #: frontend/templates/header.html:45

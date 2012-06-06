@@ -130,3 +130,21 @@ class PasswordChangeForm(UserCurrentPasswordForm, UserPasswordForm):
     """
     Class with form for changing password.
     """
+
+class EmailConfirmationForm(forms.Form):
+    """
+    Class with form for sending a confirmation e-mail.
+    """
+
+class EmailConfirmationActivateForm(forms.Form):
+    """
+    Class with form for confirming e-mail with token.
+    """
+
+    confirmation_token = forms.CharField(
+        label=_("Confirmation token"),
+        min_length=77,
+        max_length=77,
+        widget=forms.TextInput,
+        help_text=_("Please paste in the confirmation token we sent to your e-mail."),
+    )

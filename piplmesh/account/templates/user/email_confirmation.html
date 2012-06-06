@@ -2,9 +2,13 @@
 
 {% load i18n %}
 
-{% block title %}{% trans "Email Confirmation" %}{% endblock %}
+{% block title %}{% trans "E-mail Confirmation" %}{% endblock %}
 
 {% block content %}
+    <div id="menu_list">
+        <p><a href="{% url profile username=user.username %}">{% trans "Profile" %}</a></p>
+        <p id="current_item"><a href="{% url account %}">{% trans "Account" %}</a></p>
+    </div>
     <p>
         {% blocktrans with email=user.email %}Clicking the button below will send a confirmation mail to {{ email }}{% endblocktrans %}
     </p>
