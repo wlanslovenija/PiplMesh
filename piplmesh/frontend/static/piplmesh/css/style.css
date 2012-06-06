@@ -464,7 +464,6 @@ input.gsc-search-button {
 }
 
 /* --------------------- ACCOUNT ------------------------ */
-
 #password_change {
     margin-top: 3%;
     margin-left: auto;
@@ -492,7 +491,6 @@ input.gsc-search-button {
 .user_image {
     width: 50px;
     height: 50px;
-}
 
 /* ------------------- USER LIST ------------------- */
 #userlist {
@@ -594,4 +592,10 @@ input.gsc-search-button {
 
 .post .date {
     color: #AAA;
+}
+
+/* ------------------ GOOGLE MAPS ---------------------------- */
+#map_canvas {
+    width: 450px;
+    height: 450px;
 }
