@@ -332,7 +332,7 @@ class PasswordChangeView(edit_views.FormView):
 
 class EmailConfirmation(edit_views.FormView):
     template_name = 'user/email_confirmation.html'
-    form_class = forms.EmailConfirmationForm
+    form_class = forms.EmailConfirmationProcessTokenForm
     success_url = urlresolvers.reverse_lazy('account')
 
     def form_valid(self, form):
@@ -353,7 +353,7 @@ class EmailConfirmation(edit_views.FormView):
             'confirmation_token' : confirmation_token,
         }))
 
-        user.email_confirmation_token = models.EmailConfirmationToken(value=confirmation_token, date_created=timezone.now())
+        user.email_confirmation_token = models.EmailConfirmationToken(value=confirmation_token, created_time=timezone.now())
         user.save()
         user.email_user(subject, text_content, from_email)
 
@@ -362,20 +362,20 @@ class EmailConfirmation(edit_views.FormView):
 
 class EmailConfirmationActivate(generic_views.FormView):
     template_name = 'user/email_confirmaton_final.html'
-    form_class = forms.EmailConfirmationActivateForm
+    form_class = forms.EmailConfirmationSendTokenForm
     success_url = urlresolvers.reverse_lazy('account')
 
     def form_valid(self, form):
         user = self.request.user
         if form.cleaned_data['confirmation_token'] == user.email_confirmation_token.value:
             if not user.email_confirmation_token_is_valid():
-                messages.error(self.request, _("The confirmation code has expired. Please click 'Please confirm your e-mail address'"), fail_silently=True)
+                messages.error(self.request, _("The confirmation code is invalid or has expired. Please retry."), fail_silently=True)
             else:
                 user.email_confirmed = True
                 user.save()
                 messages.success(self.request, _("You have successfully confirmed your e-mail address"), fail_silently=True)
         else:
-            messages.error(self.request, _("Your confirmation code is wrong. Please click 'Please confirm your e-mail address'"), fail_silently=True)
+            messages.error(self.request, _("The confirmation code is invalid or has expired. Please retry."), fail_silently=True)
         return super(EmailConfirmationActivate, self).form_valid(form)
 
     def get_initial(self):
