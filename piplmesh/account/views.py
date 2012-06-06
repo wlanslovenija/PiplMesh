@@ -359,9 +359,9 @@ class EmailConfirmation(generic_views.TemplateView):
         return http.HttpResponseRedirect(urlresolvers.reverse_lazy('account'))
 
 class EmailConfirmationActivate(generic_views.TemplateView):
-    template_name = 'user/account.html'
+    template_name = 'user/email_confirmaton_final.html'
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         user=request.user
         if self.kwargs['confirmation_token'] == user.email_confirmation_token.value:
             if not user.email_confirmation_token_is_valid():

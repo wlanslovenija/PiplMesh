@@ -1,0 +1,15 @@
+{% extends "plain.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Cofirm your e-mail" %}{% endblock %}
+
+{% block content %}
+<p>
+    {% blocktrans %}You are just one step away from confirming your e-mail. Just click the button bellow.{% endblocktrans %}
+</p>
+<form method="post" action=".">
+    {% csrf_token %}
+    <button type="submit">{% trans "Click here to confirm your e-mail address" %}</button>
+</form>
+{% endblock %}
