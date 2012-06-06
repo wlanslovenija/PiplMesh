@@ -167,6 +167,14 @@ msgstr "Facebook prijava"
 msgid "Login with Twitter"
 msgstr "Twitter prijava"
 
+#: .\account\templates\user\login.html.py:34 
+msgid "Login with Foursquare"
+msgstr "Foursquare prijava"
+
+#: .\account\templates\user\login.html.py:40 
+msgid "Login with Google"
+msgstr "Google prijava"
+
 #: .\account\templates\user\login.html.py:33
 #: .\account\templates\user\registration.html.py:9
 #: .\frontend\templates\header.html.py:46
