@@ -197,7 +197,7 @@ msgid ""
 msgstr ""
 "\n"
 "Prosimo izberi spodnjo povezavo za potrditev tvojega e-mail naslova:\n"
-"https://www.current_site.com/account/confirmation/%(activation_key)s/\n"
+"https://www.current_site.com/account/confirmation/%(confirmation_token)s/\n"
 
 #: account/templates/user/confirmation_email_subject.txt:1
 msgid "[%(site_name)s] Confirm your e-mail address"
@@ -209,10 +209,10 @@ msgstr "Potrditev email naslova"
 
 #: account/templates/user/email_confirmation.html:9
 msgid "Clicking the button below will send a confirmation mail to %(email)s"
-msgstr ""
-"Klik na spodnji gumb, bo poslal potrditveno povezavo na  %(email)s"
+msgstr "Klik na spodnji gumb, bo poslal potrditveno povezavo na  %(email)s"
 
 #: account/templates/user/email_confirmation.html:13
+#: account/templates/user/email_confirmaton_final.html:13
 msgid "Click here to confirm your e-mail address"
 msgstr "Pritisni tukaj za potrditev tvojega e-mail naslova"
 
@@ -228,6 +228,16 @@ msgid ""
 msgstr ""
 "Potrditev tvojega e-mail naslova poveča varnost tvojega računa.Ko bo tvoj e-"
 "mail naslov potrjen, boš lahko resetiral/a svoje geslo."
+
+#: account/templates/user/email_confirmaton_final.html:5
+msgid "Confirm your e-mail"
+msgstr "Prosimo, da potrdiš svoj e-mail naslov"
+
+#: account/templates/user/email_confirmaton_final.html:9
+msgid ""
+"You are just one step away from confirming your e-mail. Just click the "
+"button bellow."
+msgstr "Si samo korak od potrditve svojega e-mail naslova. Samo klikni spodnji gumb."
 
 #: account/templates/user/login.html:5 account/templates/user/login.html:12
 #: frontend/templates/header.html:45
