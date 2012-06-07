@@ -3,4 +3,8 @@ This message was sent to you to confirm this e-mail address.{% endblocktrans %}
 {% blocktrans with confirmation_token=confirmation_token %}
 Please click the link below to confirm your e-mail address:
 https://www.piplmesh.com/account/confirmation/{{ confirmation_token }}/
+Or paste the following code into the input box here: https://www.piplmesh.com/account/confirmation/
+Code={{ confirmation_token }}
 {% endblocktrans %}
+{% blocktrans %}If link above does not work, you can copy-paste it directly into your browser."{% endblocktrans %}
+{% blocktrans %}The link will be active for 5 days, if it expires you will have to redo the process of confirming your e-mail.{% endblocktrans %}

@@ -56,7 +56,7 @@ urlpatterns = patterns('',
     url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='profile'),
     url(r'^account/$', account_views.AccountChangeView.as_view(), name='account'),
     url(r'^account/password/change/$', account_views.PasswordChangeView.as_view(), name='password_change'),
-    url(r'^account/confirmation/$', account_views.EmailConfirmation.as_view(), name='email_confirmation'),
+    url(r'^account/confirmation/$', account_views.EmailConfirmationSendToken.as_view(), name='email_confirmation'),
     url(r'^account/confirmation/(?P<confirmation_token>\w+)/$', account_views.EmailConfirmationProcessToken.as_view(), name='email_confirmaton_final'),
 
     # RESTful API

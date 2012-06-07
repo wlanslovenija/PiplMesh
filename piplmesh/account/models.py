@@ -16,6 +16,8 @@ from piplmesh.account import fields, utils
 
 LOWER_DATE_LIMIT = 366 * 120
 USERNAME_REGEX = r'[\w.@+-]+'
+DAYS_TOKEN_IS_VALID = 5
+
 
 def upper_birthdate_limit():
     return datetime.datetime.today()
@@ -29,11 +31,11 @@ class Connection(mongoengine.EmbeddedDocument):
     channel_id = mongoengine.StringField()
 
 class EmailConfirmationToken(mongoengine.EmbeddedDocument):
-    value = mongoengine.StringField(max_length=77)
+    value = mongoengine.StringField(max_length=77, required=True)
     created_time = mongoengine.DateTimeField(default=lambda: timezone.now(), required=True)
 
-    def email_confirmation_token_is_valid(self):
-        return (timezone.now() - self.created_time).days < 2
+    def check_token(self,confirmation_token):
+        return ((timezone.now() - self.created_time).days < DAYS_TOKEN_IS_VALID) or confirmation_token == self.value
 
 class TwitterAccessToken(mongoengine.EmbeddedDocument):
     key = mongoengine.StringField(max_length=150)

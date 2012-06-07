@@ -131,14 +131,14 @@ class PasswordChangeForm(UserCurrentPasswordForm, UserPasswordForm):
     Class with form for changing password.
     """
 
-class EmailConfirmationProcessTokenForm(forms.Form):
-    """
-    Class with form for sending a confirmation e-mail.
-    """
-
 class EmailConfirmationSendTokenForm(forms.Form):
     """
-    Class with form for confirming e-mail with token.
+    Form for sending an e-mail address confirmation token.
+    """
+
+class EmailConfirmationProcessTokenForm(forms.Form):
+    """
+    Form for processing an e-mail address confirmation token.
     """
 
     confirmation_token = forms.CharField(
@@ -151,7 +151,7 @@ class EmailConfirmationSendTokenForm(forms.Form):
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
-        super(EmailConfirmationSendTokenForm, self).__init__(*args, **kwargs)
+        super(EmailConfirmationProcessTokenForm, self).__init__(*args, **kwargs)
 
     def clean_confirmation_token(self):
         """
@@ -159,7 +159,6 @@ class EmailConfirmationSendTokenForm(forms.Form):
         """
 
         confirmation_token = self.cleaned_data['confirmation_token']
-        if self.user.email_confirmation_token.value != confirmation_token or \
-           not self.user.email_confirmation_token.email_confirmation_token_is_valid():
-                raise forms.ValidationError(_("The confirmation code is invalid or has expired. Please retry."), code='confirmation_token_incorrect')
+        if not self.user.email_confirmation_token.check_token(confirmation_token):
+            raise forms.ValidationError(_("The confirmation code is invalid or has expired. Please retry."), code='confirmation_token_incorrect')
         return True

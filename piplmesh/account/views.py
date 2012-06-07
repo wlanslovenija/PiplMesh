@@ -330,15 +330,15 @@ class PasswordChangeView(edit_views.FormView):
     def get_form(self, form_class):
         return form_class(self.request.user, **self.get_form_kwargs())
 
-class EmailConfirmation(edit_views.FormView):
+class EmailConfirmationSendToken(edit_views.FormView):
     template_name = 'user/email_confirmation.html'
-    form_class = forms.EmailConfirmationProcessTokenForm
+    form_class = forms.EmailConfirmationSendTokenForm
     success_url = urlresolvers.reverse_lazy('account')
 
     def form_valid(self, form):
         subject = loader.get_template('user/confirmation_email_subject.txt')
         subject = subject.render(template.Context({
-            'site_name' : 'PiplMesh',
+            'site_name' : settings.EMAIL_SUBJECT_PREFIX,
         }))
 
         from_email = settings.DEFAULT_FROM_EMAIL
@@ -358,11 +358,11 @@ class EmailConfirmation(edit_views.FormView):
         user.email_user(subject, text_content, from_email)
 
         messages.success(self.request, _("Email confirmation link has been sent to the e-mail address you provided."), fail_silently=True)
-        return super(EmailConfirmation, self).form_valid(form)
+        return super(EmailConfirmationSendToken, self).form_valid(form)
 
 class EmailConfirmationProcessToken(generic_views.FormView):
     template_name = 'user/email_confirmaton_final.html'
-    form_class = forms.EmailConfirmationSendTokenForm
+    form_class = forms.EmailConfirmationProcessTokenForm
     success_url = urlresolvers.reverse_lazy('account')
 
     def form_valid(self, form):
