@@ -115,7 +115,6 @@ PUSH_SERVER_URL = '/passthrough/'
 SECRET_KEY = '02dl2nfiacp)87-1g2$=l@b(q5+qs^)qo=byzdvgx+35q)gw&^'
 
 EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
 EMAIL_SUBJECT_PREFIX = '[PiplMesh] '
 DEFAULT_FROM_EMAIL = 'webmaster@localhost'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL

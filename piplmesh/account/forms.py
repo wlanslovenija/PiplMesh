@@ -159,6 +159,7 @@ class EmailConfirmationSendTokenForm(forms.Form):
         """
 
         confirmation_token = self.cleaned_data['confirmation_token']
-        if self.user.email_confirmation_token.value != confirmation_token or not self.user.email_confirmation_token.email_confirmation_token_is_valid():
+        if self.user.email_confirmation_token.value != confirmation_token or \
+           not self.user.email_confirmation_token.email_confirmation_token_is_valid():
                 raise forms.ValidationError(_("The confirmation code is invalid or has expired. Please retry."), code='confirmation_token_incorrect')
         return True

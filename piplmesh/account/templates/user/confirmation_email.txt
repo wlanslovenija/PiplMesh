@@ -1,7 +1,6 @@
 {% load i18n %}{% blocktrans with username=username %}Hello {{ username }}!
-This message was sent to you to confirm this e-mail address.
-{% endblocktrans %}
+This message was sent to you to confirm this e-mail address.{% endblocktrans %}
 {% blocktrans with confirmation_token=confirmation_token %}
 Please click the link below to confirm your e-mail address:
-https://www.current_site.com/account/confirmation/{{ confirmation_token }}/
+https://www.piplmesh.com/account/confirmation/{{ confirmation_token }}/
 {% endblocktrans %}

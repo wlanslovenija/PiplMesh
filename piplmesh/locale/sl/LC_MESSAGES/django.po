@@ -114,9 +114,10 @@ msgstr "Potrditvena koda"
 #: account/forms.py:149
 msgid ""
 "Please enter the confirmation token you received to your e-mail address."
-msgstr "Prosimo vnesi potrditveno kodo, ki si jo prejel na svoj e-mail naslov. "
+msgstr ""
+"Prosimo vnesi potrditveno kodo, ki si jo prejel na svoj e-mail naslov. "
 
-#: account/forms.py:163
+#: account/forms.py:164
 msgid "The confirmation code is invalid or has expired. Please retry."
 msgstr ""
 "Potrditvena koda je napačna ali pa je potekla. Prosimo, da poskusiš znova."
@@ -187,20 +188,20 @@ msgstr "Prosimo, da potrdiš svoj e-mail naslov"
 #: account/templates/user/confirmation_email.txt:1
 msgid ""
 "Hello %(username)s!\n"
-"This message was sent to you to confirm this e-mail address.\n"
+"This message was sent to you to confirm this e-mail address."
 msgstr ""
 "Pozdravljen %(username)s!\n"
 "To sporočilo je bilo poslano, da potrdiš svoj e-mail naslov."
 
-#: account/templates/user/confirmation_email.txt:4
+#: account/templates/user/confirmation_email.txt:3
 msgid ""
 "\n"
 "Please click the link below to confirm your e-mail address:\n"
-"https://www.current_site.com/account/confirmation/%(confirmation_token)s/\n"
+"https://www.piplmesh.com/account/confirmation/%(confirmation_token)s/\n"
 msgstr ""
 "\n"
 "Prosimo izberi spodnjo povezavo za potrditev tvojega e-mail naslova:\n"
-"https://www.current_site.com/account/confirmation/%(confirmation_token)s/\n"
+"https://www.piplmesh.com/account/confirmation/%(confirmation_token)s/\n"
 
 #: account/templates/user/confirmation_email_subject.txt:1
 msgid "[%(site_name)s] Confirm your e-mail address"
@@ -208,7 +209,7 @@ msgstr "[%(site_name)s] Prosimo, da potrdiš svoj e-mail naslov"
 
 #: account/templates/user/email_confirmation.html:5
 msgid "E-mail Confirmation"
-msgstr "Potrditev email naslova"
+msgstr "Potrditev e-mail naslova"
 
 #: account/templates/user/email_confirmation.html:13
 msgid "Clicking the button below will send a confirmation mail to %(email)s"
@@ -242,7 +243,7 @@ msgid ""
 "token was sent to the e-mail you provided. If for some reason the input box "
 "below is empty paste the code in manually"
 msgstr ""
-"Si samo še korak od potrditve svojega e-mail naslova.Potrditvena koda je "
+"Si samo še korak od potrditve svojega e-mail naslova. Potrditvena koda je "
 "bila poslana na tvoj e-mail naslov. Če je spodnje vnosno polje slučajno "
 "prazno, ročno prilepi kodo, ki smo ti jo poslali."
 
