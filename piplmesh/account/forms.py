@@ -155,7 +155,7 @@ class EmailConfirmationSendTokenForm(forms.Form):
 
     def clean_confirmation_token(self):
         """
-        This method checks if user password is correct.
+        This method checks if user confirmation token is correct.
         """
 
         confirmation_token = self.cleaned_data['confirmation_token']
