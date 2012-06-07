@@ -360,28 +360,31 @@ class EmailConfirmation(edit_views.FormView):
         messages.success(self.request, _("Email confirmation link has been sent to the e-mail address you provided."), fail_silently=True)
         return super(EmailConfirmation, self).form_valid(form)
 
-class EmailConfirmationActivate(generic_views.FormView):
+class EmailConfirmationProcessToken(generic_views.FormView):
     template_name = 'user/email_confirmaton_final.html'
     form_class = forms.EmailConfirmationSendTokenForm
     success_url = urlresolvers.reverse_lazy('account')
 
     def form_valid(self, form):
         user = self.request.user
-        if form.cleaned_data['confirmation_token'] == user.email_confirmation_token.value:
-            if not user.email_confirmation_token_is_valid():
-                messages.error(self.request, _("The confirmation code is invalid or has expired. Please retry."), fail_silently=True)
-            else:
-                user.email_confirmed = True
-                user.save()
-                messages.success(self.request, _("You have successfully confirmed your e-mail address"), fail_silently=True)
-        else:
-            messages.error(self.request, _("The confirmation code is invalid or has expired. Please retry."), fail_silently=True)
-        return super(EmailConfirmationActivate, self).form_valid(form)
+        user.email_confirmed = True
+        user.save()
+        messages.success(self.request, _("You have successfully confirmed your e-mail address"), fail_silently=True)
+        return super(EmailConfirmationProcessToken, self).form_valid(form)
 
     def get_initial(self):
         return {
             'confirmation_token': self.kwargs['confirmation_token'],
         }
+
+    def dispatch(self, request, *args, **kwargs):
+        # TODO: With lazy user support, we want users to be able to change their account even if not authenticated
+        if not request.user.is_authenticated():
+            return shortcuts.redirect('login')
+        return super(EmailConfirmationProcessToken, self).dispatch(request, *args, **kwargs)
+
+    def get_form(self, form_class):
+        return form_class(self.request.user, **self.get_form_kwargs())
 
 @dispatch.receiver(signals.channel_subscribe)
 def process_channel_subscribe(sender, request, channel_id, **kwargs):

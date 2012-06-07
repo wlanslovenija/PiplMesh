@@ -148,3 +148,17 @@ class EmailConfirmationSendTokenForm(forms.Form):
         required=True,
         help_text=_("Please enter the confirmation token you received to your e-mail address."),
     )
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(EmailConfirmationSendTokenForm, self).__init__(*args, **kwargs)
+
+    def clean_confirmation_token(self):
+        """
+        This method checks if user password is correct.
+        """
+
+        confirmation_token = self.cleaned_data['confirmation_token']
+        if self.user.email_confirmation_token.value != confirmation_token or self.user.email_confirmation_token.email_confirmation_token_is_valid():
+                raise forms.ValidationError(_("The confirmation code is invalid or has expired. Please retry."), code='confirmation_token_incorrect')
+        return True

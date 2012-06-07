@@ -33,7 +33,7 @@ class EmailConfirmationToken(mongoengine.EmbeddedDocument):
     created_time = mongoengine.DateTimeField(default=lambda: timezone.now(), required=True)
 
     def email_confirmation_token_is_valid(self):
-        return (timezone.now() - self.email_confirmation_token.created_time).days < 2
+        return (timezone.now() - self.created_time).days < 2
 
 class TwitterAccessToken(mongoengine.EmbeddedDocument):
     key = mongoengine.StringField(max_length=150)

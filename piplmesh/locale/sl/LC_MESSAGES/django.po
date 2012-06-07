@@ -45,7 +45,7 @@ msgstr ""
 msgid "Username"
 msgstr "Uporabniško ime"
 
-#: account/forms.py:17 account/models.py:46
+#: account/forms.py:17 account/models.py:49
 msgid ""
 "Minimal of 4 characters and maximum of 30. Letters, digits and @/./+/-/_ "
 "only."
@@ -112,10 +112,16 @@ msgid "Confirmation token"
 msgstr "Potrditvena koda"
 
 #: account/forms.py:149
-msgid "Please paste in the confirmation token we sent to your e-mail."
-msgstr "Prosimo, da prilepiš sem potrditveno kodo, ki smo ti jo poslali. "
+msgid ""
+"Please enter the confirmation token you received to your e-mail address."
+msgstr "Prosimo vnesi potrditveno kodo, ki si jo prejel na svoj e-mail naslov. "
 
-#: account/models.py:45
+#: account/forms.py:163
+msgid "The confirmation code is invalid or has expired. Please retry."
+msgstr ""
+"Potrditvena koda je napačna ali pa je potekla. Prosimo, da poskusiš znova."
+
+#: account/models.py:48
 msgid "username"
 msgstr "uporabniško ime"
 
@@ -145,23 +151,8 @@ msgid ""
 msgstr "Potrditvena povezava je bila poslana na podan e-mail naslov."
 
 #: account/views.py:372
-msgid ""
-"The confirmation code has expired. Please click 'Please confirm your e-mail "
-"address'"
-msgstr ""
-"Potrditvena koda je potekla. Prosimo, da izbereš 'Potrdi svoj e-mail naslov'"
-
-#: account/views.py:376
 msgid "You have successfully confirmed your e-mail address"
 msgstr "Uspešno si potrdil svoj e-mail naslov"
-
-#: account/views.py:378
-msgid ""
-"Your confirmation code is wrong. Please click 'Please confirm your e-mail "
-"address'"
-msgstr ""
-"Tvoja potrditvena koda je napačna. Prosimo, da izbereš 'Potrdi svoj e-mail "
-"naslov'"
 
 #: account/templates/user/account.html:5
 #: account/templates/user/account.html:10
@@ -251,9 +242,9 @@ msgid ""
 "token was sent to the e-mail you provided. If for some reason the input box "
 "below is empty paste the code in manually"
 msgstr ""
-"Si samo še korak od potrditve svojega e-mail naslova."
-"Potrditvena koda je bila poslana na tvoj e-mail naslov. Če je spodnje vnosno polje "
-"slučajno prazno, ročno prilepi kodo, ki smo ti jo poslali."
+"Si samo še korak od potrditve svojega e-mail naslova.Potrditvena koda je "
+"bila poslana na tvoj e-mail naslov. Če je spodnje vnosno polje slučajno "
+"prazno, ročno prilepi kodo, ki smo ti jo poslali."
 
 #: account/templates/user/login.html:5 account/templates/user/login.html:12
 #: frontend/templates/header.html:45
