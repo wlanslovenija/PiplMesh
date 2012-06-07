@@ -7,6 +7,10 @@ from tastypie import api
 from piplmesh.account import models, views as account_views
 from piplmesh.api import resources
 from piplmesh.frontend import debug as debug_views, views as frontend_views
+from piplmesh import panels
+
+# PiplMesh panels auto-discovery
+panels.panels_pool.discover_panels()
 
 v1_api = api.Api(api_name='v1')
 v1_api.register(resources.UserResource())

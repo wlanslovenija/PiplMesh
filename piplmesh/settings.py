@@ -94,6 +94,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'piplmesh.panels.staticfiles.finders.PanelsDirectoriesFinder',
 #   'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
@@ -123,6 +124,7 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
+    'piplmesh.panels.loaders.panels_directories.Loader',
 #   'django.template.loaders.eggs.Loader',
 )
 
@@ -134,6 +136,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
+    'sekizai.context_processors.sekizai',
     'piplmesh.frontend.context_processors.global_vars',
 )
 
@@ -166,6 +169,7 @@ INSTALLED_APPS = (
     'piplmesh.frontend',
     'piplmesh.nodes',
     'piplmesh.utils',
+    'piplmesh.panels',
 
     'django.contrib.messages',
     'django.contrib.sessions',
@@ -175,6 +179,7 @@ INSTALLED_APPS = (
     'djcelery',
     'tastypie',
     'tastypie_mongoengine',
+    'sekizai',
 )
 
 PUSH_SERVER = {
