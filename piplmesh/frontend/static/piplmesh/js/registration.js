@@ -26,8 +26,12 @@ function checkEmail() {
 
     if (emailRegex.test($('#id_email').val())) {
         $('#id_email').removeClass('input_valid input_invalid').addClass('input_valid');
+        $("#email_info").remove();
     }
     else {
         $('#id_email').removeClass('input_valid input_invalid').addClass('input_invalid');
+        $("#email_info").remove();
+        var email_invalid_message = gettext('Invalid e-mail.');
+        $("#id_email").after('<span id="email_info" class="input_invalid">' + email_invalid_message + '</span>');
     }
 }
