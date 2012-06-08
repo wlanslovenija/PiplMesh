@@ -1,4 +1,4 @@
-import datetime, json, random, string, urllib, urlparse
+import json, random, string, urllib, urlparse
 
 from django import dispatch, http, shortcuts, template
 from django.conf import settings
@@ -8,7 +8,7 @@ from django.core import exceptions, urlresolvers
 from django.template import loader
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
-from django.utils import timezone
+from django.utils import timezone, translation
 from django.utils.translation import ugettext_lazy as _
 
 from pushserver import signals
@@ -220,17 +220,6 @@ class FoursquareCallbackView(generic_views.RedirectView):
             # TODO: Use information provided from foursquare as to why the login was not successful
             return super(FoursquareCallbackView, self).get(request, *args, **kwargs)
 
-def logout(request):
-    """
-    After user logouts, redirect her back to the page she came from.
-    """
-    
-    if request.method != 'POST':
-        return http.HttpResponseBadRequest()
-
-    url = request.POST.get(auth.REDIRECT_FIELD_NAME)
-    return auth_views.logout_then_login(request, url)
-
 class RegistrationView(edit_views.FormView):
     """
     This view checks if form data are valid, saves new user.
@@ -387,6 +376,44 @@ class EmailConfirmationProcessToken(generic_views.FormView):
 
     def get_form(self, form_class):
         return form_class(self.request.user, **self.get_form_kwargs())
+
+def logout(request):
+    """
+    After user logouts, redirect her back to the page she came from.
+    """
+
+    if request.method != 'POST':
+        return http.HttpResponseBadRequest()
+
+    url = request.POST.get(auth.REDIRECT_FIELD_NAME)
+    return auth_views.logout_then_login(request, url)
+
+def set_language(request):
+    """
+    Redirect to a given url while setting the chosen language in the user
+    setting. The url and the language code need to be specified in the request
+    parameters.
+
+    Since this view changes how the user will see the rest of the site, it must
+    only be accessed as a POST request. If called as a GET request, it will
+    redirect to the page in the request (the 'next' parameter) without changing
+    any state.
+    """
+
+    next = request.REQUEST.get('next', None)
+    if not next:
+        next = request.META.get('HTTP_REFERER', None)
+    if not next:
+        next = '/'
+    response = http.HttpResponseRedirect(next)
+    if request.method == 'POST':
+        lang_code = request.POST.get('language', None)
+        if lang_code and translation.check_for_language(lang_code):
+            # We reload to make sure user object is recent
+            request.user.reload()
+            request.user.language = lang_code
+            request.user.save()
+    return response
 
 @dispatch.receiver(signals.channel_subscribe)
 def process_channel_subscribe(sender, request, channel_id, **kwargs):

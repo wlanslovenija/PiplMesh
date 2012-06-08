@@ -1,29 +1,18 @@
 {% extends "plain.html" %}
 
+{% load static pushserver panels %}
+
 {% block fulltitle %}wlan slovenija{% endblock %}
 
 {% block js %}
     {{ block.super }}
+    <script src="{% static "pushserver/updates.js" %}" type="text/javascript"></script>
+    <script src="{% static "piplmesh/js/home.js" %}" type="text/javascript"></script>
     <script type="text/javascript">
         /* <![CDATA[ */
-        var node = {
-            'name': '{{ request.node.name|escapejs }}',
-            'latitude': '{{ request.node.latitude|escapejs }}',
-            'longitude': '{{ request.node.longitude|escapejs }}',
-            'location': '{{ request.node.location|escapejs }}',
-            'url': '{{ request.node.url|escapejs }}'
-        }
-        
-        var onlineUsers = {
-            {% for user in online_users %}
-                '{{ user.username|lower|escapejs }}': {
-                    'username': '{{ user.username|escapejs }}',
-                    'profile_url': '{{ user.get_profile_url|escapejs }}',
-                    'image_url': '{{ user.get_image_url|escapejs }}'
-                }
-                {% if not forloop.last %},{% endif %}
-            {% endfor %}
-        };
+        $.updates.subscribe({
+            'home_channel': '{% filter escapejs %}{% channel_url HOME_CHANNEL_ID %}{% endfilter %}'
+        });
         /* ]]> */
     </script>
 {% endblock %}
@@ -49,6 +38,7 @@
         SOME MORE JUICY CONTENT
         </p>
     </div>
-    {% include "userlist.html" %}
-    {% include "map.html" %}
+    {% for panel in user.get_panels %}
+        {% render_panel panel %}
+    {% endfor %}
 {% endblock %}

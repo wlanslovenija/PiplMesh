@@ -1,7 +1,7 @@
 import json, urllib
 
 from django.conf import settings
-from django.utils import crypto
+from django.utils import crypto, translation
 
 from mongoengine import queryset
 from mongoengine.django import auth
@@ -54,7 +54,8 @@ class FacebookBackend(MongoEngineBackend):
         except self.user_class.DoesNotExist:
             # TODO: Based on user preference, we might create a new user here, not just link with existing, if existing user is lazy user
             # We reload to make sure user object is recent
-            user = request.user.reload()
+            request.user.reload()
+            user = request.user
             # TODO: Is it OK to override Facebook link if it already exist with some other Facebook user?
 
         user.facebook_access_token = facebook_access_token
@@ -133,7 +134,8 @@ class TwitterBackend(MongoEngineBackend):
         except self.user_class.DoesNotExist:
             # TODO: Based on user preference, we might create a new user here, not just link with existing, if existing user is lazy user
             # We reload to make sure user object is recent
-            user = request.user.reload()
+            request.user.reload()
+            user = request.user
             # TODO: Is it OK to override Twitter link if it already exist with some other Twitter user?
 
         user.twitter_access_token = models.TwitterAccessToken(key=twitter_access_token.key, secret=twitter_access_token.secret)
@@ -177,7 +179,8 @@ class GoogleBackend(MongoEngineBackend):
         except self.user_class.DoesNotExist:
             # TODO: Based on user preference, we might create a new user here, not just link with existing, if existing user is lazy user
             # We reload to make sure user object is recent
-            user = request.user.reload()
+            request.user.reload()
+            user = request.user
             # TODO: Is it OK to override Google link if it already exist with some other Google user?
 
         user.google_access_token = google_access_token
@@ -233,7 +236,8 @@ class FoursquareBackend(MongoEngineBackend):
             user = self.user_class.objects.get(foursquare_profile_data__id=foursquare_profile_data.get('id'))
         except self.user_class.DoesNotExist:
             # We reload to make sure user object is recent
-            user = request.user.reload()
+            request.user.reload()
+            user =  request.user
             # TODO: Is it OK to override Foursquare link if it already exist with some other Foursquare user?
 
         user.foursquare_access_token = foursquare_access_token
@@ -254,12 +258,13 @@ class FoursquareBackend(MongoEngineBackend):
         return user
 
 class LazyUserBackend(MongoEngineBackend):
-    def authenticate(self):
+    def authenticate(self, request):
         while True:
             try:
                 username = LAZYUSER_USERNAME_TEMPLATE % crypto.get_random_string(6)
                 user = self.user_class.objects.create(
                     username=username,
+                    language=translation.get_language_from_request(request),
                 )
                 break
             except queryset.OperationError, e:

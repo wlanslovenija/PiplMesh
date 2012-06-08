@@ -1,4 +1,6 @@
-import datetime, hashlib, tweepy, urllib
+from __future__ import absolute_import
+
+import datetime, hashlib, urllib
 
 from django.conf import settings
 from django.contrib.auth import hashers, models as auth_models
@@ -12,7 +14,8 @@ from django.utils.translation import ugettext_lazy as _
 import mongoengine
 from mongoengine.django import auth
 
-from piplmesh.account import fields, utils
+from . import fields, utils
+from .. import panels
 
 LOWER_DATE_LIMIT = 366 * 120
 USERNAME_REGEX = r'[\w.@+-]+'
@@ -81,6 +84,10 @@ class User(auth.User):
 
     def get_profile_url(self):
         return self.get_absolute_url()
+
+    def get_panels(self):
+        # TODO: Should return only panels user has enabled (should make sure users can enable panels only in the way that dependencies are satisfied)
+        return panels.panels_pool.get_all_panels()
 
     def is_anonymous(self):
         return not self.is_authenticated()

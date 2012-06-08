@@ -7,6 +7,10 @@ from tastypie import api
 from piplmesh.account import models, views as account_views
 from piplmesh.api import resources
 from piplmesh.frontend import debug as debug_views, views as frontend_views
+from piplmesh import panels
+
+# PiplMesh panels auto-discovery
+panels.panels_pool.discover_panels()
 
 v1_api = api.Api(api_name='v1')
 v1_api.register(resources.UserResource())
@@ -59,12 +63,12 @@ urlpatterns = patterns('',
     url(r'^account/confirmation/$', account_views.EmailConfirmationSendToken.as_view(), name='email_confirmation'),
     url(r'^account/confirmation/token/$', account_views.EmailConfirmationProcessToken.as_view(), name='email_confirmaton_no_token'),
     url(r'^account/confirmation/token/(?P<confirmation_token>\w+)/$', account_views.EmailConfirmationProcessToken.as_view(), name='email_confirmaton_with_token'),
+    url(r'^account/setlanguage/$', account_views.set_language, name='set_language'),
 
     # RESTful API
     url(r'^api/', include(v1_api.urls)),
 
     # Internationalization support
-    url(r'^' + I18N_URL, include('django.conf.urls.i18n')),
     url(r'^' + I18N_URL + 'js/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 
     # Internals

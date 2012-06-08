@@ -87,6 +87,8 @@ class UserBasicInfoForm(forms.Form):
     Class with user basic information form.
     """
 
+    # TODO: Language field is missing?
+
     first_name = forms.CharField(label=_("First name"))
     last_name = forms.CharField(label=_("Last name"))
     email = forms.EmailField(label=_("E-mail"))
