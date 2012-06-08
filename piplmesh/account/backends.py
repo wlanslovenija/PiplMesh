@@ -1,7 +1,7 @@
 import json, urllib
 
 from django.conf import settings
-from django.utils import crypto
+from django.utils import crypto, translation
 
 from mongoengine import queryset
 from mongoengine.django import auth
@@ -258,12 +258,13 @@ class FoursquareBackend(MongoEngineBackend):
         return user
 
 class LazyUserBackend(MongoEngineBackend):
-    def authenticate(self):
+    def authenticate(self, request):
         while True:
             try:
                 username = LAZYUSER_USERNAME_TEMPLATE % crypto.get_random_string(6)
                 user = self.user_class.objects.create(
                     username=username,
+                    language=translation.get_language_from_request(request),
                 )
                 break
             except queryset.OperationError, e:

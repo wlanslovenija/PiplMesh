@@ -22,7 +22,7 @@ class LazyUserMiddleware(object):
             assert isinstance(request.user, models.User)
             return None
 
-        user = auth.authenticate()
+        user = auth.authenticate(request=request)
         assert user.is_anonymous()
 
         # We set the auth session key to prevent login to
