@@ -351,6 +351,7 @@ class EmailConfirmationSendToken(edit_views.FormView):
         text_content = text_content.render(template.Context({
             'username' : user.username,
             'confirmation_token' : confirmation_token,
+            'site_url' : self.request.build_absolute_uri(urlresolvers.reverse('email_confirmaton_no_token')),
         }))
 
         user.email_confirmation_token = models.EmailConfirmationToken(value=confirmation_token, created_time=timezone.now())
@@ -373,9 +374,10 @@ class EmailConfirmationProcessToken(generic_views.FormView):
         return super(EmailConfirmationProcessToken, self).form_valid(form)
 
     def get_initial(self):
-        return {
-            'confirmation_token': self.kwargs['confirmation_token'],
-        }
+        if self.kwargs.has_key('confirmation_token'):
+            return {
+                'confirmation_token': self.kwargs['confirmation_token'],
+            }
 
     def dispatch(self, request, *args, **kwargs):
         # TODO: With lazy user support, we want users to be able to change their account even if not authenticated

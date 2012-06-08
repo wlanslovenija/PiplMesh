@@ -34,8 +34,8 @@ class EmailConfirmationToken(mongoengine.EmbeddedDocument):
     value = mongoengine.StringField(max_length=77, required=True)
     created_time = mongoengine.DateTimeField(default=lambda: timezone.now(), required=True)
 
-    def check_token(self,confirmation_token):
-        return ((timezone.now() - self.created_time).days < DAYS_TOKEN_IS_VALID) or confirmation_token == self.value
+    def check_token(self, confirmation_token):
+        return ((timezone.now() - self.created_time).days < DAYS_TOKEN_IS_VALID) and confirmation_token == self.value
 
 class TwitterAccessToken(mongoengine.EmbeddedDocument):
     key = mongoengine.StringField(max_length=150)

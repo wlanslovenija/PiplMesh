@@ -6,16 +6,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
 "Report-Msgid-Bugs-To: https://github.com/wlanslovenija/PiplMesh\n"
-"POT-Creation-Date: 2012-06-01 13:26+0200\n"
+"POT-Creation-Date: 2012-06-09 01:18+0200\n"
 "PO-Revision-Date: 2012-05-18 12:29+0100\n"
 "Last-Translator: Martin Jakomin <martin.jakomin@gmail.com>\n"
-"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: sl\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
 "%100==4 ? 2 : 3)\n"
+"Language-Team: \n"
 
 #: settings.py:45
 msgid "Slovenian"
@@ -45,7 +45,7 @@ msgstr ""
 msgid "Username"
 msgstr "Uporabniško ime"
 
-#: account/forms.py:17 account/models.py:49
+#: account/forms.py:17 account/models.py:51
 msgid ""
 "Minimal of 4 characters and maximum of 30. Letters, digits and @/./+/-/_ "
 "only."
@@ -117,12 +117,12 @@ msgid ""
 msgstr ""
 "Prosimo vnesi potrditveno kodo, ki si jo prejel na svoj e-mail naslov. "
 
-#: account/forms.py:164
-msgid "The confirmation code is invalid or has expired. Please retry."
+#: account/forms.py:163
+msgid "The confirmation token is invalid or has expired. Please retry."
 msgstr ""
 "Potrditvena koda je napačna ali pa je potekla. Prosimo, da poskusiš znova."
 
-#: account/models.py:48
+#: account/models.py:50
 msgid "username"
 msgstr "uporabniško ime"
 
@@ -146,12 +146,12 @@ msgstr "Tvoj račun je bil uspešno posodobljen."
 msgid "Your password has been successfully changed."
 msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
-#: account/views.py:360
+#: account/views.py:361
 msgid ""
 "Email confirmation link has been sent to the e-mail address you provided."
 msgstr "Potrditvena povezava je bila poslana na podan e-mail naslov."
 
-#: account/views.py:372
+#: account/views.py:373
 msgid "You have successfully confirmed your e-mail address"
 msgstr "Uspešno si potrdil svoj e-mail naslov"
 
@@ -197,15 +197,33 @@ msgstr ""
 msgid ""
 "\n"
 "Please click the link below to confirm your e-mail address:\n"
-"https://www.piplmesh.com/account/confirmation/%(confirmation_token)s/\n"
+"%(site_url)s%(confirmation_token)s/\n"
+"Or paste the following token into the input box here: %(site_url)s\n"
+"Token=%(confirmation_token)s\n"
 msgstr ""
 "\n"
 "Prosimo izberi spodnjo povezavo za potrditev tvojega e-mail naslova:\n"
-"https://www.piplmesh.com/account/confirmation/%(confirmation_token)s/\n"
+"%(site_url)s%(confirmation_token)s/\n"
+"Ali pa prilepi naslednjo kodo v vnosno polje tukaj: %(site_url)s\n"
+"Koda=%(confirmation_token)s\n"
+
+#: account/templates/user/confirmation_email.txt:9
+msgid ""
+"If link above does not work, you can copy-paste it directly into your "
+"browser."
+msgstr "Če zgornja povezava ne deluje, jo lahko prilepiš direktno v brskalnik."
+
+#: account/templates/user/confirmation_email.txt:10
+msgid ""
+"The link will be active for 5 days, if it expires you will have to redo the "
+"process of confirming your e-mail address."
+msgstr ""
+"Povezava bo aktivna 5 dni, če bo potekla, boš moral ponovno čez postopek "
+"potrditve svojega e-mail naslova."
 
 #: account/templates/user/confirmation_email_subject.txt:1
-msgid "[%(site_name)s] Confirm your e-mail address"
-msgstr "[%(site_name)s] Prosimo, da potrdiš svoj e-mail naslov"
+msgid "%(site_name)s Confirm your e-mail address"
+msgstr "%(site_name)s Prosimo, da potrdiš svoj e-mail naslov"
 
 #: account/templates/user/email_confirmation.html:5
 msgid "E-mail Confirmation"
@@ -241,7 +259,7 @@ msgstr "Prosimo, da potrdiš svoj e-mail naslov"
 msgid ""
 "You are just one step away from confirming your e-mail. The confirmation "
 "token was sent to the e-mail you provided. If for some reason the input box "
-"below is empty paste the code in manually"
+"below is empty paste the token in manually"
 msgstr ""
 "Si samo še korak od potrditve svojega e-mail naslova. Potrditvena koda je "
 "bila poslana na tvoj e-mail naslov. Če je spodnje vnosno polje slučajno "
@@ -271,17 +289,6 @@ msgstr "Google prijava"
 #: account/templates/user/login.html:45
 #: account/templates/user/registration.html:9
 #: frontend/templates/header.html:46
-#: .\account\templates\user\login.html.py:34
-msgid "Login with Foursquare"
-msgstr "Foursquare prijava"
-
-#: .\account\templates\user\login.html.py:40 
-msgid "Login with Google"
-msgstr "Google prijava"
-
-#: .\account\templates\user\login.html.py:33
-#: .\account\templates\user\registration.html.py:9
-#: .\frontend\templates\header.html.py:46
 msgid "Register"
 msgstr "Registriraj se"
 
