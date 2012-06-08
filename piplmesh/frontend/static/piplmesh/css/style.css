@@ -146,23 +146,31 @@ form input[type="submit"], form input[type="reset"] {
 }
 
 .notifications {
-	padding: 5px;
-	border: 1px solid #999;
-	cursor: pointer;
+    padding: 5px;
+    border: 1px solid #999;
+    cursor: pointer;
 }
 
 .close_notif_box {
-	background: #eee;
-	clear: both;
-	cursor: pointer;
+    background: #eee;
+    clear: both;
+    cursor: pointer;
 }
 
 #notif_box {
-	background: #ffffff;
-	display: none;
-	position: absolute;
-	padding: 5px;
-	border: 1px solid #999;
+    background: #ffffff;
+    display: none;
+    position: absolute;
+    border: 1px solid #999;
+}
+
+#notif_content {
+    padding: 5px;
+}
+
+.close_notif_box {
+    text-align: right;
+    padding-right: 5px;	
 }
 
 #header .user li.last { 

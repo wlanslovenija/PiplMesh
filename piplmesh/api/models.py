@@ -21,6 +21,11 @@ class Attachment(base.AuthoredEmbeddedDocument):
     This class defines document type for attachments on posts.
     """
 
+class Subscriber(base.AuthoredEmbeddedDocument):
+    """
+    This class defines document type for subscriber on posts.
+    """
+
 class Post(base.AuthoredDocument):
     """
     This class defines document type for posts.
@@ -32,6 +37,8 @@ class Post(base.AuthoredDocument):
 
     comments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Comment), default=lambda: [], required=False)
     attachments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Attachment), default=lambda: [], required=False)
+
+    subscribers = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Subscriber), default=lambda: [], required=False)
 
     # TODO: Prevent posting comments if post is not published
     # TODO: Prevent adding attachments if post is published

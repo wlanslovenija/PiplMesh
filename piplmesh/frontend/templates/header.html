@@ -27,19 +27,21 @@
                     If user is already logged in, logout link is shown instead.
                 {% endcomment %}
                 {% if user.is_authenticated %}
-                	<li>
-                		<div class="notifications">
-                			1
-                		</div>
-                		<div id="notif_box" class='hide'>
-                			Bla bla bla.<br />
-                			Bla bla bla.<br />
-                			<div class='close_notif_box'>
-                				Close
-                			</div>
-                		</div>
-                		
-                	</li>
+                    <li>
+                        <div class="notifications">
+                            1
+                        </div>
+                        <div id="notif_box" class="hide">
+                            <div id="notif_content">
+                            Bla bla bla.<br />
+                            Bla bla bla.<br />
+                            </div>
+                            <div class='close_notif_box'>
+                                <div id="addPost">Add p</div> 
+                                <div id="addCom">Add c</div> Close
+                            </div>
+                        </div>
+                    </li>
                     <li class="image">
                         {% user_image %}
                     </li>
