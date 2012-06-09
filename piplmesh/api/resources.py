@@ -1,16 +1,9 @@
-from tastypie import authorization as tastypie_authorization, fields as tastypie_fields
+from tastypie import fields as tastypie_fields
 
 from tastypie_mongoengine import fields, resources
 
 from piplmesh.account import models as account_models
-from piplmesh.api import models as api_models
-
-class PiplMeshAuthorization(tastypie_authorization.Authorization):
-    def is_authorized(self, request, object=None):
-        if object is None:
-            return True
-        else:
-            return True if object.is_published else object.author == request.user
+from piplmesh.api import authorization, models as api_models
 
 class UserResource(resources.MongoEngineResource):
     class Meta:
@@ -37,7 +30,7 @@ class CommentResource(AuthoredResource):
         object_class = api_models.Comment
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         # TODO: Make proper authorization, current implementation is for development use only
-        authorization = PiplMeshAuthorization()
+        authorization = authorization.PiplMeshAuthorization()
 
 class ImageAttachmentResource(AuthoredResource):
     image_file = fields.ReferenceField(to='piplmesh.api.resources.UploadedFileResource', attribute='image_file', null=False, full=True)
@@ -45,6 +38,7 @@ class ImageAttachmentResource(AuthoredResource):
 
     class Meta:
         object_class = api_models.ImageAttachment
+        authorization = authorization.PiplMeshAuthorization()
 
 class LinkAttachmentResource(AuthoredResource):
     link_caption = tastypie_fields.CharField(attribute='link_caption', default='', null=False, blank=True)
@@ -52,13 +46,14 @@ class LinkAttachmentResource(AuthoredResource):
 
     class Meta:
         object_class = api_models.LinkAttachment
+        authorization = authorization.PiplMeshAuthorization()
 
 class AttachmentResource(AuthoredResource):
     class Meta:
         object_class = api_models.Attachment
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         # TODO: Make proper authorization, current implementation is for development use only
-        authorization = PiplMeshAuthorization()
+        authorization = authorization.PiplMeshAuthorization()
 
         polymorphic = {
             'image': ImageAttachmentResource,
@@ -75,4 +70,4 @@ class PostResource(AuthoredResource):
         queryset = api_models.Post.objects.all()
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         # TODO: Make proper authorization, current implementation is for development use only
-        authorization = PiplMeshAuthorization()
+        authorization = authorization.PiplMeshAuthorization()
