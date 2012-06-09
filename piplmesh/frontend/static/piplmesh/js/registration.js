@@ -1,6 +1,6 @@
 $(document).ready(function () {
-    $('#id_password1').blur(checkPassword).change(checkPassword);
-    $('#id_password2').blur(checkPassword).change(checkPassword);
+    $('#id_password1').blur(checkPassword);
+    $('#id_password2').blur(checkPassword);
 
     $('#id_email').blur(checkEmail).change(checkEmail);
 });
@@ -16,12 +16,15 @@ function checkPassword() {
             var message_info = $('<span/>').prop({
                 'id': 'password_info',
                 'class': 'input_invalid'
-            }).text(gettext('Please re-enter your password.'));
+            }).text(gettext('Passwords do not match.'));
 
             $('#id_password1').addClass('input_invalid');
             $('#id_password2').addClass('input_invalid');
             $("#password_info").remove();
             $("#id_password2").after(message_info);
+            
+            $('#id_password1').keyup(checkPassword);
+            $('#id_password2').keyup(checkPassword);
         }
     }
     else {
