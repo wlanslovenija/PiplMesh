@@ -38,7 +38,6 @@ class ImageAttachmentResource(AuthoredResource):
 
     class Meta:
         object_class = api_models.ImageAttachment
-        authorization = tastypie_authorization.Authorization()
 
 class LinkAttachmentResource(AuthoredResource):
     link_caption = tastypie_fields.CharField(attribute='link_caption', default='', null=False, blank=True)
@@ -46,7 +45,6 @@ class LinkAttachmentResource(AuthoredResource):
 
     class Meta:
         object_class = api_models.LinkAttachment
-        authorization = authorization.PiplMeshAuthorization()
 
 class AttachmentResource(AuthoredResource):
     class Meta:
