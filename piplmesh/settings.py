@@ -108,6 +108,11 @@ DEFAULT_FILE_STORAGE = 'piplmesh.utils.storage.GridFSStorage'
 # URL prefix for internationalization URLs
 I18N_URL = '/i18n/'
 
+#List of internal IPs from which django-pushserver is accessible
+INTERNAL_IPS = (
+    '127.0.0.1',
+)
+
 # URL prefix for django-pushserver passthrough callbacks
 PUSH_SERVER_URL = '/passthrough/'
 
