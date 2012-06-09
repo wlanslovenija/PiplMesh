@@ -2,7 +2,7 @@ $(document).ready(function () {
     $('#id_password1').blur(checkPassword);
     $('#id_password2').blur(checkPassword);
 
-    $('#id_email').blur(checkEmail).change(checkEmail);
+    $('#id_email').blur(checkEmail);
 });
 
 function checkPassword() {
@@ -23,8 +23,8 @@ function checkPassword() {
             $("#password_info").remove();
             $("#id_password2").after(message_info);
             
-            $('#id_password1').keyup(checkPassword);
-            $('#id_password2').keyup(checkPassword);
+            $('#id_password1').keyup(checkPassword).change(checkPassword);
+            $('#id_password2').keyup(checkPassword).change(checkPassword);
         }
     }
     else {
@@ -52,6 +52,8 @@ function checkEmail() {
             $('#id_email').addClass('input_invalid');
             $("#email_info").remove();
             $("#id_email").after(message_info);
+            
+            $('#id_email').keyup(checkEmail).change(checkEmail);
         }
     }
     else {
