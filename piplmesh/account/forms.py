@@ -163,4 +163,4 @@ class EmailConfirmationProcessTokenForm(forms.Form):
         confirmation_token = self.cleaned_data['confirmation_token']
         if not self.user.email_confirmation_token.check_token(confirmation_token):
             raise forms.ValidationError(_("The confirmation token is invalid or has expired. Please retry."), code='confirmation_token_incorrect')
-        return True
+        return confirmation_token

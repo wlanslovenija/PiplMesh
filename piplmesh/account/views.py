@@ -341,6 +341,7 @@ class EmailConfirmationSendToken(edit_views.FormView):
             'username' : user.username,
             'confirmation_token' : confirmation_token,
             'site_url' : self.request.build_absolute_uri(urlresolvers.reverse('email_confirmaton_no_token')),
+            'confirmation_token_validity' : models.CONFIRMATION_TOKEN_VALIDITY,
         }))
 
         user.email_confirmation_token = models.EmailConfirmationToken(value=confirmation_token, created_time=timezone.now())

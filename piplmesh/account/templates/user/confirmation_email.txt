@@ -7,4 +7,4 @@ Or paste the following token into the input box here: {{ site_url }}
 Token={{ confirmation_token }}
 {% endblocktrans %}
 {% blocktrans with site_url=site_url %}If link above does not work, you can copy-paste it directly into your browser.{% endblocktrans %}
-{% blocktrans %}The link will be active for 5 days, if it expires you will have to redo the process of confirming your e-mail address.{% endblocktrans %}
+{% blocktrans with confirmation_token_validity=confirmation_token_validity%}The link will be active for {{ confirmation_token_validity }} days, if it expires you will have to redo the process of confirming your e-mail address.{% endblocktrans %}

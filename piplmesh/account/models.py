@@ -19,8 +19,7 @@ from .. import panels
 
 LOWER_DATE_LIMIT = 366 * 120
 USERNAME_REGEX = r'[\w.@+-]+'
-DAYS_TOKEN_IS_VALID = 5
-
+CONFIRMATION_TOKEN_VALIDITY = 5 # days
 
 def upper_birthdate_limit():
     return datetime.datetime.today()
@@ -38,7 +37,12 @@ class EmailConfirmationToken(mongoengine.EmbeddedDocument):
     created_time = mongoengine.DateTimeField(default=lambda: timezone.now(), required=True)
 
     def check_token(self, confirmation_token):
-        return ((timezone.now() - self.created_time).days < DAYS_TOKEN_IS_VALID) and confirmation_token == self.value
+        if confirmation_token != self.value:
+            return False
+        elif (timezone.now() - self.created_time).days > CONFIRMATION_TOKEN_VALIDITY:
+            return False
+        else:
+            return True
 
 class TwitterAccessToken(mongoengine.EmbeddedDocument):
     key = mongoengine.StringField(max_length=150)

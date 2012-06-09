@@ -120,7 +120,7 @@ msgstr ""
 #: account/forms.py:163
 msgid "The confirmation token is invalid or has expired. Please retry."
 msgstr ""
-"Potrditvena koda je napačna ali pa je potekla. Prosimo, da poskusiš znova."
+"Potrditvena koda je napačna ali pa je potekla. Prosimo, poskusi znova."
 
 #: account/models.py:50
 msgid "username"
