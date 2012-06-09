@@ -344,8 +344,6 @@ class EmailConfirmationSendToken(edit_views.FormView):
             'confirmation_token' : confirmation_token,
             'request' : self.request,
             'CONFIRMATION_TOKEN_VALIDITY' : models.CONFIRMATION_TOKEN_VALIDITY,
-            'site_url' : self.request.build_absolute_uri(urlresolvers.reverse('email_confirmaton_no_token')),
-            'domain' : self.request.build_absolute_uri(urlresolvers.reverse('home')),
         })
 
         user.email_confirmation_token = models.EmailConfirmationToken(value = confirmation_token)
@@ -368,8 +366,11 @@ class EmailConfirmationProcessToken(generic_views.FormView):
         return super(EmailConfirmationProcessToken, self).form_valid(form)
 
     def get_initial(self):
-            return {
-                'confirmation_token': self.kwargs.get('confirmation_token'),
+        token = self.kwargs.get('confirmation_token')
+        if token=='n':
+            token=''
+        return {
+                'confirmation_token': token,
             }
 
     def dispatch(self, request, *args, **kwargs):

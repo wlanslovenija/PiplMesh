@@ -1,13 +1,13 @@
 {% load i18n %}{% blocktrans with username=user.username %}Hello {{ username }}!{% endblocktrans %}
 
-{% blocktrans with SITE_NAME=SITE_NAME username=user.username%}This message was sent to you to confirm this e-mail address as yours for your account on {{ SITE_NAME }} with username {{ username }}. If you have already done so or don't want to, you can safely ignore this e-mail.{% endblocktrans %}
+{% blocktrans with SITE_NAME=SITE_NAME username=user.username %}This message was sent to you to confirm this e-mail address as yours for your account on {{ SITE_NAME }} with username {{ username }}. If you have already done so or don't want to, you can safely ignore this e-mail.{% endblocktrans %}
 
 {% blocktrans %}Please click the link below to confirm your e-mail address:{% endblocktrans %}
 
-{% blocktrans with confirmation_token=confirmation_token %}{{ site_url }}{{ confirmation_token }}/{% endblocktrans %}
+{% url account as the_url %}{% fullurl the_url %}{{ confirmation_token }}
 
 {% blocktrans %}Or, open the following URL:{% endblocktrans %}
-{% blocktrans with site_url=site_url%}{{ site_url }}{% endblocktrans %}
+{% url account as the_url %}{% fullurl the_url %}
 {% blocktrans %}and copy-paste the following confirmation token into the input box there:{% endblocktrans %}
 
 {% blocktrans with confirmation_token=confirmation_token %}{{ confirmation_token }}{% endblocktrans %}
@@ -19,7 +19,7 @@
 {% blocktrans %}If you have any problems confirming your e-mail address or have any other questions just reply to this e-mail.{% endblocktrans %}
 
 
-{% blocktrans  with SITE_NAME=SITE_NAME domain=domain %}Yours,
+{% blocktrans %}Yours,{% endblocktrans %}
 
 {{ SITE_NAME }}
-{{ domain }}{% endblocktrans %}
+{% url account as the_url %}{% fullurl the_url %}
