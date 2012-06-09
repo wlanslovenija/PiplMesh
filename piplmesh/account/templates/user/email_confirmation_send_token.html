@@ -5,21 +5,17 @@
 {% block title %}{% trans "E-mail address confirmation" %}{% endblock %}
 
 {% block content %}
-    <div id="menu_list">
-        <p><a href="{% url profile username=user.username %}">{% trans "Profile" %}</a></p>
-        <p id="current_item"><a href="{% url account %}">{% trans "Account" %}</a></p>
-    </div>
-    {% if user.email %}
-        <p>
-            {% blocktrans with email=user.email %}Clicking the button below will send a confirmation mail to {{ email }}.{% endblocktrans %}
-        </p>
-        <form method="post" action="{% url email_confirmation %}" id="email_confirmation">
-            {% csrf_token %}
-            <button type="submit">{% trans "Click here to confirm your e-mail address" %}</button>
-        </form>
-    {% else %}
-        <p>You haven't supplied any e-mail address! Click Account to fix this.</p>
-    {% endif %}
+<div id="menu_list">
+    <p><a href="{% url profile username=user.username %}">{% trans "Profile" %}</a></p>
+    <p id="current_item"><a href="{% url account %}">{% trans "Account" %}</a></p>
+</div>
+    <p>
+        {% blocktrans with email=user.email %}Clicking the button below will send a confirmation mail to {{ email }}.{% endblocktrans %}
+    </p>
+    <form method="post" action="{% url email_confirmation %}" id="email_confirmation">
+        {% csrf_token %}
+        <button type="submit">{% trans "Click here to confirm your e-mail address" %}</button>
+    </form>
     <dl class="faq">
         <dt>{% trans "Why should I confirm my e-mail address?" %}</dt>
         <dd>

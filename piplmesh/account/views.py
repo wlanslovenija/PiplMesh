@@ -328,30 +328,37 @@ class EmailConfirmationSendToken(edit_views.FormView):
         user = self.request.user
 
         subject = loader.render_to_string('user/confirmation_email_subject.txt', {
-            'SITE_NAME' : settings.SITE_NAME,
-            'EMAIL_SUBJECT_PREFIX' : settings.EMAIL_SUBJECT_PREFIX,
-            'user' : user,
-            'request' : self.request,
             'CONFIRMATION_TOKEN_VALIDITY' : models.CONFIRMATION_TOKEN_VALIDITY,
+            'EMAIL_SUBJECT_PREFIX' : settings.EMAIL_SUBJECT_PREFIX,
+            'SITE_NAME' : settings.SITE_NAME,
+            'user_address' : user.email,
+            'request' : self.request,
+            'user' : user,
         })
 
         # Message content
         # We generate a random string with length 77
-        confirmation_token = crypto.get_random_string(77, string.letters + string.digits)
+        confirmation_token = crypto.get_random_string(77)
         text_content = loader.render_to_string('user/confirmation_email.txt', {
+            'CONFIRMATION_TOKEN_VALIDITY' : models.CONFIRMATION_TOKEN_VALIDITY,
             'SITE_NAME' : settings.SITE_NAME,
-            'user' : user,
             'confirmation_token' : confirmation_token,
             'request' : self.request,
-            'CONFIRMATION_TOKEN_VALIDITY' : models.CONFIRMATION_TOKEN_VALIDITY,
+            'user' : user,
         })
 
-        user.email_confirmation_token = models.EmailConfirmationToken(value = confirmation_token)
+        user.email_confirmation_token = models.EmailConfirmationToken(value=confirmation_token)
         user.save()
         user.email_user(subject, text_content)
 
         messages.success(self.request, _("Confirmation e-mail has been sent to your e-mail address."))
         return super(EmailConfirmationSendToken, self).form_valid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        # TODO: Redirect user from where he came if he doesn't have email defined
+        if  request.user.email:
+            return shortcuts.redirect('home')
+        return super(EmailConfirmationSendToken, self).dispatch(request, *args, **kwargs)
 
 class EmailConfirmationProcessToken(generic_views.FormView):
     template_name = 'user/email_confirmation_process_token.html'
@@ -367,15 +374,17 @@ class EmailConfirmationProcessToken(generic_views.FormView):
 
     def get_initial(self):
         return {
-                'confirmation_token': self.kwargs.get('confirmation_token'),
+            'confirmation_token': self.kwargs.get('confirmation_token'),
         }
 
     def dispatch(self, request, *args, **kwargs):
-        # TODO: User has e-mail address defined! And that when user gets back, the same user is still logged in!
+        # TODO: Check if user has e-mail defined
+        # TODO: Check if this is still the same user
         return super(EmailConfirmationProcessToken, self).dispatch(request, *args, **kwargs)
 
     def get_form(self, form_class):
         return form_class(self.request.user, **self.get_form_kwargs())
+
 
 def logout(request):
     """

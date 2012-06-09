@@ -271,7 +271,7 @@ input.gsc-search-button {
     margin-bottom: 100px;
 }
 
-#email_confirmation_final input[type=text]  {
+#email_confirmation_process_token input[type=text]  {
     width: 500px;
 }
 
