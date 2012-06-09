@@ -1,4 +1,4 @@
-from tastypie import fields as tastypie_fields
+from tastypie import authorization as tastypie_authorization, fields as tastypie_fields
 
 from tastypie_mongoengine import fields, resources
 
@@ -30,7 +30,7 @@ class CommentResource(AuthoredResource):
         object_class = api_models.Comment
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         # TODO: Make proper authorization, current implementation is for development use only
-        authorization = authorization.PiplMeshAuthorization()
+        authorization = tastypie_authorization.Authorization()
 
 class ImageAttachmentResource(AuthoredResource):
     image_file = fields.ReferenceField(to='piplmesh.api.resources.UploadedFileResource', attribute='image_file', null=False, full=True)
@@ -38,7 +38,7 @@ class ImageAttachmentResource(AuthoredResource):
 
     class Meta:
         object_class = api_models.ImageAttachment
-        authorization = authorization.PiplMeshAuthorization()
+        authorization = tastypie_authorization.Authorization()
 
 class LinkAttachmentResource(AuthoredResource):
     link_caption = tastypie_fields.CharField(attribute='link_caption', default='', null=False, blank=True)
@@ -53,7 +53,7 @@ class AttachmentResource(AuthoredResource):
         object_class = api_models.Attachment
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         # TODO: Make proper authorization, current implementation is for development use only
-        authorization = authorization.PiplMeshAuthorization()
+        authorization = tastypie_authorization.Authorization()
 
         polymorphic = {
             'image': ImageAttachmentResource,
@@ -70,4 +70,4 @@ class PostResource(AuthoredResource):
         queryset = api_models.Post.objects.all()
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         # TODO: Make proper authorization, current implementation is for development use only
-        authorization = authorization.PiplMeshAuthorization()
+        authorization = authorization.PostAuthorization()
