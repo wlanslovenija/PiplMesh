@@ -64,7 +64,6 @@ class BasicTest(test_runner.MongoEngineTestCase):
         post_updated_time = response['updated_time']
         
         # Test authorization
-        
         response = self.client2.get(post_uri, content_type='application/json')
         self.assertEqual(response.status_code, 404)
 
@@ -110,7 +109,6 @@ class BasicTest(test_runner.MongoEngineTestCase):
         self.assertEqual(response['is_published'], True)
         
         # Test authorization
-        
         response = self.client2.get(post_uri, content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
