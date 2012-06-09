@@ -366,12 +366,9 @@ class EmailConfirmationProcessToken(generic_views.FormView):
         return super(EmailConfirmationProcessToken, self).form_valid(form)
 
     def get_initial(self):
-        token = self.kwargs.get('confirmation_token')
-        if token=='n':
-            token=''
         return {
-                'confirmation_token': token,
-            }
+                'confirmation_token': self.kwargs.get('confirmation_token'),
+        }
 
     def dispatch(self, request, *args, **kwargs):
         # TODO: User has e-mail address defined! And that when user gets back, the same user is still logged in!
