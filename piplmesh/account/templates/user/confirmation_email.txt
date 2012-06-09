@@ -10,7 +10,7 @@
 {% url account as the_url %}{% fullurl the_url %}
 {% blocktrans %}and copy-paste the following confirmation token into the input box there:{% endblocktrans %}
 
-{% blocktrans with confirmation_token=confirmation_token %}{{ confirmation_token }}{% endblocktrans %}
+{{ confirmation_token }}
 
 {% blocktrans with CONFIRMATION_TOKEN_VALIDITY=CONFIRMATION_TOKEN_VALIDITY %}The link will be active for {{ CONFIRMATION_TOKEN_VALIDITY }} days, if it expires you will have to redo the process of confirming your e-mail address.{% endblocktrans %}
 
