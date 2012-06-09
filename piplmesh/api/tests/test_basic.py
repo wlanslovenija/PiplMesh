@@ -66,7 +66,7 @@ class BasicTest(test_runner.MongoEngineTestCase):
         # Test authorization
         
         response = self.client2.get(post_uri, content_type='application/json')
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 404)
 
         # Adding an attachment
 
