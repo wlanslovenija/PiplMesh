@@ -1,10 +1,28 @@
-{% load i18n %}{% blocktrans with username=username %}Hello {{ username }}!
-This message was sent to you to confirm this e-mail address.{% endblocktrans %}
-{% blocktrans with confirmation_token=confirmation_token %}
-Please click the link below to confirm your e-mail address:
+{% load i18n %}{% blocktrans with username=username %}Hello {{ username }}!{% endblocktrans %}
+
+{% blocktrans %}This message was sent to you to confirm this e-mail address.
+If you have already done so or don't want to, you can safely ignore this e-mail.{% endblocktrans %}
+
+{% blocktrans with confirmation_token=confirmation_token %}Please click the link below to confirm your e-mail address:
+
 {{ site_url }}{{ confirmation_token }}/
-Or paste the following token into the input box here: {{ site_url }}
-Token={{ confirmation_token }}
-{% endblocktrans %}
+
+Or paste the following token into the input box here:
+{{ site_url }}
+
+Token={{ confirmation_token }}{% endblocktrans %}
+
 {% blocktrans with site_url=site_url %}If link above does not work, you can copy-paste it directly into your browser.{% endblocktrans %}
-{% blocktrans with confirmation_token_validity=confirmation_token_validity%}The link will be active for {{ confirmation_token_validity }} days, if it expires you will have to redo the process of confirming your e-mail address.{% endblocktrans %}
+{% blocktrans with confirmation_token_validity=confirmation_token_validity%}The link will be active for {{ confirmation_token_validity }} days,
+if it expires you will have to redo the process of confirming your e-mail address.{% endblocktrans %}
+
+{% blocktrans %}Please also be careful to open complete URL for confirmation. Your e-mail
+client might have broken it into several lines.{% endblocktrans %}
+
+{% blocktrans with site_name=site_name domain=domain %}If you have any problems confirming your e-mail address or have any other questions just reply to this e-mail.
+
+
+Yours,
+
+{{ site_name }}
+{{ domain }}{% endblocktrans %}
