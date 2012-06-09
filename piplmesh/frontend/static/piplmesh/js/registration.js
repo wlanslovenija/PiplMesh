@@ -11,23 +11,20 @@ function checkPassword() {
             $('#id_password1').removeClass('input_invalid');
             $('#id_password2').removeClass('input_invalid');
 
-            if ($('#password_info')) {
-                $('#password_info').remove();
-            }
+            $('#password_info').remove();
         }
         else {
             var message_info = $('<span/>').prop({
                 'id': 'password_info',
-                'class': 'input_invalid'
+                'class': 'input_invalid_text'
             }).text(gettext('Passwords do not match.'));
 
             $('#id_password1').addClass('input_invalid');
             $('#id_password2').addClass('input_invalid');
 
-            if ($('#password_info')) {
-                $('#password_info').remove();
+            if (!$('#password_info').length) {
+                $('#id_password2').after(message_info);
             }
-            $('#id_password2').after(message_info);
 
             $('#id_password1').keyup(checkPassword).change(checkPassword);
             $('#id_password2').keyup(checkPassword).change(checkPassword);
@@ -36,10 +33,7 @@ function checkPassword() {
     else {
         $('#id_password1').removeClass('input_invalid');
         $('#id_password2').removeClass('input_invalid');
-
-        if ($('#password_info')) {
-            $('#password_info').remove();
-        }
+        $('#password_info').remove();
     }
 }
 
@@ -50,32 +44,26 @@ function checkEmail() {
     if ($('#id_email').val()) {
         if (emailRegex.test($('#id_email').val())) {
             $('#id_email').removeClass('input_invalid');
-            
-            if ($('#email_info')) {
-                $('#email_info').remove();
-            }
+
+            $('#email_info').remove();
         }
         else {
             var message_info = $('<span/>').prop({
                 'id': 'email_info',
-                'class': 'input_invalid'
+                'class': 'input_invalid_text'
             }).text(gettext('Invalid e-mail.'));
 
             $('#id_email').addClass('input_invalid');
 
-            if ($('#email_info')) {
-                $('#email_info').remove();
+            if (!$('#email_info').length) {
+                $('#id_email').after(message_info);
             }
-            $('#id_email').after(message_info);
 
             $('#id_email').keyup(checkEmail).change(checkEmail);
         }
     }
     else {
         $('#id_email').removeClass('input_invalid');
-        
-        if ($('#email_info')) {
-            $('#email_info').remove();
-        }
+        $('#email_info').remove();
     }
 }
