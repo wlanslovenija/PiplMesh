@@ -13,15 +13,14 @@ function checkPassword() {
             $("#password_info").remove();
         }
         else {
-            $('#id_password1').addClass('input_invalid');
-            $('#id_password2').addClass('input_invalid');
-            $("#password_info").remove();
-
             var message_info = $('<span/>').prop({
                 'id': 'password_info',
                 'class': 'input_invalid'
             }).text(gettext('Please re-enter your password.'));
 
+            $('#id_password1').addClass('input_invalid');
+            $('#id_password2').addClass('input_invalid');
+            $("#password_info").remove();
             $("#id_password2").after(message_info);
         }
     }
@@ -42,14 +41,13 @@ function checkEmail() {
             $("#email_info").remove();
         }
         else {
-            $('#id_email').addClass('input_invalid');
-            $("#email_info").remove();
-
             var message_info = $('<span/>').prop({
                 'id': 'email_info',
                 'class': 'input_invalid'
             }).text(gettext('Invalid e-mail.'));
 
+            $('#id_email').addClass('input_invalid');
+            $("#email_info").remove();
             $("#id_email").after(message_info);
         }
     }
