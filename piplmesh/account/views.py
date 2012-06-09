@@ -356,7 +356,7 @@ class EmailConfirmationSendToken(edit_views.FormView):
 
     def dispatch(self, request, *args, **kwargs):
         # TODO: Redirect user from where he came if he doesn't have email defined
-        if  request.user.email:
+        if not request.user.email:
             return shortcuts.redirect('home')
         return super(EmailConfirmationSendToken, self).dispatch(request, *args, **kwargs)
 
