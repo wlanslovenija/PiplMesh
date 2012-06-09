@@ -215,13 +215,14 @@ msgstr ""
 "Ali pa prilepi naslednjo kodo v vnosno polje tukaj:\n"
 "%(site_url)s\n"
 "\n"
-"Koda=%(confirmation_token)s\n"
+"Koda=%(confirmation_token)s"
 
 #: account/templates/user/confirmation_email.txt:15
 msgid ""
 "If link above does not work, you can copy-paste it directly into your "
 "browser."
-msgstr "Če zgornja povezava ne deluje, jo lahko prilepiš direktno v brskalnik."
+msgstr ""
+"Če zgornja povezava ne deluje, jo lahko prilepiš direktno v brskalnik."
 
 #: account/templates/user/confirmation_email.txt:16
 msgid ""
@@ -269,7 +270,7 @@ msgstr "Potrditev e-mail naslova"
 
 #: account/templates/user/email_confirmation.html:13
 msgid "Clicking the button below will send a confirmation mail to %(email)s."
-msgstr "Klik na spodnji gumb, bo poslal potrditveno povezavo na %(email)s"
+msgstr "Klik na spodnji gumb, bo poslal potrditveno povezavo na %(email)s."
 
 #: account/templates/user/email_confirmation.html:17
 msgid "Click here to confirm your e-mail address"
