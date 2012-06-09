@@ -373,9 +373,7 @@ class EmailConfirmationProcessToken(generic_views.FormView):
             }
 
     def dispatch(self, request, *args, **kwargs):
-        # TODO: With lazy user support, we want users to be able to change their account even if not authenticated
-        if not request.user.is_authenticated():
-            return shortcuts.redirect('login')
+        # TODO: User has e-mail address defined! And that when user gets back, the same user is still logged in!
         return super(EmailConfirmationProcessToken, self).dispatch(request, *args, **kwargs)
 
     def get_form(self, form_class):
