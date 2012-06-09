@@ -9,7 +9,7 @@
         <p><a href="{% url profile username=user.username %}">{% trans "Profile" %}</a></p>
         <p id="current_item"><a href="{% url account %}">{% trans "Account" %}</a></p>
     </div>
-    {% if not user.email %}
+    {% if user.email %}
         <p>
             {% blocktrans with email=user.email %}Clicking the button below will send a confirmation mail to {{ email }}.{% endblocktrans %}
         </p>
