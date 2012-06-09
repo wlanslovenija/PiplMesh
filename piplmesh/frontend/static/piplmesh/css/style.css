@@ -80,7 +80,7 @@ form input[type="submit"], form input[type="reset"] {
 }
 
 .input_invalid {
-    background-color: #ff6666;
+    color: #ff0000;
 }
 
 /* Styling nested lists such as radio buttons */

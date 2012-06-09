@@ -10,7 +10,10 @@ function checkPassword() {
         if ($('#id_password1').val() == $('#id_password2').val()) {
             $('#id_password1').removeClass('input_invalid');
             $('#id_password2').removeClass('input_invalid');
-            $("#password_info").remove();
+
+            if ($('#password_info')) {
+                $('#password_info').remove();
+            }
         }
         else {
             var message_info = $('<span/>').prop({
@@ -20,17 +23,23 @@ function checkPassword() {
 
             $('#id_password1').addClass('input_invalid');
             $('#id_password2').addClass('input_invalid');
-            $("#password_info").remove();
-            $("#id_password2").after(message_info);
-            
+
+            if ($('#password_info')) {
+                $('#password_info').remove();
+            }
+            $('#id_password2').after(message_info);
+
             $('#id_password1').keyup(checkPassword).change(checkPassword);
             $('#id_password2').keyup(checkPassword).change(checkPassword);
         }
     }
     else {
-        $("#password_info").remove();
         $('#id_password1').removeClass('input_invalid');
         $('#id_password2').removeClass('input_invalid');
+
+        if ($('#password_info')) {
+            $('#password_info').remove();
+        }
     }
 }
 
@@ -41,7 +50,10 @@ function checkEmail() {
     if ($('#id_email').val()) {
         if (emailRegex.test($('#id_email').val())) {
             $('#id_email').removeClass('input_invalid');
-            $("#email_info").remove();
+            
+            if ($('#email_info')) {
+                $('#email_info').remove();
+            }
         }
         else {
             var message_info = $('<span/>').prop({
@@ -50,14 +62,20 @@ function checkEmail() {
             }).text(gettext('Invalid e-mail.'));
 
             $('#id_email').addClass('input_invalid');
-            $("#email_info").remove();
-            $("#id_email").after(message_info);
-            
+
+            if ($('#email_info')) {
+                $('#email_info').remove();
+            }
+            $('#id_email').after(message_info);
+
             $('#id_email').keyup(checkEmail).change(checkEmail);
         }
     }
     else {
-        $("#email_info").remove();
         $('#id_email').removeClass('input_invalid');
+        
+        if ($('#email_info')) {
+            $('#email_info').remove();
+        }
     }
 }
