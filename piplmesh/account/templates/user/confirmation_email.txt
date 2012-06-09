@@ -1,28 +1,25 @@
-{% load i18n %}{% blocktrans with username=username %}Hello {{ username }}!{% endblocktrans %}
+{% load i18n %}{% blocktrans with username=user.username %}Hello {{ username }}!{% endblocktrans %}
 
-{% blocktrans %}This message was sent to you to confirm this e-mail address.
-If you have already done so or don't want to, you can safely ignore this e-mail.{% endblocktrans %}
+{% blocktrans with SITE_NAME=SITE_NAME username=user.username%}This message was sent to you to confirm this e-mail address as yours for your account on {{ SITE_NAME }} with username {{ username }}. If you have already done so or don't want to, you can safely ignore this e-mail.{% endblocktrans %}
 
-{% blocktrans with confirmation_token=confirmation_token %}Please click the link below to confirm your e-mail address:
+{% blocktrans %}Please click the link below to confirm your e-mail address:{% endblocktrans %}
 
-{{ site_url }}{{ confirmation_token }}/
+{% blocktrans with confirmation_token=confirmation_token %}{{ site_url }}{{ confirmation_token }}/{% endblocktrans %}
 
-Or paste the following token into the input box here:
-{{ site_url }}
+{% blocktrans %}Or, open the following URL:{% endblocktrans %}
+{% blocktrans with site_url=site_url%}{{ site_url }}{% endblocktrans %}
+{% blocktrans %}and copy-paste the following confirmation token into the input box there:{% endblocktrans %}
 
-Token={{ confirmation_token }}{% endblocktrans %}
+{% blocktrans with confirmation_token=confirmation_token %}{{ confirmation_token }}{% endblocktrans %}
 
-{% blocktrans with site_url=site_url %}If link above does not work, you can copy-paste it directly into your browser.{% endblocktrans %}
-{% blocktrans with confirmation_token_validity=confirmation_token_validity%}The link will be active for {{ confirmation_token_validity }} days,
-if it expires you will have to redo the process of confirming your e-mail address.{% endblocktrans %}
+{% blocktrans with CONFIRMATION_TOKEN_VALIDITY=CONFIRMATION_TOKEN_VALIDITY %}The link will be active for {{ CONFIRMATION_TOKEN_VALIDITY }} days, if it expires you will have to redo the process of confirming your e-mail address.{% endblocktrans %}
 
-{% blocktrans %}Please also be careful to open complete URL for confirmation. Your e-mail
-client might have broken it into several lines.{% endblocktrans %}
+{% blocktrans %}Please also be careful to open complete URL for confirmation. Your e-mail client might have broken it into several lines.{% endblocktrans %}
 
-{% blocktrans with site_name=site_name domain=domain %}If you have any problems confirming your e-mail address or have any other questions just reply to this e-mail.
+{% blocktrans %}If you have any problems confirming your e-mail address or have any other questions just reply to this e-mail.{% endblocktrans %}
 
 
-Yours,
+{% blocktrans  with SITE_NAME=SITE_NAME domain=domain %}Yours,
 
-{{ site_name }}
+{{ SITE_NAME }}
 {{ domain }}{% endblocktrans %}

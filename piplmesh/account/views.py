@@ -8,7 +8,7 @@ from django.core import exceptions, urlresolvers
 from django.template import loader
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
-from django.utils import timezone, translation
+from django.utils import crypto, timezone, translation
 from django.utils.translation import ugettext_lazy as _
 
 from pushserver import signals
@@ -320,41 +320,43 @@ class PasswordChangeView(edit_views.FormView):
         return form_class(self.request.user, **self.get_form_kwargs())
 
 class EmailConfirmationSendToken(edit_views.FormView):
-    template_name = 'user/email_confirmation.html'
+    template_name = 'user/email_confirmation_send_token.html'
     form_class = forms.EmailConfirmationSendTokenForm
     success_url = urlresolvers.reverse_lazy('account')
 
     def form_valid(self, form):
-        subject = loader.get_template('user/confirmation_email_subject.txt')
-        subject = subject.render(template.Context({
-            'site_name' : settings.EMAIL_SUBJECT_PREFIX,
-        }))
-
-        from_email = settings.DEFAULT_FROM_EMAIL
         user = self.request.user
+
+        subject = loader.render_to_string('user/confirmation_email_subject.txt', {
+            'SITE_NAME' : settings.SITE_NAME,
+            'EMAIL_SUBJECT_PREFIX' : settings.EMAIL_SUBJECT_PREFIX,
+            'user' : user,
+            'request' : self.request,
+            'CONFIRMATION_TOKEN_VALIDITY' : models.CONFIRMATION_TOKEN_VALIDITY,
+        })
 
         # Message content
         # We generate a random string with length 77
-        confirmation_token = ''.join(random.choice(string.letters + string.digits) for i in xrange(77))
-        text_content = loader.get_template('user/confirmation_email.txt')
-        text_content = text_content.render(template.Context({
-            'username' : user.username,
+        confirmation_token = crypto.get_random_string(77, string.letters + string.digits)
+        text_content = loader.render_to_string('user/confirmation_email.txt', {
+            'SITE_NAME' : settings.SITE_NAME,
+            'user' : user,
             'confirmation_token' : confirmation_token,
+            'request' : self.request,
+            'CONFIRMATION_TOKEN_VALIDITY' : models.CONFIRMATION_TOKEN_VALIDITY,
             'site_url' : self.request.build_absolute_uri(urlresolvers.reverse('email_confirmaton_no_token')),
-            'confirmation_token_validity' : models.CONFIRMATION_TOKEN_VALIDITY,
-            'site_name' : 'Piplmesh',
-            'domain' : self.request.build_absolute_uri(urlresolvers.reverse('home'))
-        }))
+            'domain' : self.request.build_absolute_uri(urlresolvers.reverse('home')),
+        })
 
-        user.email_confirmation_token = models.EmailConfirmationToken(value=confirmation_token, created_time=timezone.now())
+        user.email_confirmation_token = models.EmailConfirmationToken(value = confirmation_token)
         user.save()
-        user.email_user(subject, text_content, from_email)
+        user.email_user(subject, text_content)
 
-        messages.success(self.request, _("Email confirmation link has been sent to the e-mail address you provided."), fail_silently=True)
+        messages.success(self.request, _("Confirmation e-mail has been sent to your e-mail address."))
         return super(EmailConfirmationSendToken, self).form_valid(form)
 
 class EmailConfirmationProcessToken(generic_views.FormView):
-    template_name = 'user/email_confirmaton_final.html'
+    template_name = 'user/email_confirmation_process_token.html'
     form_class = forms.EmailConfirmationProcessTokenForm
     success_url = urlresolvers.reverse_lazy('account')
 
@@ -362,13 +364,12 @@ class EmailConfirmationProcessToken(generic_views.FormView):
         user = self.request.user
         user.email_confirmed = True
         user.save()
-        messages.success(self.request, _("You have successfully confirmed your e-mail address"), fail_silently=True)
+        messages.success(self.request, _("You have successfully confirmed your e-mail address."))
         return super(EmailConfirmationProcessToken, self).form_valid(form)
 
     def get_initial(self):
-        if self.kwargs.has_key('confirmation_token'):
             return {
-                'confirmation_token': self.kwargs['confirmation_token'],
+                'confirmation_token': self.kwargs.get('confirmation_token'),
             }
 
     def dispatch(self, request, *args, **kwargs):
