@@ -17,7 +17,7 @@
     <div id="password_change">
         <p><a href="{% url password_change %}">{% trans "Change your password" %}</a></p>
         {% if not user.email_confirmed and user.email %}
-            <p><a href="{% url email_confirmation %}">{% trans "Please confirm your e-mail address" %}</a></p>
+            <p><a href="{% url email_confirmation_send_token %}">{% trans "Please confirm your e-mail address" %}</a></p>
         {% endif %}
     </div>
 {% endblock %}
