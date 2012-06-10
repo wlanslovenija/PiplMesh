@@ -12,4 +12,3 @@ class OnlineUsersPanel(panels.BasePanel):
         return context
 
 panels.panels_pool.register(OnlineUsersPanel)
-
