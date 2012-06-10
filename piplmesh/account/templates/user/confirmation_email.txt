@@ -1,4 +1,4 @@
-{% load i18n %}{% blocktrans with username=user.username %}Hello {{ username }}!{% endblocktrans %}
+{% load i18n url_tags %}{% blocktrans with username=user.username %}Hello {{ username }}!{% endblocktrans %}
 
 {% blocktrans with SITE_NAME=SITE_NAME username=user.username %}This message was sent to you to confirm this e-mail address as yours for your account on {{ SITE_NAME }} with username {{ username }}. If you have already done so or don't want to, you can safely ignore this e-mail.{% endblocktrans %}
 
