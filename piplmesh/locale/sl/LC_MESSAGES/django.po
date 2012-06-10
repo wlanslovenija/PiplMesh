@@ -145,11 +145,11 @@ msgstr "Tvoj račun je bil uspešno posodobljen."
 msgid "Your password has been successfully changed."
 msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
-#: account/views.py:354
+#: account/views.py:353
 msgid "Confirmation e-mail has been sent to your e-mail address."
 msgstr "Potrditvena povezava je bila poslana na tvoj e-mail naslov."
 
-#: account/views.py:372
+#: account/views.py:371
 msgid "You have successfully confirmed your e-mail address."
 msgstr "Uspešno si potrdil svoj e-mail naslov"
 
@@ -184,6 +184,7 @@ msgid "Please confirm your e-mail address"
 msgstr "Prosimo, da potrdiš svoj e-mail naslov"
 
 #: account/templates/user/confirmation_email.txt:1
+#, python-format
 msgid "Hello %(username)s!"
 msgstr "Pozdravljen %(username)s!"
 
@@ -202,30 +203,39 @@ msgid "Please click the link below to confirm your e-mail address:"
 msgstr "Pritisni povezavo spodaj za potrditev tvojega e-mail naslova"
 
 #: account/templates/user/confirmation_email.txt:9
-msgid "Or, open the following URL:"
+msgid "Or, open the following link:"
 msgstr "Ali pa odpri naslednjo povezavo:"
 
-#: account/templates/user/confirmation_email.txt:11
+#: account/templates/user/confirmation_email.txt:13
 msgid ""
 "and copy-paste the following confirmation token into the input box there:"
 msgstr "in prilepi sledečo podtrditveno kodo v vnosno polje tam:"
 
-#: account/templates/user/confirmation_email.txt:15
-msgid ""
-"The link will be active for %(CONFIRMATION_TOKEN_VALIDITY)s days, if it "
-"expires you will have to redo the process of confirming your e-mail address."
-msgstr ""
-"Povezava bo aktivna %(CONFIRMATION_TOKEN_VALIDITY)s dni, "
-"če bo potekla, boš moral ponovno čez postopek potrditve svojega e-mail "
-"naslova."
-
 #: account/templates/user/confirmation_email.txt:17
 msgid ""
-"Please also be careful to open complete URL for confirmation. Your e-mail "
-"client might have broken it into several lines."
-msgstr ""
+"Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s day.\n"
+msgid_plural ""
+"Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s days."
+msgstr[0] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
+msgstr[1] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dan."
+msgstr[2] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
+msgstr[3] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
 
 #: account/templates/user/confirmation_email.txt:19
+msgid ""
+"If it expires you will have to redo the process of confirming your e-mail "
+"address."
+msgstr ""
+"Če bo potekla, boš "
+"moral ponovno čez postopek potrditve svojega e-mail naslova."
+
+#: account/templates/user/confirmation_email.txt:21
+msgid ""
+"Please also be careful to open complete link. Your e-mail client might have "
+"broken it into several lines."
+msgstr ""
+
+#: account/templates/user/confirmation_email.txt:23
 msgid ""
 "If you have any problems confirming your e-mail address or have any other "
 "questions just reply to this e-mail."
@@ -233,7 +243,7 @@ msgstr ""
 "Če imaš karšnekoli težave pri potrjanju svojega e-mail naslova ali kakšna "
 "druga vprašanja, le odgovori na ta e-mail."
 
-#: account/templates/user/confirmation_email.txt:22
+#: account/templates/user/confirmation_email.txt:25
 msgid "Yours,"
 msgstr "Tvoj,"
 
@@ -249,8 +259,8 @@ msgid ""
 "reason the input box below is empty, paste the token in manually from the "
 "confirmation e-mail you have received."
 msgstr ""
-"Si samo še korak od potrditve svojega e-mail naslova. Če je spodnje vnosno polje slučajno prazno, ročno "
-"prilepi kodo, ki smo ti jo poslali."
+"Si samo še korak od potrditve svojega e-mail naslova. Če je spodnje vnosno "
+"polje slučajno prazno, ročno prilepi kodo, ki smo ti jo poslali."
 
 #: account/templates/user/email_confirmation_send_token.html:5
 msgid "E-mail address confirmation"
@@ -260,15 +270,15 @@ msgstr "Potrditev e-mail naslova"
 msgid "Clicking the button below will send a confirmation mail to %(email)s."
 msgstr "Klik na spodnji gumb, bo poslal potrditveno povezavo na %(email)s."
 
-#: account/templates/user/email_confirmation_send_token.html:17
+#: account/templates/user/email_confirmation_send_token.html:16
 msgid "Click here to confirm your e-mail address"
 msgstr "Pritisni tukaj za potrditev tvojega e-mail naslova"
 
-#: account/templates/user/email_confirmation_send_token.html:20
+#: account/templates/user/email_confirmation_send_token.html:21
 msgid "Why should I confirm my e-mail address?"
 msgstr "Zakaj bi potrdil svoj e-mail naslov?"
 
-#: account/templates/user/email_confirmation_send_token.html:22
+#: account/templates/user/email_confirmation_send_token.html:23
 msgid ""
 "Confirming your e-mail address improves the security of your account. Once "
 "you've confirmed your e-mail address, you will be able to reset your "
