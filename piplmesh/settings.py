@@ -180,6 +180,7 @@ INSTALLED_APPS = (
     'tastypie',
     'tastypie_mongoengine',
     'sekizai',
+    'missing',
 )
 
 PUSH_SERVER = {
