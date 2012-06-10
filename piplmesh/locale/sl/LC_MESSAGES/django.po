@@ -233,7 +233,7 @@ msgstr ""
 msgid ""
 "Please also be careful to open complete link. Your e-mail client might have "
 "broken it into several lines."
-msgstr "Prosimo bodi previden/a, da odpreš celotno povezavo. Tvoj e-poštni odjemalec jo je morda razdelil v več vrstic."
+msgstr "Prosimo bodi previden/a, da odpreš celotno povezavo. Tvoj e-mail odjemalec jo je morda razdelil v več vrstic."
 
 #: account/templates/user/confirmation_email.txt:23
 msgid ""
