@@ -200,7 +200,7 @@ msgstr ""
 
 #: account/templates/user/confirmation_email.txt:5
 msgid "Please click the link below to confirm your e-mail address:"
-msgstr "Klikni spodnjo povezavo za potrditev tvojega e-mail naslova"
+msgstr "Klikni spodnjo povezavo za potrditev svojega e-mail naslova:"
 
 #: account/templates/user/confirmation_email.txt:9
 msgid "Or, open the following link:"
