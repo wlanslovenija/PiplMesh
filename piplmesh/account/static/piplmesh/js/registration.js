@@ -1,8 +1,8 @@
 $(document).ready(function () {
-    $('#id_password1').unbind('blur', checkPassword).blur(checkPassword);
-    $('#id_password2').unbind('blur', checkPassword).blur(checkPassword);
+    $('#id_password1').blur(checkPassword);
+    $('#id_password2').blur(checkPassword);
 
-    $('#id_email').unbind('blur', checkEmail).blur(checkEmail);
+    $('#id_email').blur(checkEmail);
 });
 
 function checkPassword() {
