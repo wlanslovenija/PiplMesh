@@ -23,4 +23,4 @@
 {% blocktrans %}Yours,{% endblocktrans %}
 
 {{ SITE_NAME }}
-{% url account as the_url %}{% fullurl the_url %}
+{% url home as the_url %}{% fullurl the_url %}
