@@ -185,7 +185,7 @@ msgstr "Prosimo, potrdi svoj e-mail naslov"
 #: account/templates/user/confirmation_email.txt:1
 #, python-format
 msgid "Hello %(username)s!"
-msgstr "Pozdravljen %(username)s!"
+msgstr "Pozdravljen/a %(username)s!"
 
 #: account/templates/user/confirmation_email.txt:3
 #, python-format
@@ -196,7 +196,7 @@ msgid ""
 msgstr ""
 "To sporočilo ti je bilo poslano, da potrdiš ta e-mail naslov (%(email)s) kot "
 "svojega za %(SITE_NAME)s račun z uporabniškim imenom \"%(username)s\". Če si "
-"to že storil ali pa tega nočeš, lahko brez skrbi ignoriraš ta e-mail."
+"to že storil/a ali pa tega nočeš, lahko brez skrbi ignoriraš ta e-mail."
 
 #: account/templates/user/confirmation_email.txt:5
 msgid "Please click the link below to confirm your e-mail address:"
@@ -227,7 +227,7 @@ msgid ""
 " If it expires you will have to redo the process of confirming your e-mail "
 "address."
 msgstr ""
-"Če bo potekla, boš moral ponovno čez postopek potrditve svojega e-mail "
+"Če bo potekla, boš moral/a ponovno čez postopek potrditve svojega e-mail "
 "naslova."
 
 #: account/templates/user/confirmation_email.txt:19
@@ -243,7 +243,7 @@ msgid ""
 "If you have any problems confirming your e-mail address or have any other "
 "questions just reply to this e-mail."
 msgstr ""
-"Če imaš karšnekoli težave pri potrjanju svojega e-mail naslova ali kakšna "
+"Če imaš karšnekoli težave pri potrjevanju svojega e-mail naslova ali kakšna "
 "druga vprašanja, lahko odgovoriš kar na ta e-mail."
 
 #: account/templates/user/confirmation_email.txt:23
