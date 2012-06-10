@@ -4,7 +4,7 @@
 
 {% blocktrans %}Please click the link below to confirm your e-mail address:{% endblocktrans %}
 
-{% url email_confirmaton_process_token as the_url %}{% fullurl the_url %}{{ confirmation_token }}
+{% url email_confirmaton_process_token confirmation_token as the_url %}{% fullurl the_url %}
 
 {% blocktrans %}Or, open the following link:{% endblocktrans %}
 
