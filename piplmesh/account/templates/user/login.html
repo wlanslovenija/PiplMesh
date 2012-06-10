@@ -31,7 +31,7 @@
                     <li>
                         <form method="post" action="{% url foursquare_login %}" id="foursquare_login_form4">
                             {% csrf_token %}
-                            <p><button type="submit">{% trans "Login with Foursquare" %}</button></p>
+                            <p><button type="submit" class="foursquare_login_button"><span class="foursquare_button_text">{% trans "Login with Foursquare" %}</span></button></p>
                         </form>
                     </li>
                     <li>
