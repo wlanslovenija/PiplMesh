@@ -21,8 +21,8 @@
 
 {% blocktrans %}If you have any problems confirming your e-mail address or have any other questions just reply to this e-mail.{% endblocktrans %}
 {% endfilter %}
-
 {% blocktrans %}Yours,{% endblocktrans %}
+
 
 {{ SITE_NAME }}
 {% url home as the_url %}{% fullurl the_url %}
