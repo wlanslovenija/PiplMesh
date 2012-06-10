@@ -3,8 +3,9 @@ body {
     font-size: 13px;
     background: url('../images/background.png') repeat-x top left;
     color: #000000;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
 }
 
 a {
@@ -227,11 +228,7 @@ input.gsc-search-button {
 
 /* -------------------- MAIN ------------------------ */
 #content {
-    margin: 20px;
-}
-
-#main {
-    overflow: hidden;
+    padding: 20px;
 }
 
 .result {
@@ -525,6 +522,7 @@ input.gsc-search-button {
 /* ------------------ PANELS ---------------------------- */
 .panel {
     width: 260px;
+    margin-bottom: 5px;
 }
 
 .panel .header {
@@ -533,4 +531,33 @@ input.gsc-search-button {
     text-align: center;
     background-color: #68AE2C;
     cursor: pointer;
+}
+
+.panels_column {
+    min-height: 50px;
+    width: 260px;
+    float: left;
+    margin-right: 5px;
+}
+
+.placeholder {
+    background-color: #f0f0f0;
+    border: 1px dashed #ddd;
+    margin-bottom: 5px;
+}
+
+/* ----------------- MAIN LAYOUT ------------------------------- */
+#content {
+    min-height: 900px;
+}
+
+#wall {
+    border: #bbb 1px solid;
+    min-height: 500px;
+    width: 520px;
+    float: left;
+}
+
+#panels {
+    margin-left: 540px;
 }
