@@ -79,6 +79,14 @@ form input[type="submit"], form input[type="reset"] {
     margin-left: -13em;
 }
 
+.input_invalid {
+    background-color: #ff0000;
+}
+
+.input_invalid_text {
+    color: #ff0000;
+}
+
 /* Styling nested lists such as radio buttons */
 .form_fields .field ul {
     padding-left: 0;
