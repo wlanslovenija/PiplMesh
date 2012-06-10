@@ -115,7 +115,7 @@ msgstr "Potrditvena koda"
 msgid ""
 "Please enter the confirmation token you received to your e-mail address."
 msgstr ""
-"Prosimo vnesi potrditveno kodo, ki si jo prejel na svoj e-mail naslov. "
+"Prosimo vnesi potrditveno kodo, ki si jo prejel na svoj e-mail naslov."
 
 #: account/forms.py:165
 msgid "The confirmation token is invalid or has expired. Please retry."
@@ -147,11 +147,11 @@ msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
 #: account/views.py:353
 msgid "Confirmation e-mail has been sent to your e-mail address."
-msgstr "Potrditvena povezava je bila poslana na tvoj e-mail naslov."
+msgstr "Potrditven e-mail je bil poslan na tvoj e-mail naslov."
 
 #: account/views.py:371
 msgid "You have successfully confirmed your e-mail address."
-msgstr "Uspešno si potrdil svoj e-mail naslov"
+msgstr "Uspešno si potrdil svoj e-mail naslov."
 
 #: account/templates/user/account.html:5
 #: account/templates/user/account.html:10
@@ -181,7 +181,7 @@ msgstr "Spremeni svoje geslo"
 
 #: account/templates/user/account.html:20
 msgid "Please confirm your e-mail address"
-msgstr "Prosimo, da potrdiš svoj e-mail naslov"
+msgstr "Prosimo potrdi svoj e-mail naslov"
 
 #: account/templates/user/confirmation_email.txt:1
 #, python-format
@@ -215,11 +215,11 @@ msgstr "in prilepi sledečo podtrditveno kodo v vnosno polje tam:"
 msgid ""
 "Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s day.\n"
 msgid_plural ""
-"Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s days."
-msgstr[0] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
-msgstr[1] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dan."
-msgstr[2] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
-msgstr[3] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
+"Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s days.\n"
+msgstr[0] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni.\n"
+msgstr[1] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dan.\n"
+msgstr[2] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni.\n"
+msgstr[3] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni.\n"
 
 #: account/templates/user/confirmation_email.txt:19
 msgid ""
