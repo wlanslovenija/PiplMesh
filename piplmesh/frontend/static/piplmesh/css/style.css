@@ -344,6 +344,32 @@ input.gsc-search-button {
     text-shadow: none;
 }
 
+/* ---------------- FOURSQUARE LOGIN BUTTON ------------------- */
+.foursquare_login_button {
+    background: #2090c6 url('../images/foursquare_button.png');
+    background-repeat: no-repeat;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+    outline: none;
+    font-size: 11px;
+    line-height: 20px;
+    border: 0;
+    height: 24px;
+}
+
+.foursquare_button_text {
+    background: #2090c6;
+    border-top: solid 1px #879AC0;
+    border-bottom: solid 1px #1A356E;
+    color: white;
+    display: block;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-weight: bold;
+    margin: 0 0 0 20px;
+    text-shadow: none;
+}
+
 /* ---------------- GOOGLE LOGIN BUTTON ------------------- */
 .google_login_button {
     background: #0064D9 url('../images/google_button.png');

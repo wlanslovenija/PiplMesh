@@ -71,7 +71,6 @@ urlpatterns = patterns('',
     url(r'^' + I18N_URL + 'js/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 
     # Internals
-    # TODO: Limit only to internal IPs
     url(r'^' + PUSH_SERVER_URL, include('pushserver.urls')),
 )
 
