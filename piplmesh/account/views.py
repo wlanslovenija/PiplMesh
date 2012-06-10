@@ -327,24 +327,19 @@ class EmailConfirmationSendToken(edit_views.FormView):
     def form_valid(self, form):
         user = self.request.user
 
-        subject = loader.render_to_string('user/confirmation_email_subject.txt', {
+        confirmation_token = crypto.get_random_string(20)
+        context = {
             'CONFIRMATION_TOKEN_VALIDITY': models.CONFIRMATION_TOKEN_VALIDITY,
             'EMAIL_SUBJECT_PREFIX': settings.EMAIL_SUBJECT_PREFIX,
-            'SITE_NAME': settings.SITE_NAME,
-            'email_address': user.email,
-            'request': self.request,
-            'user': user,
-        })
-
-        confirmation_token = crypto.get_random_string(20)
-        text_content = loader.render_to_string('user/confirmation_email.txt', {
-            'CONFIRMATION_TOKEN_VALIDITY': models.CONFIRMATION_TOKEN_VALIDITY,
             'SITE_NAME': settings.SITE_NAME,
             'confirmation_token': confirmation_token,
             'email_address': user.email,
             'request': self.request,
             'user': user,
-        })
+        }
+
+        subject = loader.render_to_string('user/confirmation_email_subject.txt', context)
+        text_content = loader.render_to_string('user/confirmation_email.txt', context)
 
         user.email_confirmation_token = models.EmailConfirmationToken(value=confirmation_token)
         user.save()
@@ -354,9 +349,7 @@ class EmailConfirmationSendToken(edit_views.FormView):
         return super(EmailConfirmationSendToken, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
-        # TODO: Redirect user from where he came if he doesn't have email defined
-        if not request.user.email:
-            return shortcuts.redirect('home')
+        # TODO: Allow e-mail address confirmation only if user has e-mail address defined
         return super(EmailConfirmationSendToken, self).dispatch(request, *args, **kwargs)
 
 class EmailConfirmationProcessToken(generic_views.FormView):
@@ -377,8 +370,8 @@ class EmailConfirmationProcessToken(generic_views.FormView):
         }
 
     def dispatch(self, request, *args, **kwargs):
-        # TODO: Check if user has e-mail defined
-        # TODO: Check if this is still the same user
+        # TODO: Allow e-mail address confirmation only if user has e-mail address defined
+        # TODO: Check if currently logged in user is the same as the user requested the confirmation
         return super(EmailConfirmationProcessToken, self).dispatch(request, *args, **kwargs)
 
     def get_form(self, form_class):
