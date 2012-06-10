@@ -3,7 +3,7 @@ from tastypie import authorization as tastypie_authorization, fields as tastypie
 from tastypie_mongoengine import fields, resources
 
 from piplmesh.account import models as account_models
-from piplmesh.api import models as api_models
+from piplmesh.api import authorization, models as api_models
 
 class UserResource(resources.MongoEngineResource):
     class Meta:
@@ -68,4 +68,4 @@ class PostResource(AuthoredResource):
         queryset = api_models.Post.objects.all()
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         # TODO: Make proper authorization, current implementation is for development use only
-        authorization = tastypie_authorization.Authorization()
+        authorization = authorization.PostAuthorization()
