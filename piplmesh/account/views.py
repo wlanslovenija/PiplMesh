@@ -336,7 +336,7 @@ class EmailConfirmationSendToken(edit_views.FormView):
             'user': user,
         })
 
-        confirmation_token = crypto.get_random_string(77)
+        confirmation_token = crypto.get_random_string(20)
         text_content = loader.render_to_string('user/confirmation_email.txt', {
             'CONFIRMATION_TOKEN_VALIDITY': models.CONFIRMATION_TOKEN_VALIDITY,
             'SITE_NAME': settings.SITE_NAME,
