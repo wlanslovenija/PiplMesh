@@ -1,8 +1,8 @@
 $(document).ready(function () {
-    $('#id_password1').blur(checkPassword);
-    $('#id_password2').blur(checkPassword);
+    $('#id_password1').unbind('blur', checkPassword).blur(checkPassword);
+    $('#id_password2').unbind('blur', checkPassword).blur(checkPassword);
 
-    $('#id_email').blur(checkEmail);
+    $('#id_email').unbind('blur.checkEmail').blur(checkEmail);
 });
 
 function checkPassword() {
@@ -17,7 +17,7 @@ function checkPassword() {
             var message_info = $('<span/>').prop({
                 'id': 'password_info',
                 'class': 'input_invalid_text'
-            }).text(gettext('Passwords do not match.'));
+            }).text(gettext("Passwords do not match."));
 
             $('#id_password1').addClass('input_invalid');
             $('#id_password2').addClass('input_invalid');
@@ -26,8 +26,8 @@ function checkPassword() {
                 $('#id_password2').after(message_info);
             }
 
-            $('#id_password1').keyup(checkPassword).change(checkPassword);
-            $('#id_password2').keyup(checkPassword).change(checkPassword);
+            $('#id_password1').unbind('keyup', checkPassword).unbind('change', checkPassword).keyup(checkPassword).change(checkPassword);
+            $('#id_password2').unbind('keyup', checkPassword).unbind('change', checkPassword).keyup(checkPassword).change(checkPassword);
         }
     }
     else {
@@ -51,7 +51,7 @@ function checkEmail() {
             var message_info = $('<span/>').prop({
                 'id': 'email_info',
                 'class': 'input_invalid_text'
-            }).text(gettext('Invalid e-mail.'));
+            }).text(gettext("Invalid e-mail."));
 
             $('#id_email').addClass('input_invalid');
 
@@ -59,7 +59,7 @@ function checkEmail() {
                 $('#id_email').after(message_info);
             }
 
-            $('#id_email').keyup(checkEmail).change(checkEmail);
+            $('#id_email').unbind('keyup', checkEmail).unbind('change', checkEmail).keyup(checkEmail).change(checkEmail);
         }
     }
     else {
