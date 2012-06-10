@@ -6,16 +6,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
 "Report-Msgid-Bugs-To: https://github.com/wlanslovenija/PiplMesh\n"
-"POT-Creation-Date: 2012-06-09 01:18+0200\n"
+"POT-Creation-Date: 2012-06-11 00:22+0200\n"
 "PO-Revision-Date: 2012-05-18 12:29+0100\n"
 "Last-Translator: Martin Jakomin <martin.jakomin@gmail.com>\n"
+"Language-Team: \n"
+"Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sl\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
 "%100==4 ? 2 : 3)\n"
-"Language-Team: \n"
 
 #: settings.py:45
 msgid "Slovenian"
@@ -144,11 +144,11 @@ msgstr "Tvoj račun je bil uspešno posodobljen."
 msgid "Your password has been successfully changed."
 msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
-#: account/views.py:353
+#: account/views.py:348
 msgid "Confirmation e-mail has been sent to your e-mail address."
 msgstr "Potrditveni e-mail je bil poslan na tvoj e-mail naslov."
 
-#: account/views.py:371
+#: account/views.py:364
 msgid "You have successfully confirmed your e-mail address."
 msgstr "Uspešno si potrdil svoj e-mail naslov."
 
@@ -183,18 +183,20 @@ msgid "Please confirm your e-mail address"
 msgstr "Prosimo, potrdi svoj e-mail naslov"
 
 #: account/templates/user/confirmation_email.txt:1
+#, python-format
 msgid "Hello %(username)s!"
 msgstr "Pozdravljen %(username)s!"
 
 #: account/templates/user/confirmation_email.txt:3
+#, python-format
 msgid ""
-"This message was sent to you to confirm this e-mail address as yours for "
-"your account on %(SITE_NAME)s with username \"%(username)s\". If you have "
-"already done so or don't want to, you can safely ignore this e-mail."
+"This message was sent to you to confirm this e-mail address (%(email)s) as "
+"yours for your account on %(SITE_NAME)s with username \"%(username)s\". If "
+"you have already done so or don't want to, you can safely ignore this e-mail."
 msgstr ""
-"To sporočilo ti je bilo poslano, da potrdiš ta e-mail naslov kot svojega za "
-"%(SITE_NAME)s račun z uporabniškim imenom \"%(username)s\". Če si to že storil "
-"ali pa tega nočeš, lahko brez skrbi ignoriraš ta e-mail."
+"To sporočilo ti je bilo poslano, da potrdiš ta e-mail naslov (%(email)s) kot "
+"svojega za %(SITE_NAME)s račun z uporabniškim imenom \"%(username)s\". Če si "
+"to že storil ali pa tega nočeš, lahko brez skrbi ignoriraš ta e-mail."
 
 #: account/templates/user/confirmation_email.txt:5
 msgid "Please click the link below to confirm your e-mail address:"
@@ -210,6 +212,7 @@ msgid ""
 msgstr "in prilepi sledečo podtrditveno kodo v vnosno polje tam:"
 
 #: account/templates/user/confirmation_email.txt:17
+#, python-format
 msgid ""
 "Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s day."
 msgid_plural ""
@@ -260,15 +263,16 @@ msgid ""
 "confirmation e-mail you have received."
 msgstr ""
 "Si samo še korak od potrditve svojega e-mail naslova. Če je spodnje vnosno "
-"polje slučajno prazno, ročno prilepi kodo, ki smo ti jo poslali."
+"polje slučajno prazno, ročno prilepi kodo, ki si jo prejel/a."
 
 #: account/templates/user/email_confirmation_send_token.html:5
 msgid "E-mail address confirmation"
 msgstr "Potrditev e-mail naslova"
 
 #: account/templates/user/email_confirmation_send_token.html:13
+#, python-format
 msgid "Clicking the button below will send a confirmation mail to %(email)s."
-msgstr "Klik na spodnji gumb, bo poslal potrditveno povezavo na %(email)s."
+msgstr "Klik na spodnji gumb bo poslal potrditveno povezavo na %(email)s."
 
 #: account/templates/user/email_confirmation_send_token.html:16
 msgid "Click here to confirm your e-mail address"
