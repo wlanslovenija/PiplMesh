@@ -114,8 +114,7 @@ msgstr "Potrditvena koda"
 #: account/forms.py:151
 msgid ""
 "Please enter the confirmation token you received to your e-mail address."
-msgstr ""
-"Prosimo vnesi potrditveno kodo, ki si jo prejel na svoj e-mail naslov."
+msgstr "Prosimo vnesi potrditveno kodo, ki si jo prejel na svoj e-mail naslov."
 
 #: account/forms.py:165
 msgid "The confirmation token is invalid or has expired. Please retry."
@@ -184,18 +183,17 @@ msgid "Please confirm your e-mail address"
 msgstr "Prosimo, potrdi svoj e-mail naslov"
 
 #: account/templates/user/confirmation_email.txt:1
-#, python-format
 msgid "Hello %(username)s!"
 msgstr "Pozdravljen %(username)s!"
 
 #: account/templates/user/confirmation_email.txt:3
 msgid ""
 "This message was sent to you to confirm this e-mail address as yours for "
-"your account on %(SITE_NAME)s with username %(username)s. If you have "
+"your account on %(SITE_NAME)s with username \"%(username)s\". If you have "
 "already done so or don't want to, you can safely ignore this e-mail."
 msgstr ""
 "To sporočilo ti je bilo poslano, da potrdiš ta e-mail naslov kot svojega za "
-"%(SITE_NAME)s račun z uporabniškim imenom %(username)s. Če si to že storil "
+"%(SITE_NAME)s račun z uporabniškim imenom \"%(username)s\". Če si to že storil "
 "ali pa tega nočeš, lahko brez skrbi ignoriraš ta e-mail."
 
 #: account/templates/user/confirmation_email.txt:5
@@ -213,29 +211,31 @@ msgstr "in prilepi sledečo podtrditveno kodo v vnosno polje tam:"
 
 #: account/templates/user/confirmation_email.txt:17
 msgid ""
-"Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s day.\n"
+"Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s day."
 msgid_plural ""
-"Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s days.\n"
-msgstr[0] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni.\n"
-msgstr[1] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dan.\n"
-msgstr[2] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni.\n"
-msgstr[3] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni.\n"
+"Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s days."
+msgstr[0] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
+msgstr[1] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dan."
+msgstr[2] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
+msgstr[3] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
+
+#: account/templates/user/confirmation_email.txt:17
+msgid ""
+" If it expires you will have to redo the process of confirming your e-mail "
+"address."
+msgstr ""
+"Če bo potekla, boš moral ponovno čez postopek potrditve svojega e-mail "
+"naslova."
 
 #: account/templates/user/confirmation_email.txt:19
 msgid ""
-"If it expires you will have to redo the process of confirming your e-mail "
-"address."
-msgstr ""
-"Če bo potekla, boš "
-"moral ponovno čez postopek potrditve svojega e-mail naslova."
-
-#: account/templates/user/confirmation_email.txt:21
-msgid ""
 "Please also be careful to open complete link. Your e-mail client might have "
 "broken it into several lines."
-msgstr "Prosimo bodi previden/a, da odpreš celotno povezavo. Tvoj e-mail odjemalec jo je morda razdelil v več vrstic."
+msgstr ""
+"Prosimo bodi previden/a, da odpreš celotno povezavo. Tvoj e-mail odjemalec "
+"jo je morda razdelil v več vrstic."
 
-#: account/templates/user/confirmation_email.txt:23
+#: account/templates/user/confirmation_email.txt:21
 msgid ""
 "If you have any problems confirming your e-mail address or have any other "
 "questions just reply to this e-mail."
@@ -243,7 +243,7 @@ msgstr ""
 "Če imaš karšnekoli težave pri potrjanju svojega e-mail naslova ali kakšna "
 "druga vprašanja, lahko odgovoriš kar na ta e-mail."
 
-#: account/templates/user/confirmation_email.txt:25
+#: account/templates/user/confirmation_email.txt:23
 msgid "Yours,"
 msgstr "Tvoj,"
 
@@ -310,7 +310,7 @@ msgid "Login with Google"
 msgstr "Google prijava"
 
 #: account/templates/user/login.html:45
-#: account/templates/user/registration.html:9
+#: account/templates/user/registration.html:14
 #: frontend/templates/header.html:46
 msgid "Register"
 msgstr "Registriraj se"
@@ -319,7 +319,7 @@ msgstr "Registriraj se"
 msgid "Change Password"
 msgstr "Spremeni geslo"
 
-#: account/templates/user/registration.html:5
+#: account/templates/user/registration.html:10
 msgid "Registration"
 msgstr "Registracija"
 
