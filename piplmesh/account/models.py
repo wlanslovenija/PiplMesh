@@ -33,7 +33,7 @@ class Connection(mongoengine.EmbeddedDocument):
     channel_id = mongoengine.StringField()
 
 class EmailConfirmationToken(mongoengine.EmbeddedDocument):
-    value = mongoengine.StringField(max_length=77, required=True)
+    value = mongoengine.StringField(max_length=20, required=True)
     created_time = mongoengine.DateTimeField(default=lambda: timezone.now(), required=True)
 
     def check_token(self, confirmation_token):
