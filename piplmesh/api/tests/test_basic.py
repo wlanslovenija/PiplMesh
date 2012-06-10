@@ -12,12 +12,19 @@ class BasicTest(test_runner.MongoEngineTestCase):
     api_name = 'v1'
     user_username = 'test_user'
     user_password = 'foobar'
+    
+    user_username2 = 'test_user2'
+    user_password2 = 'foobar2'
 
     def setUp(self):
         account_models.User.create_user(username=self.user_username, password=self.user_password)
+        account_models.User.create_user(username=self.user_username2, password=self.user_password2)
 
         self.client = client.Client()
         self.client.login(username=self.user_username, password=self.user_password)
+        
+        self.client2 = client.Client()
+        self.client2.login(username=self.user_username2, password=self.user_password2)
 
     def resourceListURI(self, resource_name):
         return urlresolvers.reverse('api_dispatch_list', kwargs={'api_name': self.api_name, 'resource_name': resource_name})
@@ -55,6 +62,10 @@ class BasicTest(test_runner.MongoEngineTestCase):
 
         post_created_time = response['created_time']
         post_updated_time = response['updated_time']
+        
+        # Test authorization
+        response = self.client2.get(post_uri, content_type='application/json')
+        self.assertEqual(response.status_code, 404)
 
         # Adding an attachment
 
@@ -96,6 +107,10 @@ class BasicTest(test_runner.MongoEngineTestCase):
         response = json.loads(response.content)
 
         self.assertEqual(response['is_published'], True)
+        
+        # Test authorization
+        response = self.client2.get(post_uri, content_type='application/json')
+        self.assertEqual(response.status_code, 200)
 
         # Adding a comment
 
