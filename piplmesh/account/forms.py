@@ -145,8 +145,8 @@ class EmailConfirmationProcessTokenForm(forms.Form):
 
     confirmation_token = forms.CharField(
         label=_("Confirmation token"),
-        min_length=77,
-        max_length=77,
+        min_length=20,
+        max_length=20,
         required=True,
         help_text=_("Please enter the confirmation token you received to your e-mail address."),
     )

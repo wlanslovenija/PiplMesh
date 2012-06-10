@@ -147,7 +147,7 @@ msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
 #: account/views.py:353
 msgid "Confirmation e-mail has been sent to your e-mail address."
-msgstr "Potrditven e-mail je bil poslan na tvoj e-mail naslov."
+msgstr "Potrditveni e-mail je bil poslan na tvoj e-mail naslov."
 
 #: account/views.py:371
 msgid "You have successfully confirmed your e-mail address."
@@ -200,7 +200,7 @@ msgstr ""
 
 #: account/templates/user/confirmation_email.txt:5
 msgid "Please click the link below to confirm your e-mail address:"
-msgstr "Pritisni povezavo spodaj za potrditev tvojega e-mail naslova"
+msgstr "Klikni spodnjo povezavo za potrditev tvojega e-mail naslova"
 
 #: account/templates/user/confirmation_email.txt:9
 msgid "Or, open the following link:"
@@ -233,7 +233,7 @@ msgstr ""
 msgid ""
 "Please also be careful to open complete link. Your e-mail client might have "
 "broken it into several lines."
-msgstr ""
+msgstr "Prosimo bodi previden/a, da odpreš celotno povezavo. Tvoj e-poštni odjemalec jo je morda razdelil v več vrstic."
 
 #: account/templates/user/confirmation_email.txt:23
 msgid ""
@@ -241,7 +241,7 @@ msgid ""
 "questions just reply to this e-mail."
 msgstr ""
 "Če imaš karšnekoli težave pri potrjanju svojega e-mail naslova ali kakšna "
-"druga vprašanja, le odgovori na ta e-mail."
+"druga vprašanja, lahko odgovoriš kar na ta e-mail."
 
 #: account/templates/user/confirmation_email.txt:25
 msgid "Yours,"
@@ -272,7 +272,7 @@ msgstr "Klik na spodnji gumb, bo poslal potrditveno povezavo na %(email)s."
 
 #: account/templates/user/email_confirmation_send_token.html:16
 msgid "Click here to confirm your e-mail address"
-msgstr "Pritisni tukaj za potrditev tvojega e-mail naslova"
+msgstr "Klikni tukaj za potrditev svojega e-mail naslova"
 
 #: account/templates/user/email_confirmation_send_token.html:21
 msgid "Why should I confirm my e-mail address?"
@@ -284,7 +284,7 @@ msgid ""
 "you've confirmed your e-mail address, you will be able to reset your "
 "password in the case you lost it or forget it."
 msgstr ""
-"Potrditev tvojega e-mail naslova poveča varnost tvojega računa.Ko boš "
+"Potrditev svojega e-mail naslova poveča varnost tvojega računa. Ko boš "
 "potrdil svoj e-mail naslov, boš lahko resetiral/a svoje geslo v primeru, da "
 "si ga pozabil/a ali izgubil/a."
 
