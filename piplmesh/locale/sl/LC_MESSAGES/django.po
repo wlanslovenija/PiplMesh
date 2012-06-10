@@ -194,9 +194,9 @@ msgid ""
 "your account on %(SITE_NAME)s with username %(username)s. If you have "
 "already done so or don't want to, you can safely ignore this e-mail."
 msgstr ""
-"To sporočilo ti je bilo poslano, da potrdiš ta e-mail naslov za "
+"To sporočilo ti je bilo poslano, da potrdiš ta e-mail naslov kot svojega za "
 "%(SITE_NAME)s račun z uporabniškim imenom %(username)s. Če si to že storil "
-"ali pa tega nočeš, lahko varno ignoriraš ta e-mail."
+"ali pa tega nočeš, lahko brez skrbi ignoriraš ta e-mail."
 
 #: account/templates/user/confirmation_email.txt:5
 msgid "Please click the link below to confirm your e-mail address:"
