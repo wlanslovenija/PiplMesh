@@ -9,6 +9,7 @@ from mongogeneric import detail
 
 from piplmesh.account import models as account_models
 from piplmesh.api import models as api_models, resources
+from piplmesh.panels import panels_pool
 
 HOME_CHANNEL_ID = 'home'
 

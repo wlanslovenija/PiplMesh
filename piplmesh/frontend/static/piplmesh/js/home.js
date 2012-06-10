@@ -13,11 +13,21 @@ function fillWithColumns() {
     }
 }
 
+function defaultPanelsOrder() {
+    var num_of_panels = $('.panels_column').children().length;
+    var num_of_columns = howManyColumns();
+    
+    for (i=0; i < num_of_panels; i++) {
+        var toPanel = i % num_of_columns;
+        $('.panels_column').children().eq(num_of_panels-i-1).appendTo($('#panels').children().eq(toPanel));
+    }
+}
+
 $(document).ready(function () {
-
-
     fillWithColumns();
     
+    defaultPanelsOrder();    
+    //$('.panels_column').children().eq(2).appendTo($('#panels').children().eq(howManyColumns() - 1));
     
     $('.panel .header').click(function (event) {
         $(this).next('.content').slideToggle('fast');
@@ -31,5 +41,4 @@ $(document).ready(function () {
         forcePlaceholderSize: true,
         opacity: 0.4,
     }).disableSelection();
-
 });

@@ -556,7 +556,7 @@ input.gsc-search-button {
 /* ------------------ PANELS ---------------------------- */
 .panel {
     width: 260px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .panel .header {
