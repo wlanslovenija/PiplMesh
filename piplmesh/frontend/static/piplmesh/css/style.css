@@ -571,7 +571,7 @@ input.gsc-search-button {
     min-height: 50px;
     width: 260px;
     float: left;
-    margin-right: 5px;
+    margin-left: 10px;
 }
 
 .placeholder {
@@ -593,5 +593,5 @@ input.gsc-search-button {
 }
 
 #panels {
-    margin-left: 540px;
+    margin-left: 520px;
 }
