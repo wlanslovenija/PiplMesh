@@ -1,10 +1,10 @@
-import json, random, string, urllib, urlparse
+import json, urllib, urlparse
 
-from django import dispatch, http, shortcuts, template
+from django import dispatch, http, shortcuts
 from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth import views as auth_views
-from django.core import exceptions, urlresolvers
+from django.core import urlresolvers
 from django.template import loader
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
@@ -328,23 +328,22 @@ class EmailConfirmationSendToken(edit_views.FormView):
         user = self.request.user
 
         subject = loader.render_to_string('user/confirmation_email_subject.txt', {
-            'CONFIRMATION_TOKEN_VALIDITY' : models.CONFIRMATION_TOKEN_VALIDITY,
-            'EMAIL_SUBJECT_PREFIX' : settings.EMAIL_SUBJECT_PREFIX,
-            'SITE_NAME' : settings.SITE_NAME,
-            'user_address' : user.email,
-            'request' : self.request,
-            'user' : user,
+            'CONFIRMATION_TOKEN_VALIDITY': models.CONFIRMATION_TOKEN_VALIDITY,
+            'EMAIL_SUBJECT_PREFIX': settings.EMAIL_SUBJECT_PREFIX,
+            'SITE_NAME': settings.SITE_NAME,
+            'email_address': user.email,
+            'request': self.request,
+            'user': user,
         })
 
-        # Message content
-        # We generate a random string with length 77
         confirmation_token = crypto.get_random_string(77)
         text_content = loader.render_to_string('user/confirmation_email.txt', {
-            'CONFIRMATION_TOKEN_VALIDITY' : models.CONFIRMATION_TOKEN_VALIDITY,
-            'SITE_NAME' : settings.SITE_NAME,
-            'confirmation_token' : confirmation_token,
-            'request' : self.request,
-            'user' : user,
+            'CONFIRMATION_TOKEN_VALIDITY': models.CONFIRMATION_TOKEN_VALIDITY,
+            'SITE_NAME': settings.SITE_NAME,
+            'confirmation_token': confirmation_token,
+            'email_address': user.email,
+            'request': self.request,
+            'user': user,
         })
 
         user.email_confirmation_token = models.EmailConfirmationToken(value=confirmation_token)
@@ -384,7 +383,6 @@ class EmailConfirmationProcessToken(generic_views.FormView):
 
     def get_form(self, form_class):
         return form_class(self.request.user, **self.get_form_kwargs())
-
 
 def logout(request):
     """

@@ -6,18 +6,19 @@
 
 {% url account as the_url %}{% fullurl the_url %}{{ confirmation_token }}
 
-{% blocktrans %}Or, open the following URL:{% endblocktrans %}
+{% blocktrans %}Or, open the following link:{% endblocktrans %}
+
 {% url account as the_url %}{% fullurl the_url %}
+
 {% blocktrans %}and copy-paste the following confirmation token into the input box there:{% endblocktrans %}
 
 {{ confirmation_token }}
 
-{% blocktrans with CONFIRMATION_TOKEN_VALIDITY=CONFIRMATION_TOKEN_VALIDITY %}The link will be active for {{ CONFIRMATION_TOKEN_VALIDITY }} days, if it expires you will have to redo the process of confirming your e-mail address.{% endblocktrans %}
+{% blocktrans with CONFIRMATION_TOKEN_VALIDITY=CONFIRMATION_TOKEN_VALIDITY %}Confirmation token will be active for {{ CONFIRMATION_TOKEN_VALIDITY }} days. If it expires you will have to redo the process of confirming your e-mail address.{% endblocktrans %}
 
-{% blocktrans %}Please also be careful to open complete URL for confirmation. Your e-mail client might have broken it into several lines.{% endblocktrans %}
+{% blocktrans %}Please also be careful to open complete link. Your e-mail client might have broken it into several lines.{% endblocktrans %}
 
 {% blocktrans %}If you have any problems confirming your e-mail address or have any other questions just reply to this e-mail.{% endblocktrans %}
-
 
 {% blocktrans %}Yours,{% endblocktrans %}
 
