@@ -181,7 +181,7 @@ msgstr "Spremeni svoje geslo"
 
 #: account/templates/user/account.html:20
 msgid "Please confirm your e-mail address"
-msgstr "Prosimo potrdi svoj e-mail naslov"
+msgstr "Prosimo, potrdi svoj e-mail naslov"
 
 #: account/templates/user/confirmation_email.txt:1
 #, python-format
