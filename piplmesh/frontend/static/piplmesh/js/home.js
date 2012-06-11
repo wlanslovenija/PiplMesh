@@ -16,7 +16,7 @@ function fillWithColumns() {
 function defaultPanelsOrder() {
     var num_of_panels = $('.panels_column').children().length;
     var num_of_columns = howManyColumns();
-    
+
     for (i=0; i < num_of_panels; i++) {
         var toPanel = i % num_of_columns;
         $('.panels_column').children().eq(num_of_panels-i-1).appendTo($('#panels').children().eq(toPanel));
@@ -25,10 +25,8 @@ function defaultPanelsOrder() {
 
 $(document).ready(function () {
     fillWithColumns();
-    
-    defaultPanelsOrder();    
-    //$('.panels_column').children().eq(2).appendTo($('#panels').children().eq(howManyColumns() - 1));
-    
+    defaultPanelsOrder();
+
     $('.panel .header').click(function (event) {
         $(this).next('.content').slideToggle('fast');
     });
