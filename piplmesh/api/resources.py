@@ -26,6 +26,15 @@ class AuthoredResource(resources.MongoEngineResource):
         return bundle
 
 class CommentResource(AuthoredResource):
+    def obj_create(self, bundle, request=None, **kwargs):
+        obj = super(CommentResource, self).obj_create(bundle, request=request, **kwargs)
+        
+        print obj.obj.author
+        #self.parent.fields['subscribers'].append(obj.obj.author)
+        
+        #obj.obj.save()
+        #print list((name, obj, " \n\n") for name, obj in self.parent.fields.iteritems())
+        return obj
     class Meta:
         object_class = api_models.Comment
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
@@ -63,9 +72,14 @@ class PostResource(AuthoredResource):
 
     comments = fields.EmbeddedListField(of='piplmesh.api.resources.CommentResource', attribute='comments', default=lambda: [], null=True, full=False)
     attachments = fields.EmbeddedListField(of='piplmesh.api.resources.AttachmentResource', attribute='attachments', default=lambda: [], null=True, full=True)
-
+    def obj_create(self, bundle, request=None, **kwargs):
+        obj = super(PostResource, self).obj_create(bundle, request=request, **kwargs)
+        obj.obj.subscribers.append(bundle.request.user)
+        obj.obj.save()
+        return obj
     class Meta:
         queryset = api_models.Post.objects.all()
+        #print queryset
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         # TODO: Make proper authorization, current implementation is for development use only
         authorization = tastypie_authorization.Authorization()

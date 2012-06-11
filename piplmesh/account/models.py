@@ -23,6 +23,10 @@ class Connection(mongoengine.EmbeddedDocument):
     http_if_modified_since = mongoengine.StringField()
     channel_id = mongoengine.StringField()
 
+class Notification(mongoengine.EmbeddedDocument):
+    read = mongoengine.BooleanField()
+    comment = mongoengine.IntField()
+
 class User(auth.User):
     username = mongoengine.StringField(
         max_length=30,
@@ -48,6 +52,8 @@ class User(auth.User):
     connections = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Connection))
     connection_last_unsubscribe = mongoengine.DateTimeField()
     is_online = mongoengine.BooleanField(default=False)
+
+    notifications = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Notification), default=lambda: [], required=False)
     
     def get_image_url(self, request):
         if self.twitter_id:

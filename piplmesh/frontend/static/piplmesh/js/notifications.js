@@ -15,7 +15,7 @@ $(document).ready(function() {
         }
     });
     $("#addPost").click(function (){
-        addPost("Bla bla bla bla");
+        addPost("Bla bla bla bla Post...");
     });
     $("#addCom").click(function (){
         addComment("Bla bla bla bla");
@@ -30,7 +30,7 @@ function addPost(message) {
         contentType: 'application/json',
         dataType: "json",
         success: function () {
-            alert("Komentar napisan.");
+            alert("Post napisan.");
         },
         error: function (error) {
             console.log(error);
@@ -42,12 +42,12 @@ function addPost(message) {
 function addComment(comment) {
     $.ajax({
         type: 'POST',
-        url: '/api/v1/post/4fcf1164c91da117a8000000/comments/',
+        url: '/api/v1/post/4fd23f8cc91da109b8000001/comments/',
         data: JSON.stringify({'message': comment}),
         contentType: 'application/json',
         dataType: "json",
         success: function () {
-            alert("Post napisan.");
+            alert("Komentar napisan.");
         },
         error: function (error) {
             console.log(error);
