@@ -247,6 +247,15 @@ input.gsc-search-button {
     padding-bottom: 30px;
 }
 
+.faq {
+    padding-left: 10px;
+}
+
+.faq dt {
+    font-size: 14px;
+    font-weight: bold;
+}
+
 /* -------------------- AUTHENTICATION ------------------------ */
 .auth_button {
     background: none;
@@ -261,6 +270,14 @@ input.gsc-search-button {
 
 .auth_button:hover span {
     text-decoration: underline;
+}
+
+#email_confirmation {
+    margin-bottom: 100px;
+}
+
+#email_confirmation_process_token input[type=text]  {
+    width: 500px;
 }
 
 /* ---------------- FB LOGIN BUTTON ------------------- */

@@ -163,7 +163,8 @@ class GoogleBackend(MongoEngineBackend):
         link: URL of Google user profile page
         picture: URL of profile picture
         locale: the language Google user is using
-        gender: sex of Google user
+        gender: the gender of Google user (other|female|male)
+        timezone: the default timezone of Google user
         email: Google email of user
         id: id of Google user; should be a string
         verified_email: True, if email is verified by Google API
@@ -192,6 +193,8 @@ class GoogleBackend(MongoEngineBackend):
             user.last_name = google_profile_data.get('family_name') or None
         if user.email is None:
             user.email = google_profile_data.get('email') or None
+            if google_profile_data.get('verified_email'):
+                user.email_confirmed = True
         if user.gender is None:
             # TODO: Does it really map so cleanly?
             user.gender = google_profile_data.get('gender') or None

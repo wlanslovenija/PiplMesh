@@ -6,206 +6,344 @@ msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
 "Report-Msgid-Bugs-To: https://github.com/wlanslovenija/PiplMesh\n"
-"POT-Creation-Date: 2012-05-31 00:06+0200\n"
+"POT-Creation-Date: 2012-06-11 00:22+0200\n"
 "PO-Revision-Date: 2012-05-18 12:29+0100\n"
 "Last-Translator: Martin Jakomin <martin.jakomin@gmail.com>\n"
 "Language-Team: \n"
+"Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sl\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
 "%100==4 ? 2 : 3)\n"
 
-#: .\settings.py:45
+#: settings.py:45
 msgid "Slovenian"
 msgstr "Slovenščina"
 
-#: .\settings.py:46
+#: settings.py:46
 msgid "English"
 msgstr "Angleščina"
 
-#: .\account\fields.py:9
+#: account/fields.py:9
 msgid "male"
 msgstr "moški"
 
-#: .\account\fields.py:10
+#: account/fields.py:10
 msgid "female"
 msgstr "ženska"
 
-#: .\account\fields.py:14
+#: account/fields.py:14
 msgid "Value is out of bounds."
 msgstr "Vrednost je izven meja."
 
-#: .\account\fields.py:15
+#: account/fields.py:15
 msgid "Callable did not return datetime.date or datetime.datetime object."
 msgstr ""
 
-#: .\account\forms.py:13
+#: account/forms.py:13
 msgid "Username"
 msgstr "Uporabniško ime"
 
-#: .\account\forms.py:17 .\account\models.py:33
+#: account/forms.py:17 account/models.py:58
 msgid ""
 "Minimal of 4 characters and maximum of 30. Letters, digits and @/./+/-/_ "
 "only."
 msgstr "Najmanj 4 in največ 30 znakov. Samo črke, številke in @/./+/-/_ ."
 
-#: .\account\forms.py:19
+#: account/forms.py:19
 msgid "This value may contain only letters, numbers and @/./+/-/_ characters."
 msgstr "To polje lahko vsebuje le črke, številke in znake @/./+/-/_ ."
 
-#: .\account\forms.py:30
+#: account/forms.py:30
 msgid "A user with that username already exists."
 msgstr "Uporabnik s tem uporabniškim imenom že obstaja."
 
-#: .\account\forms.py:39
+#: account/forms.py:39
 msgid "Password"
 msgstr "Geslo"
 
-#: .\account\forms.py:44
+#: account/forms.py:44
 msgid "Password (repeat)"
 msgstr "Geslo (ponovi)"
 
-#: .\account\forms.py:46
+#: account/forms.py:46
 msgid "Enter the same password as above, for verification."
 msgstr "V izogib napakam ponovno vnesi isto geslo kot zgoraj."
 
-#: .\account\forms.py:57
+#: account/forms.py:57
 msgid "The two password fields did not match."
 msgstr "Gesli se ne ujemata."
 
-#: .\account\forms.py:66
+#: account/forms.py:66
 msgid "Current password"
 msgstr "Trenutno geslo"
 
-#: .\account\forms.py:68
+#: account/forms.py:68
 msgid "Enter your current password, for verification."
 msgstr "Za potrditev vnesi trenutno geslo."
 
-#: .\account\forms.py:82
+#: account/forms.py:82
 msgid "Your current password was incorrect."
 msgstr "Vnešeno geslo je bilo nepravilno."
 
-#: .\account\forms.py:90
+#: account/forms.py:92
 msgid "First name"
 msgstr "Ime"
 
-#: .\account\forms.py:91
+#: account/forms.py:93
 msgid "Last name"
 msgstr "Priimek"
 
-#: .\account\forms.py:92
+#: account/forms.py:94
 msgid "E-mail"
 msgstr "E-mail"
 
-#: .\account\forms.py:94
+#: account/forms.py:96
 msgid "Gender"
 msgstr "Spol"
 
-#: .\account\forms.py:101
+#: account/forms.py:103
 msgid "Birth date"
 msgstr "Datum rojstva"
 
-#: .\account\models.py:32
+#: account/forms.py:147
+msgid "Confirmation token"
+msgstr "Potrditvena koda"
+
+#: account/forms.py:151
+msgid ""
+"Please enter the confirmation token you received to your e-mail address."
+msgstr "Prosimo vnesi potrditveno kodo, ki si jo prejel na svoj e-mail naslov."
+
+#: account/forms.py:165
+msgid "The confirmation token is invalid or has expired. Please retry."
+msgstr "Potrditvena koda je napačna ali pa je potekla. Prosimo, poskusi znova."
+
+#: account/models.py:57
 msgid "username"
 msgstr "uporabniško ime"
 
-#: .\account\signals.py:11
+#: account/signals.py:11
 msgid "You have been successfully logged in."
 msgstr "Prijava uspešna."
 
-#: .\account\signals.py:20
+#: account/signals.py:20
 msgid "You have been successfully logged out."
 msgstr "Odjava uspešna."
 
-#: .\account\views.py:130
+#: account/views.py:250
 msgid "Registration has been successful."
 msgstr "Registracija je bila uspešna."
 
-#: .\account\views.py:155
+#: account/views.py:278
 msgid "Your account has been successfully updated."
 msgstr "Tvoj račun je bil uspešno posodobljen."
 
-#: .\account\views.py:186
+#: account/views.py:310
 msgid "Your password has been successfully changed."
 msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
-#: .\account\templates\user\account.html.py:5
-#: .\account\templates\user\account.html.py:10
-#: .\account\templates\user\password_change.html.py:10
-#: .\frontend\templates\user\user.html.py:11
+#: account/views.py:348
+msgid "Confirmation e-mail has been sent to your e-mail address."
+msgstr "Potrditveni e-mail je bil poslan na tvoj e-mail naslov."
+
+#: account/views.py:364
+msgid "You have successfully confirmed your e-mail address."
+msgstr "Uspešno si potrdil svoj e-mail naslov."
+
+#: account/templates/user/account.html:5
+#: account/templates/user/account.html:10
+#: account/templates/user/email_confirmation_process_token.html:10
+#: account/templates/user/email_confirmation_send_token.html:10
+#: account/templates/user/password_change.html:10
+#: frontend/templates/user/user.html:11
 msgid "Account"
 msgstr "Račun"
 
-#: .\account\templates\user\account.html.py:9
-#: .\account\templates\user\password_change.html.py:9
-#: .\frontend\templates\user\user.html.py:10
+#: account/templates/user/account.html:9
+#: account/templates/user/email_confirmation_process_token.html:9
+#: account/templates/user/email_confirmation_send_token.html:9
+#: account/templates/user/password_change.html:9
+#: frontend/templates/user/user.html:10
 msgid "Profile"
 msgstr "Profil"
 
-#: .\account\templates\user\account.html.py:13
-#: .\account\templates\user\password_change.html.py:13
+#: account/templates/user/account.html:13
+#: account/templates/user/password_change.html:13
 msgid "Submit"
 msgstr "Pošlji"
 
-#: .\account\templates\user\account.html.py:18
+#: account/templates/user/account.html:18
 msgid "Change your password"
 msgstr "Spremeni svoje geslo"
 
-#: .\account\templates\user\login.html.py:5
-#: .\account\templates\user\login.html.py:12
-#: .\frontend\templates\header.html.py:45
+#: account/templates/user/account.html:20
+msgid "Please confirm your e-mail address"
+msgstr "Prosimo, potrdi svoj e-mail naslov"
+
+#: account/templates/user/confirmation_email.txt:1
+#, python-format
+msgid "Hello %(username)s!"
+msgstr "Pozdravljen/a %(username)s!"
+
+#: account/templates/user/confirmation_email.txt:3
+#, python-format
+msgid ""
+"This message was sent to you to confirm this e-mail address (%(email)s) as "
+"yours for your account on %(SITE_NAME)s with username \"%(username)s\". If "
+"you have already done so or don't want to, you can safely ignore this e-mail."
+msgstr ""
+"To sporočilo ti je bilo poslano, da potrdiš ta e-mail naslov (%(email)s) kot "
+"svojega za %(SITE_NAME)s račun z uporabniškim imenom \"%(username)s\". Če si "
+"to že storil/a ali pa tega nočeš, lahko brez skrbi ignoriraš ta e-mail."
+
+#: account/templates/user/confirmation_email.txt:5
+msgid "Please click the link below to confirm your e-mail address:"
+msgstr "Klikni spodnjo povezavo za potrditev svojega e-mail naslova:"
+
+#: account/templates/user/confirmation_email.txt:9
+msgid "Or, open the following link:"
+msgstr "Ali pa odpri naslednjo povezavo:"
+
+#: account/templates/user/confirmation_email.txt:13
+msgid ""
+"and copy-paste the following confirmation token into the input box there:"
+msgstr "in prilepi sledečo podtrditveno kodo v vnosno polje tam:"
+
+#: account/templates/user/confirmation_email.txt:17
+#, python-format
+msgid ""
+"Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s day."
+msgid_plural ""
+"Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s days."
+msgstr[0] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
+msgstr[1] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dan."
+msgstr[2] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
+msgstr[3] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
+
+#: account/templates/user/confirmation_email.txt:17
+msgid ""
+" If it expires you will have to redo the process of confirming your e-mail "
+"address."
+msgstr ""
+"Če bo potekla, boš moral/a ponovno čez postopek potrditve svojega e-mail "
+"naslova."
+
+#: account/templates/user/confirmation_email.txt:19
+msgid ""
+"Please also be careful to open complete link. Your e-mail client might have "
+"broken it into several lines."
+msgstr ""
+"Prosimo bodi previden/a, da odpreš celotno povezavo. Tvoj e-mail odjemalec "
+"jo je morda razdelil v več vrstic."
+
+#: account/templates/user/confirmation_email.txt:21
+msgid ""
+"If you have any problems confirming your e-mail address or have any other "
+"questions just reply to this e-mail."
+msgstr ""
+"Če imaš karšnekoli težave pri potrjevanju svojega e-mail naslova ali kakšna "
+"druga vprašanja, lahko odgovoriš kar na ta e-mail."
+
+#: account/templates/user/confirmation_email.txt:23
+msgid "Yours,"
+msgstr "Tvoj,"
+
+#: account/templates/user/confirmation_email_subject.txt:1
+#: account/templates/user/email_confirmation_process_token.html:5
+#: account/templates/user/email_confirmation_process_token.html:16
+msgid "Confirm your e-mail address"
+msgstr "Potrdi svoj e-mail naslov"
+
+#: account/templates/user/email_confirmation_process_token.html:13
+msgid ""
+"You are just one step away from confirming your e-mail address. If for some "
+"reason the input box below is empty, paste the token in manually from the "
+"confirmation e-mail you have received."
+msgstr ""
+"Si samo še korak od potrditve svojega e-mail naslova. Če je spodnje vnosno "
+"polje slučajno prazno, ročno prilepi kodo, ki si jo prejel/a."
+
+#: account/templates/user/email_confirmation_send_token.html:5
+msgid "E-mail address confirmation"
+msgstr "Potrditev e-mail naslova"
+
+#: account/templates/user/email_confirmation_send_token.html:13
+#, python-format
+msgid "Clicking the button below will send a confirmation mail to %(email)s."
+msgstr "Klik na spodnji gumb bo poslal potrditveno povezavo na %(email)s."
+
+#: account/templates/user/email_confirmation_send_token.html:16
+msgid "Click here to confirm your e-mail address"
+msgstr "Klikni tukaj za potrditev svojega e-mail naslova"
+
+#: account/templates/user/email_confirmation_send_token.html:21
+msgid "Why should I confirm my e-mail address?"
+msgstr "Zakaj bi potrdil svoj e-mail naslov?"
+
+#: account/templates/user/email_confirmation_send_token.html:23
+msgid ""
+"Confirming your e-mail address improves the security of your account. Once "
+"you've confirmed your e-mail address, you will be able to reset your "
+"password in the case you lost it or forget it."
+msgstr ""
+"Potrditev svojega e-mail naslova poveča varnost tvojega računa. Ko boš "
+"potrdil svoj e-mail naslov, boš lahko resetiral/a svoje geslo v primeru, da "
+"si ga pozabil/a ali izgubil/a."
+
+#: account/templates/user/login.html:5 account/templates/user/login.html:12
+#: frontend/templates/header.html:45
 msgid "Login"
 msgstr "Prijavi se"
 
-#: .\account\templates\user\login.html.py:22
+#: account/templates/user/login.html:22
 msgid "Login with Facebook"
 msgstr "Facebook prijava"
 
-#: .\account\templates\user\login.html.py:28
+#: account/templates/user/login.html:28
 msgid "Login with Twitter"
 msgstr "Twitter prijava"
 
-#: .\account\templates\user\login.html.py:34 
+#: account/templates/user/login.html:34
 msgid "Login with Foursquare"
-msgstr "Foursquare prijava"
+msgstr "Facebook prijava"
 
-#: .\account\templates\user\login.html.py:40 
+#: account/templates/user/login.html:40
 msgid "Login with Google"
 msgstr "Google prijava"
 
-#: .\account\templates\user\login.html.py:33
-#: .\account\templates\user\registration.html.py:9
-#: .\frontend\templates\header.html.py:46
+#: account/templates/user/login.html:45
+#: account/templates/user/registration.html:14
+#: frontend/templates/header.html:46
 msgid "Register"
 msgstr "Registriraj se"
 
-#: .\account\templates\user\password_change.html.py:5
+#: account/templates/user/password_change.html:5
 msgid "Change Password"
 msgstr "Spremeni geslo"
 
-#: .\account\templates\user\registration.html.py:5
+#: account/templates/user/registration.html:10
 msgid "Registration"
 msgstr "Registracija"
 
-#: .\account\templates\user\user_image.html.py:3
+#: account/templates/user/user_image.html:3
 msgid "User image"
 msgstr "Slika uporabnika"
 
-#: .\frontend\debug.py:6
+#: frontend/debug.py:6
 msgid "File"
 msgstr "Datoteka"
 
-#: .\frontend\templates\403.html.py:5 .\frontend\templates\403.html.py:10
+#: frontend/templates/403.html:5 frontend/templates/403.html.py:10
 msgid "403 Forbidden"
 msgstr "403 Prepovedano"
 
-#: .\frontend\templates\403.html.py:13
+#: frontend/templates/403.html:13
 msgid "You don't have permission to access the page you requested."
 msgstr "Nimaš pravic za dostop do željene strani."
 
-#: .\frontend\templates\403.html.py:15
+#: frontend/templates/403.html:15
 msgid ""
 "You are seeing this message because this HTTPS site requires a 'Referer "
 "header' to be sent by your Web browser, but none was sent. This header is "
@@ -213,52 +351,52 @@ msgid ""
 "hijacked by third parties."
 msgstr ""
 
-#: .\frontend\templates\403.html.py:16
+#: frontend/templates/403.html:16
 msgid ""
 "If you have configured your browser to disable 'Referer' headers, please re-"
 "enable them, at least for this site, or for HTTPS connections, or for 'same-"
 "origin' requests."
 msgstr ""
 
-#: .\frontend\templates\403.html.py:18
+#: frontend/templates/403.html:18
 msgid ""
 "For accessing this site and using all features cookies in your browser must "
 "be enabled."
 msgstr ""
 
-#: .\frontend\templates\404.html.py:5 .\frontend\templates\404.html.py:10
+#: frontend/templates/404.html:5 frontend/templates/404.html.py:10
 msgid "404 Not Found"
 msgstr "404 Ne obstaja"
 
-#: .\frontend\templates\404.html.py:13
+#: frontend/templates/404.html:13
 msgid "The page you requested cannot be found."
 msgstr "Željena stran ne obstaja."
 
-#: .\frontend\templates\footer.html.py:6
+#: frontend/templates/footer.html:6
 msgid "node database"
 msgstr "baza točk"
 
-#: .\frontend\templates\footer.html.py:6
+#: frontend/templates/footer.html:6
 msgid "development"
 msgstr "razvoj"
 
-#: .\frontend\templates\footer.html.py:6
+#: frontend/templates/footer.html:6
 msgid "growing"
 msgstr "rast"
 
-#: .\frontend\templates\gravatar.html.py:3
+#: frontend/templates/gravatar.html:3
 msgid "User picture"
 msgstr "Slika uporabnika"
 
-#: .\frontend\templates\header.html.py:20
+#: frontend/templates/header.html:20
 msgid "See your query results on "
 msgstr "Poglej zadetke na "
 
-#: .\frontend\templates\header.html.py:40
+#: frontend/templates/header.html:40
 msgid "Logout"
 msgstr "Odjava"
 
-#: .\frontend\templates\outside.html.py:8
+#: frontend/templates/outside.html:8
 msgid ""
 "You are accessing the site outside of the <i>wlan slovenija</i> open "
 "wireless network. Because of this your current location cannot be determined "
@@ -267,66 +405,70 @@ msgid ""
 "about your surroundings."
 msgstr ""
 
-#: .\frontend\templates\outside.html.py:11
+#: frontend/templates/outside.html:11
 msgid "Send my current location"
 msgstr "Pošlji mojo trenutno lokacijo"
 
-#: .\frontend\templates\search.html.py:5
+#: frontend/templates/search.html:5
 msgid "Search"
 msgstr "Išči"
 
-#: .\frontend\templates\search.html.py:9
+#: frontend/templates/search.html:9
 msgid "Results for:"
 msgstr "Rezultati za:"
 
-#: .\frontend\templates\userlist.html.py:4
-msgid "Show/Hide Users"
-msgstr "Prikaži/Skrij uporabnike"
-
-#: .\frontend\templates\userlist.html.py:4
-msgid "Online Users"
-msgstr "Povezani uporabniki"
-
-#: .\frontend\templates\userlist.html.py:7
-msgid "Search users"
-msgstr "Išči uporabnike"
-
-#: .\frontend\templates\debug\uploadform.html.py:5
+#: frontend/templates/debug/uploadform.html:5
 msgid "Upload form"
 msgstr "Obrazec za nalaganje"
 
-#: .\frontend\templates\debug\uploadform.html.py:9
+#: frontend/templates/debug/uploadform.html:9
 msgid "Upload"
 msgstr "Naloži"
 
-#: .\frontend\templates\form\form.html.py:30
+#: frontend/templates/form/form.html:30
 msgid "Required"
 msgstr "Obvezno"
 
-#: .\frontend\templates\user\user.html.py:18
+#: frontend/templates/user/user.html:18
 msgid "Username:"
 msgstr "Uporabniško ime:"
 
-#: .\frontend\templates\user\user.html.py:19
+#: frontend/templates/user/user.html:19
 msgid "Name:"
 msgstr "Ime in priimek:"
 
-#: .\frontend\templates\user\user.html.py:20
+#: frontend/templates/user/user.html:20
 msgid "Gender:"
 msgstr "Spol:"
 
-#: .\frontend\templates\user\user.html.py:21
+#: frontend/templates/user/user.html:21
 msgid "Birthdate:"
 msgstr "Datum rojstva:"
 
-#: .\frontend\templates\user\user.html.py:22
+#: frontend/templates/user/user.html:22
 msgid "E-mail:"
 msgstr "E-mail:"
 
-#: .\frontend\templates\user\user.html.py:23
+#: frontend/templates/user/user.html:23
 msgid "Last login:"
 msgstr "Zadnja prijava:"
 
-#: .\frontend\templates\user\user.html.py:25
+#: frontend/templates/user/user.html:25
 msgid "Facebook link"
 msgstr "Facebook povezava"
+
+#: panels/dummy/panel.py:11
+msgid "Dummy panel"
+msgstr ""
+
+#: panels/map/panel.py:8
+msgid "Map"
+msgstr ""
+
+#: panels/onlineusers/panel.py:9
+msgid "Online users"
+msgstr "Povezani uporabniki"
+
+#: panels/onlineusers/templates/panel/onlineusers/panel.html:26
+msgid "Search users"
+msgstr "Išči uporabnike"

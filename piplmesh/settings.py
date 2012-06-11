@@ -48,7 +48,7 @@ LANGUAGES = (
 
 URL_VALIDATOR_USER_AGENT = 'Django'
 
-SITE_ID = 1
+SITE_NAME = 'PiplMesh'
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -185,6 +185,7 @@ INSTALLED_APPS = (
     'tastypie',
     'tastypie_mongoengine',
     'sekizai',
+    'missing',
 )
 
 PUSH_SERVER = {
