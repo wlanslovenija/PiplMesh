@@ -21,7 +21,10 @@
     <div id="wall">
         
     </div>
-    <div id="panels">
+    <div id="spinner" style="display: none;">
+        <img src="../static/piplmesh/images/ajax-loader.gif" />
+    </div>
+    <div id="panels" style="visibility: hidden;">
         <div class="panels_column">
             {% for panel in user.get_panels %}
                 {% render_panel panel %}

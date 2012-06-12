@@ -29,6 +29,9 @@ function collapsePanels() {
             if (data[panel] == true)
                 $('#'+ panel +' .content').css('display','none');
         }
+
+        $('#panels').css('visibility', 'visible');
+        $('#spinner').css('display', 'none');
     });
 }
 
@@ -45,12 +48,13 @@ function getColumnsPanelsOrder() {
         json[i] = column;
         i++;
     });
-    
+
     console.log(json);
     return json;
 }
 
 $(document).ready(function () {
+    $('#spinner').css('display', 'block');
     var numberOfColumns = howManyColumns();
     collapsePanels();
     fillWithColumns();
