@@ -1,6 +1,8 @@
 from django import http, template
 from django.conf import settings
 from django.core.files import storage
+from django.http import HttpResponse
+from django.utils import simplejson
 from django.views import generic as generic_views
 
 from tastypie import http as tastypie_http
@@ -73,3 +75,36 @@ def forbidden_view(request, reason=''):
         'reason': reason,
         'no_referer': reason == csrf.REASON_NO_REFERER,
     })))
+
+def panel_collapse(request, panel_id, collapsed):
+    user = account_models.User.objects.get(id=request.user.id)
+
+    if (collapsed == "1"):
+        user.panels_collapsed[panel_id] = True
+    else:
+        user.panels_collapsed[panel_id] = False
+    user.save()
+
+    message = {'panel_id': panel_id, 'collapsed': collapsed }
+    json = simplejson.dumps(message)
+
+    return HttpResponse(json, mimetype='application/json')
+
+def get_panels_collapsed_settings(request):
+    user = account_models.User.objects.get(id=request.user.id)
+
+    message = {}
+    for panel in user.panels_collapsed:
+        message[panel] = user.panels_collapsed[panel]
+    json = simplejson.dumps(message)
+
+    return HttpResponse(json, mimetype='application/json')
+
+def panels_order(request, column):
+    message = request.GET
+    
+    message = {'success': 'dela'}
+    
+    json = simplejson.dumps(message)
+    
+    return HttpResponse(json, mimetype='application/json')

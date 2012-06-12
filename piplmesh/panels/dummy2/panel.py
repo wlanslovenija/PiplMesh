@@ -10,6 +10,7 @@ class DummyPanel2(panels.BasePanel):
         context.update({
             'header': _("Dummy panel 2"),
             'content': '\n\n'.join(lorem_ipsum.paragraphs(random.randint(1, 1))),
+            'id': 'dummy2',
         })
         return context
 

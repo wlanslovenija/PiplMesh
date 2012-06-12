@@ -6,6 +6,7 @@ class MapPanel(panels.BasePanel):
     def get_context(self, context):
         context.update({
             'header': _("Map"),
+            'id': 'map',
         })
         return context
 

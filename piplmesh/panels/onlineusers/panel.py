@@ -8,6 +8,7 @@ class OnlineUsersPanel(panels.BasePanel):
         context.update({
             'header': _("Online users"),
             'online_users': models.User.objects(is_online=True),
+            'id': 'online_users',
         })
         return context
 
