@@ -339,11 +339,13 @@ class EmailConfirmationSendToken(edit_views.FormView):
         }
 
         subject = loader.render_to_string('user/confirmation_email_subject.txt', context)
-        text_content = loader.render_to_string('user/confirmation_email.txt', context)
+        # Email subject *must not* contain newlines
+        subject = ''.join(subject.splitlines())
+        email = loader.render_to_string('user/confirmation_email.txt', context)
 
         user.email_confirmation_token = models.EmailConfirmationToken(value=confirmation_token)
         user.save()
-        user.email_user(subject, text_content)
+        user.email_user(subject, email)
 
         messages.success(self.request, _("Confirmation e-mail has been sent to your e-mail address."))
         return super(EmailConfirmationSendToken, self).form_valid(form)
