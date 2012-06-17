@@ -1,5 +1,5 @@
 {% load i18n url_tags %}{% blocktrans with username=user.username %}Hello {{ username }}!{% endblocktrans %}
-{% filter wordwrap:72 %}
+{% filter wordwrap:68 %}
 {% blocktrans with SITE_NAME=SITE_NAME username=user.username email=email_address %}This message was sent to you to confirm this e-mail address ({{ email }}) as yours for your account on {{ SITE_NAME }} with username "{{ username }}". If you have already done so or don't want to, you can safely ignore this e-mail.{% endblocktrans %}
 
 {% blocktrans %}Please click the link below to confirm your e-mail address:{% endblocktrans %}
