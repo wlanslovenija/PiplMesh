@@ -1,10 +1,8 @@
 function howManyColumns() {
     var panelsWidth = $('#panels').width();
     var columnPanelsWidth = $('.panels_column').width() + parseInt($('.panels_column').css('margin-left'));
-    
-    var noOfColumns = parseInt(panelsWidth / columnPanelsWidth);
-    
-    return noOfColumns > 0 ? noOfColumns:1;
+
+    return parseInt(panelsWidth / columnPanelsWidth);
 }
 
 function movePanel(id, columnId) {
@@ -17,7 +15,7 @@ function resetColumns() {
             $(this).appendTo($('#panels').children().eq(0))
         });
     });
-    
+
     var count = 0;
     $('#panels').children().each(function () {
         if (count != 0)
@@ -46,7 +44,7 @@ function orderPanelsDefault() {
 
 function orderPanelsUpdate() {
     var items = [];
-    
+
     $('#panels').children().each(function () {
         var column = [];
         $(this).children().each( function () {
@@ -128,13 +126,13 @@ $(document).ready(function () {
     $('.panel .header').click(function (event) {
         var visible = $(this).next().is(':visible');
         $(this).next('.content').slideToggle('fast');
-        
+
         if (visible) {
             var param = "1";
         } else {
             var param = "0";
         }
-        
+
         $.get('/panels/collapse/', 'data=' + JSON.stringify( {panel_id: $(this).parent().attr('id'), collapsed: param}));
     });
 
