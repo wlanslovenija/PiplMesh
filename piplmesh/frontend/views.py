@@ -1,5 +1,6 @@
 from django import http, template
 from django.conf import settings
+from django.core import serializers
 from django.core.files import storage
 from django.http import HttpResponse
 from django.utils import simplejson
@@ -76,35 +77,46 @@ def forbidden_view(request, reason=''):
         'no_referer': reason == csrf.REASON_NO_REFERER,
     })))
 
-def panel_collapse(request, panel_id, collapsed):
+def panels_collapse(request):
     user = account_models.User.objects.get(id=request.user.id)
+    message = simplejson.loads(request.GET['data'])
 
-    if (collapsed == "1"):
-        user.panels_collapsed[panel_id] = True
+    if (message['collapsed'] == "1"):
+        user.panels_collapsed[message['panel_id']] = True
     else:
-        user.panels_collapsed[panel_id] = False
+        user.panels_collapsed[message['panel_id']] = False
     user.save()
 
-    message = {'panel_id': panel_id, 'collapsed': collapsed }
-    json = simplejson.dumps(message)
+    return HttpResponse()
 
-    return HttpResponse(json, mimetype='application/json')
-
-def get_panels_collapsed_settings(request):
+def get_panels_collapse(request):
     user = account_models.User.objects.get(id=request.user.id)
-
     message = {}
+
     for panel in user.panels_collapsed:
         message[panel] = user.panels_collapsed[panel]
-    json = simplejson.dumps(message)
 
-    return HttpResponse(json, mimetype='application/json')
+    return HttpResponse(simplejson.dumps(message), mimetype='application/json')
 
-def panels_order(request, column):
-    message = request.GET
+def panels_order(request):
+    user = account_models.User.objects.get(id=request.user.id)
+    message = request.GET['data']
+    order = simplejson.loads(message)
+    noOfColumns = str(len(order['panels']))
+
+    user.panels_order[noOfColumns] = order
+    user.save()
+
+    return HttpResponse()
+
+def get_panels_order(request):
+    user = account_models.User.objects.get(id=request.user.id)
+    order = simplejson.loads(request.GET['data'])
+    noOfColumns = str(order['noOfColumns'])
+
+    if user.panels_order.has_key(noOfColumns):
+        order = user.panels_order[noOfColumns]
+    else:
+        order = { "panels": [] }
     
-    message = {'success': 'dela'}
-    
-    json = simplejson.dumps(message)
-    
-    return HttpResponse(json, mimetype='application/json')
+    return HttpResponse(simplejson.dumps(order), mimetype='application/json')

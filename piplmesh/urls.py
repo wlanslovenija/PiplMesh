@@ -74,9 +74,10 @@ urlpatterns = patterns('',
     url(r'^' + PUSH_SERVER_URL, include('pushserver.urls')),
 
     # Panels
-    url(r'^panels/collapse/(?P<panel_id>[A-Za-z0-9_]+)/(?P<collapsed>[01])$', frontend_views.panel_collapse, name='panel_collapse'),
-    url(r'^panels/collapse/get$', frontend_views.get_panels_collapsed_settings, name='get_panels_collapsed_settings'),
-    url(r'^panels/order/(?P<column>[0-9]+)$', frontend_views.panels_order, name='panels_order'),
+    url(r'^panels/collapse/$', frontend_views.panels_collapse, name='panels_collapse'),
+    url(r'^panels/collapse/get/$', frontend_views.get_panels_collapse, name='get_panels_collapse'),
+    url(r'^panels/order/$', frontend_views.panels_order, name='panels_order'),
+    url(r'^panels/order/get/$', frontend_views.get_panels_order, name='get_panels_order'),
 )
 
 if getattr(settings, 'DEBUG', False):
