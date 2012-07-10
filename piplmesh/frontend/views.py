@@ -2,7 +2,6 @@ from django import http, template
 from django.conf import settings
 from django.core import serializers
 from django.core.files import storage
-from django.http import HttpResponse
 from django.utils import simplejson
 from django.views import generic as generic_views
 
@@ -87,7 +86,7 @@ def panels_collapse(request):
         user.panels_collapsed[message['panel_id']] = False
     user.save()
 
-    return HttpResponse()
+    return http.HttpResponse()
 
 def get_panels_collapse(request):
     user = account_models.User.objects.get(id=request.user.id)
@@ -96,7 +95,7 @@ def get_panels_collapse(request):
     for panel in user.panels_collapsed:
         message[panel] = user.panels_collapsed[panel]
 
-    return HttpResponse(simplejson.dumps(message), mimetype='application/json')
+    return http.HttpResponse(simplejson.dumps(message), mimetype='application/json')
 
 def panels_order(request):
     user = account_models.User.objects.get(id=request.user.id)
@@ -107,7 +106,7 @@ def panels_order(request):
     user.panels_order[noOfColumns] = order
     user.save()
 
-    return HttpResponse()
+    return http.HttpResponse()
 
 def get_panels_order(request):
     user = account_models.User.objects.get(id=request.user.id)
@@ -117,6 +116,6 @@ def get_panels_order(request):
     if user.panels_order.has_key(noOfColumns):
         order = user.panels_order[noOfColumns]
     else:
-        order = { "panels": [] }
+        order = {"panels": []}
     
-    return HttpResponse(simplejson.dumps(order), mimetype='application/json')
+    return http.HttpResponse(simplejson.dumps(order), mimetype='application/json')

@@ -5,19 +5,19 @@ function howManyColumns() {
     return parseInt(panelsWidth / columnPanelsWidth);
 }
 
-function movePanel(id, columnId) {
-    $('#'+id).appendTo($('#panels').children().eq(columnId));
+function movePanel(id, columnIndex) {
+    $('#' + id).appendTo($('#panels').children().eq(columnIndex));
 }
 
 function resetColumns() {
-    $('#panels').children().each(function () {
-        $(this).children().each( function () {
+    $('#panels').children().each(function (index, value) {
+        $(this).children().each(function (index, value) {
             $(this).appendTo($('#panels').children().eq(0))
         });
     });
 
     var count = 0;
-    $('#panels').children().each(function () {
+    $('#panels').children().each(function (index, value) {
         if (count != 0)
             $(this).remove();
         count++;
@@ -26,28 +26,29 @@ function resetColumns() {
 
 function fillWithColumns() {
     var currentColumns = $('#panels').children().length;
+    var noOfColumns = howManyColumns();
 
-    for(i = currentColumns; i < howManyColumns(); i++) {
+    for (i = currentColumns; i < noOfColumns; i++) {
         $('#panels').append('<div class="panels_column"></div>');
     }
 }
 
 function orderPanelsDefault() {
-    var num_of_panels = $('.panels_column').children().length;
-    var num_of_columns = howManyColumns();
+    var numOfPanels = $('.panels_column').children().length;
+    var numOfColumns = howManyColumns();
 
-    for (i=0; i < num_of_panels; i++) {
-        var toColumn     = i % num_of_columns;
-        $('.panels_column').children().eq(num_of_panels-i-1).appendTo($('#panels').children().eq(toColumn));
+    for (i = 0; i < numOfPanels; i++) {
+        var toColumn = i % numOfColumns;
+        $('.panels_column').children().eq(numOfPanels - i - 1).appendTo($('#panels').children().eq(toColumn));
     }
 }
 
 function orderPanelsUpdate() {
     var items = [];
 
-    $('#panels').children().each(function () {
+    $('#panels').children().each(function (index, value) {
         var column = [];
-        $(this).children().each( function () {
+        $(this).children().each(function (index, value) {
             var item = {
                 id: $(this).attr('id'),
             };
@@ -56,11 +57,11 @@ function orderPanelsUpdate() {
         items.push(column);
     });
     
-    $.get('/panels/order/', 'data=' + JSON.stringify( {panels: items} ));
+    $.get('/panels/order/', 'data=' + JSON.stringify({panels: items}));
 }
 
 function orderPanels() {
-    $.get('/panels/order/get', 'data=' + JSON.stringify( {noOfColumns: howManyColumns()} ), function (data) {
+    $.get('/panels/order/get/', 'data=' + JSON.stringify( {noOfColumns: howManyColumns()} ), function (data) {
         for (var i = 0; i < data['panels'].length; i++) {
             for (var j = 0; j < data['panels'][i].length; j++) {
                 movePanel(data['panels'][i][j]['id'],i);
@@ -110,7 +111,7 @@ function makeColumnsSortable() {
         cursor: 'move',
         placeholder: 'placeholder',
         forcePlaceholderSize: true,
-        opacity: 0.6,
+        opacity: 0.6
     }).disableSelection();
 }
 
