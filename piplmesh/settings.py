@@ -285,7 +285,7 @@ TEST_RUNNER_FILTER = (
 )
 
 NODES_BACKENDS = (
-    'piplmesh.nodes.backends.RandomNodesBackend',
+    'piplmesh.nodes.backends.NodesBackend',
 )
 
 NODES_MIDDLEWARE_EXCEPTIONS = (

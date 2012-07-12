@@ -14,3 +14,6 @@ class Node(object):
 
     def is_inside_request(self):
         return not self._outside_request
+
+    def __repr__(self):
+        return u'node(' + repr(self.id) + ', ' + repr(self.name) + ', ' + repr(self.location)+ ',' + repr(self.latitude) + ', ' + repr(self.longitude) + ')'
