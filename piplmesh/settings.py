@@ -161,7 +161,6 @@ ROOT_URLCONF = 'piplmesh.urls'
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 TEMPLATE_DIRS = (
-    'piplmesh/account/templates/user/'
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -286,7 +285,7 @@ TEST_RUNNER_FILTER = (
 )
 
 NODES_BACKENDS = (
-    'piplmesh.nodes.backends.NodesBackend',
+    'piplmesh.nodes.backends.RandomNodesBackend',
 )
 
 NODES_MIDDLEWARE_EXCEPTIONS = (
