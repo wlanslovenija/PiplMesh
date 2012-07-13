@@ -54,37 +54,61 @@ form input[type="submit"], form input[type="reset"] {
     list-style-type: none;
 }
 
+.field-form {
+    border:0 none;
+
+
+}
+
+.field-form-text {
+    display: block;
+    float: right;
+    margin-right:10px;
+    text-align: right;
+    width: 120px;
+    line-height: 20px;
+
+}
+
+.field-form-input {
+    float:right;
+    padding: 5px;
+    width: 220px;
+    text-align: right
+
+}
+
 .form_fields .field {
     margin: 0.1em 0 0.1em 0;
     padding: 0.2em 0.3em;
     clear: left;
-    margin-left: 13em;
     min-height: 2em;
+
 }
 
 .form_fields .field input {
-    width: 15.3em;
-    border: 1px solid #AFAFAF;
+width: 10.3em;
+border: 1px solid #AFAFAF;
 }
 
 .form_fields .field input[type="radio"], input[type="checkbox"] {
-    width: auto;
-    border: none;
+width: auto;
+border: none;
 }
 
 .form_fields .field label {
-    float: left;
-    width: 16em;
-    padding-right: 2em;
-    margin-left: -13em;
+float: left;
+width: 16em;
+padding-right: 2em;
+margin-left: -13em;
 }
 
 .input_invalid {
-    background-color: #ff0000;
+background-color: #ff0000;
 }
 
 .input_invalid_text {
-    color: #ff0000;
+color: #ff0000;
 }
 
 /* Styling nested lists such as radio buttons */
@@ -260,19 +284,85 @@ input.gsc-search-button {
 }
 
 /* -------------------- AUTHENTICATION ------------------------ */
-.auth_button {
-    background: none;
-    border: none;
-    padding: 0px;
-    margin: 0px;
-    cursor: pointer;
-    color: #68AE2C;
-    font-size: 13px;
-    text-decoration: none;
+.internal {
+    float: left;
+    padding-right: 4em;
+    text-align: right;
+}
+.login-container {
+    background-color: #FAFAFF;
+    border: 1px solid #AAAAAA;
+    border-radius: 2px 2px 2px 2px;
+    box-shadow: 2px 2px 2px black;
+    margin: 0 auto;
+    padding: 3em;
+    white-space: nowrap;
+    width: 700px;
+}
+.separator {
+    border-left: 1px solid #CCCCCC;
+    display: inline-block;
+    float: left;
+    height: 400px;
+    margin: 0 2em;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    vertical-align: baseline;
+    white-space: nowrap;
+    width: 1px;
 }
 
-.auth_button:hover span {
-    text-decoration: underline;
+.external {
+    display: inline;
+    float: right;
+    margin: 0 3em;
+}
+
+.clearfix {
+    clear: both;
+    font-size: 1px;
+}
+
+.login-box{
+}
+
+.login-text{
+}
+
+.login-input {
+}
+
+.login-external-button {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #CCCCCC #BBBBBB #AAAAAA #CCCCCC;
+    border-radius: 5px 5px 5px 5px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 2px 2px 5px #CCCCCC;
+    cursor: pointer;
+    height: 77px;
+    margin: 1em 0;
+    vertical-align: baseline;
+    width: 200px;
+}
+
+.separator-text {
+    background-color: #FAFAFF;
+    color: #444444;
+    display: inline-block;
+    font-size: 16px;
+    letter-spacing: 2px;
+    margin-left: -1.5em;
+    margin-top: -0.5em;
+    padding: 0.7em;
+    position: relative;
+    text-transform: uppercase;
+    top: 40%;
 }
 
 #email_confirmation {
@@ -283,120 +373,6 @@ input.gsc-search-button {
     width: 500px;
 }
 
-/* ---------------- FB LOGIN BUTTON ------------------- */
-.fb_login_button {
-    background: #29447E url('../images/fb_login_button.png');
-    background-repeat: no-repeat;
-    cursor: pointer;
-    display: inline-block;
-    padding: 0 0 0 1px;
-    text-decoration: none;
-    outline: none;
-    font-size: 11px;
-    line-height: 14px;
-    margin: 0px;
-    border: 0;
-    height: 22px;
-    width: 163px;
-}
-
-.fb_login_button:hover {
-    background-position: -163px;
-}
-
-.fb_button_text {
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    padding: 4px 6px 3px 6px;
-    margin: -3px 1px 0 21px;
-    text-shadow: none;
-}
-
-/* ---------------- TWITTER LOGIN BUTTON ------------------- */
-.twitter_login_button {
-    background: #3DBCDC url('../images/twitter_button.png');
-    background-position:  0 0;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    display: inline-block;
-    padding: 0 0 0 1px;
-    text-decoration: none;
-    outline: none;
-    font-size: 11px;
-    line-height: 14px;
-    margin: 0px;
-    outline: none;
-    border: 0;
-}
-
-.twitter_button_text {
-    background: #3DBCDC;
-    border-top: solid 1px #879AC0;
-    border-bottom: solid 1px #1A356E;
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    padding: 2px 6px 3px 6px;
-    margin: 1px 1px 0 21px;
-    text-shadow: none;
-}
-
-/* ---------------- FOURSQUARE LOGIN BUTTON ------------------- */
-.foursquare_login_button {
-    background: #2090c6 url('../images/foursquare_button.png');
-    background-repeat: no-repeat;
-    cursor: pointer;
-    display: inline-block;
-    text-decoration: none;
-    outline: none;
-    font-size: 11px;
-    line-height: 20px;
-    border: 0;
-    height: 24px;
-}
-
-.foursquare_button_text {
-    background: #2090c6;
-    border-top: solid 1px #879AC0;
-    border-bottom: solid 1px #1A356E;
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    margin: 0 0 0 20px;
-    text-shadow: none;
-}
-
-/* ---------------- GOOGLE LOGIN BUTTON ------------------- */
-.google_login_button {
-    background: #0064D9 url('../images/google_button.png');
-    background-position: 0 0;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    display: inline-block;
-    padding: 0 0 0 1px;
-    text-decoration: none;
-    outline: none;
-    font-size: 11px;
-    line-height: 14px;
-    margin: 0px;
-}
-
-.google_button_text {
-    background: #0064D9;
-    border-top: solid 1px #879AC0;
-    border-bottom: solid 1px #1A356E;
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    padding: 2px 6px 3px 6px;
-    margin: 1px 1px 0 21px;
-    text-shadow: none;
-}
 
 /* --------------------- LOGIN ------------------------ */
 .login {
@@ -435,7 +411,7 @@ input.gsc-search-button {
 .buttons {
     padding-top: 20px;
     text-align: right;
-    width: 482px;
+
 }
 
 .buttons input {

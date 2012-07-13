@@ -7,43 +7,52 @@
 {% block content %}
     <div id="main">
         <div class="login">
-            <div class="login_form">
-                {% with next|default:request_get_next|default:LOGIN_REDIRECT_URL as next %}
+            <div class="login-container">
+                <div class="internal">
+                    <h4>Login with wlan account</h4>
+                    {% with next|default:request_get_next|default:LOGIN_REDIRECT_URL as next %}
                     {% trans "Login" as form_submit %}
                     {% url login as form_action %}
-                    {% include "form/form.html" %}
-                {% endwith %}
-            </div>
-            <div id="other_login_options">
-                <ul>
-                    <li>
-                        <form method="post" action="{% url facebook_login %}" id="fb_login_form2">
-                            {% csrf_token %}
-                            <p><button type="submit" class="fb_login_button"><span class="fb_button_text">{% trans "Login with Facebook" %}</span></button></p>
-                        </form>
-                    </li>
-                    <li>
-                        <form method="post" action="{% url twitter_login %}" id="twitter_login_form3">
-                            {% csrf_token %}
-                            <p><button type="submit" class="twitter_login_button"><span class="twitter_button_text">{% trans "Login with Twitter" %}</span></button></p>
-                        </form>
-                    </li>
-                    <li>
-                        <form method="post" action="{% url foursquare_login %}" id="foursquare_login_form4">
-                            {% csrf_token %}
-                            <p><button type="submit" class="foursquare_login_button"><span class="foursquare_button_text">{% trans "Login with Foursquare" %}</span></button></p>
-                        </form>
-                    </li>
-                    <li>
-                        <form method="post" action="{% url google_login %}" id="google_login_form4">
-                            {% csrf_token %}
-                            <p><button type="submit" class="google_login_button"><span class="google_button_text">{% trans "Login with Google" %}</span></button></p>
-                        </form>
-                    </li>
-                    <li>{% comment %}Place for OpenID button.{% endcomment %}</li>
-                    <li><a href="{% url registration %}">{% trans "Register" %}</a></li>
-                </ul>
-            </div>
-        </div>
+                    {% include "form/login-aut-form.html" %}
+                    {% endwith %}
+
+				    {% comment %}<li><a href="{% url registration %}">{% trans "Register" %}</a></li>{% endcomment %}
+
+                </div>
+				<div class="separator">
+                    <span class="separator-text">OR</span>
+                </div>
+				<div class="external">
+					<h4>Login to w-net with </h4>
+					<div id="login_facebook" class="login-external-button" >
+						<form method="post" action="{% url facebook_login %}">
+							{% csrf_token %}
+							<p><INPUT TYPE="image" SRC="/static/piplmesh/images/login-facebook.png"  BORDER="0" ALT="Submit Form"></p>
+						</form>
+
+					</div>
+					
+					<div id="login_twitter" class="login-external-button" action="{% url twitter_login %}" >
+						<form method="post" >
+							{% csrf_token %}
+							<p><INPUT TYPE="image" SRC="/static/piplmesh/images/login-twitter.png"  BORDER="0" ALT="Submit Form"></p>
+						</form>
+					</div>
+					<div id="google_login_form4" class="login-external-button"  action="{% url twitter_login %}">
+						<form method="post" >
+							{% csrf_token %}
+							<p><INPUT TYPE="image" SRC="/static/piplmesh/images/login-google.png"  BORDER="0" ALT="Submit Form"></p>
+						</form>
+					</div>					
+					<div id="foursquare_login_form4" class="login-external-button" action="{% url foursquare_login %}" >
+						<form method="post" >
+							{% csrf_token %}
+							<p><INPUT TYPE="image" SRC="/static/piplmesh/images/login-foursquare.png"  BORDER="0" ALT="Submit Form"></p>
+						</form>
+					</div>  
+				</div>
+					<div class="clearfix">&nbsp;</div> 
+				</div>
+		</div>
     </div>
 {% endblock %}

@@ -7,7 +7,8 @@ where the form should redirect after submission.
 {% endcomment %}
 
 {% load i18n %}
-
+<div class="login">
+    <div class="login-container">
 {% if form.is_multipart %}
     <form action="{{ form_action }}" method="post" enctype="multipart/form-data">
 {% else %}
@@ -19,23 +20,31 @@ where the form should redirect after submission.
             <div style="display: none;"><input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" /></div>
         {% endwith %}
         {% if form.fields %}
-            <ul class="form_fields">
+
                 {% for field in form %}
-                    <li class="field_error">
-                        {{ field.errors }}
-                    </li>
-                    <li class="field">
-                        <label for="{{ field.id_for_label }}">
-                            {% if field.field.required %}
-                                <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
-                            {% else %}
-                                {{ field.label }}
-                            {% endif %}
+
+                    <fieldset class="field-form">
+                        <div class="field-form-input">
+                            {{ field }}
+                        </div>
+                        <label class="field_error">
+                            {{ field.errors }}
                         </label>
-                        {{ field }}
-                    </li>
+                        <label class="field-form-text">
+                                {% if field.field.required %}
+                                    <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
+                                {% else %}
+                                    {{ field.label }}
+                                {% endif %}
+
+                        </label>
+
+
+                    </fieldset>
                 {% endfor %}
-            </ul>
+
         {% endif %}
         <div class="buttons"><input type="submit" value="{{ form_submit }}" /></div>
+        <div class="clearfix">&nbsp;</div>
     </form>
+    </div></div>
