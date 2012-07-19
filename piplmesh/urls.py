@@ -32,9 +32,10 @@ urlpatterns = patterns('',
 
     url(r'^outside/$', frontend_views.OutsideView.as_view(), name='outside'),
     url(r'^search/', frontend_views.SearchView.as_view(), name='search'),
+    url(r'^contact/$', frontend_views.ContactView.as_view(), name='contact'),
 
     url(r'^upload/$', frontend_views.upload_view, name='upload'),
-
+    
     # Registration, login, logout
     url(r'^register/$', account_views.RegistrationView.as_view(), name='registration'),
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'user/login.html'}, name='login'),
