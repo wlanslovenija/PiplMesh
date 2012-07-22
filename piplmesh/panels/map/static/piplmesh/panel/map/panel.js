@@ -135,7 +135,7 @@ $(document).ready(function () {
         scrollwheel: true,
         navigationControl: true,
         scaleControl: true,
-        draggable: false,
+        draggable: true,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: true,
         panControl: true
