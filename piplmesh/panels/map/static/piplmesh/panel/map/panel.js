@@ -3,7 +3,18 @@ var map_big;
 var vl;
 var weather_visible = false;
 var infoWindow;
+var ge;
+google.load("earth", "1");
+var googleEarth;
 
+/* <![CDATA[ */
+var node = {
+    'name': '{{ request.node.name|escapejs }}',
+    'latitude': '{{ request.node.latitude|escapejs }}',
+    'longitude': '{{ request.node.longitude|escapejs }}',
+    'location': '{{ request.node.location|escapejs }}',
+    'url': '{{ request.node.url|escapejs }}'
+};
 /*
  document.onkeydown = function(evt) {
  evt = evt || window.event;
@@ -116,11 +127,7 @@ $(function()
 })
 
 $(document).ready(function () {
-
-
     var nodeLocation = new google.maps.LatLng(node.latitude, node.longitude);
-    //alert(node.latitude);
-
     var map_big_options = {
         center:nodeLocation,
         zoom: 10,
@@ -154,6 +161,7 @@ $(document).ready(function () {
 
     map_small = new google.maps.Map(document.getElementById('map_small'), map_small_options);
     map_big = new google.maps.Map(document.getElementById('map_big'), map_big_options);
+
 
     wl = new google.maps.weather.WeatherLayer({
         temperatureUnits: google.maps.weather.TemperatureUnit.CELSIUS
@@ -221,6 +229,10 @@ $(document).ready(function () {
     nodeName.append(nodeWebsite);
     $('#map_info').append(nodeName);
 
+    googleEarth = new GoogleEarth(map_big);
+    google.maps.event.addListenerOnce(map_big, 'tilesloaded', addOverlays);
+
+
     function addMarkers() {
         function createMarker() {
             var marker = new google.maps.Marker({
@@ -237,4 +249,9 @@ $(document).ready(function () {
         }
         createMarker();
     }
+
+
 });
+
+
+google.maps.event.addDomListener(window, 'load', init);
