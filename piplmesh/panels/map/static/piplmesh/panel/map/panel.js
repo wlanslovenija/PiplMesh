@@ -129,21 +129,17 @@ $(function()
 $(document).ready(function () {
     var nodeLocation = new google.maps.LatLng(node.latitude, node.longitude);
     var map_big_options = {
-        center:nodeLocation,
+        center: nodeLocation,
         zoom: 10,
-        mapTypeControl: true,
+        mapTypeId: "OSM",
         mapTypeControlOptions: {
+            mapTypeIds: mapTypeIds,
             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-        },
-        zoomControl: true,
-        zoomControlOptions: {
-            style: google.maps.ZoomControlStyle.LARGE
         },
         scrollwheel: true,
         navigationControl: true,
         scaleControl: true,
         draggable: true,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: true,
         panControl: true
     };
@@ -159,9 +155,23 @@ $(document).ready(function () {
         streetViewControl: false
     };
 
+    var mapTypeIds = [];
+    for(var type in google.maps.MapTypeId) {
+        mapTypeIds.push(google.maps.MapTypeId[type]);
+    }
+    mapTypeIds.push("OSM");
+
     map_small = new google.maps.Map(document.getElementById('map_small'), map_small_options);
     map_big = new google.maps.Map(document.getElementById('map_big'), map_big_options);
 
+    map_big.mapTypes.set("OSM", new google.maps.ImageMapType({
+        getTileUrl: function(coord, zoom) {
+            return "http://tile.openstreetmap.org/" + zoom + "/" + coord.x + "/" + coord.y + ".png";
+        },
+        tileSize: new google.maps.Size(256, 256),
+        name: "OpenStreetMap",
+        maxZoom: 18
+    }));
 
     wl = new google.maps.weather.WeatherLayer({
         temperatureUnits: google.maps.weather.TemperatureUnit.CELSIUS
