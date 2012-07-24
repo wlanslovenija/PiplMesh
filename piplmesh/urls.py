@@ -7,6 +7,10 @@ from tastypie import api
 from piplmesh.account import models, views as account_views
 from piplmesh.api import resources
 from piplmesh.frontend import debug as debug_views, views as frontend_views
+from piplmesh import panels
+
+# PiplMesh panels auto-discovery
+panels.panels_pool.discover_panels()
 
 v1_api = api.Api(api_name='v1')
 v1_api.register(resources.UserResource())
@@ -44,20 +48,29 @@ urlpatterns = patterns('',
     url(r'^twitter/login/$', account_views.TwitterLoginView.as_view(), name='twitter_login'),
     url(r'^twitter/callback/$', account_views.TwitterCallbackView.as_view(), name='twitter_callback'),
 
+    # Foursquare
+    url(r'^foursquare/login/$', account_views.FoursquareLoginView.as_view(), name='foursquare_login'),
+    url(r'^foursquare/callback/$', account_views.FoursquareCallbackView.as_view(), name='foursquare_callback'),
+
+    # Google
+    url(r'^google/login/$', account_views.GoogleLoginView.as_view(), name='google_login'),
+    url(r'^google/callback/$', account_views.GoogleCallbackView.as_view(), name='google_callback'),
+
     # Profile, account
-    url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='user'),
+    url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='profile'),
     url(r'^account/$', account_views.AccountChangeView.as_view(), name='account'),
     url(r'^account/password/change/$', account_views.PasswordChangeView.as_view(), name='password_change'),
+    url(r'^account/confirmation/$', account_views.EmailConfirmationSendToken.as_view(), name='email_confirmation_send_token'),
+    url(r'^account/confirmation/token/(?:(?P<confirmation_token>\w+)/)?$', account_views.EmailConfirmationProcessToken.as_view(), name='email_confirmaton_process_token'),
+    url(r'^account/setlanguage/$', account_views.set_language, name='set_language'),
 
     # RESTful API
     url(r'^api/', include(v1_api.urls)),
 
     # Internationalization support
-    url(r'^' + I18N_URL, include('django.conf.urls.i18n')),
     url(r'^' + I18N_URL + 'js/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 
     # Internals
-    # TODO: Limit only to internal IPs
     url(r'^' + PUSH_SERVER_URL, include('pushserver.urls')),
 )
 

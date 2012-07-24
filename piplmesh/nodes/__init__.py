@@ -58,7 +58,8 @@ def get_node(request):
     Returns ``None`` if no node could be determined.
     """
 
-    # TODO: What if users moves from inside to outside, or outside to inside, inside existing session? How should we invalidate node?
+    # TODO: What if user moves from inside to outside, or outside to inside, inside existing session? How should we invalidate node?
+    # TODO: What if user moves between nodes, between outside locations?
 
     node = None
     try:
@@ -118,3 +119,12 @@ def get_node(request):
     request.session[CLOSEST_LONGITUDE_SESSION_KEY] = request.session[LONGITUDE_SESSION_KEY]
 
     return node
+
+def get_all_nodes():
+    """
+    Returns an iterator over all known nodes.
+    """
+
+    for backend in get_backends():
+        for node in backend.get_all_nodes():
+            yield node

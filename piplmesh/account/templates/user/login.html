@@ -28,6 +28,18 @@
                             <p><button type="submit" class="twitter_login_button"><span class="twitter_button_text">{% trans "Login with Twitter" %}</span></button></p>
                         </form>
                     </li>
+                    <li>
+                        <form method="post" action="{% url foursquare_login %}" id="foursquare_login_form4">
+                            {% csrf_token %}
+                            <p><button type="submit" class="foursquare_login_button"><span class="foursquare_button_text">{% trans "Login with Foursquare" %}</span></button></p>
+                        </form>
+                    </li>
+                    <li>
+                        <form method="post" action="{% url google_login %}" id="google_login_form4">
+                            {% csrf_token %}
+                            <p><button type="submit" class="google_login_button"><span class="google_button_text">{% trans "Login with Google" %}</span></button></p>
+                        </form>
+                    </li>
                     <li>{% comment %}Place for OpenID button.{% endcomment %}</li>
                     <li><a href="{% url registration %}">{% trans "Register" %}</a></li>
                 </ul>

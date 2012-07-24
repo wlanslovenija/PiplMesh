@@ -33,3 +33,9 @@ class RandomNodesBackend(object):
             return node
         except IndexError:
             return None
+
+    def get_all_nodes(self):
+        for i, node in enumerate(data.nodes):
+            node = copy.copy(node)
+            node.id = i
+            yield node

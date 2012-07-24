@@ -2,7 +2,7 @@
 #
 # Development Django settings for PiplMesh project.
 
-import datetime, os.path
+import datetime, os
 
 MONGO_DATABASE_NAME = 'PiplMesh'
 
@@ -13,6 +13,9 @@ settings_dir = os.path.abspath(os.path.dirname(__file__))
 
 import djcelery
 djcelery.setup_loader()
+
+# Dummy function, so that "makemessages" can find strings which should be translated.
+_ = lambda s: s
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -38,9 +41,6 @@ TIME_ZONE = 'Europe/Ljubljana'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'sl'
 
-# Dummy function, so that "makemessages" can find strings which should be translated.
-_ = lambda s: s
-
 LANGUAGES = (
     ('sl', _('Slovenian')),
     ('en', _('English')),
@@ -48,7 +48,7 @@ LANGUAGES = (
 
 URL_VALIDATOR_USER_AGENT = 'Django'
 
-SITE_ID = 1
+SITE_NAME = 'PiplMesh'
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -94,13 +94,25 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'piplmesh.panels.staticfiles.finders.PanelsDirectoriesFinder',
 #   'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
+# Used to reconstruct absolute/full URLs where request is not available
+DEFAULT_REQUEST = {
+    'SERVER_NAME': '127.0.0.1',
+    'SERVER_PORT': '8000',
+}
 
 DEFAULT_FILE_STORAGE = 'piplmesh.utils.storage.GridFSStorage'
 
 # URL prefix for internationalization URLs
 I18N_URL = '/i18n/'
+
+# List of configured IPs from which django-pushserver passthrough callbacks are allowed
+INTERNAL_IPS = (
+    '127.0.0.1',
+)
 
 # URL prefix for django-pushserver passthrough callbacks
 PUSH_SERVER_URL = '/passthrough/'
@@ -117,6 +129,7 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
+    'piplmesh.panels.loaders.panels_directories.Loader',
 #   'django.template.loaders.eggs.Loader',
 )
 
@@ -128,6 +141,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
+    'sekizai.context_processors.sekizai',
     'piplmesh.frontend.context_processors.global_vars',
 )
 
@@ -136,12 +150,15 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'piplmesh.account.middleware.LazyUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'piplmesh.account.middleware.UserBasedLocaleMiddleware',
     'piplmesh.frontend.middleware.NodesMiddleware',
 )
 
 ROOT_URLCONF = 'piplmesh.urls'
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -150,8 +167,6 @@ TEMPLATE_DIRS = (
 #   os.path.join(settings_dir, 'templates'),
 )
 
-MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
-
 INSTALLED_APPS = (
     # Ours are first so that we can override default templates in other apps
     'piplmesh.account',
@@ -159,6 +174,7 @@ INSTALLED_APPS = (
     'piplmesh.frontend',
     'piplmesh.nodes',
     'piplmesh.utils',
+    'piplmesh.panels',
 
     'django.contrib.messages',
     'django.contrib.sessions',
@@ -168,6 +184,8 @@ INSTALLED_APPS = (
     'djcelery',
     'tastypie',
     'tastypie_mongoengine',
+    'sekizai',
+    'missing',
 )
 
 PUSH_SERVER = {
@@ -256,6 +274,9 @@ AUTHENTICATION_BACKENDS = (
     'piplmesh.account.backends.MongoEngineBackend',
     'piplmesh.account.backends.FacebookBackend',
     'piplmesh.account.backends.TwitterBackend',
+    'piplmesh.account.backends.FoursquareBackend',
+    'piplmesh.account.backends.GoogleBackend',
+    'piplmesh.account.backends.LazyUserBackend',
 )
 
 TEST_RUNNER = 'piplmesh.test_runner.MongoEngineTestSuiteRunner'
@@ -280,7 +301,6 @@ NODES_MIDDLEWARE_EXCEPTIONS = (
 # and access your site by local ip 127.0.0.1:8000 in your browser
 FACEBOOK_APP_ID = '268978083181801' # Add your app ID/API key
 FACEBOOK_APP_SECRET = '0d86323405308915be0564e8c00bf6e0' # Add your app secret key
-FACEBOOK_SCOPE = 'email' # You may add additional parameters
 FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
 FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
 
@@ -288,6 +308,16 @@ FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Fac
 TWITTER_CONSUMER_KEY = 'yeZOtec5ol5I9BGCCKpcw'
 TWITTER_CONSUMER_SECRET = 'Dv80Q51jx8FWDInmZCGZs8AKDnRwAdrS0lxgZA4NWs'
 TWITTER_LOGIN_REDIRECT = '/'
+
+# Foursquare settings
+FOURSQUARE_CLIENT_ID = 'IU4LBMWT2DOCQ2JOIN3A04450HBB4GY2D5QX0WYPQ2DLP1DK'
+FOURSQUARE_CLIENT_SECRET = 'UDFGDOKUSOOV0GGGI0JDHR5OOJ1KBVV3OJ50SOGFVFJ3YPKO'
+FOURSQUARE_LOGIN_REDIRECT = '/'
+
+# Google settings
+GOOGLE_CLIENT_ID = '961599639127.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET = 'XjLBcVysDl6g0qEx_bnGUPDb'
+GOOGLE_LOGIN_REDIRECT = '/'
 
 # You can set up your own custom search engine on: http://www.google.com/cse/
 # just register with you google account and crate new search engine.
