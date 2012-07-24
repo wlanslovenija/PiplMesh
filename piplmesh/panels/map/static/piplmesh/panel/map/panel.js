@@ -85,23 +85,26 @@ function getStyle(el,styleProp)
     return y;
 }
 
-function setButtonWeatherBorderStyle(controlUI){
+function setNondefaultButtonBorderStyle(controlUI){
     controlUI.style.backgroundColor = 'white';
     controlUI.style.borderStyle = 'solid';
-    controlUI.style.borderWidth = '2px';
+    controlUI.style.borderWidth = '1px';
     controlUI.style.cursor = 'pointer';
     controlUI.style.textAlign = 'center';
     controlUI.title = 'Click to switch on/off the weather info';
-
+    controlUI.style.borderWidth ='1px';
+    controlUI.style.borderColor = '#717B87';
 }
 
-function setButtonWeatherTextStyle(controlText){
+function setNondefaultButtonTextStyle(controlText){
     controlText.style.fontFamily = 'Arial,sans-serif';
-    controlText.style.fontSize = '12px';
+    controlText.style.paddingTop = '1.6px';
+    controlText.style.color = '#333333';
+    controlText.style.fontSize = '13px';
     controlText.style.paddingLeft = '4px';
     controlText.style.paddingRight = '4px';
-    controlText.innerHTML = '<strong>Vreme<strong>';
-
+    controlText.style.paddingBottom = '1.6px';
+    controlText.innerHTML = 'Vreme';
 }
 
 $(function()
@@ -181,10 +184,6 @@ $(document).ready(function () {
     google.maps.event.addListenerOnce(map_big, 'tilesloaded', addMarkers)
 
     google.maps.event.addListener(map_small, 'click', function() {
-        // screenfull.request( document.getElementById('container_text') );
-        $(function()
-        {
-            // The plugin sets the $.support.fullscreen flag:
             if($.support.fullscreen){
 
                 RequestFullscreenCSS();
@@ -199,7 +198,6 @@ $(document).ready(function () {
                     }
                 });
             }
-        })
     });
 
     // Create a div to hold the control.
@@ -210,14 +208,15 @@ $(document).ready(function () {
 // from the edge of the map.
     controlDiv.style.padding = '5px';
 
+
 // Set CSS for the control border.
     var controlUI = document.createElement('div');
-    setButtonWeatherBorderStyle(controlUI);
+    setNondefaultButtonBorderStyle(controlUI);
     controlDiv.appendChild(controlUI);
 
 // Set CSS for the control interior.
     var controlText = document.createElement('div');
-    setButtonWeatherTextStyle(controlText);
+    setNondefaultButtonTextStyle(controlText);
     controlUI.appendChild(controlText);
 
     google.maps.event.addDomListener(controlDiv, 'click', function() {
@@ -225,12 +224,15 @@ $(document).ready(function () {
     });
     google.maps.event.addDomListener(controlDiv, 'mouseover', function(){
 
-        controlUI.style.background = '#f5f5f5';
+        controlUI.style.background = '#F0F0F0';
+        controlText.style.color = 'black';
+
     });
     google.maps.event.addDomListener(controlDiv, 'mouseout', function(){
 
 
         controlUI.style.background = 'white';
+        controlText.style.color = '#333333';
     });
     map_big.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv);
 
