@@ -36,6 +36,7 @@ class Post(base.AuthoredDocument):
     attachments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Attachment), default=lambda: [], required=False)
 
     subscribers = mongoengine.ListField(mongoengine.ReferenceField(account_models.User), default=lambda: [], required=False)
+    
     # TODO: Prevent posting comments if post is not published
     # TODO: Prevent adding attachments if post is published
     # TODO: Prevent marking post as unpublished once it was published

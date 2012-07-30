@@ -27,3 +27,7 @@ celerybeat-schedule
 
 # Celerybeat
 *.pid
+
+# PyDev project file & .metadata file
+.pydevproject
+/.metadata/

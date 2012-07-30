@@ -42,7 +42,7 @@ function addPost(message) {
 function addComment(comment) {
     $.ajax({
         type: 'POST',
-        url: '/api/v1/post/4fd23f8cc91da109b8000001/comments/',
+        url: '/api/v1/post/500efc446c20b10eb8000003/comments/',
         data: JSON.stringify({'message': comment}),
         contentType: 'application/json',
         dataType: "json",
