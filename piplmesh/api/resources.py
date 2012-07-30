@@ -3,6 +3,7 @@ from tastypie import authorization as tastypie_authorization, fields as tastypie
 from tastypie_mongoengine import fields, resources
 
 from piplmesh.account import models as account_models
+
 from piplmesh.api import authorization, models as api_models
 
 class UserResource(resources.MongoEngineResource):
@@ -28,6 +29,17 @@ class AuthoredResource(resources.MongoEngineResource):
 class CommentResource(AuthoredResource):
     def obj_create(self, bundle, request=None, **kwargs):
         bundle = super(CommentResource, self).obj_create(bundle, request=request, **kwargs)
+        bundle.obj.resource_uri = "/api/v1/post/%s/comments/%s" % (self.instance.id, bundle.obj.pk)
+        
+        for subscriber in self.instance.subscribers:
+            print subscriber
+#            notification = account_models.Notification()
+#            notification.comment = bundle.obj.resource_uri
+#            notification.read = False
+            subscriber.notifications.append(account_models.Notification(comment=bundle.obj.resource_uri, read=False)) 
+            subscriber.save()
+
+#        print self.instance.subscribers[0].notifications.comment
 
         if bundle.obj.author not in self.instance.subscribers:
             self.instance.subscribers.append(bundle.obj.author)

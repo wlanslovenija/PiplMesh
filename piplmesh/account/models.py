@@ -34,7 +34,7 @@ class Connection(mongoengine.EmbeddedDocument):
 
 class Notification(mongoengine.EmbeddedDocument):
     read = mongoengine.BooleanField()
-    comment = mongoengine.IntField()
+    comment = mongoengine.StringField()
 
 class EmailConfirmationToken(mongoengine.EmbeddedDocument):
     value = mongoengine.StringField(max_length=20, required=True)
