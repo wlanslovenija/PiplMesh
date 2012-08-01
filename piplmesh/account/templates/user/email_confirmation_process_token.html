@@ -1,13 +1,13 @@
 {% extends "plain.html" %}
 
-{% load i18n %}
+{% load future i18n %}
 
 {% block title %}{% trans "Confirm your e-mail address" %}{% endblock %}
 
 {% block content %}
     <div id="menu_list">
-        <p><a href="{% url profile username=user.username %}">{% trans "Profile" %}</a></p>
-        <p id="current_item"><a href="{% url account %}">{% trans "Account" %}</a></p>
+        <p><a href="{% url "profile" username=user.username %}">{% trans "Profile" %}</a></p>
+        <p id="current_item"><a href="{% url "account" %}">{% trans "Account" %}</a></p>
     </div>
     <p>
         {% blocktrans with email=user.email %}You are just one step away from confirming your e-mail address. If for some reason the input box below is empty, paste the token in manually from the confirmation e-mail you have received.{% endblocktrans %}
