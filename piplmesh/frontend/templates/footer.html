@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load future i18n %}
 
 <div id="footer">
     <hr class="hidden" />
@@ -13,7 +13,7 @@
                     <li class="language_selected">{{ lang_info.name_local }}</li>
                 {% else %}
                     <li>
-                        <form action="{% url set_language %}" method="post">
+                        <form action="{% url "set_language" %}" method="post">
                             {% csrf_token %}
                             <div>
                                 <input type="hidden" value="{{ request.get_full_path }}" />
