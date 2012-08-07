@@ -1,12 +1,6 @@
-from __future__ import absolute_import
-
 import datetime, re
 
 from lxml import etree, html
-
-from django.utils import encoding
-
-from . import models
 
 PATTERN_DATE_EN = re.compile(r'(\w+)\s+(\d+),\s+(\d+)$')
 PATTERN_DATE_SI = re.compile(r'(\d+).\s+(\w+):\s+$')
@@ -79,7 +73,7 @@ def get_horoscope_sign(day, month):
 
 def get_all_providers():
     """
-    Returns all avaiable horoscopes.
+    Returns all available horoscope providers.
     """
 
     return HOROSCOPE_PROVIDERS
@@ -144,7 +138,7 @@ class HoroscopeProviderBase(object):
 
 class EnglishHoroscope(HoroscopeProviderBase):
     """
-    Daily english horoscope from http://findyourfate.com.
+    Daily English horoscope from http://findyourfate.com/.
     """
 
     language = 'en'
@@ -194,7 +188,7 @@ class EnglishHoroscope(HoroscopeProviderBase):
 
 class SlovenianHoroscope(HoroscopeProviderBase):
     """
-    Daily slovenian horoscope from http://slovenskenovice.si.
+    Daily Slovenian horoscope from http://slovenskenovice.si/.
     """
 
     language = 'sl'

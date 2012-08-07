@@ -27,5 +27,5 @@ class Horoscope(mongoengine.Document):
     forecast = mongoengine.StringField(required=True)
     
     meta = {
-        'indexes': ['date', 'language', 'sign']
+        'indexes': ['date', 'language', 'sign'],
     }

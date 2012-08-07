@@ -7,8 +7,9 @@ from . import models, providers
 @task.task
 def update_horoscope():
     """
-    Function for updating all languages avaiable horoscope.
-    Updates if exists otherwise inserts a new.
+    Task which updates horoscopes for all supported languages.
+
+    Old horoscopes are left in the database.
     """
 
     for horoscope_provider in providers.get_all_providers():
