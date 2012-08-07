@@ -6,10 +6,10 @@ from lxml import etree, html
 
 from django.utils import encoding
 
-PATTERN_DATE_EN_COMPILE = re.compile(r'(\w+)\s+(\d+),\s+(\d+)$')
-PATTERN_DATE_SI_COMPILE = re.compile(r'(\d+).\s+(\w+):\s+$')
-
 from . import models
+
+PATTERN_DATE_EN = re.compile(r'(\w+)\s+(\d+),\s+(\d+)$')
+PATTERN_DATE_SI = re.compile(r'(\d+).\s+(\w+):\s+$')
 
 def get_horoscope_sign(day, month):
     """
@@ -185,7 +185,7 @@ class EnglishHoroscope(HoroscopeProviderBase):
         horoscope_url = '%srss/dailyhoroscope-feed.asp?sign=%s' % (self.source_url, self.provider_sign_names[sign])
         horoscope_tree = etree.parse(horoscope_url)
 
-        date_string = PATTERN_DATE_EN_COMPILE.search(horoscope_tree.findtext('.//item/title'))
+        date_string = PATTERN_DATE_EN.search(horoscope_tree.findtext('.//item/title'))
 
         return {
             'date': datetime.date(int(date_string.group(3)), self.provider_month_names[date_string.group(1)], int(date_string.group(2))),
@@ -236,7 +236,7 @@ class SlovenianHoroscope(HoroscopeProviderBase):
         html_parser = html.HTMLParser(encoding='utf-8')
         horoscope_tree = html.parse(horoscope_url, html_parser)
 
-        date_parsed = PATTERN_DATE_SI_COMPILE.search(horoscope_tree.findtext('.//div[@id="horoscope-sign-right"]//div[@class="view-content"]//span'))
+        date_parsed = PATTERN_DATE_SI.search(horoscope_tree.findtext('.//div[@id="horoscope-sign-right"]//div[@class="view-content"]//span'))
 
         return {
             'date': datetime.date(datetime.datetime.now().year, self.provider_month_names[date_parsed.group(2)], int(date_parsed.group(1))),

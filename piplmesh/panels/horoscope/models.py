@@ -25,6 +25,7 @@ class Horoscope(mongoengine.Document):
     language = mongoengine.StringField(choices=settings.LANGUAGES, required=True, unique_with=('date', 'sign'))
     sign = mongoengine.StringField(choices=HOROSCOPE_SIGNS, required=True, unique_with=('date', 'language'))
     forecast = mongoengine.StringField(required=True)
+    
     meta = {
         'indexes': ['date', 'language', 'sign']
     }

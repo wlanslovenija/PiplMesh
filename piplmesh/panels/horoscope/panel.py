@@ -9,7 +9,7 @@ from piplmesh import panels
 
 from . import models, providers
 
-HOROSCOPE_OBSOLETE = 2
+HOROSCOPE_OBSOLETE = 2 # days
 
 class HoroscopePanel(panels.BasePanel):
     def get_context(self, context):
