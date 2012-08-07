@@ -1,0 +1,19 @@
+.horoscope_info {
+    font-size: medium;
+}
+
+.horoscope_forecast {
+    font-size: small;
+}
+
+.horoscope_url {
+    font-size: xx-small;
+}
+
+.horoscope_error {
+    font-size: x-small;
+}
+
+.horoscope_date {
+    font-size: xx-small;
+}

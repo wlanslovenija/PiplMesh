@@ -1,0 +1,28 @@
+{% extends "panel/panel.html" %}
+
+{% load i18n staticfiles sekizai_tags %}
+
+{% block content %}
+    {% addtoblock "css" %}<link href="{% static "piplmesh/panel/horoscope/panel.css" %}" rel="stylesheet" type="text/css" media="screen" />{% endaddtoblock %}
+    <div id="horoscope">
+        {% if error_birthdate %}
+            <span class="horoscope_error">{% trans "Please, set your birthdate." %}</span>
+        {% elif error_language %}
+            <span class="horoscope_error">{% trans "Horoscope is unavailable in your language." %}</span>
+        {% elif error_data %}
+            <span class="horoscope_error">{% trans "Horoscope data is temporarily unavailable." %}</span>
+        {% elif error_obsolete %}
+            <span class="horoscope_error">{% trans "Horoscope forecast is too old." %}</span>
+        {% else %}
+            <span class="horoscope_info">{{ horoscope_sign }}</span><br />
+            <span class="horoscope_forecast">{{ horoscope_forecast }}</span><br />
+            {% blocktrans with date=horoscope_date|date:"DATE_FORMAT" %}
+                <span class="horoscope_date">Date: {{ date }}</span>
+            {% endblocktrans %}
+            <br />
+            {% blocktrans with url=horoscope_source_url url_name=horoscope_source_name %}
+                <span class="horoscope_url">Source: <a href="{{ url }}">{{ url_name }}</a></span>
+            {% endblocktrans %}
+        {% endif %}
+    </div>
+{% endblock %}
