@@ -1,8 +1,9 @@
-{% load i18n account staticfiles %}
+{% load future i18n staticfiles account %}
+
 <div id="container">
     <div id="header">
         <div id="logo">
-            <a href="{% url home %}">
+            <a href="{% url "home" %}">
                 <img src="{% static logo_url %}" alt="PiplMesh" />
             </a>
         </div>
@@ -13,7 +14,7 @@
             <script type="text/javascript">
                 var language_code = '{{ LANGUAGE_CODE|escapejs }}';
                 var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID|escapejs }}';
-                var search_page_url = '{% filter escapejs %}{% url search %}{% endfilter %}';
+                var search_page_url = '{% filter escapejs %}{% url "search" %}{% endfilter %}';
             </script>
             <script type="text/javascript" src="{% static "piplmesh/js/search_bar.js" %}"></script>
             {% if "q" in request.GET %}
@@ -29,10 +30,10 @@
                 <li class="image">
                     {% user_image %}
                 </li>
-                <li class="username"><a href="{% url profile username=user.username %}">{{ user.username }}</a></li>
+                <li class="username"><a href="{% url "profile" username=user.username %}">{{ user.username }}</a></li>
                 {% if user.is_authenticated %}
                     <li class="last">
-                        <form method="post" action="{% url logout %}" id="logout_form">
+                        <form method="post" action="{% url "logout" %}" id="logout_form">
                             {% csrf_token %}
                             <div>
                                 <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
@@ -41,8 +42,8 @@
                         </form>
                     </li>
                 {% else %}
-                    <li><a href="{% url login %}?{{ REDIRECT_FIELD_NAME }}={{ next_url }}">{% trans "Login" %}</a></li>
-                    <li class="last"><a href="{% url registration %}">{% trans "Register" %}</a></li>
+                    <li><a href="{% url "login" %}?{{ REDIRECT_FIELD_NAME }}={{ next_url }}">{% trans "Login" %}</a></li>
+                    <li class="last"><a href="{% url "registration" %}">{% trans "Register" %}</a></li>
                 {% endif %}
             </ul>
         {% endwith %}

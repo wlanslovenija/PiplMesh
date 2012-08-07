@@ -1,14 +1,14 @@
-{% load i18n url_tags %}{% blocktrans with username=user.username %}Hello {{ username }}!{% endblocktrans %}
+{% load future i18n url_tags %}{% blocktrans with username=user.username %}Hello {{ username }}!{% endblocktrans %}
 {% filter wordwrap:68 %}
 {% blocktrans with SITE_NAME=SITE_NAME username=user.username email=email_address %}This message was sent to you to confirm this e-mail address ({{ email }}) as yours for your account on {{ SITE_NAME }} with username "{{ username }}". If you have already done so or don't want to, you can safely ignore this e-mail.{% endblocktrans %}
 
 {% blocktrans %}Please click the link below to confirm your e-mail address:{% endblocktrans %}
 
-{% url email_confirmaton_process_token confirmation_token as the_url %}{% fullurl the_url %}
+{% url "email_confirmaton_process_token" confirmation_token as the_url %}{% fullurl the_url %}
 
 {% blocktrans %}Or, open the following link:{% endblocktrans %}
 
-{% url email_confirmaton_process_token as the_url %}{% fullurl the_url %}
+{% url "email_confirmaton_process_token" as the_url %}{% fullurl the_url %}
 
 {% blocktrans %}and copy-paste the following confirmation token into the input box there:{% endblocktrans %}
 
@@ -24,4 +24,4 @@
 
 
 {{ SITE_NAME }}
-{% url home as the_url %}{% fullurl the_url %}
+{% url "home" as the_url %}{% fullurl the_url %}
