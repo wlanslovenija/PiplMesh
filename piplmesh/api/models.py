@@ -46,6 +46,24 @@ class Post(base.AuthoredDocument):
         self.updated_time = timezone.now()
         return super(Post, self).save(*args, **kwargs)
 
+class Notification(base.AuthoredDocument):
+    """
+    This class defines document type for notifications
+    """
+
+    read = mongoengine.BooleanField(default=False)
+    post = mongoengine.ReferenceField(Post)
+    comment = mongoengine.IntField()
+    
+    @classmethod
+    def add_notification(cls, user, post, comment_pk):
+        notification = cls()
+        notification.author = user
+        notification.post = post
+        notification.comment = comment_pk
+        notification.save()
+        return notification
+
 class UploadedFile(base.AuthoredDocument):
     """
     This class document type for uploaded files.

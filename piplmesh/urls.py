@@ -16,6 +16,7 @@ v1_api = api.Api(api_name='v1')
 v1_api.register(resources.UserResource())
 v1_api.register(resources.UploadedFileResource())
 v1_api.register(resources.PostResource())
+v1_api.register(resources.NotificationResource())
 
 js_info_dict = {
     'packages': (

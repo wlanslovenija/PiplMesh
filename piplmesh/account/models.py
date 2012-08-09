@@ -32,10 +32,6 @@ class Connection(mongoengine.EmbeddedDocument):
     http_if_modified_since = mongoengine.StringField()
     channel_id = mongoengine.StringField()
 
-class Notification(mongoengine.EmbeddedDocument):
-    read = mongoengine.BooleanField()
-    comment = mongoengine.StringField()
-
 class EmailConfirmationToken(mongoengine.EmbeddedDocument):
     value = mongoengine.StringField(max_length=20, required=True)
     created_time = mongoengine.DateTimeField(default=lambda: timezone.now(), required=True)
@@ -83,7 +79,7 @@ class User(auth.User):
     connection_last_unsubscribe = mongoengine.DateTimeField()
     is_online = mongoengine.BooleanField(default=False)
 
-    notifications = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Notification), default=lambda: [], required=False)
+    #notifications = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Notification), default=lambda: [], required=False)
     
     email_confirmed = mongoengine.BooleanField(default=False)
     email_confirmation_token = mongoengine.EmbeddedDocumentField(EmailConfirmationToken)

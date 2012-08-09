@@ -1,6 +1,10 @@
+from django.conf import settings
+
 from tastypie import authorization as tastypie_authorization, fields as tastypie_fields
 
 from tastypie_mongoengine import fields, resources
+
+from pushserver.utils import updates
 
 from piplmesh.account import models as account_models
 
@@ -29,12 +33,26 @@ class AuthoredResource(resources.MongoEngineResource):
 class CommentResource(AuthoredResource):
     def obj_create(self, bundle, request=None, **kwargs):
         bundle = super(CommentResource, self).obj_create(bundle, request=request, **kwargs)
-        bundle.obj.resource_uri = "/api/v1/post/%s/comments/%s" % (self.instance.id, bundle.obj.pk)
+        #bundle.obj.resource_uri = "/api/v1/post/%s/comments/%s" % (self.instance.id, bundle.obj.pk)
         
         for subscriber in self.instance.subscribers:
             if subscriber != bundle.obj.author:
-                subscriber.notifications.append(account_models.Notification(comment=bundle.obj.resource_uri, read=False)) 
-                subscriber.save()
+                # add notification to db
+                notification = api_models.Notification.add_notification(subscriber, self.instance, bundle.obj.pk)
+                # push notification to subscriber
+                updates.send_update(
+                    settings.HOME_CHANNEL_ID,
+                    {
+                        'type': 'notification',
+                        'action': 'JOIN',
+                        'notifications': {
+                            'post':  str(notification.post.id),
+                            'comment_pk': int(notification.comment),
+                            'author': bundle.obj.author.username,
+                            'created_time': notification.created_time.isoformat(),
+                        },
+                    }
+                )
 
         if bundle.obj.author not in self.instance.subscribers:
             self.instance.subscribers.append(bundle.obj.author)
@@ -46,6 +64,11 @@ class CommentResource(AuthoredResource):
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         # TODO: Make proper authorization, current implementation is for development use only
         authorization = tastypie_authorization.Authorization()
+
+class NotificationResource(AuthoredResource):
+
+    class Meta:
+        object_class = api_models.Notification
 
 class ImageAttachmentResource(AuthoredResource):
     image_file = fields.ReferenceField(to='piplmesh.api.resources.UploadedFileResource', attribute='image_file', null=False, full=True)
@@ -78,11 +101,13 @@ class PostResource(AuthoredResource):
 
     comments = fields.EmbeddedListField(of='piplmesh.api.resources.CommentResource', attribute='comments', default=lambda: [], null=True, full=False)
     attachments = fields.EmbeddedListField(of='piplmesh.api.resources.AttachmentResource', attribute='attachments', default=lambda: [], null=True, full=True)
+    
     def obj_create(self, bundle, request=None, **kwargs):
         bundle = super(PostResource, self).obj_create(bundle, request=request, **kwargs)
         bundle.obj.subscribers.append(bundle.request.user)
         bundle.obj.save()
         return bundle
+    
     class Meta:
         queryset = api_models.Post.objects.all()
         #print queryset

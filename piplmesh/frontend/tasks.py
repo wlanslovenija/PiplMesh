@@ -24,7 +24,7 @@ def check_online_users():
             connections__not__in=([], None), # None if field is missing altogether, not__in seems not to be equal to nin
         ).update(set__is_online=True):
             updates.send_update(
-                views.HOME_CHANNEL_ID,
+                settings.HOME_CHANNEL_ID,
                 {
                     'type': 'userlist',
                     'action': 'JOIN',
@@ -48,7 +48,7 @@ def check_online_users():
             connection_last_unsubscribe__lt=timezone.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
         ).update(set__is_online=False):
             updates.send_update(
-                views.HOME_CHANNEL_ID,
+                settings.HOME_CHANNEL_ID,
                 {
                     'type': 'userlist',
                     'action': 'PART',
