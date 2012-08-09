@@ -46,10 +46,13 @@ class CommentResource(AuthoredResource):
                         'type': 'notification',
                         'action': 'JOIN',
                         'notifications': {
-                            'post':  str(notification.post.id),
-                            'comment_pk': int(notification.comment),
                             'author': bundle.obj.author.username,
+                            'comment': int(notification.comment),
                             'created_time': notification.created_time.isoformat(),
+                            'message': notification.post.comments[notification.comment].message,
+                            'post': str(notification.post.id),
+                            'read': notification.read,
+                            'resource_uri': notification.get_uri(),
                         },
                     }
                 )
@@ -66,9 +69,28 @@ class CommentResource(AuthoredResource):
         authorization = tastypie_authorization.Authorization()
 
 class NotificationResource(AuthoredResource):
+#    post = fields.ReferenceField(to='piplmesh.api.resources.PostResource', attribute='post', null=False, full=False, readonly=True)
+    post = tastypie_fields.CharField(attribute='post', default='', null=False, blank=True)
+    author = fields.ReferenceField(to='piplmesh.api.resources.UserResource', attribute='author', null=False, full=True, readonly=True)
+    message = tastypie_fields.CharField(attribute='message', default='', null=False, blank=True)
+
+    def hydrate(self, bundle):
+        bundle = super(NotificationResource, self).hydrate(bundle)
+        bundle.obj.comment_author = bundle.data['post'].comments[int(bundle.obj.comment)].message
+        return bundle
+    
+    def dehydrate(self, bundle):
+        bundle.data['author'] = bundle.obj.post.comments[bundle.obj.comment].author
+        bundle.data['message'] = bundle.obj.post.comments[bundle.obj.comment].message
+        bundle.data['post'] = bundle.obj.post.id
+        return bundle
+    
+    def get_object_list(self, request):
+        return super(NotificationResource, self).get_object_list(request).filter(author=request.user)
 
     class Meta:
-        object_class = api_models.Notification
+        queryset = api_models.Notification.objects.all()
+        fields = ['created_time', 'comment', 'resource_uri', 'read', 'post']
 
 class ImageAttachmentResource(AuthoredResource):
     image_file = fields.ReferenceField(to='piplmesh.api.resources.UploadedFileResource', attribute='image_file', null=False, full=True)
