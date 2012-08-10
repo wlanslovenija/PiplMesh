@@ -78,7 +78,7 @@ def forbidden_view(request, reason=''):
 
 def panels_collapse(request):
     user = account_models.User.objects.get(id=request.user.id)
-    message = simplejson.loads(request.GET['data'])
+    message = simplejson.loads(request.POST['data'])
 
     if (message['collapsed'] == True):
         user.panels_collapsed[message['panel_id']] = True
@@ -99,7 +99,7 @@ def get_panels_collapse(request):
 
 def panels_order(request):
     user = account_models.User.objects.get(id=request.user.id)
-    message = request.GET['data']
+    message = request.POST['data']
     order = simplejson.loads(message)
     noOfColumns = str(len(order['panels']))
 
@@ -110,7 +110,7 @@ def panels_order(request):
 
 def get_panels_order(request):
     user = account_models.User.objects.get(id=request.user.id)
-    order = simplejson.loads(request.GET['data'])
+    order = simplejson.loads(request.POST['data'])
     noOfColumns = str(order['noOfColumns'])
 
     if user.panels_order.has_key(noOfColumns):

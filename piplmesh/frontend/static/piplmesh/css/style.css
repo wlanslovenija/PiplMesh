@@ -593,7 +593,7 @@ input.gsc-search-button {
 }
 
 .panel .header:hover {
-    background: url("../images/minimize_icon.png") no-repeat;
+    background: url("../images/maximize_icon.png") no-repeat;
     background-position: 97% 50%;
     background-color: #68AE2C;
 }
