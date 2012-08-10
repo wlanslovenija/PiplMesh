@@ -586,8 +586,16 @@ input.gsc-search-button {
     color: #FCFCFC;
     height: 20px;
     text-align: center;
+    background-position: right;
     background-color: #68AE2C;
-    cursor: pointer;
+    cursor: move;
+    
+}
+
+.panel .header:hover {
+    background: url("../images/minimize_icon.png") no-repeat;
+    background-position: 97% 50%;
+    background-color: #68AE2C;
 }
 
 .panels_column {
