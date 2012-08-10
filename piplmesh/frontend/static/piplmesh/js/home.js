@@ -83,7 +83,7 @@ function collapsePanels() {
     });
 }
 
-function preparePanels(callback) {
+function preparePanels() {
     fillWithColumns();
     orderPanels();
     collapsePanels();
