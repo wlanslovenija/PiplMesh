@@ -67,7 +67,7 @@ function orderPanels() {
                 movePanel(data['panels'][i][j]['id'],i);
             }
         }
-        
+
         if (data['panels'].length == 0) {
             orderPanelsDefault();
         }
@@ -83,16 +83,12 @@ function collapsePanels() {
     });
 }
 
-function preparePanels() {
-    $('#panels').css('visibility', 'hidden');
-
+function preparePanels(callback) {
     fillWithColumns();
     orderPanels();
     collapsePanels();
     makeColumnsSortable();
     makePanelsUpdatable();
-
-    $('#panels').css('visibility', 'visible');
 }
 
 function makeColumnsSortable() {
@@ -118,18 +114,10 @@ $(document).ready(function () {
     $('.panel .header').click(function (event) {
         var visible = $(this).next().is(':visible');
         $(this).next('.content').slideToggle('fast');
-
-        if (visible) {
-            var param = "1";
-        } else {
-            var param = "0";
-        }
-
-        $.get('/panels/collapse/', 'data=' + JSON.stringify( {panel_id: $(this).parent().attr('id'), collapsed: param}));
+        $.get('/panels/collapse/', 'data=' + JSON.stringify( {panel_id: $(this).parent().attr('id'), collapsed: (visible) ? true : false }));
     });
 
     $(window).resize(function () {
-        $('#panels').css('visibility', 'hidden');
         resetColumns();
         preparePanels();
     });

@@ -80,7 +80,7 @@ def panels_collapse(request):
     user = account_models.User.objects.get(id=request.user.id)
     message = simplejson.loads(request.GET['data'])
 
-    if (message['collapsed'] == "1"):
+    if (message['collapsed'] == True):
         user.panels_collapsed[message['panel_id']] = True
     else:
         user.panels_collapsed[message['panel_id']] = False
