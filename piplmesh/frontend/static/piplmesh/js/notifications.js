@@ -1,3 +1,7 @@
+function AddNewNotification(notification) {
+    console.info(notification);
+}
+
 $(document).ready(function() {
     $(".notifications").click(function (){
         if ($("#notif_box").hasClass('show')) {
@@ -20,7 +24,29 @@ $(document).ready(function() {
     $("#addCom").click(function (){
         addComment("Bla bla bla bla");
     });
+    
+    
+    $.updates.registerProcessor('home_channel', 'notifications', AddNewNotification);
+
+    //$('#notif_content').change(redrawUserList).keyup(redrawUserList);
+
+    loadNotifications();
+    
 });
+
+function loadNotifications() {
+    $.getJSON('/api/v1/notification/', function(notifications) {
+        var list = [];
+        
+        $.each(notifications.objects, function(i, object) {
+            list.push('<li> Comment: ' + object.message + '<br />By: ' + object.author + '</li>');
+        })
+        
+        var content = '<ul>' + list.join('') + '</ul>';
+        $('#notif_content').html(content);
+    });
+}
+
 
 function addPost(message) {
     $.ajax({

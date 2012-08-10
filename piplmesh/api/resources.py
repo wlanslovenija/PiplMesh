@@ -43,7 +43,7 @@ class CommentResource(AuthoredResource):
                 updates.send_update(
                     settings.HOME_CHANNEL_ID,
                     {
-                        'type': 'notification',
+                        'type': 'notifications',
                         'action': 'JOIN',
                         'notifications': {
                             'author': bundle.obj.author.username,
