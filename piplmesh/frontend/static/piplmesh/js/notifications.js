@@ -1,6 +1,3 @@
-function AddNewNotification(notification) {
-    console.info(notification);
-}
 
 $(document).ready(function() {
     $(".notifications").click(function (){
@@ -34,19 +31,38 @@ $(document).ready(function() {
     
 });
 
+
+function AddNewNotification(newNotification) {
+    console.info(newNotification);
+    alert('uuuu');
+}
+
+
 function loadNotifications() {
     $.getJSON('/api/v1/notification/', function(notifications) {
         var list = [];
         
-        $.each(notifications.objects, function(i, object) {
-            list.push('<li> Comment: ' + object.message + '<br />By: ' + object.author + '</li>');
+        $.each(notifications.objects, function(i, notification) {
+            var author = notification.author + ' je komentiral <a href="#" >objavo</a><br />';
+            var message = '<span class="notification_message">' + notification.message + '</span><br />';
+            var date = 'Napisano ' + formatDate(notification.created_time);
+            
+            list.push('<li class="notification">' + author + message + date + '</li>');
         })
         
-        var content = '<ul>' + list.join('') + '</ul>';
+        var content = '<ul class="notification_list">' + list.join('') + '</ul>';
         $('#notif_content').html(content);
     });
 }
 
+function formatDate(time) {
+    //var months = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+    var days = new Array("Pon", "Tor", "Sre", "Čet", "Pet", "Sob", "Ned");
+    var months = new Array("Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Avg", "Sep", "Okt", "Nov", "December");
+    var time = new Date(time);
+    var date = days[time.getDay()] + ', ' + time.getDate() + ' ' + months[time.getMonth()] + ' ' + time.getFullYear() + ', ' + time.getHours() + ':' + time.getMinutes();
+    return date;
+}
 
 function addPost(message) {
     $.ajax({

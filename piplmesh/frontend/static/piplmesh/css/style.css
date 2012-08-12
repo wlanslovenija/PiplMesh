@@ -139,14 +139,14 @@ form input[type="submit"], form input[type="reset"] {
     right: 0; 
 }
 
-#header .user ul { 
+#header .user > ul { 
     font-size: 10px;
     list-style: none;
     margin: 0;
     text-align: right;
 }
 
-#header .user li {
+#header .user > li {
     float: left;
     border-right: 1px solid #d7d7d7;
     display: inline;
@@ -155,9 +155,9 @@ form input[type="submit"], form input[type="reset"] {
 }
 
 .notifications {
-    padding: 5px;
     border: 1px solid #999;
     cursor: pointer;
+    padding: 5px;
 }
 
 .close_notif_box {
@@ -166,15 +166,40 @@ form input[type="submit"], form input[type="reset"] {
     cursor: pointer;
 }
 
+.notification_message {
+    font-size: 1.1em;
+}
+
 #notif_box {
-    background: #ffffff;
-    display: none;
-    position: absolute;
     border: 1px solid #999;
+    background: #ffffff;
+    position: absolute;
+    margin-top: -1px;
+    display: none;
+    width: 270px;
+    right: 0px;
+}
+
+ul.notification_list {
+    list-style: none;
+    margin: 0px;
+    
+}
+
+li.notification {
+    border-bottom: 1px solid #68AE2C;
+    text-align: left !important;
+    padding: 0 4px 0 4px;
+    margin-left: -40px;
+    cursor: pointer;
+    width: 262px;
+}
+
+li.notification:hover{
+    background-color: #e5f5d5;
 }
 
 #notif_content {
-    padding: 5px;
 }
 
 .close_notif_box {

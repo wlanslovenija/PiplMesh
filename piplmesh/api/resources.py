@@ -33,13 +33,17 @@ class AuthoredResource(resources.MongoEngineResource):
 class CommentResource(AuthoredResource):
     def obj_create(self, bundle, request=None, **kwargs):
         bundle = super(CommentResource, self).obj_create(bundle, request=request, **kwargs)
-        #bundle.obj.resource_uri = "/api/v1/post/%s/comments/%s" % (self.instance.id, bundle.obj.pk)
         
         for subscriber in self.instance.subscribers:
             if subscriber != bundle.obj.author:
                 # add notification to db
                 notification = api_models.Notification.add_notification(subscriber, self.instance, bundle.obj.pk)
+                
                 # push notification to subscriber
+                nr = NotificationResource()
+                notification_obj = nr.obj_get(id=notification.id)
+                uri = nr.get_resource_uri(notification_obj)
+                
                 updates.send_update(
                     settings.HOME_CHANNEL_ID,
                     {
@@ -49,13 +53,12 @@ class CommentResource(AuthoredResource):
                             'author': bundle.obj.author.username,
                             'comment': int(notification.comment),
                             'created_time': notification.created_time.isoformat(),
-                            'message': notification.post.comments[notification.comment].message,
+                            'message': notification.post.comments[int(notification.comment)].message,
                             'post': str(notification.post.id),
                             'read': notification.read,
-                            'resource_uri': notification.get_uri(),
-                        },
-                    }
-                )
+                            'resource_uri': uri,
+                    },
+                })
 
         if bundle.obj.author not in self.instance.subscribers:
             self.instance.subscribers.append(bundle.obj.author)
@@ -76,7 +79,7 @@ class NotificationResource(AuthoredResource):
 
     def hydrate(self, bundle):
         bundle = super(NotificationResource, self).hydrate(bundle)
-        bundle.obj.comment_author = bundle.data['post'].comments[int(bundle.obj.comment)].message
+#        bundle.obj.comment_author = bundle.data['post'].comments[int(bundle.obj.comment)].message
         return bundle
     
     def dehydrate(self, bundle):
@@ -86,11 +89,14 @@ class NotificationResource(AuthoredResource):
         return bundle
     
     def get_object_list(self, request):
-        return super(NotificationResource, self).get_object_list(request).filter(author=request.user)
+        obj_list = super(NotificationResource, self).get_object_list(request)
+        if request:
+            obj_list = obj_list.filter(author=request.user)
+        return obj_list
 
     class Meta:
         queryset = api_models.Notification.objects.all()
-        fields = ['created_time', 'comment', 'resource_uri', 'read', 'post']
+        fields = ['id', 'created_time', 'comment', 'resource_uri', 'read', 'post']
 
 class ImageAttachmentResource(AuthoredResource):
     image_file = fields.ReferenceField(to='piplmesh.api.resources.UploadedFileResource', attribute='image_file', null=False, full=True)
