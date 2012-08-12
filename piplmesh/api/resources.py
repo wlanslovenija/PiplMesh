@@ -5,9 +5,7 @@ from tastypie_mongoengine import fields, resources
 from pushserver.utils import updates
 
 from piplmesh.account import models as account_models
-from piplmesh.api import authorization, models as api_models
-
-HOME_CHANNEL_ID = 'home'
+from piplmesh.api import authorization, models as api_models, signals
 
 class UserResource(resources.MongoEngineResource):
     class Meta:
@@ -72,17 +70,7 @@ class PostResource(AuthoredResource):
     # Send update to pushserver
     def obj_create(self, bundle, request=None, **kwargs):
         obj = super(PostResource, self).obj_create(bundle, request=request, **kwargs)
-        if (bundle.obj.is_published):
-            updates.send_update(
-                HOME_CHANNEL_ID,
-                    {
-                    'type': 'posts',
-                    'action': 'NEW',
-                    'post': {
-                        'location': self.get_resource_uri(bundle),
-                        },
-                    }
-            )
+        signals.post_created.send(sender=self, post_published=bundle.obj.is_published, post_location = self.get_resource_uri(obj))
         return obj
 
     class Meta:
