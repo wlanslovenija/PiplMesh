@@ -25,18 +25,33 @@ function generate_post_html(data) {
     .append(
         $('<span/>').prop('class', 'date').text(format_post_date(data.created_time))
     );
+    post.data("id", data.id);
     return post;
 }
 
 function add_post_to_top(post_location){
     $.getJSON(post_location, function (data) {
-        $(".posts").prepend(generate_post_html(data));
-        $(".post:first").hide().toggle("slow");
+        if (!check_if_post_exists(data.id)) {
+            $(".posts").prepend(generate_post_html(data));
+            $(".post:first").hide().toggle("slow");
+        }
     });
 }
 
+function check_if_post_exists(post_id){
+    var posts_number = $('.post').length;
+    for (var i=0; i<posts_number; i++) {
+       if ($($('.post')[i]).data("id") == post_id) {
+           return true;
+       }
+    }
+    return false;
+}
+
 function add_post_to_bottom(data){
-    $(".posts").append(generate_post_html(data));
+    if (!check_if_post_exists(data.id)) {
+        $(".posts").append(generate_post_html(data));
+    }
 }
 
 function earlier_posts (){
@@ -89,7 +104,7 @@ $(document).ready(function () {
                 contentType: 'application/json',
                 dataType: "json",
                 success: function (output, status, header) {
-                    //add_post_to_top(header.getResponseHeader('Location'));
+                    add_post_to_top(header.getResponseHeader('Location'));
                     $('#post_text').val('Write a post...');
                     $('#post_text').css({'min-height':25});
                 },
