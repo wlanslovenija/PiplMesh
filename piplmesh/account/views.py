@@ -5,9 +5,10 @@ from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth import views as auth_views
 from django.core import urlresolvers
+from django.template import loader
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
-from django.utils import timezone
+from django.utils import crypto, timezone, translation
 from django.utils.translation import ugettext_lazy as _
 
 from pushserver import signals
@@ -219,17 +220,6 @@ class FoursquareCallbackView(generic_views.RedirectView):
             # TODO: Use information provided from foursquare as to why the login was not successful
             return super(FoursquareCallbackView, self).get(request, *args, **kwargs)
 
-def logout(request):
-    """
-    After user logouts, redirect her back to the page she came from.
-    """
-    
-    if request.method != 'POST':
-        return http.HttpResponseBadRequest()
-
-    url = request.POST.get(auth.REDIRECT_FIELD_NAME)
-    return auth_views.logout_then_login(request, url)
-
 class RegistrationView(edit_views.FormView):
     """
     This view checks if form data are valid, saves new user.
@@ -244,12 +234,12 @@ class RegistrationView(edit_views.FormView):
 
     def form_valid(self, form):
         new_user = models.User(
-            username=form.cleaned_data['username'],
-            first_name=form.cleaned_data['first_name'],
-            last_name=form.cleaned_data['last_name'],
-            email=form.cleaned_data['email'],
-            gender=form.cleaned_data['gender'],
-            birthdate=form.cleaned_data['birthdate'],
+            username = form.cleaned_data['username'],
+            first_name = form.cleaned_data['first_name'],
+            last_name = form.cleaned_data['last_name'],
+            email = form.cleaned_data['email'],
+            gender = form.cleaned_data['gender'],
+            birthdate = form.cleaned_data['birthdate'],
         )
         new_user.set_password(form.cleaned_data['password2'])
         new_user.save()
@@ -277,11 +267,13 @@ class AccountChangeView(edit_views.FormView):
 
     def form_valid(self, form):
         user = self.request.user
-        user.first_name=form.cleaned_data['first_name']
-        user.last_name=form.cleaned_data['last_name']
-        user.email=form.cleaned_data['email']
-        user.gender=form.cleaned_data['gender']
-        user.birthdate=form.cleaned_data['birthdate']
+        user.first_name = form.cleaned_data['first_name']
+        user.last_name = form.cleaned_data['last_name']
+        if user.email != form.cleaned_data['email']:
+            user.email_confirmed = False
+            user.email = form.cleaned_data['email']
+        user.gender = form.cleaned_data['gender']
+        user.birthdate = form.cleaned_data['birthdate']
         user.save()
         messages.success(self.request, _("Your account has been successfully updated."))
         return super(AccountChangeView, self).form_valid(form)
@@ -326,6 +318,104 @@ class PasswordChangeView(edit_views.FormView):
 
     def get_form(self, form_class):
         return form_class(self.request.user, **self.get_form_kwargs())
+
+class EmailConfirmationSendToken(edit_views.FormView):
+    template_name = 'user/email_confirmation_send_token.html'
+    form_class = forms.EmailConfirmationSendTokenForm
+    success_url = urlresolvers.reverse_lazy('account')
+
+    def form_valid(self, form):
+        user = self.request.user
+
+        confirmation_token = crypto.get_random_string(20)
+        context = {
+            'CONFIRMATION_TOKEN_VALIDITY': models.CONFIRMATION_TOKEN_VALIDITY,
+            'EMAIL_SUBJECT_PREFIX': settings.EMAIL_SUBJECT_PREFIX,
+            'SITE_NAME': settings.SITE_NAME,
+            'confirmation_token': confirmation_token,
+            'email_address': user.email,
+            'request': self.request,
+            'user': user,
+        }
+
+        subject = loader.render_to_string('user/confirmation_email_subject.txt', context)
+        # Email subject *must not* contain newlines
+        subject = ''.join(subject.splitlines())
+        email = loader.render_to_string('user/confirmation_email.txt', context)
+
+        user.email_confirmation_token = models.EmailConfirmationToken(value=confirmation_token)
+        user.save()
+        user.email_user(subject, email)
+
+        messages.success(self.request, _("Confirmation e-mail has been sent to your e-mail address."))
+        return super(EmailConfirmationSendToken, self).form_valid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        # TODO: Allow e-mail address confirmation only if user has e-mail address defined
+        return super(EmailConfirmationSendToken, self).dispatch(request, *args, **kwargs)
+
+class EmailConfirmationProcessToken(generic_views.FormView):
+    template_name = 'user/email_confirmation_process_token.html'
+    form_class = forms.EmailConfirmationProcessTokenForm
+    success_url = urlresolvers.reverse_lazy('account')
+
+    def form_valid(self, form):
+        user = self.request.user
+        user.email_confirmed = True
+        user.save()
+        messages.success(self.request, _("You have successfully confirmed your e-mail address."))
+        return super(EmailConfirmationProcessToken, self).form_valid(form)
+
+    def get_initial(self):
+        return {
+            'confirmation_token': self.kwargs.get('confirmation_token'),
+        }
+
+    def dispatch(self, request, *args, **kwargs):
+        # TODO: Allow e-mail address confirmation only if user has e-mail address defined
+        # TODO: Check if currently logged in user is the same as the user requested the confirmation
+        return super(EmailConfirmationProcessToken, self).dispatch(request, *args, **kwargs)
+
+    def get_form(self, form_class):
+        return form_class(self.request.user, **self.get_form_kwargs())
+
+def logout(request):
+    """
+    After user logouts, redirect her back to the page she came from.
+    """
+
+    if request.method != 'POST':
+        return http.HttpResponseBadRequest()
+
+    url = request.POST.get(auth.REDIRECT_FIELD_NAME)
+    return auth_views.logout_then_login(request, url)
+
+def set_language(request):
+    """
+    Redirect to a given url while setting the chosen language in the user
+    setting. The url and the language code need to be specified in the request
+    parameters.
+
+    Since this view changes how the user will see the rest of the site, it must
+    only be accessed as a POST request. If called as a GET request, it will
+    redirect to the page in the request (the 'next' parameter) without changing
+    any state.
+    """
+
+    next = request.REQUEST.get('next', None)
+    if not next:
+        next = request.META.get('HTTP_REFERER', None)
+    if not next:
+        next = '/'
+    response = http.HttpResponseRedirect(next)
+    if request.method == 'POST':
+        lang_code = request.POST.get('language', None)
+        if lang_code and translation.check_for_language(lang_code):
+            # We reload to make sure user object is recent
+            request.user.reload()
+            request.user.language = lang_code
+            request.user.save()
+    return response
 
 @dispatch.receiver(signals.channel_subscribe)
 def process_channel_subscribe(sender, request, channel_id, **kwargs):

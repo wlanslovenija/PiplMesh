@@ -1,4 +1,6 @@
-import datetime, hashlib, tweepy, urllib
+from __future__ import absolute_import
+
+import datetime, hashlib, urllib
 
 from django.conf import settings
 from django.contrib.auth import hashers, models as auth_models
@@ -12,10 +14,12 @@ from django.utils.translation import ugettext_lazy as _
 import mongoengine
 from mongoengine.django import auth
 
-from piplmesh.account import fields, utils
+from . import fields, utils
+from .. import panels
 
 LOWER_DATE_LIMIT = 366 * 120
 USERNAME_REGEX = r'[\w.@+-]+'
+CONFIRMATION_TOKEN_VALIDITY = 5 # days
 
 def upper_birthdate_limit():
     return datetime.datetime.today()
@@ -27,6 +31,18 @@ class Connection(mongoengine.EmbeddedDocument):
     http_if_none_match = mongoengine.StringField()
     http_if_modified_since = mongoengine.StringField()
     channel_id = mongoengine.StringField()
+
+class EmailConfirmationToken(mongoengine.EmbeddedDocument):
+    value = mongoengine.StringField(max_length=20, required=True)
+    created_time = mongoengine.DateTimeField(default=lambda: timezone.now(), required=True)
+
+    def check_token(self, confirmation_token):
+        if confirmation_token != self.value:
+            return False
+        elif (timezone.now() - self.created_time).days > CONFIRMATION_TOKEN_VALIDITY:
+            return False
+        else:
+            return True
 
 class TwitterAccessToken(mongoengine.EmbeddedDocument):
     key = mongoengine.StringField(max_length=150)
@@ -63,12 +79,19 @@ class User(auth.User):
     connection_last_unsubscribe = mongoengine.DateTimeField()
     is_online = mongoengine.BooleanField(default=False)
 
+    email_confirmed = mongoengine.BooleanField(default=False)
+    email_confirmation_token = mongoengine.EmbeddedDocumentField(EmailConfirmationToken)
+
     @models.permalink
     def get_absolute_url(self):
         return ('profile', (), {'username': self.username})
 
     def get_profile_url(self):
         return self.get_absolute_url()
+
+    def get_panels(self):
+        # TODO: Should return only panels user has enabled (should make sure users can enable panels only in the way that dependencies are satisfied)
+        return panels.panels_pool.get_all_panels()
 
     def is_anonymous(self):
         return not self.is_authenticated()

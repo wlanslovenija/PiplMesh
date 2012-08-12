@@ -1,13 +1,13 @@
 {% extends "plain.html" %}
 
-{% load i18n %}
+{% load future i18n %}
 
 {% block title %}{% trans "Account" %}{% endblock %}
 
 {% block content %}
     <div id="menu_list">
-        <p><a href="{% url profile username=user.username %}">{% trans "Profile" %}</a></p>
-        <p id="current_item"><a href="{% url account %}">{% trans "Account" %}</a></p>
+        <p><a href="{% url "profile" username=user.username %}">{% trans "Profile" %}</a></p>
+        <p id="current_item"><a href="{% url "account" %}">{% trans "Account" %}</a></p>
     </div>
     <div class="registration">
         {% with form_submit=_("Submit") %}
@@ -15,6 +15,9 @@
         {% endwith %}
     </div>
     <div id="password_change">
-        <a href="{% url password_change %}">{% trans "Change your password" %}</a></p>
+        <p><a href="{% url "password_change" %}">{% trans "Change your password" %}</a></p>
+        {% if not user.email_confirmed and user.email %}
+            <p><a href="{% url "email_confirmation_send_token" %}">{% trans "Please confirm your e-mail address" %}</a></p>
+        {% endif %}
     </div>
 {% endblock %}

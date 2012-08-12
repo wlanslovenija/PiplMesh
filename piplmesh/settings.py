@@ -48,7 +48,7 @@ LANGUAGES = (
 
 URL_VALIDATOR_USER_AGENT = 'Django'
 
-SITE_ID = 1
+SITE_NAME = 'PiplMesh'
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -94,6 +94,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'piplmesh.panels.staticfiles.finders.PanelsDirectoriesFinder',
 #   'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
@@ -107,6 +108,11 @@ DEFAULT_FILE_STORAGE = 'piplmesh.utils.storage.GridFSStorage'
 
 # URL prefix for internationalization URLs
 I18N_URL = '/i18n/'
+
+# List of configured IPs from which django-pushserver passthrough callbacks are allowed
+INTERNAL_IPS = (
+    '127.0.0.1',
+)
 
 # URL prefix for django-pushserver passthrough callbacks
 PUSH_SERVER_URL = '/passthrough/'
@@ -123,6 +129,7 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
+    'piplmesh.panels.loaders.panels_directories.Loader',
 #   'django.template.loaders.eggs.Loader',
 )
 
@@ -134,6 +141,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
+    'sekizai.context_processors.sekizai',
     'piplmesh.frontend.context_processors.global_vars',
 )
 
@@ -166,6 +174,7 @@ INSTALLED_APPS = (
     'piplmesh.frontend',
     'piplmesh.nodes',
     'piplmesh.utils',
+    'piplmesh.panels',
 
     'django.contrib.messages',
     'django.contrib.sessions',
@@ -175,6 +184,8 @@ INSTALLED_APPS = (
     'djcelery',
     'tastypie',
     'tastypie_mongoengine',
+    'sekizai',
+    'missing',
 )
 
 PUSH_SERVER = {

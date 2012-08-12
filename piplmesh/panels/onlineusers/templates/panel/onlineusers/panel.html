@@ -1,0 +1,29 @@
+{% extends "panel/panel.html" %}
+
+{% load i18n staticfiles sekizai_tags %}
+
+{% block content %}
+    {% addtoblock "css" %}<link href="{% static "piplmesh/panel/onlineusers/panel.css" %}" rel="stylesheet" type="text/css" media="screen" />{% endaddtoblock %}
+    {% addtoblock "js" %}<script src="{% static "piplmesh/panel/onlineusers/panel.js" %}" type="text/javascript"></script>{% endaddtoblock %}
+    {% addtoblock "js" %}
+        <script type="text/javascript">
+            /* <![CDATA[ */
+            var onlineUsers = {
+                {% for user in online_users %}
+                    '{{ user.username|lower|escapejs }}': {
+                        'username': '{{ user.username|escapejs }}',
+                        'profile_url': '{{ user.get_profile_url|escapejs }}',
+                        'image_url': '{{ user.get_image_url|escapejs }}'
+                    }
+                    {% if not forloop.last %},{% endif %}
+                {% endfor %}
+            };
+            /* ]]> */
+        </script>
+    {% endaddtoblock %}
+    <ul id="userlist"></ul>
+    <form action="" id="usersearch">
+        <img src="{% static "piplmesh/panel/onlineusers/magnifying_glass.png" %}" alt="{% trans "Search users" %}" />
+        <input type="text" id="search_users" />
+    </form>
+{% endblock %}

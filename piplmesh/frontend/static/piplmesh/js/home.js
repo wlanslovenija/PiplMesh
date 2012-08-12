@@ -1,60 +1,5 @@
 var POSTS_LIMIT = 20;
 
-function User(data) {
-    var self = this;
-    $.extend(self, data);
-    self._key = self.username.toLowerCase();
-}
-
-function redrawUserList() {
-    // TODO: Currently we just replace the whole list of users, it would be better to fade gone out, and fade new in
-
-    var keys = [];
-    $.each(onlineUsers, function (key, user) {
-        keys.push(key);
-    });
-    keys.sort(function (key1, key2) {
-        if (key1 < key2) return -1;
-        if (key1 > key2) return 1;
-        return 0;
-    });
-    $('#userlist').empty();
-
-    var searchUsers = $('#search_users').val().toLowerCase();
-    $.each(keys, function (i, key) {
-        if (searchUsers === '' || key.indexOf(searchUsers) !== -1) {
-            var user = onlineUsers[key];
-            var li = $('<li/>');
-            var image = $('<img/>').prop({
-                'src': user.image_url,
-                'alt': gettext("User image")
-            });
-            li.append(image);
-            li.append(user.username);
-            var div = $('<div/>').prop({
-                'class': 'info'
-            });
-            div.append($('<a/>').prop('href', user.profile_url).text(gettext("User profile")));
-            li.append(div);
-            $('#userlist').append(li);
-        }
-    });
-}
-
-function updateUserList(data) {
-    var user = new User(data.user);
-    if (data.action === 'JOIN') {
-        onlineUsers[user._key] = user;
-        redrawUserList();
-    }
-    else if (data.action === 'PART') {
-        if (onlineUsers[user._key]) {
-            delete onlineUsers[user._key];
-            redrawUserList();
-        }
-    }
-}
-
 // Calculates difference between current time and the time when the post was created and generates a message
 function format_post_date(post_date_created) {
     // TODO: bug, it doesn't work in chrome on windows
@@ -111,33 +56,28 @@ function earlier_posts (){
 function postUpdateList(data){
     if (data.action === 'NEW') {
         add_post_to_top(data.post.location);
-    }    
+    }
 }
 
 $(document).ready(function () {
-    $.updates.registerProcessor('home_channel', 'userlist', updateUserList);
+    $.updates.registerProcessor('home_channel', 'posts', postUpdateList);
 
     $('.panel .header').click(function (event) {
         $(this).next('ul').slideToggle('fast');
     });
 
-    $('#search_users').change(redrawUserList).keyup(redrawUserList);
 
-    redrawUserList();
-    
-    $.updates.registerProcessor('home_channel', 'posts', postUpdateList);
-    
     $.getJSON('/api/v1/post/?limit='+POSTS_LIMIT+'&offset=0', function (data) {
-            if (data.meta.total_count >= POSTS_LIMIT) {
-                var posts_returned = POSTS_LIMIT;
-            } else {
-                var posts_returned = data.meta.total_count;
-            }
-            for (var i = 0; i < posts_returned; i++) {
-                add_post_to_bottom(data.objects[i]);
-            }
+        if (data.meta.total_count >= POSTS_LIMIT) {
+            var posts_returned = POSTS_LIMIT;
+        } else {
+            var posts_returned = data.meta.total_count;
+        }
+        for (var i = 0; i < posts_returned; i++) {
+            add_post_to_bottom(data.objects[i]);
+        }
     });
-    
+
     $('#submit_post').click(function () {
         var message = $('#post_text').val().trim();
         var is_published = true;
@@ -174,5 +114,5 @@ $(document).ready(function () {
             earlier_posts();
         }
     });
-    
+
 });

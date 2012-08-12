@@ -14,11 +14,6 @@ HOME_CHANNEL_ID = 'home'
 
 class HomeView(generic_views.TemplateView):
     template_name = 'home.html'
-    
-    def get_context_data(self, **kwargs):
-        context = super(HomeView, self).get_context_data(**kwargs)
-        context['online_users'] = account_models.User.objects(is_online=True)
-        return context
 
 # TODO: Get HTML5 geolocation data and store it into request session
 class OutsideView(generic_views.TemplateView):

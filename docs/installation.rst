@@ -15,7 +15,7 @@ In addition to Python_ the following is required on the system to run PiplMesh:
 * MongoDB_ (2.0+)
 
 .. _Python: http://python.org/
-.. _Django-supported: https://docs.djangoproject.com/en/1.3/ref/databases/
+.. _Django-supported: https://docs.djangoproject.com/en/1.4/ref/databases/
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
 .. _pip: http://pypi.python.org/pypi/pip
 .. _MongoDB: http://www.mongodb.org/
@@ -70,7 +70,7 @@ PiplMesh is now available at http://127.0.0.1:8000/.
 
 More about Django development server in its `documentation`_.
 
-.. _documentation: https://docs.djangoproject.com/en/1.3/intro/tutorial01/#the-development-server
+.. _documentation: https://docs.djangoproject.com/en/1.4/intro/tutorial01/#the-development-server
 
 Platform Specific Instructions
 ------------------------------

@@ -43,10 +43,11 @@ button span {
 
 /* -------------------- FORMS --------------------- */
 form input[type="submit"], form input[type="reset"] {
-    border: medium none;
+    border: 1px solid gray;
     font-weight: bold;
     min-width: 105px;
     padding: 5px;
+    cursor: pointer;
 }
 
 .form_fields {
@@ -76,6 +77,14 @@ form input[type="submit"], form input[type="reset"] {
     width: 16em;
     padding-right: 2em;
     margin-left: -13em;
+}
+
+.input_invalid {
+    background-color: #ff0000;
+}
+
+.input_invalid_text {
+    color: #ff0000;
 }
 
 /* Styling nested lists such as radio buttons */
@@ -241,6 +250,15 @@ input.gsc-search-button {
     padding-bottom: 30px;
 }
 
+.faq {
+    padding-left: 10px;
+}
+
+.faq dt {
+    font-size: 14px;
+    font-weight: bold;
+}
+
 /* -------------------- AUTHENTICATION ------------------------ */
 .auth_button {
     background: none;
@@ -255,6 +273,14 @@ input.gsc-search-button {
 
 .auth_button:hover span {
     text-decoration: underline;
+}
+
+#email_confirmation {
+    margin-bottom: 100px;
+}
+
+#email_confirmation_process_token input[type=text]  {
+    width: 500px;
 }
 
 /* ---------------- FB LOGIN BUTTON ------------------- */
@@ -307,6 +333,60 @@ input.gsc-search-button {
 
 .twitter_button_text {
     background: #3DBCDC;
+    border-top: solid 1px #879AC0;
+    border-bottom: solid 1px #1A356E;
+    color: white;
+    display: block;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-weight: bold;
+    padding: 2px 6px 3px 6px;
+    margin: 1px 1px 0 21px;
+    text-shadow: none;
+}
+
+/* ---------------- FOURSQUARE LOGIN BUTTON ------------------- */
+.foursquare_login_button {
+    background: #2090c6 url('../images/foursquare_button.png');
+    background-repeat: no-repeat;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+    outline: none;
+    font-size: 11px;
+    line-height: 20px;
+    border: 0;
+    height: 24px;
+}
+
+.foursquare_button_text {
+    background: #2090c6;
+    border-top: solid 1px #879AC0;
+    border-bottom: solid 1px #1A356E;
+    color: white;
+    display: block;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-weight: bold;
+    margin: 0 0 0 20px;
+    text-shadow: none;
+}
+
+/* ---------------- GOOGLE LOGIN BUTTON ------------------- */
+.google_login_button {
+    background: #0064D9 url('../images/google_button.png');
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 0 0 1px;
+    text-decoration: none;
+    outline: none;
+    font-size: 11px;
+    line-height: 14px;
+    margin: 0px;
+}
+
+.google_button_text {
+    background: #0064D9;
     border-top: solid 1px #879AC0;
     border-bottom: solid 1px #1A356E;
     color: white;
@@ -491,34 +571,6 @@ input.gsc-search-button {
 .user_image {
     width: 50px;
     height: 50px;
-
-/* ------------------- USER LIST ------------------- */
-#userlist {
-    color: #68AE2C;
-    text-decoration: none;
-    list-style: none;
-    overflow-y: scroll;
-    height: 200px;
-}
-
-#userlist li {
-    display: block;
-    margin-bottom: 10px;
-}
-
-#userlist img {
-    height: 25px;
-    width: 25px;
-    float: left;
-}
-
-#userlist .info {
-    font-size: 8px;
-    color: #333333;
-}
-
-#userlist a:active, #userlist a:hover {
-    color: #006600;
 }
 
 /* ------------------ PANELS ---------------------------- */
@@ -532,14 +584,6 @@ input.gsc-search-button {
     text-align: center;
     background-color: #68AE2C;
     cursor: pointer;
-}
-
-.panel input {
-    width: 80%;
-}
-
-.panel img {
-    padding-right: 5px;
 }
 
 /* --------------------- POST------------------------ */
@@ -592,10 +636,4 @@ input.gsc-search-button {
 
 .post .date {
     color: #AAA;
-}
-
-/* ------------------ GOOGLE MAPS ---------------------------- */
-#map_canvas {
-    width: 450px;
-    height: 450px;
 }

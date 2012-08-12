@@ -5,7 +5,7 @@ from tastypie_mongoengine import fields, resources
 from pushserver.utils import updates
 
 from piplmesh.account import models as account_models
-from piplmesh.api import models as api_models
+from piplmesh.api import authorization, models as api_models
 
 HOME_CHANNEL_ID = 'home'
 
@@ -28,7 +28,6 @@ class AuthoredResource(resources.MongoEngineResource):
         bundle = super(AuthoredResource, self).hydrate(bundle)
         bundle.obj.author = bundle.request.user
         return bundle
-
 
 class CommentResource(AuthoredResource):
     class Meta:
@@ -64,31 +63,30 @@ class AttachmentResource(AuthoredResource):
         }
 
 class PostResource(AuthoredResource):
-    
+
     updated_time = tastypie_fields.DateTimeField(attribute='updated_time', null=False, readonly=True)
 
     comments = fields.EmbeddedListField(of='piplmesh.api.resources.CommentResource', attribute='comments', default=lambda: [], null=True, full=False)
     attachments = fields.EmbeddedListField(of='piplmesh.api.resources.AttachmentResource', attribute='attachments', default=lambda: [], null=True, full=True)
-    
+
     # Send update to pushserver
     def obj_create(self, bundle, request=None, **kwargs):
         obj = super(PostResource, self).obj_create(bundle, request=request, **kwargs)
         if (bundle.obj.is_published):
             updates.send_update(
-                    HOME_CHANNEL_ID,
+                HOME_CHANNEL_ID,
                     {
-                        'type': 'posts',
-                        'action': 'NEW',
-                        'post': {
-                            'location': self.get_resource_uri(bundle),
+                    'type': 'posts',
+                    'action': 'NEW',
+                    'post': {
+                        'location': self.get_resource_uri(bundle),
                         },
                     }
             )
         return obj
-    
+
     class Meta:
-        queryset = api_models.Post.objects.all().order_by('-updated_time')
+        queryset = api_models.Post.objects.all()
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         # TODO: Make proper authorization, current implementation is for development use only
-        authorization = tastypie_authorization.Authorization()
-
+        authorization = authorization.PostAuthorization()

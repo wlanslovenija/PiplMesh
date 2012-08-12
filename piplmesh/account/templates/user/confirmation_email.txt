@@ -1,0 +1,27 @@
+{% load future i18n url_tags %}{% blocktrans with username=user.username %}Hello {{ username }}!{% endblocktrans %}
+{% filter wordwrap:68 %}
+{% blocktrans with SITE_NAME=SITE_NAME username=user.username email=email_address %}This message was sent to you to confirm this e-mail address ({{ email }}) as yours for your account on {{ SITE_NAME }} with username "{{ username }}". If you have already done so or don't want to, you can safely ignore this e-mail.{% endblocktrans %}
+
+{% blocktrans %}Please click the link below to confirm your e-mail address:{% endblocktrans %}
+
+{% url "email_confirmaton_process_token" confirmation_token as the_url %}{% fullurl the_url %}
+
+{% blocktrans %}Or, open the following link:{% endblocktrans %}
+
+{% url "email_confirmaton_process_token" as the_url %}{% fullurl the_url %}
+
+{% blocktrans %}and copy-paste the following confirmation token into the input box there:{% endblocktrans %}
+
+{{ confirmation_token }}
+
+{% blocktrans with CONFIRMATION_TOKEN_VALIDITY=CONFIRMATION_TOKEN_VALIDITY count days=CONFIRMATION_TOKEN_VALIDITY %}Confirmation token will be active for {{ CONFIRMATION_TOKEN_VALIDITY }} day.{% plural %}Confirmation token will be active for {{ CONFIRMATION_TOKEN_VALIDITY }} days.{% endblocktrans %}{% blocktrans %} If it expires you will have to redo the process of confirming your e-mail address.{% endblocktrans %}
+
+{% blocktrans %}Please also be careful to open complete link. Your e-mail client might have broken it into several lines.{% endblocktrans %}
+
+{% blocktrans %}If you have any problems confirming your e-mail address or have any other questions just reply to this e-mail.{% endblocktrans %}
+{% endfilter %}
+{% blocktrans %}Yours,{% endblocktrans %}
+
+
+{{ SITE_NAME }}
+{% url "home" as the_url %}{% fullurl the_url %}

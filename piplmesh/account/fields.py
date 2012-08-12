@@ -57,14 +57,11 @@ def limit_date(value, lower_limit, upper_limit, error):
         if tmp_value < tmp_lower_limit:
             error('bounds')
 
-def get_initial_language(request=None):
-    return settings.LANGUAGE_CODE
-
 class LanguageField(mongoengine.StringField):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('max_length', 5)
         kwargs.setdefault('choices', settings.LANGUAGES)
-        kwargs.setdefault('default', get_initial_language)
+        kwargs.setdefault('default', settings.LANGUAGE_CODE)
 
         super(LanguageField, self).__init__(*args, **kwargs)
 
