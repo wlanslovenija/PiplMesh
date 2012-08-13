@@ -84,13 +84,9 @@ $(document).ready(function () {
         $(this).next('ul').slideToggle('fast');
     });
 
+    // Shows last updated posts, limited to POSTS_LIMIT
     $.getJSON('/api/v1/post/?limit='+POSTS_LIMIT+'&offset=0', function (data) {
-        if (data.meta.total_count >= POSTS_LIMIT) {
-            var posts_returned = POSTS_LIMIT;
-        } else {
-            var posts_returned = data.meta.total_count;
-        }
-        for (var i = 0; i < posts_returned; i++) {
+        for (var i = 0; i < data.objects.length; i++) {
             new Post(data.objects[i]).add_to_bottom();
         }
     });
@@ -126,6 +122,13 @@ $(document).ready(function () {
             $('#post_text').val('');
         }
         $('#post_text').css({'min-height':50});
+    });
+
+    $('#post_text').blur(function () {
+        if ($('#post_text').val().trim() == '') {
+            $('#post_text').val('Write a post...');
+        }
+        $('#post_text').css({'min-height': 25});
     });
 
     $(window).scroll(function () {

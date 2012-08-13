@@ -244,6 +244,7 @@ input.gsc-search-button {
 
 #main {
     overflow: hidden;
+    float: left;
 }
 
 .result {
@@ -464,6 +465,7 @@ input.gsc-search-button {
     color: #474747;
     border-top: 1px solid #BBB;
     height: 60px;
+    clear: both;
 }
 
 #footer a {
@@ -578,6 +580,10 @@ input.gsc-search-button {
 }
 
 /* ------------------ PANELS ---------------------------- */
+#panels {
+    float: right;
+}
+
 .panel {
     width: 260px;
 }
