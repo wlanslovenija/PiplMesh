@@ -1,6 +1,6 @@
 from tastypie import authorization as tastypie_authorization, fields as tastypie_fields
 
-from tastypie_mongoengine import fields, resources
+from tastypie_mongoengine import fields, paginator, resources
 
 from pushserver.utils import updates
 
@@ -74,6 +74,7 @@ class PostResource(AuthoredResource):
         return bundle
 
     class Meta:
-        queryset = api_models.Post.objects.all()
+        queryset = api_models.Post.objects.all().order_by('-updated_time')
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         authorization = authorization.PostAuthorization()
+        paginator_class = paginator.Paginator

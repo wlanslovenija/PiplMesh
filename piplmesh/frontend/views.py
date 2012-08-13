@@ -103,3 +103,4 @@ def send_update_on_new_post(sender, post_object, **kwargs):
                     },
              }
         )
+        # TODO: Send other fields (attachments etc) to update
