@@ -41,6 +41,10 @@ button span {
     border: 0px;
 }
 
+.hand {
+    cursor: pointer;
+}
+
 /* -------------------- FORMS --------------------- */
 form input[type="submit"], form input[type="reset"] {
     border: 1px solid gray;
@@ -622,6 +626,7 @@ input.gsc-search-button {
     padding: 0 0 10px 0;
     border-bottom: 1px solid #AAA;
     background: #FFF;
+    clear: both;
 }
 
 .post .author {
@@ -630,10 +635,15 @@ input.gsc-search-button {
     padding-right: 5px;
 }
 
-.post .content{
+.post .content {
     margin-bottom: 2px;
 }
 
 .post .date {
     color: #AAA;
+}
+
+.post .options {
+    font-size: 10px;
+    float: right;
 }

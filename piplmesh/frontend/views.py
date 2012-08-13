@@ -1,5 +1,8 @@
-from django import http, template
+import json
+
+from django import http, template, dispatch
 from django.conf import settings
+from django.core import serializers
 from django.core.files import storage
 from django.views import generic as generic_views
 
@@ -7,8 +10,10 @@ from tastypie import http as tastypie_http
 
 from mongogeneric import detail
 
+from pushserver.utils import updates
+
 from piplmesh.account import models as account_models
-from piplmesh.api import models as api_models, resources
+from piplmesh.api import models as api_models, resources, signals
 
 HOME_CHANNEL_ID = 'home'
 
@@ -73,3 +78,28 @@ def forbidden_view(request, reason=''):
         'reason': reason,
         'no_referer': reason == csrf.REASON_NO_REFERER,
     })))
+
+
+
+@dispatch.receiver(signals.post_created)
+def send_update_on_new_post(sender, post_object, **kwargs):
+    """
+    Sends update to push server when a new post is created.
+    """
+    if post_object.is_published:
+        updates.send_update(
+            HOME_CHANNEL_ID,
+            {
+                'type': 'posts',
+                'action': 'NEW',
+                'post': {
+                    'id' : str(post_object.id),
+                    'author' : {
+                        'username' : post_object.author.username,
+                    },
+                    'message' : post_object.message,
+                    'updated_time' : json.dumps(post_object.created_time, cls=serializers.json.DjangoJSONEncoder),
+                    'created_time' : json.dumps(post_object.updated_time, cls=serializers.json.DjangoJSONEncoder) ,
+                    },
+             }
+        )

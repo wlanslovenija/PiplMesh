@@ -16,41 +16,44 @@ function format_post_date(post_date_created) {
     return msg;
 }
 
-function generate_post_html(data) {
-    var post = $('<li/>').prop('class', 'post')
-    .append(
-        $('<span/>').prop('class', 'author').text(data.author['username']))
-    .append(
-        $('<p/>').prop('class', 'content').text(data.message))
-    .append(
-        $('<span/>').prop('class', 'date').text(format_post_date(data.created_time))
-    );
-    post.data("id", data.id);
-    return post;
-}
+function Post(data) {
+    var self = this;
+    $.extend(self, data);
 
-function add_post_to_top(post_location){
-    $.getJSON(post_location, function (data) {
-        if (!check_if_post_exists(data.id)) {
-            $(".posts").prepend(generate_post_html(data));
-            $(".post:first").hide().toggle("slow");
-        }
-    });
-}
+    this.__generate_html = function () {
+        var post_options = $('<ul/>').prop('class', 'options')
+            .append($('<li/>').html('<a class="delete-post hand">Delete post</a>'));
 
-function check_if_post_exists(post_id){
-    var posts_number = $('.post').length;
-    for (var i=0; i<posts_number; i++) {
-       if ($($('.post')[i]).data("id") == post_id) {
-           return true;
-       }
+        var post = $('<li/>').prop('class', 'post')
+            .append(post_options)
+            .append($('<span/>').prop('class', 'author').text(this.author['username']))
+            .append($('<p/>').prop('class', 'content').text(this.message))
+            .append($('<span/>').prop('class', 'date').text(format_post_date(this.created_time))
+        );
+        post.data("id", data.id);
+        return post;
     }
-    return false;
-}
 
-function add_post_to_bottom(data){
-    if (!check_if_post_exists(data.id)) {
-        $(".posts").append(generate_post_html(data));
+    this.__check_if_post_exists = function () {
+        var posts_number = $('.post').length;
+        for (var i=0; i<posts_number; i++) {
+            if ($($('.post')[i]).data("id") == this.id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    this.add_to_bottom = function () {
+        if (!this.__check_if_post_exists()) {
+            $(".posts").append(this.__generate_html(data));
+        }
+    }
+
+    this.add_to_top = function () {
+        if (!this.__check_if_post_exists()) {
+            this.__generate_html(data).prependTo($(".posts")).hide().toggle('slow');
+        }
     }
 }
 
@@ -63,14 +66,14 @@ function earlier_posts (){
             var posts_returned = data.meta.total_count - number_of_posts;
         }
         for (var i = 0; i < posts_returned; i++){
-            add_post_to_bottom(data.objects[i]);
+            new Post(data.objects[i]).add_to_bottom();
         }
     });
 }
 
 function postUpdateList(data){
     if (data.action === 'NEW') {
-        add_post_to_top(data.post.location);
+        new Post(data).add_to_top();
     }
 }
 
@@ -81,7 +84,6 @@ $(document).ready(function () {
         $(this).next('ul').slideToggle('fast');
     });
 
-
     $.getJSON('/api/v1/post/?limit='+POSTS_LIMIT+'&offset=0', function (data) {
         if (data.meta.total_count >= POSTS_LIMIT) {
             var posts_returned = POSTS_LIMIT;
@@ -89,7 +91,7 @@ $(document).ready(function () {
             var posts_returned = data.meta.total_count;
         }
         for (var i = 0; i < posts_returned; i++) {
-            add_post_to_bottom(data.objects[i]);
+            new Post(data.objects[i]).add_to_bottom();
         }
     });
 
@@ -104,7 +106,9 @@ $(document).ready(function () {
                 contentType: 'application/json',
                 dataType: "json",
                 success: function (output, status, header) {
-                    add_post_to_top(header.getResponseHeader('Location'));
+                    $.getJSON(header.getResponseHeader('Location'), function (data) {
+                        new Post(data).add_to_top();
+                    });
                     $('#post_text').val('Write a post...');
                     $('#post_text').css({'min-height':25});
                 },

@@ -67,14 +67,13 @@ class PostResource(AuthoredResource):
     comments = fields.EmbeddedListField(of='piplmesh.api.resources.CommentResource', attribute='comments', default=lambda: [], null=True, full=False)
     attachments = fields.EmbeddedListField(of='piplmesh.api.resources.AttachmentResource', attribute='attachments', default=lambda: [], null=True, full=True)
 
-    # Send update to pushserver
     def obj_create(self, bundle, request=None, **kwargs):
-        obj = super(PostResource, self).obj_create(bundle, request=request, **kwargs)
-        signals.post_created.send(sender=self, post_published=bundle.obj.is_published, post_location = self.get_resource_uri(obj))
-        return obj
+        bundle = super(PostResource, self).obj_create(bundle, request=request, **kwargs)
+      #  serialized_object = self.serialize(None, self.full_dehydrate(bundle), 'application/json')
+        signals.post_created.send(sender=self, post_object=bundle.obj)
+        return bundle
 
     class Meta:
         queryset = api_models.Post.objects.all()
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
-        # TODO: Make proper authorization, current implementation is for development use only
         authorization = authorization.PostAuthorization()
