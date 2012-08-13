@@ -29,11 +29,12 @@ PUSH_SERVER_URL = settings.PUSH_SERVER_URL.lstrip('/')
 
 urlpatterns = patterns('',
     url(r'^$', frontend_views.HomeView.as_view(), name='home'),
-
+    
+    url(r'^about/$', frontend_views.AboutView.as_view(), name='about'),
+    url(r'^contact/$', frontend_views.ContactView.as_view(), name='contact'),   
     url(r'^outside/$', frontend_views.OutsideView.as_view(), name='outside'),
     url(r'^search/', frontend_views.SearchView.as_view(), name='search'),
-    url(r'^contact/$', frontend_views.ContactView.as_view(), name='contact'),
-
+    
     url(r'^upload/$', frontend_views.upload_view, name='upload'),
     
     # Registration, login, logout

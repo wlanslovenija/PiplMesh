@@ -1,12 +1,11 @@
 from django import http, template
 from django.conf import settings
 from django.contrib import messages
+from django.core import mail
 from django.core import urlresolvers
 from django.core.files import storage
-from django.core.mail import send_mail, BadHeaderError
 from django.utils.translation import ugettext_lazy as _
 from django.views import generic as generic_views
-from django.views.generic import edit as edit_views
 
 from tastypie import http as tastypie_http
 
@@ -15,6 +14,8 @@ from mongogeneric import detail
 from piplmesh.account import models as account_models
 from piplmesh.api import models as api_models, resources
 from piplmesh.frontend import forms
+
+import smtplib
 
 HOME_CHANNEL_ID = 'home'
 
@@ -28,33 +29,31 @@ class OutsideView(generic_views.TemplateView):
 class SearchView(generic_views.TemplateView):
     template_name = 'search.html'
 
-class ContactView(edit_views.FormView):
+class AboutView(generic_views.TemplateView):
+    template_name = 'about.html'
+      
+class ContactView(generic_views.FormView):
     """
     This view checks if all contact data are valid and then send mail.
     
-    User is redirected to home page.
+    User is redirected back to contact page.
     """
     
     template_name = 'contact.html'
-    # TODO: Redirect users to the page they initially came from
-    success_url = urlresolvers.reverse_lazy('home')
+    success_url = urlresolvers.reverse_lazy('contact')
     form_class = forms.ContactForm
 
     def form_valid(self, form):
         subject = form.cleaned_data['subject'],
-        from_email = form.cleaned_data['email'],
+        email = form.cleaned_data['email'],
         message = form.cleaned_data['message'],
         try:
-            send_mail(subject, message, from_email, (settings.DEFAULT_FROM_EMAIL,), fail_silently=False)
-        except:
+            mail.mail_managers(subject, message, email, (settings.DEFAULT_FROM_EMAIL,))
+            messages.success(self.request, _("Thank you. Your message has been successfuly sent."))
+        except smtplib.SMTPException, e:
             messages.error(self.request, _("Sorry, something went wrong here.")) 
-            return super(ContactView, self).form_valid(form)
-        messages.success(self.request, _("Thank you. Your message has been successfuly sent."))
         return super(ContactView, self).form_valid(form)
-    
-    def form_invalid(self, form):
-        return super(ContactView, self).form_invalid(form)
-      
+
 class UserView(detail.DetailView):
     """
     This view checks if user exist in database and returns his user page (profile).
