@@ -1,6 +1,6 @@
 {% extends "plain.html" %}
 
-{% load static i18n %}
+{% load future i18n staticfiles %}
 
 {% block js %}
     {{ block.super }}
@@ -12,7 +12,7 @@
 {% block content %}
     <div class="registration">
         {% with form_submit=_("Register") %}
-            {% url registration as form_action %}
+            {% url "registration" as form_action %}
             {% include "form/form.html" %}
         {% endwith %}
     </div>
