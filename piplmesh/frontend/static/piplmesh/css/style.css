@@ -431,7 +431,6 @@ input.gsc-search-button {
     margin-top: 50px;
 }
 
-/* buttons */
 .buttons {
     padding-top: 20px;
     text-align: right;
@@ -585,6 +584,7 @@ input.gsc-search-button {
     background-color: #68AE2C;
     cursor: pointer;
 }
+
 /* ------------------ CONTACT ---------------------------- */
 .contact_form {
     width: 960px;
@@ -600,6 +600,6 @@ input.gsc-search-button {
     width: 300px;
 }
 
-.text p {
+.contact_comment p {
     margin-left: 100px;
 }

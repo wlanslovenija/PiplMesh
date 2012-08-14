@@ -4,9 +4,9 @@ from django.utils.translation import ugettext_lazy as _
 
 class ContactForm(forms.Form):
     """
-    Class with contact form.
+    Class with the contact form.
     """  
     
     subject = forms.CharField(label=_("Subject"))
-    email = forms.EmailField(label=_("E-mail"))
+    email = forms.EmailField(label=_("Your e-mail address"))
     message = forms.CharField(widget=widgets.Textarea())

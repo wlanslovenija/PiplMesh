@@ -33,9 +33,9 @@ class AboutView(generic_views.TemplateView):
       
 class ContactView(generic_views.FormView):
     """
-    This view checks if all contact data are valid and then send mail.
+    This view checks if all contact data are valid and then sends e-mail to site managers.
     
-    User is redirected back to contact page.
+    User is redirected back to the contact page.
     """
     
     template_name = 'contact.html'
@@ -43,14 +43,8 @@ class ContactView(generic_views.FormView):
     form_class = forms.ContactForm
 
     def form_valid(self, form):
-        subject = form.cleaned_data['subject'],
-        email = form.cleaned_data['email'],
-        message = form.cleaned_data['message'],
-        try:
-            mail.mail_managers(subject, message, email,)
-            messages.success(self.request, _("Thank you. Your message has been successfuly sent."))
-        except smtplib.SMTPException, e:
-            messages.error(self.request, _("Sorry, something went wrong here.")) 
+        mail.mail_managers(form.cleaned_data['subject'], form.cleaned_data['message'], form.cleaned_data['email'])
+        messages.success(self.request, _("Thank you. Your message has been successfully sent."))
         return super(ContactView, self).form_valid(form)
 
 class UserView(detail.DetailView):
