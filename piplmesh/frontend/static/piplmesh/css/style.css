@@ -585,3 +585,21 @@ input.gsc-search-button {
     background-color: #68AE2C;
     cursor: pointer;
 }
+/* ------------------ CONTACT ---------------------------- */
+.contact_form {
+    width: 960px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.contact_form h1 {
+    margin-left: 280px;
+}
+
+.contact_form textarea {
+    width: 300px;
+}
+
+.text p {
+    margin-left: 100px;
+}

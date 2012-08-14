@@ -1,6 +1,11 @@
+import smtplib
+
 from django import http, template
 from django.conf import settings
+from django.contrib import messages
+from django.core import mail, urlresolvers
 from django.core.files import storage
+from django.utils.translation import ugettext_lazy as _
 from django.views import generic as generic_views
 
 from tastypie import http as tastypie_http
@@ -9,6 +14,7 @@ from mongogeneric import detail
 
 from piplmesh.account import models as account_models
 from piplmesh.api import models as api_models, resources
+from piplmesh.frontend import forms
 
 HOME_CHANNEL_ID = 'home'
 
@@ -21,6 +27,31 @@ class OutsideView(generic_views.TemplateView):
 
 class SearchView(generic_views.TemplateView):
     template_name = 'search.html'
+
+class AboutView(generic_views.TemplateView):
+    template_name = 'about.html'
+      
+class ContactView(generic_views.FormView):
+    """
+    This view checks if all contact data are valid and then send mail.
+    
+    User is redirected back to contact page.
+    """
+    
+    template_name = 'contact.html'
+    success_url = urlresolvers.reverse_lazy('contact')
+    form_class = forms.ContactForm
+
+    def form_valid(self, form):
+        subject = form.cleaned_data['subject'],
+        email = form.cleaned_data['email'],
+        message = form.cleaned_data['message'],
+        try:
+            mail.mail_managers(subject, message, email,)
+            messages.success(self.request, _("Thank you. Your message has been successfuly sent."))
+        except smtplib.SMTPException, e:
+            messages.error(self.request, _("Sorry, something went wrong here.")) 
+        return super(ContactView, self).form_valid(form)
 
 class UserView(detail.DetailView):
     """
