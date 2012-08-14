@@ -1,8 +1,9 @@
+import smtplib
+
 from django import http, template
 from django.conf import settings
 from django.contrib import messages
-from django.core import mail
-from django.core import urlresolvers
+from django.core import mail, urlresolvers
 from django.core.files import storage
 from django.utils.translation import ugettext_lazy as _
 from django.views import generic as generic_views
@@ -14,8 +15,6 @@ from mongogeneric import detail
 from piplmesh.account import models as account_models
 from piplmesh.api import models as api_models, resources
 from piplmesh.frontend import forms
-
-import smtplib
 
 HOME_CHANNEL_ID = 'home'
 
@@ -48,7 +47,7 @@ class ContactView(generic_views.FormView):
         email = form.cleaned_data['email'],
         message = form.cleaned_data['message'],
         try:
-            mail.mail_managers(subject, message, email, (settings.DEFAULT_FROM_EMAIL,))
+            mail.mail_managers(subject, message, email,)
             messages.success(self.request, _("Thank you. Your message has been successfuly sent."))
         except smtplib.SMTPException, e:
             messages.error(self.request, _("Sorry, something went wrong here.")) 
