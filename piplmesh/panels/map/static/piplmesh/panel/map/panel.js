@@ -7,23 +7,14 @@ var ge;
 google.load("earth", "1");
 var googleEarth;
 
-/* <![CDATA[ */
-var node = {
-    'name': '{{ request.node.name|escapejs }}',
-    'latitude': '{{ request.node.latitude|escapejs }}',
-    'longitude': '{{ request.node.longitude|escapejs }}',
-    'location': '{{ request.node.location|escapejs }}',
-    'url': '{{ request.node.url|escapejs }}'
-};
-/*
+
  document.onkeydown = function(evt) {
  evt = evt || window.event;
  if (evt.keyCode == 27) {
- ExitFullscreenCSS();
- alert("Escape");
+ toogleSmallBigMap();
  }
  };
- */
+
 
 function setWeatherVisible()
 {
@@ -39,16 +30,9 @@ function setWeatherVisible()
     }
 }
 
-function RequestFullscreenCSS()
+function toogleSmallBigMap()
 {
 
-    toggleDisplay("map_small", "display");
-    toggleDisplay("map_big", "display");
-    toggleDisplay("request", "display");
-}
-
-function ExitFullscreenCSS()
-{
     toggleDisplay("map_small", "display");
     toggleDisplay("map_big", "display");
     toggleDisplay("request", "display");
@@ -85,51 +69,38 @@ function getStyle(el,styleProp)
     return y;
 }
 
-function setNondefaultButtonBorderStyle(controlUI){
-    controlUI.style.backgroundColor = 'white';
-    controlUI.style.borderStyle = 'solid';
-    controlUI.style.borderWidth = '1px';
-    controlUI.style.cursor = 'pointer';
-    controlUI.style.textAlign = 'center';
-    controlUI.title = 'Click to switch on/off the weather info';
-    controlUI.style.borderWidth ='1px';
-    controlUI.style.borderColor = '#717B87';
+function setNondefaultButtonBorderStyle(divUI){
+    divUI.style.backgroundColor = 'white';
+    divUI.style.borderStyle = 'solid';
+    divUI.style.borderWidth = '1px';
+    divUI.style.cursor = 'pointer';
+    divUI.style.textAlign = 'center';
+    divUI.title = 'Click to switch on/off the weather info';
+    divUI.style.borderWidth ='1px';
+    divUI.style.borderColor = '#717B87';
+    divUI.style.width = '50px';
 }
 
-function setNondefaultButtonTextStyle(controlText){
-    controlText.style.fontFamily = 'Arial,sans-serif';
-    controlText.style.paddingTop = '1.6px';
-    controlText.style.color = '#333333';
-    controlText.style.fontSize = '13px';
-    controlText.style.paddingLeft = '4px';
-    controlText.style.paddingRight = '4px';
-    controlText.style.paddingBottom = '1.6px';
-    controlText.innerHTML = 'Vreme';
+function setNondefaultButtonTextStyle(divText, text){
+    divText.style.fontFamily = 'Arial,sans-serif';
+    divText.style.paddingTop = '1.6px';
+    divText.style.color = '#333333';
+    divText.style.fontSize = '13px';
+    divText.style.paddingLeft = '4px';
+    divText.style.paddingRight = '4px';
+    divText.style.paddingBottom = '1.6px';
+    divText.innerHTML = text;
 }
-
-$(function()
-{
-
-
-    // The plugin sets the $.support.fullscreen flag:
-    if($.support.fullscreen){
-        $('#request').click(function(e){
-            RequestFullscreenCSS();
-            $('#container_text').fullScreen({
-                'callback' : function(fullScreen){
-                    if ( !fullScreen ) {
-
-                        // Canceled
-                        // $('#container_text').css({'background': 'red'});
-                        ExitFullscreenCSS();
-                    }
-                }
-            });
-        });
-    }
-})
 
 $(document).ready(function () {
+
+
+    //  width: 100%; height: 100%; text-align: center; margin: 50px 0px; padding: 0px;
+    $('#request').click(function (event) {
+       // resize('map_big');
+        toogleSmallBigMap();
+    });
+
     var nodeLocation = new google.maps.LatLng(node.latitude, node.longitude);
     var map_big_options = {
         center: nodeLocation,
@@ -184,57 +155,69 @@ $(document).ready(function () {
     google.maps.event.addListenerOnce(map_big, 'tilesloaded', addMarkers)
 
     google.maps.event.addListener(map_small, 'click', function() {
-            if($.support.fullscreen){
-
-                RequestFullscreenCSS();
-                $('#container_text').fullScreen({
-                    'callback' : function(fullScreen){
-                        if ( !fullScreen ) {
-
-                            // Canceled
-                            // $('#container_text').css({'background': 'red'});
-                            ExitFullscreenCSS();
-                        }
-                    }
-                });
-            }
     });
 
     // Create a div to hold the control.
-    var controlDiv = document.createElement('div');
-
+    var buttonWeather = document.createElement('div');
+    var buttonExit = document.createElement('div');
 // Set CSS styles for the DIV containing the control
 // Setting padding to 5 px will offset the control
 // from the edge of the map.
-    controlDiv.style.padding = '5px';
-
+    buttonWeather.style.padding = '5px';
+    buttonExit.style.padding = '5px';
 
 // Set CSS for the control border.
-    var controlUI = document.createElement('div');
-    setNondefaultButtonBorderStyle(controlUI);
-    controlDiv.appendChild(controlUI);
+    var buttonWeatherUI = document.createElement('div');
+    var buttonExitUI = document.createElement('div');
+    setNondefaultButtonBorderStyle(buttonWeatherUI);
+    setNondefaultButtonBorderStyle(buttonExitUI);
+
+    buttonWeather.appendChild(buttonWeatherUI);
+    buttonExit.appendChild(buttonExitUI);
+
+
+    var buttonExitText = document.createElement('div');
+    setNondefaultButtonTextStyle(buttonExitText, "Exit");
+    buttonExitUI.appendChild(buttonExitText);
 
 // Set CSS for the control interior.
-    var controlText = document.createElement('div');
-    setNondefaultButtonTextStyle(controlText);
-    controlUI.appendChild(controlText);
+    var buttonWeatherText = document.createElement('div');
+    setNondefaultButtonTextStyle(buttonWeatherText, "Vreme");
+    buttonWeatherUI.appendChild(buttonWeatherText);
 
-    google.maps.event.addDomListener(controlDiv, 'click', function() {
+    google.maps.event.addDomListener(buttonWeather, 'click', function() {
         setWeatherVisible();
     });
-    google.maps.event.addDomListener(controlDiv, 'mouseover', function(){
+    google.maps.event.addDomListener(buttonWeather, 'mouseover', function(){
 
-        controlUI.style.background = '#F0F0F0';
-        controlText.style.color = 'black';
+        buttonWeatherUI.style.background = '#F0F0F0';
+        buttonWeatherText.style.color = 'black';
 
     });
-    google.maps.event.addDomListener(controlDiv, 'mouseout', function(){
+    google.maps.event.addDomListener(buttonWeather, 'mouseout', function(){
 
 
-        controlUI.style.background = 'white';
-        controlText.style.color = '#333333';
+        buttonWeatherUI.style.background = 'white';
+        buttonWeatherText.style.color = '#333333';
     });
-    map_big.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv);
+
+    google.maps.event.addDomListener(buttonExit, 'click', function() {
+        toogleSmallBigMap();
+    });
+    google.maps.event.addDomListener(buttonExit, 'mouseover', function(){
+
+        buttonExitUI.style.background = '#F0F0F0';
+        buttonExitText.style.color = 'black';
+
+    });
+    google.maps.event.addDomListener(buttonExit, 'mouseout', function(){
+
+
+        buttonExitUI.style.background = 'white';
+        buttonExitText.style.color = '#333333';
+    });
+    map_big.controls[google.maps.ControlPosition.TOP_RIGHT].push(buttonWeather);
+    map_big.controls[google.maps.ControlPosition.TOP_RIGHT].push(buttonExit);
 
     var nodeName = $('<p/>').text(node.name).append(' | ');
     var nodeWebsite = $('<a/>').prop('href', node.url).text(gettext("more info"));
@@ -261,9 +244,4 @@ $(document).ready(function () {
         }
         createMarker();
     }
-
-
 });
-
-
-google.maps.event.addDomListener(window, 'load', init);
