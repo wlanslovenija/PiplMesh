@@ -13,9 +13,8 @@
         {% endwith %}
     </div>
     <div class="text">
-        {% url about as about %}
-        {% blocktrans %}
-        <p>If you have bug report or any other issue please use <a href="https://github.com/wlanslovenija/PiplMesh/issues?state=open">GitHub</a></p>
-        <p>This site is developed as open source project and all work is done voluntarily, so you are very welcome to help us make it even better. Check for more at <a href="{{ about }}">about us</a></p>{% endblocktrans %}
+        {% url about as about_url %}
+        <p>{% blocktrans %}If you have bug report or any other issue please use <a href="https://github.com/wlanslovenija/PiplMesh/issues?state=open">GitHub</a>{% endblocktrans %}</p>
+        <p>{% blocktrans %}This site is developed as open source project and all work is done voluntarily, so you are very welcome to help us make it even better. Check for more at <a href="{{ about_url }}">about us</a>{% endblocktrans %}</p>
     </div>
 {% endblock %}
