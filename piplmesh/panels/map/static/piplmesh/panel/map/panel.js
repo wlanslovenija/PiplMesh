@@ -11,7 +11,7 @@ var googleEarth;
  document.onkeydown = function(evt) {
  evt = evt || window.event;
  if (evt.keyCode == 27) {
- toogleSmallBigMap();
+ toggleBigToSmalMap();
  }
  };
 
@@ -30,14 +30,20 @@ function setWeatherVisible()
     }
 }
 
-function toogleSmallBigMap()
+function toggleBigToSmalMap()
 {
 
     toggleDisplay("map_small", "display");
     toggleDisplay("map_big", "display");
     toggleDisplay("request", "display");
 }
+function toggleSmallToBigMap()
+{
 
+    toggleDisplay("map_small", "display");
+
+    toggleDisplay("request", "display");
+}
 function toggleVisibility(controlId, styleProp)
 {
     var item_style = getStyle(controlId, styleProp )
@@ -97,9 +103,15 @@ $(document).ready(function () {
 
     //  width: 100%; height: 100%; text-align: center; margin: 50px 0px; padding: 0px;
     $('#request').click(function (event) {
+        toggleSmallToBigMap();
+        window.setTimeout(function(){
+            $('#map_big').slideDown();
+            return false;
+        },1);
+        });
        // resize('map_big');
-        toogleSmallBigMap();
-    });
+
+
 
     var nodeLocation = new google.maps.LatLng(node.latitude, node.longitude);
     var map_big_options = {
@@ -202,7 +214,7 @@ $(document).ready(function () {
     });
 
     google.maps.event.addDomListener(buttonExit, 'click', function() {
-        toogleSmallBigMap();
+        toggleBigToSmalMap();
     });
     google.maps.event.addDomListener(buttonExit, 'mouseover', function(){
 
