@@ -628,20 +628,19 @@ input.gsc-search-button {
 }
 
 .post {
-    padding: 0 0 10px 0;
+    padding: 5px 0 10px 0;
     border-bottom: 1px solid #AAA;
     background: #FFF;
     clear: both;
 }
 
 .post .author {
-    float: left;
     font-weight: bold;
     padding-right: 5px;
 }
 
 .post .content {
-    margin-bottom: 2px;
+    margin: 5px 0;
 }
 
 .post .date {

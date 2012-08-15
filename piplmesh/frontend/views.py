@@ -1,8 +1,5 @@
-import json
-
 from django import http, template, dispatch
 from django.conf import settings
-from django.core import serializers
 from django.core.files import storage
 from django.views import generic as generic_views
 
@@ -98,8 +95,8 @@ def send_update_on_new_post(sender, post_object, **kwargs):
                         'username': post_object.author.username,
                     },
                     'message': post_object.message,
-                    'updated_time': json.dumps(post_object.created_time, cls=serializers.json.DjangoJSONEncoder),
-                    'created_time': json.dumps(post_object.updated_time, cls=serializers.json.DjangoJSONEncoder) ,
+                    'updated_time': post_object.updated_time.strftime('%Y-%m-%dT%H:%M:%S'),
+                    'created_time': post_object.created_time.strftime('%Y-%m-%dT%H:%M:%S'),
                 },
             }
         )

@@ -7,7 +7,7 @@ function Post(data) {
     // Calculates difference between current time and the time when the post was created and generates a message
     function formatPostDate(post_date) {
         // TODO: bug, it doesn't work in chrome on windows
-        var created_time_diff = (new Date().getTime() - new Date(post_date).getTime())/1000/60;
+        var created_time_diff = (new Date().getTime() - new Date(Date.parse(post_date)).getTime())/1000/60;
         if (created_time_diff < 2) {
             msg = "just now";
         }
@@ -51,17 +51,16 @@ function Post(data) {
 
     self.addToTop = function () {
         if (!checkIfPostExists()) {
-            generateHtml(data).prependTo($(".posts")).hide().toggle('slow');
+            generateHtml(data).prependTo($(".posts")).hide().slideToggle('slow');
         }
     }
 }
 
-function earlierPosts(){
-    var last_post_id = $(".post:last").data("id");
-    $.getJSON('/api/v1/post/?limit='+POSTS_LIMIT+'&offset='+last_post_id, function (data) {
-        for (var i = 0; i < data.objects.length; i++){
-            new Post(data.objects[i]).addToBottom();
-        }
+function showLastPosts(offset){
+    $.getJSON('/api/v1/post/?limit='+POSTS_LIMIT+'&offset='+offset, function (data) {
+        $(data.objects).each(function () {
+            new Post(this).addToBottom();
+        });
     });
 }
 
@@ -78,12 +77,8 @@ $(document).ready(function () {
         $(this).next('ul').slideToggle('fast');
     });
 
-    // Shows last updated posts, limited to POSTS_LIMIT
-    $.getJSON('/api/v1/post/?limit='+POSTS_LIMIT+'&offset=0', function (data) {
-        for (var i = 0; i < data.objects.length; i++) {
-            new Post(data.objects[i]).addToBottom();
-        }
-    });
+    // Shows last updated posts, starting at offset 0, limited to POSTS_LIMIT
+    showLastPosts(0);
 
     $('#submit_post').click(function () {
         var message = $('#post_text').val().trim();
@@ -124,7 +119,10 @@ $(document).ready(function () {
 
     $(window).scroll(function () {
         if (document.body.scrollHeight - $(this).scrollTop() <= $(this).height()) {
-            earlierPosts();
+            var last_post_id = $('.post:last').data('id');
+            if (last_post_id != undefined) {
+                showLastPosts(last_post_id);
+            }
         }
     });
 
