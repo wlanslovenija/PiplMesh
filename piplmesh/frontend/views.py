@@ -93,14 +93,14 @@ def send_update_on_new_post(sender, post_object, **kwargs):
                 'type': 'posts',
                 'action': 'NEW',
                 'post': {
-                    'id' : str(post_object.id),
-                    'author' : {
-                        'username' : post_object.author.username,
+                    'id': str(post_object.id),
+                    'author': {
+                        'username': post_object.author.username,
                     },
-                    'message' : post_object.message,
-                    'updated_time' : json.dumps(post_object.created_time, cls=serializers.json.DjangoJSONEncoder),
-                    'created_time' : json.dumps(post_object.updated_time, cls=serializers.json.DjangoJSONEncoder) ,
-                    },
-             }
+                    'message': post_object.message,
+                    'updated_time': json.dumps(post_object.created_time, cls=serializers.json.DjangoJSONEncoder),
+                    'created_time': json.dumps(post_object.updated_time, cls=serializers.json.DjangoJSONEncoder) ,
+                },
+            }
         )
         # TODO: Send other fields (attachments etc) to update

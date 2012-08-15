@@ -613,11 +613,10 @@ input.gsc-search-button {
     border: none;
     outline: none;
     resize: none;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 12px;
 }
 
-.new_post .new_post_details  {
+.new_post .new_post_details {
     float: right;
 }
 

@@ -69,7 +69,6 @@ class PostResource(AuthoredResource):
 
     def obj_create(self, bundle, request=None, **kwargs):
         bundle = super(PostResource, self).obj_create(bundle, request=request, **kwargs)
-      #  serialized_object = self.serialize(None, self.full_dehydrate(bundle), 'application/json')
         signals.post_created.send(sender=self, post_object=bundle.obj)
         return bundle
 
