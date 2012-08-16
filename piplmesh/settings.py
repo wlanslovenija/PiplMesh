@@ -332,3 +332,4 @@ DEFAULT_USER_IMAGE = 'piplmesh/images/unknown.png'
 CSRF_FAILURE_VIEW = 'piplmesh.frontend.views.forbidden_view'
 
 HOME_CHANNEL_ID = 'home'
+NOTIFICATION_CHANNEL_ID = 'notifications'

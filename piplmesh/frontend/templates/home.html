@@ -12,7 +12,8 @@
     <script type="text/javascript">
         /* <![CDATA[ */
         $.updates.subscribe({
-            'home_channel': '{% filter escapejs %}{% channel_url HOME_CHANNEL_ID %}{% endfilter %}'
+            'home_channel': '{% filter escapejs %}{% channel_url HOME_CHANNEL_ID %}{% endfilter %}',
+            'notification_channel': '{% filter escapejs %}{% channel_url NOTIFICATION_CHANNEL_ID %}{% endfilter %}'
         });
         /* ]]> */
     </script>

@@ -23,11 +23,7 @@ Thumbs.db
 
 # Celery
 celerybeat-schedule
-*.celerybeat-schedule
 
-# Celerybeat
-*.pid
-
-# PyDev project file & .metadata file
-.pydevproject
-/.metadata/
+# Ignore all hidden files and directories
+.*
+/.*

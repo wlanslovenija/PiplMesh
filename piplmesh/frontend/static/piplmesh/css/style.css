@@ -188,7 +188,7 @@ ul.notification_list {
 
 li.notification {
     border-bottom: 1px solid #68AE2C;
-    text-align: left !important;
+    text-align: left;
     padding: 0 4px 0 4px;
     margin-left: -40px;
     cursor: pointer;

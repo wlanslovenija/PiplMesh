@@ -31,20 +31,20 @@
                     {% user_image %}
                 </li>
                 <li class="username"><a href="{% url "profile" username=user.username %}">{{ user.username }}</a></li>
-                {% if user.is_authenticated %}
-                    <li>
-                        <div class="notifications">
-                            12
+                 <li>
+                    <div class="notifications">
+                        12
+                    </div>
+                    <div id="notif_box" class="hide">
+                        <div id="notif_content">
                         </div>
-                        <div id="notif_box" class="hide">
-                            <div id="notif_content">
-                            </div>
-                            <div class='close_notif_box'>
-                                <div id="addPost">Add p</div>
-                                <div id="addCom">Add c</div> Close
-                            </div>
-                       </div>
-                    </li>
+                        <div class='close_notif_box'>
+                            <div id="addPost">Add p</div>
+                            <div id="addCom">Add c</div> Close
+                        </div>
+                   </div>
+                </li>
+                {% if user.is_authenticated %}
                     <li class="last">
                         <form method="post" action="{% url "logout" %}" id="logout_form">
                             {% csrf_token %}

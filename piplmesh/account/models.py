@@ -79,8 +79,6 @@ class User(auth.User):
     connection_last_unsubscribe = mongoengine.DateTimeField()
     is_online = mongoengine.BooleanField(default=False)
 
-    #notifications = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Notification), default=lambda: [], required=False)
-    
     email_confirmed = mongoengine.BooleanField(default=False)
     email_confirmation_token = mongoengine.EmbeddedDocumentField(EmailConfirmationToken)
 

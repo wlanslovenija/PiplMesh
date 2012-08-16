@@ -36,7 +36,7 @@ class Post(base.AuthoredDocument):
     attachments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Attachment), default=lambda: [], required=False)
 
     subscribers = mongoengine.ListField(mongoengine.ReferenceField(account_models.User), default=lambda: [], required=False)
-    
+
     # TODO: Prevent posting comments if post is not published
     # TODO: Prevent adding attachments if post is published
     # TODO: Prevent marking post as unpublished once it was published
@@ -46,15 +46,19 @@ class Post(base.AuthoredDocument):
         self.updated_time = timezone.now()
         return super(Post, self).save(*args, **kwargs)
 
-class Notification(base.AuthoredDocument):
+class Notification(mongoengine.Document):
     """
-    This class defines document type for notifications
+    This class defines document type for notifications.
     """
 
+    recipient = mongoengine.ReferenceField(account_models.User, required=True)
+    created_time = mongoengine.DateTimeField(default=lambda: timezone.now(), required=True)
     read = mongoengine.BooleanField(default=False)
     post = mongoengine.ReferenceField(Post)
+
+    # TODO: This is probably not the best approach.
     comment = mongoengine.IntField()
-    
+
     @classmethod
     def add_notification(cls, user, post, comment_pk):
         notification = cls()

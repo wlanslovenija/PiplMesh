@@ -33,19 +33,20 @@ class AuthoredResource(resources.MongoEngineResource):
 class CommentResource(AuthoredResource):
     def obj_create(self, bundle, request=None, **kwargs):
         bundle = super(CommentResource, self).obj_create(bundle, request=request, **kwargs)
-        
+       
         for subscriber in self.instance.subscribers:
-            if subscriber != bundle.obj.author:
+            if subscriber.id != bundle.obj.author.id:
                 # add notification to db
-                notification = api_models.Notification.add_notification(subscriber, self.instance, bundle.obj.pk)
-                
+                #notification = api_models.Notification.add_notification(subscriber, self.instance, bundle.obj.pk)
+                notification = api_models.Notification.objects.create(recipient=subscriber, post=self.instance, comment=bundle.obj.pk)
+
                 # push notification to subscriber
                 nr = NotificationResource()
                 notification_obj = nr.obj_get(id=notification.id)
                 uri = nr.get_resource_uri(notification_obj)
-                
+
                 updates.send_update(
-                    settings.HOME_CHANNEL_ID,
+                    settings.NOTIFICATION_CHANNEL_ID,
                     {
                         'type': 'notifications',
                         'action': 'JOIN',
@@ -53,12 +54,13 @@ class CommentResource(AuthoredResource):
                             'author': bundle.obj.author.username,
                             'comment': int(notification.comment),
                             'created_time': notification.created_time.isoformat(),
-                            'message': notification.post.comments[int(notification.comment)].message,
+                            'content': notification.post.comments[int(notification.comment)].message,
                             'post': str(notification.post.id),
                             'read': notification.read,
                             'resource_uri': uri,
-                    },
-                })
+                        },
+                    }
+                )
 
         if bundle.obj.author not in self.instance.subscribers:
             self.instance.subscribers.append(bundle.obj.author)
@@ -71,27 +73,28 @@ class CommentResource(AuthoredResource):
         # TODO: Make proper authorization, current implementation is for development use only
         authorization = tastypie_authorization.Authorization()
 
-class NotificationResource(AuthoredResource):
-#    post = fields.ReferenceField(to='piplmesh.api.resources.PostResource', attribute='post', null=False, full=False, readonly=True)
-    post = tastypie_fields.CharField(attribute='post', default='', null=False, blank=True)
-    author = fields.ReferenceField(to='piplmesh.api.resources.UserResource', attribute='author', null=False, full=True, readonly=True)
-    message = tastypie_fields.CharField(attribute='message', default='', null=False, blank=True)
+class NotificationResource(resources.MongoEngineResource):
+    # created_time = tastypie_fields.DateTimeField(attribute='created_time', null=False, readonly=True)
+    # post = tastypie_fields.CharField(attribute='post', default='', null=False, blank=True)
+    # author = fields.ReferenceField(to='piplmesh.api.resources.UserResource', attribute='author', null=False, full=True, readonly=True)
+    content = tastypie_fields.CharField(attribute='content', default='', null=False, blank=True)
 
     def hydrate(self, bundle):
         bundle = super(NotificationResource, self).hydrate(bundle)
 #        bundle.obj.comment_author = bundle.data['post'].comments[int(bundle.obj.comment)].message
         return bundle
-    
+
     def dehydrate(self, bundle):
-        bundle.data['author'] = bundle.obj.post.comments[bundle.obj.comment].author
-        bundle.data['message'] = bundle.obj.post.comments[bundle.obj.comment].message
+        bundle.data['recipient'] = bundle.obj.post.comments[bundle.obj.comment].author
+        bundle.data['content'] = bundle.obj.post.comments[bundle.obj.comment].message
         bundle.data['post'] = bundle.obj.post.id
         return bundle
-    
+
     def get_object_list(self, request):
         obj_list = super(NotificationResource, self).get_object_list(request)
         if request:
-            obj_list = obj_list.filter(author=request.user)
+            print request
+            obj_list = obj_list.filter(recipient=request.user)
         return obj_list
 
     class Meta:
@@ -138,7 +141,6 @@ class PostResource(AuthoredResource):
     
     class Meta:
         queryset = api_models.Post.objects.all()
-        #print queryset
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         # TODO: Make proper authorization, current implementation is for development use only
         authorization = authorization.PostAuthorization()

@@ -19,39 +19,46 @@ $(document).ready(function() {
         addPost("Bla bla bla bla Post...");
     });
     $("#addCom").click(function (){
-        addComment("Bla bla bla bla");
+        addComment("Tralala dela");
     });
     
     
-    $.updates.registerProcessor('home_channel', 'notifications', AddNewNotification);
+    $.updates.registerProcessor('notification_channel', 'notifications', AddNewNotification);
 
     //$('#notif_content').change(redrawUserList).keyup(redrawUserList);
 
     loadNotifications();
-    
 });
 
 
 function AddNewNotification(newNotification) {
-    console.info(newNotification);
-    alert('uuuu');
+    console.info($('.username').html());
+    var notif = buildNotification(newNotification.notifications)
+    var content = '<li class="notification">' + notif.author + notif.content + notif.date + '</li>';
+    $('.notification_list').prepend(content)
+}
+
+function buildNotification(notification) {
+    var new_notif = {};
+    new_notif.author = notification.author + ' je komentiral <a href="#" >objavo</a><br />';
+    new_notif.message = '<span class="notification_message">' + notification.content + '</span><br />';
+    new_notif.date = 'Napisano ' + formatDate(notification.created_time);
+    return new_notif;
 }
 
 
 function loadNotifications() {
     $.getJSON('/api/v1/notification/', function(notifications) {
         var list = [];
-        
+
         $.each(notifications.objects, function(i, notification) {
-            var author = notification.author + ' je komentiral <a href="#" >objavo</a><br />';
-            var message = '<span class="notification_message">' + notification.message + '</span><br />';
-            var date = 'Napisano ' + formatDate(notification.created_time);
-            
-            list.push('<li class="notification">' + author + message + date + '</li>');
+            var notif = buildNotification(notification)
+            list.unshift('<li class="notification">' + notif.author + notif.content + notif.date + '</li>');
         })
-        
+
         var content = '<ul class="notification_list">' + list.join('') + '</ul>';
         $('#notif_content').html(content);
+        console.log('loadNoti');
     });
 }
 
@@ -85,7 +92,7 @@ function addComment(comment) {
     $.ajax({
         type: 'POST',
         //url: '/api/v1/post/500efc446c20b10eb8000003/comments/',
-        url: '/api/v1/post/502403fd6c20b105dc000004/comments/',
+        url: '/api/v1/post/5028f60e6c20b15ae4000001/comments/',
         data: JSON.stringify({'message': comment}),
         contentType: 'application/json',
         dataType: "json",
