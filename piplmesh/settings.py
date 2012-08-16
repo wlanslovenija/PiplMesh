@@ -150,6 +150,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'piplmesh.account.middleware.LazyUserMiddleware',
@@ -330,6 +331,3 @@ SEARCH_ENGINE_UNIQUE_ID = '003912915932446183218:zeq20qye9oa'
 DEFAULT_USER_IMAGE = 'piplmesh/images/unknown.png'
 
 CSRF_FAILURE_VIEW = 'piplmesh.frontend.views.forbidden_view'
-
-HOME_CHANNEL_ID = 'home'
-NOTIFICATION_CHANNEL_ID = 'notifications'

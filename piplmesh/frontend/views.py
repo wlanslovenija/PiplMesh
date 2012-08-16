@@ -16,6 +16,8 @@ from piplmesh.account import models as account_models
 from piplmesh.api import models as api_models, resources
 from piplmesh.frontend import forms
 
+HOME_CHANNEL_ID = 'home'
+
 class HomeView(generic_views.TemplateView):
     template_name = 'home.html'
 

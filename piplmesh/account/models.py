@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-import datetime, hashlib, urllib
+import datetime, hashlib, urllib, os
 
 from django.conf import settings
 from django.contrib.auth import hashers, models as auth_models
@@ -12,6 +12,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 import mongoengine
+
 from mongoengine.django import auth
 
 from . import fields, utils
@@ -62,6 +63,7 @@ class User(auth.User):
     birthdate = fields.LimitedDateTimeField(upper_limit=upper_birthdate_limit, lower_limit=lower_birthdate_limit)
     gender = fields.GenderField()
     language = fields.LanguageField()
+    channel_id = mongoengine.StringField()
 
     facebook_access_token = mongoengine.StringField(max_length=150)
     facebook_profile_data = mongoengine.DictField()
@@ -81,6 +83,11 @@ class User(auth.User):
 
     email_confirmed = mongoengine.BooleanField(default=False)
     email_confirmation_token = mongoengine.EmbeddedDocumentField(EmailConfirmationToken)
+
+    def generate_channel_id(self):
+        self.channel_id = os.urandom(16).encode('hex')
+        self.save()
+        return self
 
     @models.permalink
     def get_absolute_url(self):

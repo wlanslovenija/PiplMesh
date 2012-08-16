@@ -46,7 +46,6 @@ function buildNotification(notification) {
     return new_notif;
 }
 
-
 function loadNotifications() {
     $.getJSON('/api/v1/notification/', function(notifications) {
         var list = [];
@@ -91,7 +90,6 @@ function addPost(message) {
 function addComment(comment) {
     $.ajax({
         type: 'POST',
-        //url: '/api/v1/post/500efc446c20b10eb8000003/comments/',
         url: '/api/v1/post/5028f60e6c20b15ae4000001/comments/',
         data: JSON.stringify({'message': comment}),
         contentType: 'application/json',

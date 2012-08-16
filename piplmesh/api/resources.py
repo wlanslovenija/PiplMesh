@@ -33,34 +33,12 @@ class AuthoredResource(resources.MongoEngineResource):
 class CommentResource(AuthoredResource):
     def obj_create(self, bundle, request=None, **kwargs):
         bundle = super(CommentResource, self).obj_create(bundle, request=request, **kwargs)
-       
+
         for subscriber in self.instance.subscribers:
-            if subscriber.id != bundle.obj.author.id:
+            if subscriber != bundle.obj.author:
                 # add notification to db
-                #notification = api_models.Notification.add_notification(subscriber, self.instance, bundle.obj.pk)
                 notification = api_models.Notification.objects.create(recipient=subscriber, post=self.instance, comment=bundle.obj.pk)
-
-                # push notification to subscriber
-                nr = NotificationResource()
-                notification_obj = nr.obj_get(id=notification.id)
-                uri = nr.get_resource_uri(notification_obj)
-
-                updates.send_update(
-                    settings.NOTIFICATION_CHANNEL_ID,
-                    {
-                        'type': 'notifications',
-                        'action': 'JOIN',
-                        'notifications': {
-                            'author': bundle.obj.author.username,
-                            'comment': int(notification.comment),
-                            'created_time': notification.created_time.isoformat(),
-                            'content': notification.post.comments[int(notification.comment)].message,
-                            'post': str(notification.post.id),
-                            'read': notification.read,
-                            'resource_uri': uri,
-                        },
-                    }
-                )
+                # notification = api_models.Notification.add_notification(subscriber, self.instance, bundle.obj.pk)
 
         if bundle.obj.author not in self.instance.subscribers:
             self.instance.subscribers.append(bundle.obj.author)
@@ -93,7 +71,6 @@ class NotificationResource(resources.MongoEngineResource):
     def get_object_list(self, request):
         obj_list = super(NotificationResource, self).get_object_list(request)
         if request:
-            print request
             obj_list = obj_list.filter(recipient=request.user)
         return obj_list
 
