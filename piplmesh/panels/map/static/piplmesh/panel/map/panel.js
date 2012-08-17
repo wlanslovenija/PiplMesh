@@ -5,20 +5,16 @@ var timer;
 document.onkeydown = function(evt) {
     evt = evt || window.event;
     if (evt.keyCode == 27) {
-        document.getElementById('map').style.width='250px';
-        document.getElementById('map').style.height='250px';
-        ($('#map').detach().prependTo('#basic_map')).insertAfter('#map_info');
-
-      /*  timer1 = setInterval(function(){ google.maps.event.trigger(map, 'resize')}, 50);
-        $("#map").animate({
-
-            width: getStyle("basic_map","width"),
-            height: getStyle("basic_map","height")
-
+        $("#advanced-map").animate({
+            width: '-=86%'
+            // height: getStyle("advanced-map","height")
         }, 500, "linear", function(){
-            timerMap = clearInterval(timer1);
-        });*/
-        $('#overlay').remove();
+            //callback
+            ($('#map').detach().prependTo('#basic-map')).insertAfter('#map-info');
+            $('#overlay').remove();
+            $('#advanced-map').remove();
+            document.getElementById('button-resize').style.visibility="visible";
+        });
     }
 };
 
@@ -26,23 +22,26 @@ $(document).ready(function () {
     nodeName = $('<p/>').text(node.name).append(' | ');
     nodeWebsite = $('<a/>').prop('href', node.url).text(gettext("more info"));
     nodeName.append(nodeWebsite);
-    $('#map_info').append(nodeName);
-
+    $('#map-info').append(nodeName);
     var timerMap;
-    create_basic_Map("map");
-    google.maps.event.addListener(map, 'click', function() {
+    define_map("map");
+    $("#button-resize").click(function() {
         var div_overlay = jQuery('<div id="overlay"> </div>');
+        var div_advanced_map = jQuery('<div id="advanced-map"></div>');
+
+        div_advanced_map.appendTo(document.body);
         div_overlay.appendTo(document.body);
-        $('#overlay').append('<div id="advanced_map"></div>');
-        $('#map').detach().prependTo('#advanced_map');
-        timer = setInterval(function(){ google.maps.event.trigger(map, 'resize')}, 40);
-        $("#map").animate({
-            width: getStyle("advanced_map","width"),
-            height: getStyle("advanced_map","height")
+        $('#advanced-map').append('<div id="advanced-map-container"></div>');
+        $('#map').detach().prependTo('#advanced-map-container');
+        $("#advanced-map").animate({
+            width: '86%'
         }, 500, "linear", function(){
-        timerMap = clearInterval(timer);
+            google.maps.event.trigger(map, 'resize');
+            document.getElementById('button-resize').style.visibility="hidden";
         });
+
     });
+
 });
 
 function getStyle(el,styleProp)
@@ -55,7 +54,7 @@ function getStyle(el,styleProp)
     return y;
 }
 
-function create_basic_Map(div_tag){
+function define_map(div_tag){
     var nodeLocation = new google.maps.LatLng(node.latitude, node.longitude);
     var myOptions = {
         zoom: 15,
