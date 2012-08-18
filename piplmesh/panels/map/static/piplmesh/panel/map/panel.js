@@ -5,16 +5,8 @@ var timer;
 document.onkeydown = function(evt) {
     evt = evt || window.event;
     if (evt.keyCode == 27) {
-        $("#advanced-map").animate({
-            width: '-=86%'
-            // height: getStyle("advanced-map","height")
-        }, 500, "linear", function(){
-            //callback
-            ($('#map').detach().prependTo('#basic-map')).insertAfter('#map-info');
-            $('#overlay').remove();
-            $('#advanced-map').remove();
-            document.getElementById('button-resize').style.visibility="visible";
-        });
+        close_advanced_map();
+
     }
 };
 
@@ -26,20 +18,7 @@ $(document).ready(function () {
     var timerMap;
     define_map("map");
     $("#button-resize").click(function() {
-        var div_overlay = jQuery('<div id="overlay"> </div>');
-        var div_advanced_map = jQuery('<div id="advanced-map"></div>');
-
-        div_advanced_map.appendTo(document.body);
-        div_overlay.appendTo(document.body);
-        $('#advanced-map').append('<div id="advanced-map-container"></div>');
-        $('#map').detach().prependTo('#advanced-map-container');
-        $("#advanced-map").animate({
-            width: '86%'
-        }, 500, "linear", function(){
-            google.maps.event.trigger(map, 'resize');
-            document.getElementById('button-resize').style.visibility="hidden";
-        });
-
+        open_advanced_map();
     });
 
 });
@@ -74,3 +53,34 @@ function define_map(div_tag){
         }
     );
 }
+
+function close_advanced_map(){
+    $("#advanced-map").animate({
+        width: '-=86%'
+        // height: getStyle("advanced-map","height")
+    }, 500, "linear", function(){
+        //callback
+        ($('#map').detach().prependTo('#basic-map')).insertAfter('#map-info');
+        $('#overlay').remove();
+        $('#advanced-map').remove();
+        document.getElementById('button-resize').style.visibility="visible";
+    });
+}
+
+function open_advanced_map(){
+    document.getElementById('button-resize').style.visibility="hidden";
+    var div_overlay = jQuery('<div id="overlay"> </div>');
+    var div_advanced_map = jQuery('<div id="advanced-map"></div>');
+    div_advanced_map.appendTo(document.body);
+    div_overlay.appendTo(document.body);
+    $('#advanced-map').append('<div id="advanced-map-container"></div>');
+    $('#advanced-map-container').append('<a class="close" onclick=close_advanced_map()></a>');
+    $('#map').detach().prependTo('#advanced-map-container');
+    $("#advanced-map").animate({
+        width: '86%'
+    }, 500, "linear", function(){
+        google.maps.event.trigger(map, 'resize');
+    });
+
+}
+

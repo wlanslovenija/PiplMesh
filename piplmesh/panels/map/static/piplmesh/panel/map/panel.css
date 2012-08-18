@@ -9,6 +9,22 @@
  width:100%;
 }
 #advanced-map {
+
+
+    /* must be initially hidden */
+    display:none;
+
+    /* place overlay on top of other elements */
+   opacity: 1;
+
+    /* styling */
+    background-color:#333;
+    border:1px solid #666;
+
+    /* CSS3 styling for latest browsers */
+    -moz-box-shadow:0 0 90px 5px #000;
+    -webkit-box-shadow: 0 0 90px #000;
+
     position: fixed;
     top: 7%;
     bottom: 7%;
@@ -37,6 +53,16 @@
     padding: 0px;
     border: none;
 }
+#advanced-map-container .close {
+
+    background-image:url(http://jquerytools.org/media/img/overlay/close.png);
+    position:absolute;
+    right:-15px;
+    top:-15px;
+    cursor:pointer;
+    height:35px;
+    width:35px;
+}
 
 .centered{
     margin-right: auto;
@@ -64,5 +90,5 @@
     clear: none;
     display: block;
     background-color: black;
-    opacity:0.7;
+    opacity:0.5;
 }
