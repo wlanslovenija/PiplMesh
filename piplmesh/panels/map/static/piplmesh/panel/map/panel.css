@@ -3,10 +3,22 @@
     height: 250px;
     margin-bottom:50px;
     margin-right:20px;
+    position:relative;
+}
+#basic-map-extend-img{
+    position:absolute;
+    left:0px;
+    top:100px;
+    cursor:pointer;
+    height:100px;
+    width:49px;
+    z-index: 60000000;
 }
 #map {
     height:100%;
     width:100%;
+    border:1px solid #CCCCCC;
+
 }
 #advanced-map {
     opacity: 1;
@@ -42,16 +54,14 @@
     border: none;
 }
 #advanced-map .close {
-
     background-image:url(http://jquerytools.org/media/img/overlay/close.png);
     position:absolute;
-    right:-15px;
-    top:-15px;
+    right:-22px;
+    top:-22px;
     cursor:pointer;
     height:35px;
     width:35px;
 }
-
 .centered{
     margin-right: auto;
     margin-left: auto;

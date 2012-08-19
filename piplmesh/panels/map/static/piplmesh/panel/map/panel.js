@@ -19,10 +19,9 @@ $(document).ready(function () {
     $('#map-info').append(nodeName);
     var timerMap;
     define_map("map");
-    $("#button-resize").click(function() {
+    $("#basic-map-extend-img").click(function() {
         open_advanced_map();
     });
-
 });
 
 function getStyle(el,styleProp)
@@ -65,18 +64,18 @@ function close_advanced_map(){
         ($('#map').detach().prependTo('#basic-map')).insertAfter('#map-info');
         $('#overlay').remove();
         $('#advanced-map').remove();
-        document.getElementById('button-resize').style.visibility="visible";
+        document.getElementById('basic-map-extend-img').style.visibility="visible";
     });
 }
 
 function open_advanced_map(){
-    document.getElementById('button-resize').style.visibility="hidden";
+    document.getElementById('basic-map-extend-img').style.visibility="hidden";
     var div_overlay = jQuery('<div id="overlay"> </div>');
     var div_advanced_map = jQuery('<div id="advanced-map"></div>');
     div_advanced_map.appendTo(document.body);
     div_overlay.appendTo(document.body);
     $('#advanced-map').append('<div id="advanced-map-container"></div>');
-    $('#advanced-map-container').append('<a class="close" onclick=close_advanced_map()></a>');
+    $('#advanced-map').append('<a class="close" onclick=close_advanced_map()></a>');
     $('#map').detach().prependTo('#advanced-map-container');
     $("#advanced-map").animate({
         width: '86%'

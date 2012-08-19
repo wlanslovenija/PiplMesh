@@ -3,26 +3,28 @@
 {% load i18n static sekizai_tags %}
 
 {% block content %}
-    {% addtoblock "css" %}<link href="{% static "piplmesh/panel/map/panel.css" %}" rel="stylesheet" type="text/css" media="screen" />{% endaddtoblock %}
-    {% addtoblock "js" %}<script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>{% endaddtoblock %}
-    {% addtoblock "js" %}<script src="{% static "piplmesh/panel/map/panel.js" %}" type="text/javascript"></script>{% endaddtoblock %}
-    {% addtoblock "js" %}
-        <script type="text/javascript">
-            /* <![CDATA[ */
-            var node = {
-                'name': '{{ request.node.name|escapejs }}',
-                'latitude': '{{ request.node.latitude|escapejs }}',
-                'longitude': '{{ request.node.longitude|escapejs }}',
-                'location': '{{ request.node.location|escapejs }}',
-                'url': '{{ request.node.url|escapejs }}'
-            };
-            /* ]]> */
+{% addtoblock "css" %}<link href="{% static "piplmesh/panel/map/panel.css" %}" rel="stylesheet" type="text/css" media="screen" />{% endaddtoblock %}
+{% addtoblock "js" %}<script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>{% endaddtoblock %}
+{% addtoblock "js" %}<script src="{% static "piplmesh/panel/map/panel.js" %}" type="text/javascript"></script>{% endaddtoblock %}
+{% addtoblock "js" %}
+<script type="text/javascript">
+/* <![CDATA[ */
+var node = {
+    'name': '{{ request.node.name|escapejs }}',
+    'latitude': '{{ request.node.latitude|escapejs }}',
+    'longitude': '{{ request.node.longitude|escapejs }}',
+    'location': '{{ request.node.location|escapejs }}',
+    'url': '{{ request.node.url|escapejs }}'
+};
+/* ]]> */
         </script>
-    {% endaddtoblock %}
-    <div id="basic-map" class="small">
-        <div id="map-info"></div>
-        <div id="map"></div>
-        <button id="button-resize">Resize</div>
-
+{% endaddtoblock %}
+<div id="basic-map" class="small">
+    <div id="basic-map-extend-img">
+        <img src="{% static "piplmesh/panel/map/images/extend.png" %}" width:40px height:90px> </img>
     </div>
+
+    <div id="map-info"></div>
+    <div id="map"></div>
+</div>
 {% endblock %}
