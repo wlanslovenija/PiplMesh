@@ -1,6 +1,8 @@
 var nodeName;
 var nodeWebsite;
 var timer;
+var myOptions;
+var nodeLocation;
 
 document.onkeydown = function(evt) {
     evt = evt || window.event;
@@ -34,8 +36,8 @@ function getStyle(el,styleProp)
 }
 
 function define_map(div_tag){
-    var nodeLocation = new google.maps.LatLng(node.latitude, node.longitude);
-    var myOptions = {
+    nodeLocation = new google.maps.LatLng(node.latitude, node.longitude);
+    myOptions = {
         zoom: 15,
         center: nodeLocation,
         scrollwheel: false,
@@ -83,4 +85,3 @@ function open_advanced_map(){
     });
 
 }
-
