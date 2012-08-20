@@ -22,24 +22,20 @@ where the form should redirect after submission.
         {% if form.fields %}
 
                 {% for field in form %}
-
                     <fieldset class="field-form">
                         <div class="field-form-input">
                             {{ field }}
                         </div>
-                        <label class="field_error">
+                        <span class="field_error">
                             {{ field.errors }}
-                        </label>
+                        </span>
                         <label class="field-form-text">
                                 {% if field.field.required %}
                                     <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
                                 {% else %}
                                     {{ field.label }}
                                 {% endif %}
-
                         </label>
-
-
                     </fieldset>
                 {% endfor %}
 

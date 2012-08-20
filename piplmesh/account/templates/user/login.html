@@ -16,43 +16,43 @@
                     {% include "user/form/login-aut-form.html" %}
                     {% endwith %}
 
-				    {% comment %}<li><a href="{% url registration %}">{% trans "Register" %}</a></li>{% endcomment %}
+                    {% comment %}<li><a href="{% url registration %}">{% trans "Register" %}</a></li>{% endcomment %}
 
                 </div>
-				<div class="separator">
+                <div class="separator">
                     <span class="separator-text">OR</span>
                 </div>
-				<div class="external">
-					<h4>Login to w-net with </h4>
-					<div id="login_facebook" class="login-external-button" >
-						<form method="post" action="{% url "facebook_login" %}">
-							{% csrf_token %}
-							<p><INPUT TYPE="image" SRC="/static/piplmesh/images/login-facebook.png"  BORDER="0" ALT="Submit Form"></p>
-						</form>
+                <div class="external">
+                    <h4>Login to w-net with </h4>
+                    <div id="login_facebook" class="login-external-button" >
+                        <form method="post" action="{% url "facebook_login" %}">
+                            {% csrf_token %}
+                            <p><INPUT TYPE="image" SRC="/static/piplmesh/images/login-facebook.png"  BORDER="0" ALT="Submit Form"></p>
+                        </form>
 
-					</div>
-					
-					<div id="login_twitter" class="login-external-button" action="{% url "twitter_login" %}" >
-						<form method="post" >
-							{% csrf_token %}
-							<p><INPUT TYPE="image" SRC="/static/piplmesh/images/login-twitter.png"  BORDER="0" ALT="Submit Form"></p>
-						</form>
-					</div>
-					<div id="google_login_form4" class="login-external-button"  action="{% url "twitter_login" %}">
-						<form method="post" >
-							{% csrf_token %}
-							<p><INPUT TYPE="image" SRC="/static/piplmesh/images/login-google.png"  BORDER="0" ALT="Submit Form"></p>
-						</form>
-					</div>					
-					<div id="foursquare_login_form4" class="login-external-button" action="{% url "foursquare_login" %}" >
-						<form method="post" >
-							{% csrf_token %}
-							<p><INPUT TYPE="image" SRC="/static/piplmesh/images/login-foursquare.png"  BORDER="0" ALT="Submit Form"></p>
-						</form>
-					</div>  
-				</div>
-					<div class="clearfix">&nbsp;</div> 
-				</div>
-		</div>
+                    </div>
+                    
+                    <div id="login_twitter" class="login-external-button" action="{% url "twitter_login" %}" >
+                        <form method="post" >
+                            {% csrf_token %}
+                            <p><INPUT TYPE="image" SRC="/static/piplmesh/images/login-twitter.png"  BORDER="0" ALT="Submit Form"></p>
+                        </form>
+                    </div>
+                    <div id="google_login_form4" class="login-external-button"  action="{% url "twitter_login" %}">
+                        <form method="post" >
+                            {% csrf_token %}
+                            <p><INPUT TYPE="image" SRC="/static/piplmesh/images/login-google.png"  BORDER="0" ALT="Submit Form"></p>
+                        </form>
+                    </div>                  
+                    <div id="foursquare_login_form4" class="login-external-button" action="{% url "foursquare_login" %}" >
+                        <form method="post" >
+                            {% csrf_token %}
+                            <p><INPUT TYPE="image" SRC="/static/piplmesh/images/login-foursquare.png"  BORDER="0" ALT="Submit Form"></p>
+                        </form>
+                    </div>  
+                </div>
+                    <div class="clearfix">&nbsp;</div> 
+                </div>
+        </div>
     </div>
 {% endblock %}

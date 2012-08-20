@@ -55,27 +55,23 @@ form input[type="submit"], form input[type="reset"] {
 }
 
 .field-form {
-    border:0 none;
-
-
+    border: 0 none;
 }
 
 .field-form-text {
     display: block;
     float: right;
-    margin-right:10px;
+    margin-right: 10px;
     text-align: right;
     width: 120px;
     line-height: 20px;
-
 }
 
 .field-form-input {
-    float:right;
+    float: right;
     padding: 5px;
     width: 220px;
     text-align: right
-
 }
 
 .form_fields .field {
@@ -83,32 +79,31 @@ form input[type="submit"], form input[type="reset"] {
     padding: 0.2em 0.3em;
     clear: left;
     min-height: 2em;
-
 }
 
 .form_fields .field input {
-width: 10.3em;
-border: 1px solid #AFAFAF;
+    width: 10.3em;
+    border: 1px solid #AFAFAF;
 }
 
 .form_fields .field input[type="radio"], input[type="checkbox"] {
-width: auto;
-border: none;
+    width: auto;
+    border: none;
 }
 
 .form_fields .field label {
-float: left;
-width: 16em;
-padding-right: 2em;
-margin-left: -13em;
+    float: left;
+    width: 16em;
+    padding-right: 2em;
+    margin-left: -13em;
 }
 
 .input_invalid {
-background-color: #ff0000;
+    background-color: #FF0000;
 }
 
 .input_invalid_text {
-color: #ff0000;
+    color: #FF0000;
 }
 
 /* Styling nested lists such as radio buttons */
@@ -172,7 +167,7 @@ color: #ff0000;
 
 #header .user li {
     float: left;
-    border-right: 1px solid #d7d7d7;
+    border-right: 1px solid #D7D7D7;
     display: inline;
     padding: 0 .75em;
     white-space: nowrap;
@@ -410,7 +405,6 @@ input.gsc-search-button {
 .buttons {
     padding-top: 20px;
     text-align: right;
-
 }
 
 .buttons input {
@@ -433,7 +427,7 @@ input.gsc-search-button {
     text-align: center;
     font-size: 10px;
     color: #474747;
-    border-top: 1px solid #BBB;
+    border-top: 1px solid #BBBBBB;
     height: 60px;
 }
 
@@ -458,7 +452,7 @@ input.gsc-search-button {
 #language ul li {
     display: inline-block;
     font-weight: bold;
-    color: black;
+    color: #000000;
     float: left;
     margin-left: 2px;
     margin-right: 2px;

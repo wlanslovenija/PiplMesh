@@ -10,10 +10,8 @@
 {% block title %}{% trans "Registration" %}{% endblock %}
 
 {% block content %}
-
         {% with form_submit=_("Register") %}
             {% url "registration" as form_action %}
             {% include "form/form.html" %}
         {% endwith %}
-
 {% endblock %}
