@@ -3,12 +3,12 @@ var nodeWebsite;
 var timer;
 var myOptions;
 var nodeLocation;
+var map;
 
 document.onkeydown = function(evt) {
     evt = evt || window.event;
     if (evt.keyCode == 27) {
         close_advanced_map();
-
     }
 };
 
@@ -18,8 +18,9 @@ $(document).ready(function () {
     nodeName.append(nodeWebsite);
     $('#map-info').append(nodeName);
     var timerMap;
-    define_map("map");
+    define_map();
     $("#basic-map-extend-img").click(function() {
+        setExtendedMapControls();
         open_advanced_map();
     });
 });
@@ -34,10 +35,10 @@ function getStyle(el,styleProp)
     return y;
 }
 
-function define_map(div_tag){
+function define_map(){
     nodeLocation = new google.maps.LatLng(node.latitude, node.longitude);
     myOptions = {
-        zoom: 15,
+        zoom: 12,
         center: nodeLocation,
         scrollwheel: false,
         navigationControl: false,
@@ -46,13 +47,28 @@ function define_map(div_tag){
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: false
     };
-    map = new google.maps.Map(document.getElementById(div_tag), myOptions);
+    map = new google.maps.Map(document.getElementById("map"), myOptions);
     var marker = new google.maps.Marker({
             position: nodeLocation,
             map: map,
             title: node.name
         }
     );
+}
+
+function setExtendedMapControls(){
+    map.set('navigationControl',true);
+    map.set('scaleControl', true);
+    map.set('draggable', true);
+    map.set('streetViewControl', true);
+    map.setZoom(16);
+}
+function setBasicMapControls(){
+    map.set('navigationControl',false);
+    map.set('scaleControl', false);
+    map.set('draggable', false);
+    map.set('streetViewControl', false);
+    map.setZoom(12);
 }
 
 function close_advanced_map(){
@@ -65,6 +81,7 @@ function close_advanced_map(){
         $('#overlay').remove();
         $('#advanced-map').remove();
         document.getElementById('basic-map-extend-img').style.visibility="visible";
+        setBasicMapControls();
     });
 }
 
@@ -82,5 +99,4 @@ function open_advanced_map(){
     }, 500, "linear", function(){
         google.maps.event.trigger(map, 'resize');
     });
-
 }
