@@ -172,6 +172,17 @@ form input[type="submit"], form input[type="reset"] {
     font-size: 10px;
 }
 
+a.browserid-signin:link, a.browserid-signin:visited {
+    background: url("../images/btn-browserid.png") no-repeat scroll -1px 50% #555555;
+    border: 1px outset rgba(50, 50, 50, 0.5);
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF !important;
+    padding: 1px 10px 1px 28px;
+}
+a.browserid-signin:hover, a.browserid-signin:focus, a.browserid-link:active {
+    background-color: #666666;
+}
+
 td.gsc-clear-button, table.gsc-branding {
     display: none;
 }

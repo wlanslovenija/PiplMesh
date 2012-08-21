@@ -30,3 +30,4 @@ python-dateutil==1.5
 tornado==2.3
 tweepy==1.9
 wsgiref==0.1.2
+-e git+https://github.com/Naltharial/django-mongo-browserid#egg=django-mongo-browserid

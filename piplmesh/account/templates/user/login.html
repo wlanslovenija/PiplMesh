@@ -40,6 +40,13 @@
                             <p><button type="submit" class="google_login_button"><span class="google_button_text">{% trans "Login with Google" %}</span></button></p>
                         </form>
                     </li>
+                    <li>
+						<form method="POST" action="{% url "browserid_verify" %}">
+						   {% csrf_token %}
+						   {{ browserid_form.as_p }}
+						   <p><a id="browserid" class="browserid-signin" title="{% trans "Sign in with BrowserID" %}" aria-haspopup="true" target="_blank" href="#">{% trans "Sign in with BrowserID" %}</a></p>
+						</form>
+                    </li>
                     <li>{% comment %}Place for OpenID button.{% endcomment %}</li>
                     <li><a href="{% url "registration" %}">{% trans "Register" %}</a></li>
                 </ul>

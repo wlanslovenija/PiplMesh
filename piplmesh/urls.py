@@ -74,6 +74,9 @@ urlpatterns = patterns('',
 
     # Internals
     url(r'^' + PUSH_SERVER_URL, include('pushserver.urls')),
+    
+    #BrowserID
+    (r'^browserid/', include('django_mongo_browserid.urls')),
 )
 
 if getattr(settings, 'DEBUG', False):
