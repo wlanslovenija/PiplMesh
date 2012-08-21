@@ -46,10 +46,10 @@
                     <li><a href="{% url "login" %}?{{ REDIRECT_FIELD_NAME }}={{ next_url }}">{% trans "Login" %}</a></li>
                     <li><a href="{% url "registration" %}">{% trans "Register" %}</a></li>
                     <li class="last"><a id="browserid" class="browserid-signin" title="{% trans "Sign in with BrowserID" %}" aria-haspopup="true" target="_blank" href="#">{% trans "BrowserID" %}</a></li>
-					<form method="POST" action="{% url "browserid_verify" %}">
-					   {% csrf_token %}
-					   {{ browserid_form.as_p }}
-					</form>
+                    <form method="POST" action="{% url "browserid_verify" %}">
+                        {% csrf_token %}
+                        {{ browserid_form.as_p }}
+                    </form>
                 {% endif %}
             </ul>
         {% endwith %}
