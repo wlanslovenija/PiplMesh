@@ -3,19 +3,19 @@ var POSTS_LIMIT = 20;
 function Post(data) {
     var self = this;
     $.extend(self, data);
-
     // Calculates difference between current time and the time when the post was created and generates a message
     function formatPostDate(post_date) {
         // TODO: bug, it doesn't work in chrome on windows
-        var created_time_diff = (new Date().getTime() - new Date(Date.parse(post_date)).getTime())/1000/60;
+        // Converting time from milliseconds to minutes
+        var created_time_diff = (new Date().getTime() - new Date(Date.parse(post_date))) / (60 * 1000);
         if (created_time_diff < 2) {
             msg = "just now";
         }
-        else if (created_time_diff >= 60*24) {
-            msg = Math.round(created_time_diff/60/24) + " days ago";
+        else if (created_time_diff >= 60 * 24) {
+            msg = Math.round(created_time_diff / 60 / 24) + " days ago";
         }
         else if (created_time_diff >= 60) {
-            msg = Math.round(created_time_diff/60) + " hours ago";
+            msg = Math.round(created_time_diff / 60) + " hours ago";
         }
         else {
             msg = Math.round(created_time_diff) + " minutes ago";
@@ -31,9 +31,8 @@ function Post(data) {
             .append(post_options)
             .append($('<span/>').prop('class', 'author').text(self.author['username']))
             .append($('<p/>').prop('class', 'content').text(self.message))
-            .append($('<span/>').prop('class', 'date').text(formatPostDate(self.created_time))
-        );
-        post.data("id", data.id);
+            .append($('<span/>').prop('class', 'date').text(formatPostDate(self.created_time)));
+        post.data('id', data.id);
         return post;
     }
 
@@ -125,5 +124,4 @@ $(document).ready(function () {
             }
         }
     });
-
 });
