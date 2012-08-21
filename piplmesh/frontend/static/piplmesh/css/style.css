@@ -436,7 +436,6 @@ input.gsc-search-button {
     margin-top: 50px;
 }
 
-/* buttons */
 .buttons {
     padding-top: 20px;
     text-align: right;
@@ -465,7 +464,6 @@ input.gsc-search-button {
     color: #474747;
     border-top: 1px solid #BBB;
     height: 60px;
-    clear: both;
 }
 
 #footer a {
@@ -580,10 +578,6 @@ input.gsc-search-button {
 }
 
 /* ------------------ PANELS ---------------------------- */
-#panels {
-    float: right;
-}
-
 .panel {
     width: 260px;
 }
@@ -650,4 +644,23 @@ input.gsc-search-button {
 .post .options {
     font-size: 10px;
     float: right;
+}
+
+/* ------------------ CONTACT ---------------------------- */
+.contact_form {
+    width: 960px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.contact_form h1 {
+    margin-left: 280px;
+}
+
+.contact_form textarea {
+    width: 300px;
+}
+
+.contact_comment p {
+    margin-left: 100px;
 }

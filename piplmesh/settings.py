@@ -177,7 +177,7 @@ INSTALLED_APPS = (
     'piplmesh.nodes',
     'piplmesh.utils',
     'piplmesh.panels',
-    'piplmesh.panels.horoscope',
+    'piplmesh.panels.horoscope', # To load manage.py command
 
     'django.contrib.messages',
     'django.contrib.sessions',
@@ -228,17 +228,7 @@ CELERY_MONGODB_BACKEND_SETTINGS = {
     'taskmeta_collection': 'celery_taskmeta',
 }
 
-BROKER_BACKEND = 'mongodb'
-BROKER_HOST = 'localhost'
-BROKER_PORT = 27017
-BROKER_USER = ''
-BROKER_PASSWORD = ''
-BROKER_VHOST = 'celery'
-
-CELERY_IMPORTS = (
-    'piplmesh.frontend.tasks',
-    'piplmesh.panels.horoscope.tasks',
-)
+BROKER_URL = 'mongodb://127.0.0.1:27017/celery'
 
 CELERYBEAT_SCHEDULE = {
     'check_online_users': {

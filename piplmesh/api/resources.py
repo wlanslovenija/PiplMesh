@@ -2,10 +2,8 @@ from tastypie import authorization as tastypie_authorization, fields as tastypie
 
 from tastypie_mongoengine import fields, paginator, resources
 
-from pushserver.utils import updates
-
 from piplmesh.account import models as account_models
-from piplmesh.api import authorization, models as api_models, signals
+from piplmesh.api import models as api_models, signals
 
 class UserResource(resources.MongoEngineResource):
     class Meta:
@@ -61,9 +59,7 @@ class AttachmentResource(AuthoredResource):
         }
 
 class PostResource(AuthoredResource):
-
     updated_time = tastypie_fields.DateTimeField(attribute='updated_time', null=False, readonly=True)
-
     comments = fields.EmbeddedListField(of='piplmesh.api.resources.CommentResource', attribute='comments', default=lambda: [], null=True, full=False)
     attachments = fields.EmbeddedListField(of='piplmesh.api.resources.AttachmentResource', attribute='attachments', default=lambda: [], null=True, full=True)
 
