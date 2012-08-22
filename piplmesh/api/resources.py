@@ -69,6 +69,12 @@ class PostResource(AuthoredResource):
         return bundle
 
     class Meta:
+        '''
+        Query set is ordered by updated time for following reasons:
+            - those who open web page will get posts in updated time order,
+            - others with already opened page will get updated posts again as they will request them based on ID of current newest post.
+        This is useful if we would like to show on the client side that post has been updated (but we do not necessary have to reorder them).
+        '''
         queryset = api_models.Post.objects.all().order_by('-updated_time')
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         authorization = authorization.PostAuthorization()
