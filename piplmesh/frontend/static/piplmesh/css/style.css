@@ -464,6 +464,7 @@ input.gsc-search-button {
     color: #474747;
     border-top: 1px solid #BBB;
     height: 60px;
+    clear: both;
 }
 
 #footer a {
