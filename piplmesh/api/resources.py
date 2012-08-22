@@ -61,10 +61,13 @@ class AttachmentResource(AuthoredResource):
 class PostResource(AuthoredResource):
     """
     Query set is ordered by updated time for following reasons:
-    - those who open web page will get posts in updated time order,
-    - others with already opened page will get updated posts again as they will request them based on ID of current newest post.
+
+        - those who open web page will get posts in updated time order,
+        - others with already opened page will get updated posts again as they will request them based on ID of current newest post.
+
     This is useful if we would like to show on the client side that post has been updated (but we do not necessary have to reorder them).
     """
+
     updated_time = tastypie_fields.DateTimeField(attribute='updated_time', null=False, readonly=True)
     comments = fields.EmbeddedListField(of='piplmesh.api.resources.CommentResource', attribute='comments', default=lambda: [], null=True, full=False)
     attachments = fields.EmbeddedListField(of='piplmesh.api.resources.AttachmentResource', attribute='attachments', default=lambda: [], null=True, full=True)

@@ -3,35 +3,39 @@ var POSTS_LIMIT = 20;
 function Post(data) {
     var self = this;
     $.extend(self, data);
+
     // Calculates difference between current time and the time when the post was created and generates a message
     function formatPostDate(post_date) {
-        // TODO: bug, it doesn't work in chrome on windows
+        // TODO: bug, it doesn't work in chrome on windows and in safari on osx
         var created_time_diff = (new Date().getTime() - new Date(Date.parse(post_date))) / (60 * 1000); // Converting time from milliseconds to minutes
 
         if (created_time_diff < 2) { // minutes
             msg = gettext("just now");
         }
         else if (created_time_diff >= 60 * 24) { // 24 hours, 1 day
-            msg = Math.round(created_time_diff / 60 / 24) + gettext(" days ago");
+            var format = gettext("%(days)s days ago")
+            msg = interpolate(format, {'days': Math.round(created_time_diff / (60 * 24))}, true);
         }
         else if (created_time_diff >= 60) { // 60 minutes, 1 hour
-            msg = Math.round(created_time_diff / 60) + gettext(" hours ago");
+            var format = gettext("%(hours)s hours ago")
+            msg = interpolate(format, {'hours': Math.round(created_time_diff / 60)}, true);
         }
         else {
-            msg = Math.round(created_time_diff) + gettext(" minutes ago");
+            var format = gettext("%(minutes)s minutes ago")
+            msg = interpolate(format, {'minutes': Math.round(created_time_diff)}, true);
         }
         return msg;
     }
 
     function generateHtml() {
-        var post_options = $('<ul/>').prop('class', 'options')
+        var post_options = $('</ul>').addClass('options')
             .append($('<li/>').html('<a class="delete-post hand">Delete post</a>'));
 
-        var post = $('<li/>').prop('class', 'post')
+        var post = $('<li/>').addClass('post')
             .append(post_options)
-            .append($('<span/>').prop('class', 'author').text(self.author['username']))
-            .append($('<p/>').prop('class', 'content').text(self.message))
-            .append($('<span/>').prop('class', 'date').text(formatPostDate(self.created_time)));
+            .append($('<span/>').addClass('author').text(self.author['username']))
+            .append($('<p/>').addClass('content').text(self.message))
+            .append($('<span/>').addClass('date').text(formatPostDate(self.created_time)));
         post.data('id', data.id);
         return post;
     }
@@ -72,7 +76,7 @@ function postUpdateList(data){
 $(document).ready(function () {
     $.ajaxSetup({
         error: function (jqXHR, textStatus, errorThrown) {
-            window.console.error(errorThrown);
+            window.console.error(jqXHR, textStatus, errorThrown);
             alert(gettext("Oops, something went wrong..."));
         }
     });
@@ -80,28 +84,31 @@ $(document).ready(function () {
     $.updates.registerProcessor('home_channel', 'posts', postUpdateList);
 
     $('.panel .header').click(function (event) {
-        $(this).next('ul').slideToggle('fast');
+        $(this).next('.content').slideToggle('fast');
     });
 
-    // Saving text from post input box.
+    // Saving text from post input box
     var input_box_text = $('#post_text').val();
 
     // Shows last updated posts, starting at offset 0, limited to POSTS_LIMIT
     showLastPosts(0);
 
     $('#submit_post').click(function () {
-        var message = $('#post_text').val().trim();
+        var message = $('#post_text').val();
         var is_published = true;
         if (message != '') {
             $.ajax({
                 type: 'POST',
                 url: '/api/v1/post/',
-                data: JSON.stringify({'message': message, 'is_published': is_published}),
+                data: JSON.stringify({
+                        'message': message,
+                        'is_published': is_published
+                }),
                 contentType: 'application/json',
                 dataType: "json",
                 success: function (output, status, header) {
                     $('#post_text').val(input_box_text);
-                    $('#post_text').css({'min-height':25});
+                    $('#post_text').css('min-height', 25);
                 }
             });
         }
