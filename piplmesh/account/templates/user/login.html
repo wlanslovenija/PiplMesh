@@ -44,7 +44,7 @@
                         <form method="POST" action="{% url "browserid_verify" %}">
                             {% csrf_token %}
                             {{ browserid_form.as_p }}
-                           <p><a id="browserid" class="browserid-signin" title="{% trans "Sign in with BrowserID" %}" aria-haspopup="true" target="_blank" href="#">{% trans "Sign in with BrowserID" %}</a></p>
+                           <p><a id="browserid" class="browserid-signin" title="{% trans "Sign in with Persona" %}" aria-haspopup="true" target="_blank" href="#">{% trans "Sign in with Persona" %}</a></p>
                         </form>
                     </li>
                     <li>{% comment %}Place for OpenID button.{% endcomment %}</li>
