@@ -578,6 +578,10 @@ input.gsc-search-button {
 }
 
 /* ------------------ PANELS ---------------------------- */
+#panels {
+    float: right;
+}
+
 .panel {
     width: 260px;
 }
