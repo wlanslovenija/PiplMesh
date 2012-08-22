@@ -101,8 +101,6 @@ def forbidden_view(request, reason=''):
         'no_referer': reason == csrf.REASON_NO_REFERER,
     })))
 
-
-
 @dispatch.receiver(signals.post_created)
 def send_update_on_new_post(sender, post_object, **kwargs):
     """

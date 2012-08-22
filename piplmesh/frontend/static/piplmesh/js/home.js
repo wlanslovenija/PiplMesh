@@ -1,4 +1,5 @@
 var POSTS_LIMIT = 20;
+var POST_FIELD_TEXT;
 
 function Post(data) {
     var self = this;
@@ -12,13 +13,13 @@ function Post(data) {
             msg = "just now";
         }
         else if (created_time_diff >= 60 * 24) {
-            msg = Math.round(created_time_diff / 60 / 24) + " days ago";
+            msg = Math.round(created_time_diff / 60 / 24) + gettext(" days ago");
         }
         else if (created_time_diff >= 60) {
-            msg = Math.round(created_time_diff / 60) + " hours ago";
+            msg = Math.round(created_time_diff / 60) + gettext(" hours ago");
         }
         else {
-            msg = Math.round(created_time_diff) + " minutes ago";
+            msg = Math.round(created_time_diff) + gettext(" minutes ago");
         }
         return msg;
     }
@@ -69,12 +70,18 @@ function postUpdateList(data){
     }
 }
 
+function savePostFieldInitialState(){
+    POST_FIELD_TEXT = $('#post_text').val().trim();
+}
+
 $(document).ready(function () {
     $.updates.registerProcessor('home_channel', 'posts', postUpdateList);
 
     $('.panel .header').click(function (event) {
         $(this).next('ul').slideToggle('fast');
     });
+
+    savePostFieldInitialState();
 
     // Shows last updated posts, starting at offset 0, limited to POSTS_LIMIT
     showLastPosts(0);
@@ -90,12 +97,12 @@ $(document).ready(function () {
                 contentType: 'application/json',
                 dataType: "json",
                 success: function (output, status, header) {
-                    $('#post_text').val('Write a post...');
+                    $('#post_text').val(POST_FIELD_TEXT);
                     $('#post_text').css({'min-height':25});
                 },
                 error: function (error) {
                     console.log(error);
-                    alert("Oops, something went wrong... ");
+                    alert(gettext("Oops, something went wrong... "));
                 }
             });
         }
@@ -103,7 +110,7 @@ $(document).ready(function () {
 
     $('#post_text').expandingTextArea();
     $('#post_text').click(function () {
-        if ($('#post_text').val() == 'Write a post...') {
+        if ($('#post_text').val() == POST_FIELD_TEXT) {
             $('#post_text').val('');
         }
         $('#post_text').css({'min-height':50});
@@ -111,7 +118,7 @@ $(document).ready(function () {
 
     $('#post_text').blur(function () {
         if ($('#post_text').val().trim() == '') {
-            $('#post_text').val('Write a post...');
+            $('#post_text').val(POST_FIELD_TEXT);
             $('#post_text').css({'min-height': 25});
         }
     });
