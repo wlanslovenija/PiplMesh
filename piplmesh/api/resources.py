@@ -3,7 +3,7 @@ from tastypie import authorization as tastypie_authorization, fields as tastypie
 from tastypie_mongoengine import fields, paginator, resources
 
 from piplmesh.account import models as account_models
-from piplmesh.api import models as api_models, signals
+from piplmesh.api import authorization, models as api_models, signals
 
 class UserResource(resources.MongoEngineResource):
     class Meta:
@@ -77,5 +77,5 @@ class PostResource(AuthoredResource):
         '''
         queryset = api_models.Post.objects.all().order_by('-updated_time')
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
-        authorization = authorization.PostAuthorization()
+        auth = authorization.PostAuthorization()
         paginator_class = paginator.Paginator
