@@ -42,49 +42,9 @@ button span {
 }
 
 /* -------------------- FORMS --------------------- */
-
-form input {
-    border: 1px solid #BBBBBB;
-    background: #FFFFFF;
-}
-
-form input[type=image] {
-    border: 0;
-}
-
-form input:focus {
-    border: 1px solid #999999;
-}
-
-input[type=submit], input[type=reset], input[type=button] {
-    background-attachment: scroll;
-    background-clip: border-box;
-    background-color: transparent;
-    background-image: -moz-linear-gradient(#F1F1F1, #DFDFDF);
-    background-image: -ms-linear-gradient(#F1F1F1, #DFDFDF);
-    background-image: -webkit-linear-gradient(#F1F1F1, #DFDFDF);
-    background-image: -o-linear-gradient(#F1F1F1, #DFDFDF);
-    background-origin: padding-box;
-    background-position: 0 0;
-    border-radius: 3px;
-    border-bottom-color: #999999;
-    border-right-color: #999999;
-    border-top-color: #CCCCCC;
-    border-left-color: #CCCCCC;
-    border-style: solid;
-    border-width: 1px;
-    box-shadow: 1px 1px 0 #E7E7E7, 0 1px 0 #FCFCFC inset, 0 -1px 0 #D7D7D7 inset;
-    color: #000000;
-}
-
-input[type=submit]:hover, input[type=reset]:hover, input[type=button]:hover {
-    background-image: -moz-linear-gradient(#F0F0F0, #D0D0D0);
-    background-image: -ms-linear-gradient(#F0F0F0, #D0D0D0);
-    background-image: -webkit-linear-gradient(#F0F0F0, #D0D0D0);
-    background-image: -o-linear-gradient(#F0F0F0, #D0D0D0);
-}
-
 form input[type="submit"], form input[type="reset"] {
+    border: 1px solid gray;
+    font-weight: bold;
     min-width: 105px;
     padding: 5px;
     cursor: pointer;
@@ -94,45 +54,16 @@ form input[type="submit"], form input[type="reset"] {
     list-style-type: none;
 }
 
-.field_form {
-    border: 0 none;
-    min-width: 280px;
-    clear: both;
-}
-
-.field_form li {
-    margin-bottom: 1em;
-}
-
-.field_form label, .field_form input {
-    display: block;
-    float: left;
-}
-
-.field_form .field_error {
-    display: block;
-    clear: both;
-}
-
-.field_form label {
-    width: 95px;
-    margin-right: 5px;
-}
-
-.field_form input[type="password"],
-.field_form input[type="text"] {
-    width: 180px;
-}
-
 .form_fields .field {
     margin: 0.1em 0 0.1em 0;
     padding: 0.2em 0.3em;
     clear: left;
+    margin-left: 13em;
     min-height: 2em;
 }
 
 .form_fields .field input {
-    width: 10.3em;
+    width: 15.3em;
     border: 1px solid #AFAFAF;
 }
 
@@ -149,11 +80,11 @@ form input[type="submit"], form input[type="reset"] {
 }
 
 .input_invalid {
-    background-color: #FF0000;
+    background-color: #ff0000;
 }
 
 .input_invalid_text {
-    color: #FF0000;
+    color: #ff0000;
 }
 
 /* Styling nested lists such as radio buttons */
@@ -217,7 +148,7 @@ form input[type="submit"], form input[type="reset"] {
 
 #header .user li {
     float: left;
-    border-right: 1px solid #D7D7D7;
+    border-right: 1px solid #d7d7d7;
     display: inline;
     padding: 0 .75em;
     white-space: nowrap;
@@ -269,12 +200,24 @@ td.gsc-clear-button, table.gsc-branding {
 }
 
 input.gsc-search-button {
-    border-bottom-left-radius: 0px;
-    border-top-left-radius: 0px;
-    border-left-color: #969696;
-}
-
-input.gsc-search-button {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: transparent;
+    background-image: -moz-linear-gradient(#F1F1F1, #DFDFDF);
+    background-image: -ms-linear-gradient(#F1F1F1, #DFDFDF);
+    background-image: -webkit-linear-gradient(#F1F1F1, #DFDFDF);
+    background-origin: padding-box;
+    background-position: 0 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-color: #999999;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-top-right-radius: 3px;
+    border-top-color: #CCCCCC;
+    border-top-style: solid;
+    border-top-width: 1px;
+    box-shadow: 1px 1px 0 #E7E7E7, 0 1px 0 #FCFCFC inset, 0 -1px 0 #D7D7D7 inset;
+    color: #000000;
     cursor: pointer;
     font-size: 1em;
     height: 28px;
@@ -317,72 +260,19 @@ input.gsc-search-button {
 }
 
 /* -------------------- AUTHENTICATION ------------------------ */
-.internal {
-    float: left;
-    padding-right: 4em;
-    text-align: right;
+.auth_button {
+    background: none;
+    border: none;
+    padding: 0px;
+    margin: 0px;
+    cursor: pointer;
+    color: #68AE2C;
+    font-size: 13px;
+    text-decoration: none;
 }
 
-.login-container {
-    background-color: #FAFAFF;
-    margin: 0 auto;
-    padding: 2em;
-    white-space: nowrap;
-    width: 700px;
-}
-
-.login-container {
-    border-color: #CCCCCC #BBBBBB #AAAAAA #CCCCCC;
-    border-radius: 5px;
-    border-style: solid;
-    border-width: 1px;
-    box-shadow: 2px 2px 5px #CCCCCC;
-}
-
-.separator {
-    border-left: 1px solid #CCCCCC;
-    display: inline-block;
-    float: left;
-    height: 270px;
-    margin: 0 2em;
-    padding: 0;
-    position: relative;
-    text-align: center;
-    vertical-align: baseline;
-    white-space: nowrap;
-    width: 1px;
-}
-
-.external {
-    display: inline;
-    float: right;
-    margin: 0 5em 0 3em;
-}
-
-.field_form,
-.internal ul,
-.external ul {
-	list-style: none;
-	padding-left: 0;
-}
-
-.clearfix {
-    clear: both;
-    font-size: 1px;
-}
-
-.separator-text {
-    background-color: #FAFAFF;
-    color: #444444;
-    display: inline-block;
-    font-size: 16px;
-    letter-spacing: 2px;
-    margin-left: -1.5em;
-    margin-top: -0.5em;
-    padding: 0.7em;
-    position: relative;
-    text-transform: uppercase;
-    top: 40%;
+.auth_button:hover span {
+    text-decoration: underline;
 }
 
 #email_confirmation {
@@ -391,10 +281,6 @@ input.gsc-search-button {
 
 #email_confirmation_process_token input[type=text]  {
     width: 500px;
-}
-
-.fb_login_button, .google_login_button, .foursquare_login_button, .twitter_login_button {
-	border-radius: 3px;
 }
 
 /* ---------------- FB LOGIN BUTTON ------------------- */
@@ -548,6 +434,7 @@ input.gsc-search-button {
 .buttons {
     padding-top: 20px;
     text-align: right;
+    width: 482px;
 }
 
 .buttons input {
@@ -570,7 +457,7 @@ input.gsc-search-button {
     text-align: center;
     font-size: 10px;
     color: #474747;
-    border-top: 1px solid #BBBBBB;
+    border-top: 1px solid #BBB;
     height: 60px;
 }
 
@@ -595,7 +482,7 @@ input.gsc-search-button {
 #language ul li {
     display: inline-block;
     font-weight: bold;
-    color: #000000;
+    color: black;
     float: left;
     margin-left: 2px;
     margin-right: 2px;

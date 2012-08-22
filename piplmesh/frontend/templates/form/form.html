@@ -19,24 +19,23 @@ where the form should redirect after submission.
             <div style="display: none;"><input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" /></div>
         {% endwith %}
         {% if form.fields %}
-                <ul class="field_form">
+            <ul class="form_fields">
                 {% for field in form %}
-                    <li>
-                        <label>
-                                {% if field.field.required %}
-                                    <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
-                                {% else %}
-                                    {{ field.label }}
-                                {% endif %}
+                    <li class="field_error">
+                        {{ field.errors }}
+                    </li>
+                    <li class="field">
+                        <label for="{{ field.id_for_label }}">
+                            {% if field.field.required %}
+                                <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
                         </label>
                         {{ field }}
-                        <span class="field_error">
-                            {{ field.errors }}
-                        </span>
                     </li>
                 {% endfor %}
-                </ul>
+            </ul>
         {% endif %}
         <div class="buttons"><input type="submit" value="{{ form_submit }}" /></div>
-        <div class="clearfix">&nbsp;</div>
     </form>
