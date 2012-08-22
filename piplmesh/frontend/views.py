@@ -1,6 +1,6 @@
 import smtplib
 
-from django import http, template
+from django import dispatch, http, template
 from django.conf import settings
 from django.contrib import messages
 from django.core import mail, urlresolvers
@@ -15,7 +15,7 @@ from mongogeneric import detail
 from pushserver.utils import updates
 
 from piplmesh.account import models as account_models
-from piplmesh.api import models as api_models, resources
+from piplmesh.api import models as api_models, resources, signals
 from piplmesh.frontend import forms
 
 HOME_CHANNEL_ID = 'home'

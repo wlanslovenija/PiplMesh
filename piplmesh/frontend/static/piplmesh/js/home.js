@@ -9,7 +9,7 @@ function Post(data) {
         var created_time_diff = (new Date().getTime() - new Date(Date.parse(post_date))) / (60 * 1000); // Converting time from milliseconds to minutes
 
         if (created_time_diff < 2) { // minutes
-            msg = "just now";
+            msg = gettext("just now");
         }
         else if (created_time_diff >= 60 * 24) { // 24 hours, 1 day
             msg = Math.round(created_time_diff / 60 / 24) + gettext(" days ago");
@@ -69,24 +69,22 @@ function postUpdateList(data){
     }
 }
 
-function savePostFieldInitialState(){
-    return $('#post_text').val();
-}
-
 $(document).ready(function () {
     $.ajaxSetup({
-        error: function (error) {
-            console.log(error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            window.console.error(errorThrown);
             alert(gettext("Oops, something went wrong..."));
         }
-    })
+    });
+
     $.updates.registerProcessor('home_channel', 'posts', postUpdateList);
 
     $('.panel .header').click(function (event) {
         $(this).next('ul').slideToggle('fast');
     });
 
-    post_initial_state = savePostFieldInitialState();
+    // Saving text from post input box.
+    var input_box_text = $('#post_text').val();
 
     // Shows last updated posts, starting at offset 0, limited to POSTS_LIMIT
     showLastPosts(0);
@@ -102,7 +100,7 @@ $(document).ready(function () {
                 contentType: 'application/json',
                 dataType: "json",
                 success: function (output, status, header) {
-                    $('#post_text').val(post_initial_state);
+                    $('#post_text').val(input_box_text);
                     $('#post_text').css({'min-height':25});
                 }
             });
@@ -111,7 +109,7 @@ $(document).ready(function () {
 
     $('#post_text').expandingTextArea();
     $('#post_text').focus(function () {
-        if ($('#post_text').val() == post_initial_state) {
+        if ($('#post_text').val() == input_box_text) {
             $('#post_text').val('');
         }
         $('#post_text').css('min-height', 50);
@@ -119,7 +117,7 @@ $(document).ready(function () {
 
     $('#post_text').blur(function () {
         if ($('#post_text').val().trim() == '') {
-            $('#post_text').val(post_initial_state);
+            $('#post_text').val(input_box_text);
             $('#post_text').css('min-height', 25);
         }
     });

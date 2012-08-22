@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-22 15:08+0200\n"
+"POT-Creation-Date: 2012-08-22 19:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jon Premik <jon.premik@gmail.com>\n"
 "Language-Team: \n"
@@ -25,6 +25,10 @@ msgstr ""
 msgid "Invalid e-mail."
 msgstr ""
 
+#: frontend/static/piplmesh/js/home.js:12
+msgid "just now"
+msgstr ""
+
 #: frontend/static/piplmesh/js/home.js:15
 msgid " days ago"
 msgstr ""
@@ -37,7 +41,7 @@ msgstr ""
 msgid " minutes ago"
 msgstr ""
 
-#: frontend/static/piplmesh/js/home.js:80
+#: frontend/static/piplmesh/js/home.js:76
 msgid "Oops, something went wrong..."
 msgstr ""
 

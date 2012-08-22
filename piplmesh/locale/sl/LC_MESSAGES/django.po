@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-22 15:04+0200\n"
+"POT-Creation-Date: 2012-08-22 19:46+0200\n"
 "PO-Revision-Date: 2012-05-18 12:29+0100\n"
 "Last-Translator: Martin Jakomin <martin.jakomin@gmail.com>\n"
 "Language-Team: \n"
@@ -454,7 +454,7 @@ msgstr ""
 msgid "Send my current location"
 msgstr "Pošlji mojo trenutno lokacijo"
 
-#: frontend/templates/posts.html:5
+#: frontend/templates/posts.html:6
 msgid "Write a post..."
 msgstr ""
 
