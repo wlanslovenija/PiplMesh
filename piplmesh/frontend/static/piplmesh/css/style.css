@@ -434,7 +434,6 @@ input.gsc-search-button {
     margin-top: 50px;
 }
 
-/* buttons */
 .buttons {
     padding-top: 20px;
     text-align: right;
@@ -630,4 +629,23 @@ input.gsc-search-button {
 #spinner {
     z-index: 100;
     position: relative;
+}
+
+/* ------------------ CONTACT ---------------------------- */
+.contact_form {
+    width: 960px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.contact_form h1 {
+    margin-left: 280px;
+}
+
+.contact_form textarea {
+    width: 300px;
+}
+
+.contact_comment p {
+    margin-left: 100px;
 }
