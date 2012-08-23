@@ -24,6 +24,10 @@ a img {
     border: none;
 }
 
+h1 {
+    margin: 1em 0 0.75em 0;
+}
+
 /* Disables 3d push effect on button (IE) */
 button {
     position: relative;
@@ -53,13 +57,6 @@ form input[type="submit"], form input[type="reset"] {
 .form_fields {
     list-style-type: none;
     padding-left: 0;
-}
-
-.form_fields .field {
-    margin: 0.1em 0 0.1em 0;
-    padding: 0.2em 0;
-    clear: left;
-    min-height: 2em;
 }
 
 .form_fields .field input {
@@ -137,6 +134,22 @@ input.gsc-search-button:hover,
     background-image: -ms-linear-gradient(#F0F0F0, #D0D0D0);
     background-image: -webkit-linear-gradient(#F0F0F0, #D0D0D0);
     background-image: -o-linear-gradient(#F0F0F0, #D0D0D0);
+}
+
+/* styles common to different forms and form elements */
+.login_form a[href="/register/"],
+.buttons,
+.contact_comment p,
+.login h1,
+.registration h1,
+.contact_form h1 {
+    margin-left: 175px;
+}
+
+.form_fields .field,
+.login_form a[href="/register/"],
+.buttons {
+    margin-bottom: 1.5em;
 }
 
 /* -------------------- HEADER --------------------- */
@@ -396,10 +409,6 @@ input.gsc-search-button {
 }
 
 /* --------------------- LOGIN ------------------------ */
-.registration,
-.login {
-}
-
 .login {
     width: 640px;
 }
@@ -409,16 +418,14 @@ input.gsc-search-button {
 }
 
 .login_form {
-    text-align: right;
     display: inline-block;
     vertical-align: top;
 }
 
 #other_login_options {
-    margin-left: 50px;
-    padding-left: 50px;
+    margin-left: 3em;
+    padding-left: 3em;
     display: inline-block;
-    text-align: left;
 }
 
 #other_login_options ul {
@@ -427,13 +434,8 @@ input.gsc-search-button {
 }
 
 #other_login_options li {
-    padding-bottom: 15px;
+    padding-bottom: 0.5em;
     list-style-type: none;
-}
-
-.buttons {
-    margin-left: 175px;
-    text-align: left;
 }
 
 .buttons input {
@@ -585,14 +587,6 @@ input.gsc-search-button {
 }
 
 /* ------------------ CONTACT ---------------------------- */
-.contact_form h1 {
-    margin-left: 175px;
-}
-
 .contact_form textarea {
     width: 300px;
-}
-
-.contact_comment p {
-    margin-left: 175px;
 }
