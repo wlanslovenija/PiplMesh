@@ -59,7 +59,7 @@ urlpatterns = patterns('',
     url(r'^google/callback/$', account_views.GoogleCallbackView.as_view(), name='google_callback'),
     
     # BrowserID
-    (r'^browserid/', include('django_mongo_browserid.urls')),
+    (r'^browserid/', include('django_browserid.urls')),
 
     # Profile, account
     url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='profile'),

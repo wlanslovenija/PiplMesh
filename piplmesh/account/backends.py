@@ -1,4 +1,4 @@
-import json, urllib
+import json, urllib, logging
 
 from django.conf import settings
 from django.utils import crypto, translation
@@ -6,11 +6,16 @@ from django.utils import crypto, translation
 from mongoengine import queryset
 from mongoengine.django import auth
 
+from django_browserid.auth import default_username_algo, BrowserIDBackend as OfficialBIDB
+from django_browserid.base import verify
+
 import tweepy
 
 from piplmesh.account import models
 
 LAZYUSER_USERNAME_TEMPLATE = 'guest-%s'
+
+log = logging.getLogger(__name__)
 
 class MongoEngineBackend(auth.MongoEngineBackend):
     # TODO: Implement object permission support
@@ -258,6 +263,34 @@ class FoursquareBackend(MongoEngineBackend):
 
         user.save()
 
+        return user
+
+class BrowserIDBackend(OfficialBIDB, MongoEngineBackend):
+    def filter_users_by_email(self, email):
+        return self.user_class.objects.filter(email=email)
+
+    def create_user(self, email):
+        username = default_username_algo(email)
+        return self.user_class.objects.create_user(username, email)
+    
+    def get_user(self, user_id):
+        return MongoEngineBackend.get_user(self, user_id)
+    
+    def authenticate(self, assertion=None, audience=None):
+        result = verify(assertion, audience)
+        if not result:
+            return None
+
+        email = result['email']
+
+        users = self.filter_users_by_email(email=email)
+        if len(users) > 1:
+            log.warn('%d users with email address %s.' % (len(users), email))
+            return None
+        if len(users) == 1:
+            return users[0]
+
+        user = self.create_user(email)
         return user
 
 class LazyUserBackend(MongoEngineBackend):

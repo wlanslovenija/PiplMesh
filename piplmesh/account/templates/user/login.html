@@ -1,8 +1,13 @@
 {% extends "plain.html" %}
 
-{% load future i18n %}
+{% load future i18n staticfiles %}
 
 {% block title %}{% trans "Login" %}{% endblock %}
+
+{% block extrahead %}
+	<script type="text/javascript" src="{% static "browserid/browserid.js" %}"></script>
+	<script type="text/javascript" src="https://browserid.org/include.js"></script>
+{% endblock %}
 
 {% block content %}
     <div id="main">

@@ -145,6 +145,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'sekizai.context_processors.sekizai',
     'piplmesh.frontend.context_processors.global_vars',
+    'django_browserid.context_processors.browserid_form',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -189,7 +190,7 @@ INSTALLED_APPS = (
     'tastypie_mongoengine',
     'sekizai',
     'missing',
-    'django_mongo_browserid',
+    'django_browserid',
 )
 
 PUSH_SERVER = {
@@ -277,8 +278,8 @@ AUTHENTICATION_BACKENDS = (
     'piplmesh.account.backends.TwitterBackend',
     'piplmesh.account.backends.FoursquareBackend',
     'piplmesh.account.backends.GoogleBackend',
+    'piplmesh.account.backends.BrowserIDBackend',
     'piplmesh.account.backends.LazyUserBackend',
-    'django_mongo_browserid.auth.BrowserIDBackend',
 )
 
 TEST_RUNNER = 'piplmesh.test_runner.MongoEngineTestSuiteRunner'
