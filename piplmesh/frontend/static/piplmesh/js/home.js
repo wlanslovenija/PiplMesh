@@ -57,11 +57,11 @@ function orderPanelsUpdate() {
         items.push(column);
     });
 
-    $.post('/panels/order/', 'data=' + JSON.stringify({panels: items}));
+    $.post(urls['panels_order'], 'data=' + JSON.stringify({panels: items}));
 }
 
 function orderPanels() {
-    $.post('/panels/order/get/', 'data=' + JSON.stringify( {noOfColumns: howManyColumns()} ), function (data) {
+    $.post(urls['get_panels_order'], 'data=' + JSON.stringify( {noOfColumns: howManyColumns()} ), function (data) {
         for (var i = 0; i < data['panels'].length; i++) {
             for (var j = 0; j < data['panels'][i].length; j++) {
                 movePanel(data['panels'][i][j]['id'],i);
@@ -75,7 +75,7 @@ function orderPanels() {
 }
 
 function collapsePanels() {
-    $.get('/panels/collapse/get/', function (data) {
+    $.get(urls['get_panels_collapse'],'/panels/collapse/get/', function (data) {
         for (var panel in data) {
             if (data[panel] == true)
                 $('#'+ panel +' .content').css('display','none');
@@ -114,7 +114,7 @@ $(document).ready(function () {
     $('.panel .header').click(function (event) {
         var visible = $(this).next().is(':visible');
         $(this).next('.content').slideToggle('fast');
-        $.post('/panels/collapse/', 'data=' + JSON.stringify( {panel_id: $(this).parent().attr('id'), collapsed: (visible) ? true : false }));
+        $.post(urls['panels_collapse'], 'data=' + JSON.stringify( {panel_id: $(this).parent().attr('id'), collapsed: (visible) ? true : false }));
     });
 
     $(window).resize(function () {

@@ -13,6 +13,13 @@
         $.updates.subscribe({
             'home_channel': '{% filter escapejs %}{% channel_url HOME_CHANNEL_ID %}{% endfilter %}'
         });
+
+        var urls = {
+            'panels_collapse': '{% url frontend.views.panels_collapse %}',
+            'get_panels_collapse': '{% url frontend.views.get_panels_collapse %}',
+            'panels_order': '{% url frontend.views.panels_order %}',
+            'get_panels_order': '{% url frontend.views.get_panels_order %}',
+        }
         /* ]]> */
     </script>
 {% endblock %}

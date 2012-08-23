@@ -17,6 +17,7 @@ class HoroscopePanel(panels.BasePanel):
 
         context.update({
             'header': _("Today's horoscope"),
+            'id': 'horoscope',
         })
 
         if not user.birthdate:
