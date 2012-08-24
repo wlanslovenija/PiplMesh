@@ -15,10 +15,10 @@
         });
 
         var urls = {
-            'panels_collapse': '{% url frontend.views.panels_collapse %}',
-            'get_panels_collapse': '{% url frontend.views.get_panels_collapse %}',
-            'panels_order': '{% url frontend.views.panels_order %}',
-            'get_panels_order': '{% url frontend.views.get_panels_order %}',
+            'panels_collapse': '{% filter escapejs %}{% url frontend.views.panels_collapse %}{% endfilter %}',
+            'get_panels_collapse': '{% filter escapejs %}{% url frontend.views.get_panels_collapse %}{% endfilter %}',
+            'panels_order': '{% filter escapejs %}{% url frontend.views.panels_order %}{% endfilter %}',
+            'get_panels_order': '{% filter escapejs %}{% url frontend.views.get_panels_order %}{% endfilter %}',
         }
         /* ]]> */
     </script>

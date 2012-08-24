@@ -1,6 +1,6 @@
 function howManyColumns() {
     var panelsWidth = $('#panels').width();
-    var columnPanelsWidth = $('.panels_column').width() + parseInt($('.panels_column').css('margin-left'));
+    var columnPanelsWidth = $('.panels_column').outerWidth() + parseInt($('.panels_column').css('margin-left'));
 
     return parseInt(panelsWidth / columnPanelsWidth);
 }
@@ -10,9 +10,9 @@ function movePanel(id, columnIndex) {
 }
 
 function resetColumns() {
-    $('#panels').children().each(function (index, value) {
-        $(this).children().each(function (index, value) {
-            $(this).appendTo($('#panels').children().eq(0))
+    $('#panels').children().each(function (index, column) {
+        column.children().each(function (index, panel) {
+            panel.appendTo($('#panels').children().eq(0))
         });
     });
 
@@ -28,7 +28,7 @@ function fillWithColumns() {
     var currentColumns = $('#panels').children().length;
     var noOfColumns = howManyColumns();
 
-    for (i = currentColumns; i < noOfColumns; i++) {
+    for (var i = currentColumns; i < noOfColumns; i++) {
         $('#panels').append('<div class="panels_column"></div>');
     }
 }
@@ -50,7 +50,7 @@ function orderPanelsUpdate() {
         var column = [];
         $(this).children().each(function (index, value) {
             var item = {
-                id: $(this).attr('id'),
+                id: $(this).prop('id'),
             };
             column.push(item);
         });
@@ -62,24 +62,25 @@ function orderPanelsUpdate() {
 
 function orderPanels() {
     $.post(urls['get_panels_order'], 'data=' + JSON.stringify( {noOfColumns: howManyColumns()} ), function (data) {
-        for (var i = 0; i < data['panels'].length; i++) {
-            for (var j = 0; j < data['panels'][i].length; j++) {
-                movePanel(data['panels'][i][j]['id'],i);
-            }
-        }
-
         if (data['panels'].length == 0) {
             orderPanelsDefault();
+        } else {
+            for (var i = 0; i < data['panels'].length; i++) {
+                for (var j = 0; j < data['panels'][i].length; j++) {
+                    movePanel(data['panels'][i][j]['id'],i);
+                }
+            }
         }
     });
 }
 
 function collapsePanels() {
-    $.get(urls['get_panels_collapse'],'/panels/collapse/get/', function (data) {
-        for (var panel in data) {
-            if (data[panel] == true)
-                $('#'+ panel +' .content').css('display','none');
-        }
+    $.get(urls['get_panels_collapse'], function (data) {
+        $.each(data, function (panelId, collapsed) {
+            if (collapsed == true) {
+                $('#' + panelId + ' .content').css('display', 'none');
+            }
+        });
     });
 }
 

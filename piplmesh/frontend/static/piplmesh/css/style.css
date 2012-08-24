@@ -626,11 +626,6 @@ input.gsc-search-button {
     margin-left: 520px;
 }
 
-#spinner {
-    z-index: 100;
-    position: relative;
-}
-
 /* ------------------ CONTACT ---------------------------- */
 .contact_form {
     width: 960px;
