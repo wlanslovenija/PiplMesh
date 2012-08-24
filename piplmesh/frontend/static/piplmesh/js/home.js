@@ -14,7 +14,10 @@ function initializeEmptyColumnsForPanels() {
     var noOfColumns = howManyColumns();
 
     for (var i = currentColumns; i < noOfColumns; i++) {
-        $('#panels').append('<div class="panels_column"></div>');
+        var newColumn = $(document.createElement('div'));
+        newColumn.addClass('panels_column');
+
+        $('#panels').append(newColumn);
     }
 }
 
@@ -71,7 +74,7 @@ function collapsePanels() {
     });
 }
 
-function preparePanels() {
+function initializePanels() {
     initializeEmptyColumnsForPanels();
     orderPanels();
     collapsePanels();
@@ -97,7 +100,7 @@ function makePanelsOrderUpdatable() {
 }
 
 $(document).ready(function () {
-    preparePanels();
+    initializePanels();
 
     $('.panel .header').click(function (event) {
         var visible = $(this).next().is(':visible');
@@ -111,6 +114,6 @@ $(document).ready(function () {
 
     $(window).resize(function () {
         $('.panels').detach();
-        preparePanels();
+        initializePanels();
     });
 });

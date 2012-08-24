@@ -101,44 +101,40 @@ def forbidden_view(request, reason=''):
     })))
 
 def panels_collapse(request):
-    user = account_models.User.objects.get(id=request.user.id)
     message = simplejson.loads(request.POST['data'])
 
     if (message['collapsed'] == True):
-        user.panels_collapsed[message['panel_id']] = True
+        request.user.panels_collapsed[message['panel_id']] = True
     else:
-        user.panels_collapsed[message['panel_id']] = False
-    user.save()
+        request.user.panels_collapsed[message['panel_id']] = False
+    request.user.save()
 
     return http.HttpResponse()
 
 def get_panels_collapse(request):
-    user = account_models.User.objects.get(id=request.user.id)
     message = {}
 
-    for panel in user.panels_collapsed:
-        message[panel] = user.panels_collapsed[panel]
+    for panel in request.user.panels_collapsed:
+        message[panel] = request.user.panels_collapsed[panel]
 
     return http.HttpResponse(simplejson.dumps(message), mimetype='application/json')
 
 def panels_order(request):
-    user = account_models.User.objects.get(id=request.user.id)
     message = request.POST['data']
     order = simplejson.loads(message)
-    noOfColumns = str(len(order['panels']))
+    no_of_columns = str(len(order['panels']))
 
-    user.panels_order[noOfColumns] = order
-    user.save()
+    request.user.panels_order[no_of_columns] = order
+    request.user.save()
 
     return http.HttpResponse()
 
 def get_panels_order(request):
-    user = account_models.User.objects.get(id=request.user.id)
     order = simplejson.loads(request.GET['data'])
-    noOfColumns = str(order['noOfColumns'])
+    no_of_columns = str(order['noOfColumns'])
 
-    if user.panels_order.has_key(noOfColumns):
-        order = user.panels_order[noOfColumns]
+    if request.user.panels_order.has_key(no_of_columns):
+        order = request.user.panels_order[no_of_columns]
     else:
         order = {"panels": []}
     
