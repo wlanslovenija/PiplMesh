@@ -1,18 +1,19 @@
 {% load i18n %}
 
+{% trans "submit" as submit_text %}
+
 <div class="new_post">
-    <form method="post" method="">
+    <form method="post" action="">
         {% csrf_token %}
         <textarea id="post_text">{% trans "Write a post..." %}</textarea>
         <div class="new_post_details">
         {% comment %}
-        TODO: add buttons for settings
+            TODO: add buttons for settings
         {% endcomment %}
-        <input type="button" name="submit_post" id="submit_post" value="submit" />
+        <input type="button" name="submit_post" id="submit_post" value="{{ submit_text }}"/>
         </div>
     </form> 
 </div>
 
 <ul class="posts">
-
 </ul>

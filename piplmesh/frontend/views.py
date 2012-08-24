@@ -101,6 +101,8 @@ def forbidden_view(request, reason=''):
         'no_referer': reason == csrf.REASON_NO_REFERER,
     })))
 
+# TODO: Handle signal just before result is sent to client and not when object is created. We should try using same serialization as Tastypie.
+
 @dispatch.receiver(signals.post_created)
 def send_update_on_new_post(sender, post_object, **kwargs):
     """

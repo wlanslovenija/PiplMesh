@@ -105,7 +105,7 @@ $(document).ready(function () {
                         'is_published': is_published
                 }),
                 contentType: 'application/json',
-                dataType: "json",
+                dataType: 'json',
                 success: function (output, status, header) {
                     $('#post_text').val(input_box_text);
                     $('#post_text').css('min-height', 25);

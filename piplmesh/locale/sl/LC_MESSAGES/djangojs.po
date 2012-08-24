@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-23 00:42+0200\n"
+"POT-Creation-Date: 2012-08-24 14:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jon Premik <jon.premik@gmail.com>\n"
 "Language-Team: \n"
@@ -33,15 +33,15 @@ msgstr ""
 msgid "%(days)s days ago"
 msgstr ""
 
-#: frontend/static/piplmesh/js/home.js:21
+#: frontend/static/piplmesh/js/home.js:20
 msgid "%(hours)s hours ago"
 msgstr ""
 
-#: frontend/static/piplmesh/js/home.js:26
+#: frontend/static/piplmesh/js/home.js:24
 msgid "%(minutes)s minutes ago"
 msgstr ""
 
-#: frontend/static/piplmesh/js/home.js:83
+#: frontend/static/piplmesh/js/home.js:80
 msgid "Oops, something went wrong..."
 msgstr ""
 
