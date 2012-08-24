@@ -317,95 +317,83 @@ input.gsc-search-button {
 .fb_login_button {
     cursor: pointer;
     display: inline-block;
-    padding: 0 0 0 1px;
     text-decoration: none;
     outline: none;
     font-size: 11px;
     line-height: 14px;
-    margin: 0px;
+    margin: 0;
+    padding: 0;
     border: 0;
-    height: 24px;
-    width: 163px;
+    background-origin: padding-box;
+    background-image: -moz-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-linear-gradient(rgba(255,255,255,0.2 10%), rgba(0,0,0,0) 100%);
+    background-image: -ms-linear-gradient(rgba(255,255,255,0.2 10%), rgba(0,0,0,0) 100%);
+    background-image: -o-linear-gradient(rgba(255,255,255,0.2 10%), rgba(0,0,0,0) 100%);
+    border-radius: 3px;
+}
+
+.google_login_button:hover,
+.foursquare_login_button:hover,
+.twitter_login_button:hover,
+.fb_login_button:hover {
+    background-image: -moz-linear-gradient(rgba(255,255,255,0.3) 10%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-linear-gradient(rgba(255,255,255,0.3) 10%, rgba(0,0,0,0) 100%);
+    background-image: -ms-linear-gradient(rgba(255,255,255,0.3) 10%, rgba(0,0,0,0) 100%);
+    background-image: -o-linear-gradient(rgba(255,255,255,0.3) 10%, rgba(0,0,0,0) 100%);
+}
+
+.google_button_text,
+.foursquare_button_text,
+.twitter_button_text,
+.fb_button_text {
+    width: 150px;
+    padding: 4px 0 5px 24px;
+    margin-left: -2px;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-weight: bold;
+    color: white;
+    display: block;
+    text-align: center;
+    background-position:  0 0;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    overflow: hidden;
 }
 
 /* ---------------- FB LOGIN BUTTON ------------------- */
 .fb_login_button {
-    background: #29447E url('../images/fb_login_button.png');
-    background-repeat: no-repeat;
-    height: 22px;
-}
-
-.fb_login_button:hover {
-    background-position: -163px;
+    background-color: #3B5998;
 }
 
 .fb_button_text {
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    padding: 4px 6px 3px 6px;
-    margin: -3px 1px 0 21px;
-    text-shadow: none;
+    background-image: url('../images/facebook_logo24.png');
 }
 
 /* ---------------- TWITTER LOGIN BUTTON ------------------- */
 .twitter_login_button {
-    background: #3DBCDC url('../images/twitter_button.png');
-    background-position:  0 0;
-    background-repeat: no-repeat;
+    background-color: #3DBCDC;
 }
 
 .twitter_button_text {
-    background: #3DBCDC;
-    border-top: solid 1px #879AC0;
-    border-bottom: solid 1px #1A356E;
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    padding: 2px 6px 3px 6px;
-    margin: 1px 1px 0 21px;
-    text-shadow: none;
+    background-image: url('../images/twitter_logo24.png');
 }
 
 /* ---------------- FOURSQUARE LOGIN BUTTON ------------------- */
 .foursquare_login_button {
-    background: #2090c6 url('../images/foursquare_button.png');
-    background-repeat: no-repeat;
-    line-height: 20px;
+    background-color: #2090c6;
 }
 
 .foursquare_button_text {
-    background: #2090c6;
-    border-top: solid 1px #879AC0;
-    border-bottom: solid 1px #1A356E;
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    margin: 0 0 0 20px;
-    text-shadow: none;
+    background-image: url('../images/foursquare_button.png');
 }
 
 /* ---------------- GOOGLE LOGIN BUTTON ------------------- */
 .google_login_button {
-    background: #0064D9 url('../images/google_button.png');
-    background-position: 0 0;
-    background-repeat: no-repeat;
+    background-color: #0064D9;
 }
 
 .google_button_text {
-    background: #0064D9;
-    border-top: solid 1px #879AC0;
-    border-bottom: solid 1px #1A356E;
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    padding: 2px 6px 3px 6px;
-    margin: 1px 1px 0 21px;
-    text-shadow: none;
+    background-image: url('../images/google_button.png');
 }
 
 /* --------------------- LOGIN ------------------------ */
