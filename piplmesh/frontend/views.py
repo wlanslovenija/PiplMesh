@@ -134,7 +134,7 @@ def panels_order(request):
 
 def get_panels_order(request):
     user = account_models.User.objects.get(id=request.user.id)
-    order = simplejson.loads(request.POST['data'])
+    order = simplejson.loads(request.GET['data'])
     noOfColumns = str(order['noOfColumns'])
 
     if user.panels_order.has_key(noOfColumns):

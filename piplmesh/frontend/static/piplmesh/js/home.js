@@ -9,21 +9,6 @@ function movePanel(id, columnIndex) {
     $('#' + id).appendTo($('#panels').children().eq(columnIndex));
 }
 
-function resetColumns() {
-    $('#panels').children().each(function (index, column) {
-        column.children().each(function (index, panel) {
-            panel.appendTo($('#panels').children().eq(0))
-        });
-    });
-
-    var count = 0;
-    $('#panels').children().each(function (index, value) {
-        if (count != 0)
-            $(this).remove();
-        count++;
-    });
-}
-
 function initializeEmptyColumnsForPanels() {
     var currentColumns = $('#panels').children().length;
     var noOfColumns = howManyColumns();
@@ -37,13 +22,15 @@ function orderPanelsDefault() {
     var numOfPanels = $('.panels_column').children().length;
     var numOfColumns = howManyColumns();
 
-    for (var i = 0; i < numOfPanels; i++) {
-        var toColumn = i % numOfColumns;
-        $('.panels_column').children().eq(numOfPanels - i - 1).appendTo($('#panels').children().eq(toColumn));
-    }
+    $('.panel').each(function (index, panel) {
+        var toColumn = index % numOfColumns;
+        var columns = $('#panels').children();
+
+        $(this).appendTo(columns.eq(toColumn));
+    });
 }
 
-function orderPanelsUpdate() {
+function sendOrderOfPanelsToServer() {
     var items = [];
 
     $('#panels').children().each(function (index, value) {
@@ -61,7 +48,7 @@ function orderPanelsUpdate() {
 }
 
 function orderPanels() {
-    $.post(urls['get_panels_order'], 'data=' + JSON.stringify( {noOfColumns: howManyColumns()} ), function (data) {
+    $.get(urls['get_panels_order'], 'data=' + JSON.stringify( {noOfColumns: howManyColumns()} ), function (data) {
         if (data['panels'].length == 0) {
             orderPanelsDefault();
         } else {
@@ -89,7 +76,7 @@ function preparePanels() {
     orderPanels();
     collapsePanels();
     makeColumnsSortable();
-    makePanelsUpdatable();
+    makePanelsOrderUpdatable();
 }
 
 function makeColumnsSortable() {
@@ -103,9 +90,9 @@ function makeColumnsSortable() {
     }).disableSelection();
 }
 
-function makePanelsUpdatable() {
+function makePanelsOrderUpdatable() {
     $('.panels_column').bind("sortstop", function (event, ui) {
-        orderPanelsUpdate();
+        sendOrderOfPanelsToServer();
     });
 }
 
@@ -123,7 +110,7 @@ $(document).ready(function () {
     });
 
     $(window).resize(function () {
-        resetColumns();
+        $('.panels').detach();
         preparePanels();
     });
 });

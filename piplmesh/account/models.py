@@ -44,6 +44,10 @@ class EmailConfirmationToken(mongoengine.EmbeddedDocument):
         else:
             return True
 
+class PanelsSettings(mongoengine.EmbeddedDocument):
+    panels_collapsed = mongoengine.DictField()
+    panels_order = mongoengine.DictField()
+
 class TwitterAccessToken(mongoengine.EmbeddedDocument):
     key = mongoengine.StringField(max_length=150)
     secret = mongoengine.StringField(max_length=150)
@@ -84,6 +88,8 @@ class User(auth.User):
 
     panels_collapsed = mongoengine.DictField()
     panels_order = mongoengine.DictField()
+
+    panels_settings = mongoengine.EmbeddedDocumentField(PanelsSettings)
 
     @models.permalink
     def get_absolute_url(self):
