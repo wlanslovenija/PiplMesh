@@ -95,11 +95,12 @@ form input[type="submit"], form input[type="reset"] {
 
 .errorlist {
     color: #FF0000;
-    padding: 0.3em;
+    padding: 0.3em 0 0.3em 1em;
 }
 
 .form_fields .errorlist {
-    margin-left: 19em;
+    margin-left: 175px;
+    list-style: disc;
 }
 
 .form_fields .errorlist li {
@@ -324,11 +325,10 @@ input.gsc-search-button {
     margin: 0;
     padding: 0;
     border: 0;
-    background-origin: padding-box;
     background-image: -moz-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0) 100%);
-    background-image: -webkit-linear-gradient(rgba(255,255,255,0.2 10%), rgba(0,0,0,0) 100%);
-    background-image: -ms-linear-gradient(rgba(255,255,255,0.2 10%), rgba(0,0,0,0) 100%);
-    background-image: -o-linear-gradient(rgba(255,255,255,0.2 10%), rgba(0,0,0,0) 100%);
+    background-image: -webkit-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0) 100%);
+    background-image: -ms-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0) 100%);
+    background-image: -o-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0) 100%);
     border-radius: 3px;
 }
 
