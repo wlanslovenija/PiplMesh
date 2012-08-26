@@ -138,7 +138,6 @@ input.gsc-search-button:hover,
 }
 
 /* styles common to different forms and form elements */
-.login_form a[href="/register/"],
 .buttons,
 .contact_comment p,
 .login h1,
@@ -148,7 +147,6 @@ input.gsc-search-button:hover,
 }
 
 .form_fields .field,
-.login_form a[href="/register/"],
 .buttons {
     margin-bottom: 1.5em;
 }

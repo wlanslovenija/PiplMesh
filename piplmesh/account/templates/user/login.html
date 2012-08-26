@@ -14,7 +14,7 @@
                     {% url "login" as form_action %}
                     {% include "form/form.html" %}
                 {% endwith %}
-                <a href="{% url "registration" %}">{% trans "Register" %}</a>
+                <a href="{% url "registration" %}" class="buttons">{% trans "Register" %}</a>
             </div>
             <div id="other_login_options">
                 <ul>
