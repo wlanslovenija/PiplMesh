@@ -403,6 +403,11 @@ input.gsc-search-button {
     width: 450px;
 }
 
+#other_login_options p {
+    margin-top: 0;
+}
+
+#other_login_options,
 .login_form {
     display: inline-block;
     vertical-align: top;
@@ -411,9 +416,9 @@ input.gsc-search-button {
 #other_login_options {
     margin-left: 3em;
     padding-left: 3em;
-    display: inline-block;
 }
 
+.form_fields,
 #other_login_options ul {
     margin: 0;
     padding: 0;
