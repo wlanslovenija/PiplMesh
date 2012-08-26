@@ -73,7 +73,7 @@ form input[type="submit"], form input[type="reset"] {
     border: none;
 }
 
-.form_fields .field > label {
+.form_fields .field label {
     float: left;
     padding-right: 25px;
     min-width: 150px;
@@ -137,7 +137,7 @@ input.gsc-search-button:hover,
     background-image: -o-linear-gradient(#F0F0F0, #D0D0D0);
 }
 
-/* styles common to different forms and form elements */
+/* Styles common to different forms and form elements */
 .buttons,
 .contact_comment p,
 .login h1,
@@ -352,13 +352,13 @@ input.gsc-search-button {
     color: white;
     display: block;
     text-align: center;
-    background-position:  0 0;
+    background-position: 0 0;
     background-repeat: no-repeat;
     border-radius: 3px;
     overflow: hidden;
 }
 
-/* ---------------- FB LOGIN BUTTON ------------------- */
+/* ---------------- FACEBOOK LOGIN BUTTON ------------------- */
 .fb_login_button {
     background-color: #3B5998;
 }
