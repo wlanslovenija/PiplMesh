@@ -144,8 +144,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
     'sekizai.context_processors.sekizai',
-    'piplmesh.frontend.context_processors.global_vars',
     'django_browserid.context_processors.browserid_form',
+    'piplmesh.frontend.context_processors.global_vars',
 )
 
 MIDDLEWARE_CLASSES = (

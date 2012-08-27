@@ -4,11 +4,6 @@
 
 {% block title %}{% trans "Login" %}{% endblock %}
 
-{% block extrahead %}
-	<script type="text/javascript" src="{% static "browserid/browserid.js" %}"></script>
-	<script type="text/javascript" src="https://browserid.org/include.js"></script>
-{% endblock %}
-
 {% block content %}
     <div id="main">
         <div class="login">
@@ -46,11 +41,7 @@
                         </form>
                     </li>
                     <li>
-                        <form method="POST" action="{% url "browserid_verify" %}">
-                            {% csrf_token %}
-                            {{ browserid_form.as_p }}
-                           <p><a id="browserid" class="browserid-signin" title="{% trans "Sign in with Persona" %}" aria-haspopup="true" target="_blank" href="#">{% trans "Sign in with Persona" %}</a></p>
-                        </form>
+                        {% include "user/browserid.html" %}
                     </li>
                     <li>{% comment %}Place for OpenID button.{% endcomment %}</li>
                     <li><a href="{% url "registration" %}">{% trans "Register" %}</a></li>

@@ -81,6 +81,8 @@ class User(auth.User):
 
     email_confirmed = mongoengine.BooleanField(default=False)
     email_confirmation_token = mongoengine.EmbeddedDocumentField(EmailConfirmationToken)
+    
+    browserid_issuer = mongoengine.StringField(max_length=150)
 
     @models.permalink
     def get_absolute_url(self):
@@ -98,7 +100,12 @@ class User(auth.User):
 
     def is_authenticated(self):
         # TODO: Check if *_data fields are really false if not linked with third-party authentication
-        return self.has_usable_password() or self.facebook_profile_data or self.twitter_profile_data or self.google_profile_data or self.foursquare_profile_data
+        return self.has_usable_password() or \
+                self.facebook_profile_data or \
+                self.twitter_profile_data or \
+                self.google_profile_data or \
+                self.foursquare_profile_data or \
+                self.browserid_issuer
 
     def check_password(self, raw_password):
         def setter(raw_password):

@@ -6,8 +6,7 @@ from django.utils import crypto, translation
 from mongoengine import queryset
 from mongoengine.django import auth
 
-from django_browserid.auth import default_username_algo, BrowserIDBackend as OfficialBIDB
-from django_browserid.base import verify
+from django_browserid import auth as bid_auth, base as bid_base
 
 import tweepy
 
@@ -265,32 +264,45 @@ class FoursquareBackend(MongoEngineBackend):
 
         return user
 
-class BrowserIDBackend(OfficialBIDB, MongoEngineBackend):
-    def filter_users_by_email(self, email):
-        return self.user_class.objects.filter(email=email)
+class BrowserIDBackend(bid_auth.BrowserIDBackend, MongoEngineBackend):
+    """
+    Persona authentication.
 
-    def create_user(self, email):
-        username = default_username_algo(email)
-        return self.user_class.objects.create_user(username, email)
+    Persona profile data fields are:
+        email: email user uses for Persona
+    """
     
     def get_user(self, user_id):
         return MongoEngineBackend.get_user(self, user_id)
     
-    def authenticate(self, assertion=None, audience=None):
-        result = verify(assertion, audience)
+    def authenticate(self, request=None, assertion=None, audience=None):
+        result = bid_base.verify(assertion, audience)
         if not result:
             return None
 
         email = result['email']
 
-        users = self.filter_users_by_email(email=email)
-        if len(users) > 1:
-            log.warn('%d users with email address %s.' % (len(users), email))
-            return None
-        if len(users) == 1:
-            return users[0]
+        try:
+            user = self.user_class.objects.get(email=email)
+        except self.user_class.DoesNotExist:
+            # We reload to make sure user object is recent
+            request.user.reload()
+            user = request.user
+        
+        if user.email is None:
+            user.email = email
+            # BrowserID takes care of email confirmation
+            user.email_confirmed = True
+        
+        if user.lazyuser_username:
+            # Best username guess we can get from BrowserID
+            user.username = email.rsplit('@', 1)[0]
+            user.lazyuser_username = False
+        
+        user.browserid_issuer = result['issuer']
 
-        user = self.create_user(email)
+        user.save()
+
         return user
 
 class LazyUserBackend(MongoEngineBackend):
