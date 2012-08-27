@@ -11,6 +11,7 @@
 
 {% block content %}
     <div class="registration">
+        <h1>{% trans "Registration" %}</h1>
         {% with form_submit=_("Register") %}
             {% url "registration" as form_action %}
             {% include "form/form.html" %}
