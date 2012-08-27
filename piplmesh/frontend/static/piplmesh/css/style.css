@@ -581,3 +581,39 @@ input.gsc-search-button {
 .contact_form textarea {
     width: 300px;
 }
+
+/* ------------------ DROP-DOWN LOGIN ---------------------------- */
+#drop_down_login_container {
+    position: relative;
+}
+
+#drop_down_login_container #drop_down_login_options {
+    display: block;
+    position: absolute;
+    background-color: #FCFCFC;
+    border: #d7d7d7 solid 1px;
+    right: -20px;
+    z-index: 100;
+}
+
+#drop_down_login_container #drop_down_login_options ul {
+    position: static;
+    font-size: 10px;
+    list-style: none;
+    margin-top: 10px;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+
+#drop_down_login_container #drop_down_login_options ul li {
+    border: none;
+    display: block;
+    padding: 0;
+    white-space: nowrap;
+}
+
+#drop_down_login_container #drop_down_login_options ul li p {
+    margin: 0;
+    padding: 0;
+}
