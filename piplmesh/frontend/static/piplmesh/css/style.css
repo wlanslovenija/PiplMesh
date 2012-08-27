@@ -408,13 +408,11 @@ input.gsc-search-button {
 
 /* --------------------- LOGIN ------------------------ */
 .login {
-    width: 720px;
-    margin: 0 auto;
+    width: 640px;
 }
 
 .registration {
     width: 450px;
-    margin: 0 auto;
 }
 
 #other_login_options p {
