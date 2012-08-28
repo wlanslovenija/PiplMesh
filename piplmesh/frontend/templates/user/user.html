@@ -5,16 +5,16 @@
 {% block title %}{{ object.username }}{% endblock %}
 
 {% block content %}
-    <div id="menu_list">
+    <ul id="menu_list">
         {% if user.username == object.username %}
-            <p id="current_item">{% trans "Profile" %}</p>
-            <p><a href="{% url "account" %}">{% trans "Account" %}</a></p>
+            <li class="current_item"><a href="{% url "profile" username=user.username %}">{% trans "Profile" %}</a></li>
+            <li><a href="{% url "account" %}">{% trans "Account" %}</a></li>
         {% endif %}
-    </div>
-    <div id="picture" >        
-        {% user_image object %}
-    </div>
-    <div id="profile">
+    </ul>
+    <div class="profile">
+        <div id="picture" >        
+            {% user_image object %}
+        </div>
         <p>{% trans "Username:" %} {{ object.username }}</p>
         <p>{% trans "Name:" %} {{ object.get_full_name }}</p>
         <p>{% trans "Gender:" %} {{ object.get_gender_display }}</p>
