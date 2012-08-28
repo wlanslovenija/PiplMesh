@@ -1,0 +1,16 @@
+{% load future i18n staticfiles sekizai_tags %}
+
+{% addtoblock "js" %}
+	<script type="text/javascript" src="{% static "browserid/browserid.js" %}"></script>
+	<script type="text/javascript" src="https://browserid.org/include.js"></script>
+{% endaddtoblock %}
+
+{% block browserid %}
+	<div id="browserid">
+		<form method="post" action="{% url "browserid_verify" %}">
+			{% csrf_token %}
+			{{ browserid_form.as_p }}
+			<p><button type="submit" id="browserid" class="browserid-signin" title="{% trans "Sign in with Persona" %}" aria-haspopup="true">{% trans "Sign in with Persona" %}</button></p>
+		</form>
+	</div>
+{% endblock %}
