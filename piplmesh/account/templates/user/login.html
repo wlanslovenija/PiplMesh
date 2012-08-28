@@ -1,6 +1,6 @@
 {% extends "plain.html" %}
 
-{% load future i18n staticfiles %}
+{% load future i18n %}
 
 {% block title %}{% trans "Login" %}{% endblock %}
 
@@ -44,7 +44,7 @@
                 <li>
                     {% include "user/browserid.html" %}
                 </li>
-				{% comment %}<li>Place for OpenID button.</li>{% endcomment %}
+                {% comment %}<li>Place for OpenID button.</li>{% endcomment %}
             </ul>
         </div>
     </div>

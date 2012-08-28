@@ -4,13 +4,12 @@ from django import dispatch, http, shortcuts
 from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth import views as auth_views
-from django.core import urlresolvers, exceptions
+from django.core import urlresolvers
 from django.template import loader
 from django.views import generic as generic_views
 from django.views.generic import simple, edit as edit_views
 from django.utils import crypto, timezone, translation
 from django.utils.translation import ugettext_lazy as _
-from django.shortcuts import redirect
 
 from pushserver import signals
 
@@ -19,7 +18,7 @@ import tweepy
 from piplmesh.account import forms, models
 
 import django_browserid
-from django_browserid import forms as bid_forms
+from django_browserid import views as browserid_views
 
 FACEBOOK_SCOPE = 'email'
 GOOGLE_SCOPE = 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
@@ -224,35 +223,11 @@ class FoursquareCallbackView(generic_views.RedirectView):
             # TODO: Use information provided from foursquare as to why the login was not successful
             return super(FoursquareCallbackView, self).get(request, *args, **kwargs)
         
-class BrowserIDLoginView(edit_views.BaseFormView):
+class BrowserIDLoginView(browserid_views.Verify):
     """
     This view authenticates the user via Mozilla Persona (BrowserID).
     """
-
-    form_class = bid_forms.BrowserIDForm
-    failure_url = getattr(settings, 'LOGIN_REDIRECT_URL_FAILURE', '/')
-    success_url = getattr(settings, 'LOGIN_REDIRECT_URL', '/')
-
-    def login_success(self):
-        """Handle a successful login. Use this to perform complex redirects
-        post-login.
-        """
-        auth.login(self.request, self.user)
-        redirect_field_name = self.kwargs.get('redirect_field_name',
-                                              auth.REDIRECT_FIELD_NAME)
-        redirect_to = self.request.REQUEST.get(redirect_field_name, None)
-
-        if redirect_to is not None:
-            return redirect(redirect_to)
-        else:
-            return redirect(self.get_success_url())
-
-    def login_failure(self):
-        """Handle a failed login. Use this to perform complex redirects
-        post-login.
-        """
-        return redirect(self.get_failure_url())
-
+    
     def form_valid(self, form):
         """Handles the return post request from the browserID form and puts
         interesting variables into the class. If everything checks out, then
@@ -270,24 +245,6 @@ class BrowserIDLoginView(edit_views.BaseFormView):
             return self.login_success()
 
         return self.login_failure()
-
-    def form_invalid(self, *args, **kwargs):
-        return self.login_failure()
-
-    def get(self, *args, **kwargs):
-        return redirect(self.get_failure_url())
-
-    def get_failure_url(self):
-        """
-        This is just the django version of get_success_url
-        https://github.com/django/django/blob/master/django/views/generic/edit.py#L51
-        """
-        if self.failure_url:
-            url = self.failure_url
-        else:
-            raise exceptions.ImproperlyConfigured(
-                "No URL to redirect to. Provide a failure_url.")
-        return url
 
 class RegistrationView(edit_views.FormView):
     """
