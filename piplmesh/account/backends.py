@@ -1,4 +1,4 @@
-import json, urllib, logging
+import json, urllib, datetime
 
 from django.conf import settings
 from django.utils import crypto, translation
@@ -6,15 +6,13 @@ from django.utils import crypto, translation
 from mongoengine import queryset
 from mongoengine.django import auth
 
-from django_browserid import auth as bid_auth, base as bid_base
+from django_browserid import auth as browserid_auth, base as browserid_base
 
 import tweepy
 
 from piplmesh.account import models
 
 LAZYUSER_USERNAME_TEMPLATE = 'guest-%s'
-
-log = logging.getLogger(__name__)
 
 class MongoEngineBackend(auth.MongoEngineBackend):
     # TODO: Implement object permission support
@@ -264,7 +262,7 @@ class FoursquareBackend(MongoEngineBackend):
 
         return user
 
-class BrowserIDBackend(bid_auth.BrowserIDBackend, MongoEngineBackend):
+class BrowserIDBackend(MongoEngineBackend, browserid_auth.BrowserIDBackend):
     """
     Persona authentication.
 
@@ -273,10 +271,10 @@ class BrowserIDBackend(bid_auth.BrowserIDBackend, MongoEngineBackend):
     """
     
     def get_user(self, user_id):
-        return MongoEngineBackend.get_user(self, user_id)
+        return super(BrowserIDBackend, self).get_user(user_id)
     
-    def authenticate(self, request=None, assertion=None, audience=None):
-        result = bid_base.verify(assertion, audience)
+    def authenticate(self, browserid_assertion=None, browserid_audience=None, request=None):
+        result = browserid_base.verify(browserid_assertion, browserid_audience)
         if not result:
             return None
 
@@ -285,21 +283,22 @@ class BrowserIDBackend(bid_auth.BrowserIDBackend, MongoEngineBackend):
         try:
             user = self.user_class.objects.get(email=email)
         except self.user_class.DoesNotExist:
+            # TODO: Based on user preference, we might create a new user here, not just link with existing, if existing user is lazy user
             # We reload to make sure user object is recent
             request.user.reload()
             user = request.user
+            # TODO: Is it OK to override BrowserID link if it already exist with some other BrowserID user?
+        
+        user.browserid_data = result
         
         if user.email is None:
             user.email = email
             # BrowserID takes care of email confirmation
             user.email_confirmed = True
-        
         if user.lazyuser_username:
             # Best username guess we can get from BrowserID
             user.username = email.rsplit('@', 1)[0]
             user.lazyuser_username = False
-        
-        user.browserid_issuer = result['issuer']
 
         user.save()
 

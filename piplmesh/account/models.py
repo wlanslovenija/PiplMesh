@@ -82,7 +82,7 @@ class User(auth.User):
     email_confirmed = mongoengine.BooleanField(default=False)
     email_confirmation_token = mongoengine.EmbeddedDocumentField(EmailConfirmationToken)
     
-    browserid_issuer = mongoengine.StringField(max_length=150)
+    browserid_data = mongoengine.DictField()
 
     @models.permalink
     def get_absolute_url(self):
@@ -105,7 +105,7 @@ class User(auth.User):
                 self.twitter_profile_data or \
                 self.google_profile_data or \
                 self.foursquare_profile_data or \
-                self.browserid_issuer
+                self.browserid_data
 
     def check_password(self, raw_password):
         def setter(raw_password):

@@ -223,7 +223,7 @@ class FoursquareCallbackView(generic_views.RedirectView):
             # TODO: Use information provided from foursquare as to why the login was not successful
             return super(FoursquareCallbackView, self).get(request, *args, **kwargs)
         
-class BrowserIDLoginView(browserid_views.Verify):
+class BrowserIDVerifyView(browserid_views.Verify):
     """
     This view authenticates the user via Mozilla Persona (BrowserID).
     """
@@ -235,10 +235,7 @@ class BrowserIDLoginView(browserid_views.Verify):
         """
         self.assertion = form.cleaned_data['assertion']
         self.audience = django_browserid.get_audience(self.request)
-        self.user = auth.authenticate(
-                assertion=self.assertion,
-                audience=self.audience,
-                request=self.request)
+        self.user = auth.authenticate(browserid_assertion=self.assertion, browserid_audience=self.audience, request=self.request)
         assert self.user.is_authenticated()
 
         if self.user and self.user.is_active:
