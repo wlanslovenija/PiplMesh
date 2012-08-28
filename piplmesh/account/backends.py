@@ -238,6 +238,7 @@ class FoursquareBackend(MongoEngineBackend):
         try:
             user = self.user_class.objects.get(foursquare_profile_data__id=foursquare_profile_data.get('id'))
         except self.user_class.DoesNotExist:
+            # TODO: Based on user preference, we might create a new user here, not just link with existing, if existing user is lazy user
             # We reload to make sure user object is recent
             request.user.reload()
             user =  request.user
