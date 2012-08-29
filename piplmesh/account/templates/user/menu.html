@@ -1,0 +1,5 @@
+{% load future i18n account %}
+<ul id="menu_list">
+    <li class="{% active request "/user/" %}"><a href="{% url "profile" username=user.username %}">{% trans "Profile" %}</a></li>
+    <li class="{% active request "/account/" %}"><a href="{% url "account" %}">{% trans "Account" %}</a></li>
+</ul>

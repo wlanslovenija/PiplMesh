@@ -5,10 +5,7 @@
 {% block title %}{% trans "Account" %}{% endblock %}
 
 {% block content %}
-    <ul id="menu_list">
-        <li><a href="{% url "profile" username=user.username %}">{% trans "Profile" %}</a></li>
-        <li class="current_item"><a href="{% url "account" %}">{% trans "Account" %}</a></li>
-    </ul>
+    {% include "user/menu.html" %}
     <div class="account">
         {% with form_submit=_("Submit") %}
             {% include "form/form.html" %}
