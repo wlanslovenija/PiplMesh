@@ -7,6 +7,7 @@
 {% block content %}
     {% include "user/menu.html" %}
     <div class="account">
+        <h1>{% trans "Account" %}</h1>
         {% with form_submit=_("Submit") %}
             {% include "form/form.html" %}
         {% endwith %}
