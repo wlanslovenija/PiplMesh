@@ -89,7 +89,7 @@ form input[type="submit"], form input[type="reset"] {
 .form_fields .field label.main {
     float: left;
     padding-right: 25px;
-    min-width: 150px;
+    min-width: 100px;
     text-align: right;
 }
 
@@ -112,7 +112,6 @@ form input[type="submit"], form input[type="reset"] {
 }
 
 .form_fields .errorlist {
-    margin-left: 175px;
     list-style: disc;
 }
 
@@ -147,13 +146,15 @@ input.gsc-search-button:hover,
 }
 
 /* Styles common to different forms and form elements */
+.form_fields .errorlist,
 #password_change,
 .buttons,
 .contact_comment p,
 .login h1,
 .registration h1,
 .contact_form h1 {
-    margin-left: 175px;
+    margin-left: 100px;
+    padding-left: 25px;
 }
 
 .form_fields .field,
@@ -604,9 +605,6 @@ button.browserid-signin:hover {
 }
 
 /* --------------------- ACCOUNT ------------------------ */
-#account {
-}
-
 .user_image {
     width: 50px;
     height: 50px;
