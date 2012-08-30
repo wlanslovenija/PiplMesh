@@ -86,7 +86,7 @@ form input[type="submit"], form input[type="reset"] {
     border: none;
 }
 
-.form_fields .field > label {
+.form_fields .field label.main {
     float: left;
     padding-right: 25px;
     min-width: 150px;
@@ -114,10 +114,6 @@ form input[type="submit"], form input[type="reset"] {
 .form_fields .errorlist {
     margin-left: 175px;
     list-style: disc;
-}
-
-.form_fields .errorlist li {
-    text-align: left;
 }
 
 input.gsc-search-button,
