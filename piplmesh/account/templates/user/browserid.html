@@ -11,6 +11,6 @@
     <form method="post" action="{% url "browserid_verify" %}">
         {% csrf_token %}
         {{ browserid_form.as_p }}
-        <p><button type="submit" id="browserid" class="browserid-signin" title="{% trans "Sign in with Persona" %}" aria-haspopup="true">{% trans "Sign in with Persona" %}</button></p>
+        <p><button type="submit" id="browserid" class="browserid-signin" title="{% trans "Sign in with Persona" %}">{% trans "Sign in with Persona" %}</button></p>
     </form>
 </div>
