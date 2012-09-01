@@ -282,6 +282,7 @@ class BrowserIDBackend(MongoEngineBackend, browserid_auth.BrowserIDBackend):
 
         try:
             user = self.user_class.objects.get(email=email)
+            # TODO: What is we get more than one user?
         except self.user_class.DoesNotExist:
             # TODO: Based on user preference, we might create a new user here, not just link with existing, if existing user is lazy user
             # We reload to make sure user object is recent
