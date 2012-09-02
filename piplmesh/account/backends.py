@@ -141,7 +141,7 @@ class TwitterBackend(MongoEngineBackend):
         user.twitter_access_token = models.TwitterAccessToken(key=twitter_access_token.key, secret=twitter_access_token.secret)
         user.twitter_profile_data = twitter_profile_data
 
-        if user.lazyuser_username and twitter_profile_data.get('username'):
+        if user.lazyuser_username and twitter_profile_data.get('screen_name'):
             # TODO: Does Twitter have same restrictions on username content as we do?
             user.username = twitter_profile_data.get('screen_name')
             user.lazyuser_username = False
