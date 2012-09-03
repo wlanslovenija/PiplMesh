@@ -20,7 +20,6 @@ v1_api.register(resources.PostResource())
 js_info_dict = {
     'packages': (
         'django.conf',
-        'piplmesh.frontend',
     ),
 }
 

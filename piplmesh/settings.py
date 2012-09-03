@@ -48,6 +48,10 @@ LANGUAGES = (
     ('en', _('English')),
 )
 
+LOCALE_PATHS = (
+    os.path.join(settings_dir, 'locale'),
+)
+
 URL_VALIDATOR_USER_AGENT = 'Django'
 
 SITE_NAME = 'PiplMesh'
