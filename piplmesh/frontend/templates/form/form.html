@@ -21,9 +21,11 @@ where the form should redirect after submission.
         {% if form.fields %}
             <ul class="form_fields">
                 {% for field in form %}
-                    <li class="field_error">
-                        {{ field.errors }}
-                    </li>
+                    {% if field.errors %}
+                        <li class="field_error">
+                            {{ field.errors }}
+                        </li>
+                    {% endif %}
                     <li class="field">
                         <label for="{{ field.id_for_label }}">
                             {% if field.field.required %}

@@ -5,45 +5,44 @@
 {% block title %}{% trans "Login" %}{% endblock %}
 
 {% block content %}
-    <div id="main">
-        <div class="login">
-            <div class="login_form">
-                {% with next|default:request_get_next|default:LOGIN_REDIRECT_URL as next %}
-                    {% trans "Login" as form_submit %}
-                    {% url "login" as form_action %}
-                    {% include "form/form.html" %}
-                {% endwith %}
-            </div>
-            <div id="other_login_options">
-                <ul>
-                    <li>
-                        <form method="post" action="{% url "facebook_login" %}" id="fb_login_form2">
-                            {% csrf_token %}
-                            <p><button type="submit" class="fb_login_button"><span class="fb_button_text">{% trans "Login with Facebook" %}</span></button></p>
-                        </form>
-                    </li>
-                    <li>
-                        <form method="post" action="{% url "twitter_login" %}" id="twitter_login_form3">
-                            {% csrf_token %}
-                            <p><button type="submit" class="twitter_login_button"><span class="twitter_button_text">{% trans "Login with Twitter" %}</span></button></p>
-                        </form>
-                    </li>
-                    <li>
-                        <form method="post" action="{% url "foursquare_login" %}" id="foursquare_login_form4">
-                            {% csrf_token %}
-                            <p><button type="submit" class="foursquare_login_button"><span class="foursquare_button_text">{% trans "Login with Foursquare" %}</span></button></p>
-                        </form>
-                    </li>
-                    <li>
-                        <form method="post" action="{% url "google_login" %}" id="google_login_form4">
-                            {% csrf_token %}
-                            <p><button type="submit" class="google_login_button"><span class="google_button_text">{% trans "Login with Google" %}</span></button></p>
-                        </form>
-                    </li>
-                    <li>{% comment %}Place for OpenID button.{% endcomment %}</li>
-                    <li><a href="{% url "registration" %}">{% trans "Register" %}</a></li>
-                </ul>
-            </div>
+    <div class="login">
+        <h1>{% trans "Login" %}</h1>
+        <div class="login_form">
+            {% with next|default:request_get_next|default:LOGIN_REDIRECT_URL as next %}
+                {% trans "Login" as form_submit %}
+                {% url "login" as form_action %}
+                {% include "form/form.html" %}
+            {% endwith %}
+            <a href="{% url "registration" %}" class="buttons">{% trans "Register" %}</a>
+        </div>
+        <div id="other_login_options">
+            <ul>
+                <li>
+                    <form method="post" action="{% url "facebook_login" %}" id="fb_login_form2">
+                        {% csrf_token %}
+                        <p><button type="submit" class="fb_login_button"><span class="fb_button_text">{% trans "Login with Facebook" %}</span></button></p>
+                    </form>
+                </li>
+                <li>
+                    <form method="post" action="{% url "twitter_login" %}" id="twitter_login_form3">
+                        {% csrf_token %}
+                        <p><button type="submit" class="twitter_login_button"><span class="twitter_button_text">{% trans "Login with Twitter" %}</span></button></p>
+                    </form>
+                </li>
+                <li>
+                    <form method="post" action="{% url "foursquare_login" %}" id="foursquare_login_form4">
+                        {% csrf_token %}
+                        <p><button type="submit" class="foursquare_login_button"><span class="foursquare_button_text">{% trans "Login with Foursquare" %}</span></button></p>
+                    </form>
+                </li>
+                <li>
+                    <form method="post" action="{% url "google_login" %}" id="google_login_form4">
+                        {% csrf_token %}
+                        <p><button type="submit" class="google_login_button"><span class="google_button_text">{% trans "Login with Google" %}</span></button></p>
+                    </form>
+                </li>
+				{% comment %}<li>Place for OpenID button.</li>{% endcomment %}
+            </ul>
         </div>
     </div>
 {% endblock %}
