@@ -101,41 +101,37 @@ def forbidden_view(request, reason=''):
     })))
 
 def panels_collapse(request):
-    message = simplejson.loads(request.POST['data'])
+    if request.method == 'POST':
+        if (request.POST['collapsed'] == 'true'):
+            request.user.panels_collapsed[request.POST['panel_id']] = True
+        else:
+            request.user.panels_collapsed[request.POST['panel_id']] = False
+        request.user.save()
 
-    if (message['collapsed'] == True):
-        request.user.panels_collapsed[message['panel_id']] = True
+        return http.HttpResponse()
     else:
-        request.user.panels_collapsed[message['panel_id']] = False
-    request.user.save()
+        message = {}
 
-    return http.HttpResponse()
+        for panel in request.user.panels_collapsed:
+            message[panel] = request.user.panels_collapsed[panel]
 
-def get_panels_collapse(request):
-    message = {}
-
-    for panel in request.user.panels_collapsed:
-        message[panel] = request.user.panels_collapsed[panel]
-
-    return http.HttpResponse(simplejson.dumps(message), mimetype='application/json')
+        return http.HttpResponse(simplejson.dumps(message), mimetype='application/json')
 
 def panels_order(request):
-    message = request.POST['data']
-    order = simplejson.loads(message)
-    no_of_columns = str(len(order['panels']))
+    if request.method == 'POST':
+        panels = simplejson.loads(request.POST['json'])
+        no_of_columns = str(len(panels))
 
-    request.user.panels_order[no_of_columns] = order
-    request.user.save()
+        request.user.panels_order[no_of_columns] = panels
+        request.user.save()
 
-    return http.HttpResponse()
-
-def get_panels_order(request):
-    order = simplejson.loads(request.GET['data'])
-    no_of_columns = str(order['noOfColumns'])
-
-    if request.user.panels_order.has_key(no_of_columns):
-        order = request.user.panels_order[no_of_columns]
+        return http.HttpResponse(no_of_columns)
     else:
-        order = {"panels": []}
-    
-    return http.HttpResponse(simplejson.dumps(order), mimetype='application/json')
+        no_of_columns = str(request.GET['noOfColumns'])
+
+        if request.user.panels_order.has_key(no_of_columns):
+            order = {"panels": request.user.panels_order[no_of_columns]}
+        else:
+            order = {"panels": []}
+
+        return http.HttpResponse(simplejson.dumps(order), mimetype='application/json')

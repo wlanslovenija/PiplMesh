@@ -27,6 +27,7 @@ function orderPanelsDefault() {
     $('.panel').each(function (index, panel) {
         var toColumn = index % numOfColumns;
         var columns = $('#panels').children();
+
         $(panel).appendTo(columns.eq(toColumn));
     });
 }
@@ -45,17 +46,26 @@ function sendOrderOfPanelsToServer() {
         items.push(column);
     });
 
-    $.post(urls['panels_order'], 'data=' + JSON.stringify({panels: items}));
+    $.ajax({
+        type: 'POST',
+        url: urls['panels_order'],
+        data: {json: JSON.stringify(items)}
+    });
 }
 
 function orderPanels() {
-    $.get(urls['get_panels_order'], 'data=' + JSON.stringify( {noOfColumns: howManyColumns()} ), function (data) {
-        if (data['panels'].length == 0) {
-            orderPanelsDefault();
-        } else {
-            for (var i = 0; i < data['panels'].length; i++) {
-                for (var j = 0; j < data['panels'][i].length; j++) {
-                    movePanel(data['panels'][i][j]['id'],i);
+    $.ajax({
+        type: 'GET',
+        url: urls['panels_order'],
+        data: {noOfColumns: howManyColumns()},
+        success: function (data) {
+            if (data['panels'].length == 0) {
+                orderPanelsDefault();
+            } else {
+                for (var i = 0; i < data['panels'].length; i++) {
+                    for (var j = 0; j < data['panels'][i].length; j++) {
+                        movePanel(data['panels'][i][j]['id'],i);
+                    }
                 }
             }
         }
@@ -63,7 +73,7 @@ function orderPanels() {
 }
 
 function collapsePanels() {
-    $.get(urls['get_panels_collapse'], function (data) {
+    $.get(urls['panels_collapse'], function (data) {
         $.each(data, function (panelId, collapsed) {
             if (collapsed == true) {
                 $('#' + panelId + ' .content').css('display', 'none');
@@ -73,6 +83,8 @@ function collapsePanels() {
 }
 
 function initializePanels() {
+    $('.panels').detach();
+
     initializeEmptyColumnsForPanels();
     orderPanels();
     collapsePanels();
@@ -88,7 +100,7 @@ function makeColumnsSortable() {
         'placeholder': 'placeholder',
         'forcePlaceholderSize': true,
         'opacity': 0.6,
-        'helper' : 'clone'
+        'helper': 'clone'
     }).disableSelection();
 }
 
@@ -108,11 +120,14 @@ $(document).ready(function () {
         var panel_id = $(this).parent().attr('id');
         var collapsed =  visible ? true : false;
 
-        $.post(urls['panels_collapse'], 'data=' + JSON.stringify( {panel_id: panel_id, collapsed: collapsed }));
+        $.ajax({
+            type: "POST",
+            url: urls['panels_collapse'],
+            data: {panel_id: panel_id, collapsed: collapsed}
+        });
     });
 
     $(window).resize(function () {
-        $('.panels').detach();
         initializePanels();
     });
 });
