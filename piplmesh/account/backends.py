@@ -1,4 +1,4 @@
-import json, urllib, datetime
+import json, urllib
 
 from django.conf import settings
 from django.utils import crypto, translation
@@ -189,6 +189,10 @@ class GoogleBackend(MongoEngineBackend):
         user.google_access_token = google_access_token
         user.google_profile_data = google_profile_data
 
+        if user.lazyuser_username:
+            # Best username guess we can get from Google OAuth
+            user.username = google_profile_data.get('email').rsplit('@', 1)[0]
+            user.lazyuser_username = False
         if user.first_name is None:
             user.first_name = google_profile_data.get('given_name') or None
         if user.last_name is None:
@@ -248,6 +252,10 @@ class FoursquareBackend(MongoEngineBackend):
         user.foursquare_access_token = foursquare_access_token
         user.foursquare_profile_data = foursquare_profile_data
 
+        if user.lazyuser_username:
+            # Best username guess we can get from Foursquare
+            user.username = foursquare_profile_data.get('contact', {}).get('email').rsplit('@', 1)[0]
+            user.lazyuser_username = False
         if user.first_name is None:
             user.first_name = foursquare_profile_data.get('firstName') or None
         if user.last_name is None:
@@ -270,9 +278,6 @@ class BrowserIDBackend(MongoEngineBackend, browserid_auth.BrowserIDBackend):
         email: email user uses for Persona
     """
     
-    def get_user(self, user_id):
-        return super(BrowserIDBackend, self).get_user(user_id)
-    
     def authenticate(self, browserid_assertion=None, browserid_audience=None, request=None):
         result = browserid_base.verify(browserid_assertion, browserid_audience)
         if not result:
@@ -281,7 +286,7 @@ class BrowserIDBackend(MongoEngineBackend, browserid_auth.BrowserIDBackend):
         email = result['email']
 
         try:
-            user = self.user_class.objects.get(email=email)
+            user = self.user_class.objects.get(browserid_profile_data__email=email)
             # TODO: What is we get more than one user?
         except self.user_class.DoesNotExist:
             # TODO: Based on user preference, we might create a new user here, not just link with existing, if existing user is lazy user
@@ -290,16 +295,16 @@ class BrowserIDBackend(MongoEngineBackend, browserid_auth.BrowserIDBackend):
             user = request.user
             # TODO: Is it OK to override BrowserID link if it already exist with some other BrowserID user?
         
-        user.browserid_data = result
+        user.browserid_profile_data = result
         
-        if user.email is None:
-            user.email = email
-            # BrowserID takes care of email confirmation
-            user.email_confirmed = True
         if user.lazyuser_username:
             # Best username guess we can get from BrowserID
             user.username = email.rsplit('@', 1)[0]
             user.lazyuser_username = False
+        if user.email is None:
+            user.email = email or None
+            # BrowserID takes care of email confirmation
+            user.email_confirmed = True
 
         user.save()
 

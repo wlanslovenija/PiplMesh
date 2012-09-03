@@ -213,18 +213,6 @@ input.gsc-search-button:hover,
     font-size: 10px;
 }
 
-button.browserid-signin {
-    background: url("../images/btn-browserid.png") no-repeat scroll -1px 50% #555555;
-    border: 1px outset rgba(50, 50, 50, 0.5);
-    border-radius: 3px 3px 3px 3px;
-    color: #FFFFFF;
-    padding: 1px 10px 1px 28px;
-}
-
-button.browserid-signin:hover {
-    background-color: #666666;
-}
-
 td.gsc-clear-button, table.gsc-branding {
     display: none;
 }
@@ -355,7 +343,8 @@ input.gsc-search-button {
 .google_button_text,
 .foursquare_button_text,
 .twitter_button_text,
-.fb_button_text {
+.fb_button_text,
+.browserid_button_text {
     width: 150px;
     padding: 4px 0 5px 24px;
     margin-left: -2px;
@@ -404,6 +393,27 @@ input.gsc-search-button {
 
 .google_button_text {
     background-image: url('../images/google_button.png');
+}
+
+/* ---------------- BROWSERID LOGIN BUTTON ------------------- */
+
+button.browserid-signin {
+    background: url("../images/btn-browserid.png") no-repeat scroll -1px 50% #555555;
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+    outline: none;
+    font-size: 11px;
+    line-height: 14px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+button.browserid-signin:hover {
+    background-color: #666666;
 }
 
 /* --------------------- LOGIN ------------------------ */
