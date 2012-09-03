@@ -1,6 +1,6 @@
 function howManyColumns() {
     var panelsWidth = $('#panels').width();
-    var columnPanelsWidth = $('.panels_column').outerWidth() + parseInt($('.panels_column').css('margin-left'));
+    var columnPanelsWidth = $('.panels_column').outerWidth();
 
     return parseInt(panelsWidth / columnPanelsWidth);
 }
@@ -16,7 +16,6 @@ function initializeEmptyColumnsForPanels() {
     for (var i = currentColumns; i < noOfColumns; i++) {
         var newColumn = $(document.createElement('div'));
         newColumn.addClass('panels_column');
-
         $('#panels').append(newColumn);
     }
 }
@@ -28,8 +27,7 @@ function orderPanelsDefault() {
     $('.panel').each(function (index, panel) {
         var toColumn = index % numOfColumns;
         var columns = $('#panels').children();
-
-        $(this).appendTo(columns.eq(toColumn));
+        $(panel).appendTo(columns.eq(toColumn));
     });
 }
 
@@ -84,12 +82,13 @@ function initializePanels() {
 
 function makeColumnsSortable() {
     $('.panels_column').sortable({
-        connectWith: '.panels_column',
-        handle: '',
-        cursor: 'move',
-        placeholder: 'placeholder',
-        forcePlaceholderSize: true,
-        opacity: 0.6
+        'connectWith': '.panels_column',
+        'handle': '',
+        'cursor': 'move',
+        'placeholder': 'placeholder',
+        'forcePlaceholderSize': true,
+        'opacity': 0.6,
+        'helper' : 'clone'
     }).disableSelection();
 }
 
