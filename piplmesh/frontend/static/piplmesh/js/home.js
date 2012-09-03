@@ -8,7 +8,6 @@ function Post(data) {
     function formatPostDate(post_date) {
         // TODO: check for cross browser compatibility, currently works in Chrome and Firefox on Ubuntu
         var created_time_diff = (new Date().getTime() - new Date(post_date)) / (60 * 1000); // Converting time from milliseconds to minutes
-        console.log(new Date());
         if (created_time_diff < 1) { // minutes
             msg = gettext("just now");
         }
