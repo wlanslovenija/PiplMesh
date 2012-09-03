@@ -8,6 +8,7 @@ function Post(data) {
     function formatPostDate(post_date) {
         // TODO: check for cross browser compatibility, currently works in Chrome and Firefox on Ubuntu
         var created_time_diff = (new Date().getTime() - new Date(post_date)) / (60 * 1000); // Converting time from milliseconds to minutes
+        console.log(new Date());
         if (created_time_diff < 1) { // minutes
             msg = gettext("just now");
         }
@@ -30,6 +31,7 @@ function Post(data) {
     }
 
     function generateHtml() {
+        // TODO: add other post options
         var post_options = $('<ul />').addClass('options')
             .append($('<li/>').append($('<a />').addClass('delete-post').addClass('hand').text(gettext("Delete post"))));
 
@@ -63,7 +65,7 @@ function Post(data) {
 }
 
 function showLastPosts(offset){
-    $.getJSON('/api/v1/post/?limit='+POSTS_LIMIT+'&offset='+offset, function (data) {
+    $.getJSON(API_POST_URL+'?limit='+POSTS_LIMIT+'&offset='+offset, function (data) {
         $(data.objects).each(function () {
             new Post(this).addToBottom();
         });
@@ -95,40 +97,47 @@ $(document).ready(function () {
     $('#submit_post').click(function () {
         var message = $('#post_text').val();
         var is_published = true;
-        if (message.trim().length > 0) {
-            $.ajax({
-                type: 'POST',
-                url: '/api/v1/post/',
-                data: JSON.stringify({
-                        'message': message,
-                        'is_published': is_published
-                }),
-                contentType: 'application/json',
-                dataType: 'json',
-                success: function (output, status, header) {
-                    $('#post_text').val(input_box_text);
-                    $('#post_text').css('min-height', 25);
-                }
-            });
-        }
+         $.ajax({
+            type: 'POST',
+            url: API_POST_URL,
+            data: JSON.stringify({
+                    'message': message,
+                    'is_published': is_published
+            }),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (output, status, header) {
+                $('#post_text').val(input_box_text);
+                $('#post_text').css('min-height', 25);
+            }
+        });
+
     });
 
     $('#post_text').expandingTextArea();
-    $('#post_text').focus(function () {
+    $('#post_text').focus(function (event) {
         if ($('#post_text').val() == input_box_text) {
             $('#post_text').val('');
         }
         $('#post_text').css('min-height', 50);
     });
 
-    $('#post_text').blur(function () {
+    $('#post_text').blur(function (event) {
         if ($('#post_text').val().trim() == '') {
             $('#post_text').val(input_box_text);
             $('#post_text').css('min-height', 25);
         }
     });
 
-    $(window).scroll(function () {
+    $('#post_text').keydown(function (event) {
+        if ($(this).val().trim().length < 1) {
+            $('#submit_post').attr('disabled', 'disabled');
+        } else {
+            $('#submit_post').removeAttr('disabled');
+        }
+    });
+
+    $(window).scroll(function (event) {
         if (document.body.scrollHeight - $(this).scrollTop() <= $(this).height()) {
             var last_post_id = $('.post:last').data('id');
             if (last_post_id) {

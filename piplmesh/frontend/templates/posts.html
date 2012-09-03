@@ -7,10 +7,10 @@
         {% csrf_token %}
         <textarea id="post_text">{% trans "Write a post..." %}</textarea>
         <div class="new_post_details">
-        {% comment %}
-            TODO: add buttons for settings
-        {% endcomment %}
-        <input type="button" name="submit_post" id="submit_post" value="{{ submit_text }}"/>
+            {% comment %}
+                TODO: add buttons for settings
+            {% endcomment %}
+        <input type="button" name="submit_post" id="submit_post" value="{{ submit_text }}" disabled="disabled"/>
         </div>
     </form> 
 </div>

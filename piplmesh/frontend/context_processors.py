@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.contrib import auth
+from django.core import urlresolvers
 from django.utils import translation
+
 
 from piplmesh.frontend import views
 
@@ -15,8 +17,10 @@ def global_vars(request):
         'LOGIN_REDIRECT_URL': settings.LOGIN_REDIRECT_URL,
         'REDIRECT_FIELD_NAME': auth.REDIRECT_FIELD_NAME,
         'SEARCH_ENGINE_UNIQUE_ID': settings.SEARCH_ENGINE_UNIQUE_ID,
+        'API_NAME' : 'v1',
 
         # Variables
         'logo_url': "piplmesh/images/logo-%s.png" % translation.get_language(),
         'request_get_next': request.REQUEST.get(auth.REDIRECT_FIELD_NAME),
+
     }
