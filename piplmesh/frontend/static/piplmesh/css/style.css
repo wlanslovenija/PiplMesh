@@ -26,6 +26,10 @@ a img {
     border: none;
 }
 
+h1 {
+    margin: 1em 0 0.75em 0;
+}
+
 /* Disables 3d push effect on button (IE) */
 button {
     position: relative;
@@ -59,19 +63,16 @@ form input[type="submit"], form input[type="reset"] {
 
 .form_fields {
     list-style-type: none;
-}
-
-.form_fields .field {
-    margin: 0.1em 0 0.1em 0;
-    padding: 0.2em 0.3em;
-    clear: left;
-    margin-left: 13em;
-    min-height: 2em;
+    padding-left: 0;
 }
 
 .form_fields .field input {
     width: 15.3em;
     border: 1px solid #AFAFAF;
+}
+
+.form_fields .field input:focus {
+    border-color: #666666;
 }
 
 .form_fields .field input[type="radio"], input[type="checkbox"] {
@@ -81,9 +82,9 @@ form input[type="submit"], form input[type="reset"] {
 
 .form_fields .field label {
     float: left;
-    width: 16em;
-    padding-right: 2em;
-    margin-left: -13em;
+    padding-right: 25px;
+    min-width: 150px;
+    text-align: right;
 }
 
 .input_invalid {
@@ -95,26 +96,66 @@ form input[type="submit"], form input[type="reset"] {
 }
 
 /* Styling nested lists such as radio buttons */
-.form_fields .field ul {
-    padding-left: 0;
-    margin-left: 18em;
-}
-
 .form_fields .field ul li {
     display: inline;
 }
 
 .errorlist {
     color: #FF0000;
-    padding: 0.3em;
+    padding: 0.3em 0 0.3em 1em;
 }
 
 .form_fields .errorlist {
-    margin-left: 19em;
+    margin-left: 175px;
+    list-style: disc;
 }
 
 .form_fields .errorlist li {
     text-align: left;
+}
+
+input.gsc-search-button,
+.buttons input {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: transparent;
+    background-image: -moz-linear-gradient(#F1F1F1, #DFDFDF);
+    background-image: -ms-linear-gradient(#F1F1F1, #DFDFDF);
+    background-image: -webkit-linear-gradient(#F1F1F1, #DFDFDF);
+    background-image: -o-linear-gradient(#F1F1F1, #DFDFDF);
+    background-origin: padding-box;
+    background-position: 0 0;
+    border-radius: 3px;
+    border-bottom-color: #999999;
+    border-right-color: #999999;
+    border-top-color: #CCCCCC;
+    border-left-color: #CCCCCC;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 1px 1px 0 #E7E7E7, 0 1px 0 #FCFCFC inset, 0 -1px 0 #D7D7D7 inset;
+    color: #000000;
+}
+
+input.gsc-search-button:hover,
+.buttons input:hover {
+    background-image: -moz-linear-gradient(#F0F0F0, #D0D0D0);
+    background-image: -ms-linear-gradient(#F0F0F0, #D0D0D0);
+    background-image: -webkit-linear-gradient(#F0F0F0, #D0D0D0);
+    background-image: -o-linear-gradient(#F0F0F0, #D0D0D0);
+}
+
+/* Styles common to different forms and form elements */
+.buttons,
+.contact_comment p,
+.login h1,
+.registration h1,
+.contact_form h1 {
+    margin-left: 175px;
+}
+
+.form_fields .field,
+.buttons {
+    margin-bottom: 1.5em;
 }
 
 /* -------------------- HEADER --------------------- */
@@ -207,24 +248,9 @@ td.gsc-clear-button, table.gsc-branding {
 }
 
 input.gsc-search-button {
-    background-attachment: scroll;
-    background-clip: border-box;
-    background-color: transparent;
-    background-image: -moz-linear-gradient(#F1F1F1, #DFDFDF);
-    background-image: -ms-linear-gradient(#F1F1F1, #DFDFDF);
-    background-image: -webkit-linear-gradient(#F1F1F1, #DFDFDF);
-    background-origin: padding-box;
-    background-position: 0 0;
-    border-bottom-right-radius: 3px;
-    border-bottom-color: #999999;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-top-right-radius: 3px;
-    border-top-color: #CCCCCC;
-    border-top-style: solid;
-    border-top-width: 1px;
-    box-shadow: 1px 1px 0 #E7E7E7, 0 1px 0 #FCFCFC inset, 0 -1px 0 #D7D7D7 inset;
-    color: #000000;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-left-color: #969696;
     cursor: pointer;
     font-size: 1em;
     height: 28px;
@@ -286,158 +312,124 @@ input.gsc-search-button {
     width: 500px;
 }
 
-/* ---------------- FB LOGIN BUTTON ------------------- */
+/* ---------------- OTHER LOGIN BUTTON ------------------- */
+.google_login_button,
+.foursquare_login_button,
+.twitter_login_button,
 .fb_login_button {
-    background: #29447E url('../images/fb_login_button.png');
-    background-repeat: no-repeat;
     cursor: pointer;
     display: inline-block;
-    padding: 0 0 0 1px;
     text-decoration: none;
     outline: none;
     font-size: 11px;
     line-height: 14px;
-    margin: 0px;
+    margin: 0;
+    padding: 0;
     border: 0;
-    height: 22px;
-    width: 163px;
+    background-image: -moz-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0) 100%);
+    background-image: -ms-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0) 100%);
+    background-image: -o-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0) 100%);
+    border-radius: 3px;
 }
 
+.google_login_button:hover,
+.foursquare_login_button:hover,
+.twitter_login_button:hover,
 .fb_login_button:hover {
-    background-position: -163px;
+    background-image: -moz-linear-gradient(rgba(255,255,255,0.3) 10%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-linear-gradient(rgba(255,255,255,0.3) 10%, rgba(0,0,0,0) 100%);
+    background-image: -ms-linear-gradient(rgba(255,255,255,0.3) 10%, rgba(0,0,0,0) 100%);
+    background-image: -o-linear-gradient(rgba(255,255,255,0.3) 10%, rgba(0,0,0,0) 100%);
+}
+
+.google_button_text,
+.foursquare_button_text,
+.twitter_button_text,
+.fb_button_text {
+    width: 150px;
+    padding: 4px 0 5px 24px;
+    margin-left: -2px;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-weight: bold;
+    color: white;
+    display: block;
+    text-align: center;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+/* ---------------- FACEBOOK LOGIN BUTTON ------------------- */
+.fb_login_button {
+    background-color: #3B5998;
 }
 
 .fb_button_text {
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    padding: 4px 6px 3px 6px;
-    margin: -3px 1px 0 21px;
-    text-shadow: none;
+    background-image: url('../images/facebook_logo24.png');
 }
 
 /* ---------------- TWITTER LOGIN BUTTON ------------------- */
 .twitter_login_button {
-    background: #3DBCDC url('../images/twitter_button.png');
-    background-position:  0 0;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    display: inline-block;
-    padding: 0 0 0 1px;
-    text-decoration: none;
-    outline: none;
-    font-size: 11px;
-    line-height: 14px;
-    margin: 0px;
-    outline: none;
-    border: 0;
+    background-color: #3DBCDC;
 }
 
 .twitter_button_text {
-    background: #3DBCDC;
-    border-top: solid 1px #879AC0;
-    border-bottom: solid 1px #1A356E;
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    padding: 2px 6px 3px 6px;
-    margin: 1px 1px 0 21px;
-    text-shadow: none;
+    background-image: url('../images/twitter_logo24.png');
 }
 
 /* ---------------- FOURSQUARE LOGIN BUTTON ------------------- */
 .foursquare_login_button {
-    background: #2090c6 url('../images/foursquare_button.png');
-    background-repeat: no-repeat;
-    cursor: pointer;
-    display: inline-block;
-    text-decoration: none;
-    outline: none;
-    font-size: 11px;
-    line-height: 20px;
-    border: 0;
-    height: 24px;
+    background-color: #2090c6;
 }
 
 .foursquare_button_text {
-    background: #2090c6;
-    border-top: solid 1px #879AC0;
-    border-bottom: solid 1px #1A356E;
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    margin: 0 0 0 20px;
-    text-shadow: none;
+    background-image: url('../images/foursquare_button.png');
 }
 
 /* ---------------- GOOGLE LOGIN BUTTON ------------------- */
 .google_login_button {
-    background: #0064D9 url('../images/google_button.png');
-    background-position: 0 0;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    display: inline-block;
-    padding: 0 0 0 1px;
-    text-decoration: none;
-    outline: none;
-    font-size: 11px;
-    line-height: 14px;
-    margin: 0px;
+    background-color: #0064D9;
 }
 
 .google_button_text {
-    background: #0064D9;
-    border-top: solid 1px #879AC0;
-    border-bottom: solid 1px #1A356E;
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    padding: 2px 6px 3px 6px;
-    margin: 1px 1px 0 21px;
-    text-shadow: none;
+    background-image: url('../images/google_button.png');
 }
 
 /* --------------------- LOGIN ------------------------ */
 .login {
-    text-align: center;
-    margin: 20px 0px 20px 0px;
+    width: 640px;
 }
 
+.registration {
+    width: 450px;
+}
+
+#other_login_options p {
+    margin-top: 0;
+}
+
+#other_login_options,
 .login_form {
-    text-align: right;
     display: inline-block;
+    vertical-align: top;
 }
 
 #other_login_options {
-    margin-left: 50px;
-    display: inline-block;
-    text-align: left;
+    margin-left: 3em;
+    padding-left: 3em;
 }
 
+.form_fields,
 #other_login_options ul {
     margin: 0;
     padding: 0;
 }
 
 #other_login_options li {
-    padding-top: 15px;
+    padding-bottom: 0.5em;
     list-style-type: none;
-}
-
-.registration {
-    width: 960px;
-    margin: auto;
-    margin-top: 50px;
-}
-
-.buttons {
-    padding-top: 20px;
-    text-align: right;
-    width: 482px;
 }
 
 .buttons input {
@@ -627,16 +619,6 @@ input.gsc-search-button {
 }
 
 /* ------------------ CONTACT ---------------------------- */
-.contact_form {
-    width: 960px;
-    margin: auto;
-    margin-top: 50px;
-}
-
-.contact_form h1 {
-    margin-left: 280px;
-}
-
 .contact_form textarea {
     width: 300px;
 }

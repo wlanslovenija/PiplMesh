@@ -141,7 +141,7 @@ class TwitterBackend(MongoEngineBackend):
         user.twitter_access_token = models.TwitterAccessToken(key=twitter_access_token.key, secret=twitter_access_token.secret)
         user.twitter_profile_data = twitter_profile_data
 
-        if user.lazyuser_username and twitter_profile_data.get('username'):
+        if user.lazyuser_username and twitter_profile_data.get('screen_name'):
             # TODO: Does Twitter have same restrictions on username content as we do?
             user.username = twitter_profile_data.get('screen_name')
             user.lazyuser_username = False
@@ -238,6 +238,7 @@ class FoursquareBackend(MongoEngineBackend):
         try:
             user = self.user_class.objects.get(foursquare_profile_data__id=foursquare_profile_data.get('id'))
         except self.user_class.DoesNotExist:
+            # TODO: Based on user preference, we might create a new user here, not just link with existing, if existing user is lazy user
             # We reload to make sure user object is recent
             request.user.reload()
             user =  request.user
