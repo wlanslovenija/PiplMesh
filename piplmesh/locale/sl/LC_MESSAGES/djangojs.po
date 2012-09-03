@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-26 04:22-0700\n"
+"POT-Creation-Date: 2012-09-03 12:55-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jon Premik <jon.premik@gmail.com>\n"
 "Language-Team: \n"
@@ -25,11 +25,11 @@ msgstr "Gesli se ne ujemata."
 msgid "Invalid e-mail."
 msgstr "Neveljaven e-mail naslov."
 
-#: frontend/static/piplmesh/js/home.js:13
+#: frontend/static/piplmesh/js/home.js:14
 msgid "just now"
 msgstr "ta trenutek"
 
-#: frontend/static/piplmesh/js/home.js:17
+#: frontend/static/piplmesh/js/home.js:18
 #, c-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
@@ -37,7 +37,7 @@ msgstr[0] "pred %s dnevom"
 msgstr[1] "pred %s dnevoma"
 msgstr[2] "pred %s dnevi"
 
-#: frontend/static/piplmesh/js/home.js:22
+#: frontend/static/piplmesh/js/home.js:23
 #, c-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
@@ -45,7 +45,8 @@ msgstr[0] "pred %s uro"
 msgstr[1] "pred %s urama"
 msgstr[2] "pred %s urami"
 
-#: frontend/static/piplmesh/js/home.js:27
+
+#: frontend/static/piplmesh/js/home.js:28
 #, c-format
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
@@ -53,11 +54,11 @@ msgstr[0] "pred %s minuto"
 msgstr[1] "pred %s minutama"
 msgstr[2] "pred %s minutami"
 
-#: frontend/static/piplmesh/js/home.js:35
+#: frontend/static/piplmesh/js/home.js:37
 msgid "Delete post"
 msgstr "Izbriši"
 
-#: frontend/static/piplmesh/js/home.js:78
+#: frontend/static/piplmesh/js/home.js:80
 msgid "Oops, something went wrong..."
 msgstr "Ups, prišlo je do napake..."
 

@@ -6,26 +6,24 @@ function Post(data) {
 
     // Calculates difference between current time and the time when the post was created and generates a message
     function formatPostDate(post_date) {
-        console.log(post_date);
         // TODO: check for cross browser compatibility, currently works in Chrome and Firefox on Ubuntu
-        var created_time_diff = (new Date().getTime() - new Date(Date.parse(post_date))) / (60 * 1000); // Converting time from milliseconds to minutes
-
+        var created_time_diff = (new Date().getTime() - new Date(post_date)) / (60 * 1000); // Converting time from milliseconds to minutes
         if (created_time_diff < 1) { // minutes
             msg = gettext("just now");
         }
         else if (created_time_diff >= 60 * 24) { // 24 hours, 1 day
             var days = Math.round(created_time_diff / (60 * 24));
-            var format = ngettext("%s day ago", "%s days ago", days);
+            var format = ngettext("%s day ago", "%s days ago",  (days > 2) ? 3 : days);
             msg = interpolate(format, [days]);
         }
         else if (created_time_diff >= 60) { // 60 minutes, 1 hour
             var hours = [Math.round(created_time_diff / 60)];
-            var format = ngettext("%s hour ago", "%s hours ago", hours);
+            var format = ngettext("%s hour ago", "%s hours ago", (hours > 2) ? 3 : hours);
             msg = interpolate(format, [hours]);
         }
         else {
             var minutes = Math.round(created_time_diff);
-            var format = ngettext("%s minute ago", "%s minutes ago", minutes);
+            var format = ngettext("%s minute ago", "%s minutes ago",  (minutes > 2) ? 3 : minutes);
             msg = interpolate(format, [minutes]);
         }
         return msg;
