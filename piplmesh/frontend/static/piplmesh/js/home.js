@@ -6,30 +6,34 @@ function Post(data) {
 
     // Calculates difference between current time and the time when the post was created and generates a message
     function formatPostDate(post_date) {
-        // TODO: bug, it doesn't work in chrome on windows and in safari on osx
+        console.log(post_date);
+        // TODO: check for cross browser compatibility, currently works in Chrome and Firefox on Ubuntu
         var created_time_diff = (new Date().getTime() - new Date(Date.parse(post_date))) / (60 * 1000); // Converting time from milliseconds to minutes
 
-        if (created_time_diff < 2) { // minutes
+        if (created_time_diff < 1) { // minutes
             msg = gettext("just now");
         }
         else if (created_time_diff >= 60 * 24) { // 24 hours, 1 day
-            var format = gettext("%(days)s days ago")
-            msg = interpolate(format, {'days': Math.round(created_time_diff / (60 * 24))}, true);
+            var days = Math.round(created_time_diff / (60 * 24));
+            var format = ngettext("%s day ago", "%s days ago", days);
+            msg = interpolate(format, [days]);
         }
         else if (created_time_diff >= 60) { // 60 minutes, 1 hour
-            var format = gettext("%(hours)s hours ago")
-            msg = interpolate(format, {'hours': Math.round(created_time_diff / 60)}, true);
+            var hours = [Math.round(created_time_diff / 60)];
+            var format = ngettext("%s hour ago", "%s hours ago", hours);
+            msg = interpolate(format, [hours]);
         }
         else {
-            var format = gettext("%(minutes)s minutes ago")
-            msg = interpolate(format, {'minutes': Math.round(created_time_diff)}, true);
+            var minutes = Math.round(created_time_diff);
+            var format = ngettext("%s minute ago", "%s minutes ago", minutes);
+            msg = interpolate(format, [minutes]);
         }
         return msg;
     }
 
     function generateHtml() {
-        var post_options = $('</ul>').addClass('options')
-            .append($('<li/>').html('<a class="delete-post hand">Delete post</a>'));
+        var post_options = $('<ul />').addClass('options')
+            .append($('<li/>').append($('<a />').addClass('delete-post').addClass('hand').text(gettext("Delete post"))));
 
         var post = $('<li/>').addClass('post')
             .append(post_options)
@@ -54,6 +58,7 @@ function Post(data) {
 
     self.addToTop = function () {
         if (!checkIfPostExists()) {
+            // TODO: animation has to be considered and maybe improved
             generateHtml(data).prependTo($(".posts")).hide().slideToggle('slow');
         }
     }
@@ -67,12 +72,6 @@ function showLastPosts(offset){
     });
 }
 
-function postUpdateList(data){
-    if (data.action === 'NEW') {
-        new Post(data.post).addToTop();
-    }
-}
-
 $(document).ready(function () {
     $.ajaxSetup({
         error: function (jqXHR, textStatus, errorThrown) {
@@ -81,7 +80,9 @@ $(document).ready(function () {
         }
     });
 
-    $.updates.registerProcessor('home_channel', 'posts', postUpdateList);
+    $.updates.registerProcessor('home_channel', 'post_new', function (data) {
+        new Post(data.post).addToTop();
+    });
 
     $('.panel .header').click(function (event) {
         $(this).next('.content').slideToggle('fast');
@@ -96,7 +97,7 @@ $(document).ready(function () {
     $('#submit_post').click(function () {
         var message = $('#post_text').val();
         var is_published = true;
-        if (message != '') {
+        if (message.trim().length > 0) {
             $.ajax({
                 type: 'POST',
                 url: '/api/v1/post/',

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-24 14:23+0200\n"
+"POT-Creation-Date: 2012-08-26 04:22-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jon Premik <jon.premik@gmail.com>\n"
 "Language-Team: \n"
@@ -19,41 +19,56 @@ msgstr ""
 
 #: account/static/piplmesh/js/registration.js:20
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Gesli se ne ujemata."
 
 #: account/static/piplmesh/js/registration.js:54
 msgid "Invalid e-mail."
-msgstr ""
+msgstr "Neveljaven e-mail naslov."
 
 #: frontend/static/piplmesh/js/home.js:13
 msgid "just now"
-msgstr ""
+msgstr "ta trenutek"
 
-#: frontend/static/piplmesh/js/home.js:16
-msgid "%(days)s days ago"
-msgstr ""
+#: frontend/static/piplmesh/js/home.js:17
+#, c-format
+msgid "%s day ago"
+msgid_plural "%s days ago"
+msgstr[0] "pred %s dnevom"
+msgstr[1] "pred %s dnevoma"
+msgstr[2] "pred %s dnevi"
 
-#: frontend/static/piplmesh/js/home.js:20
-msgid "%(hours)s hours ago"
-msgstr ""
+#: frontend/static/piplmesh/js/home.js:22
+#, c-format
+msgid "%s hour ago"
+msgid_plural "%s hours ago"
+msgstr[0] "pred %s uro"
+msgstr[1] "pred %s urama"
+msgstr[2] "pred %s urami"
 
-#: frontend/static/piplmesh/js/home.js:24
-msgid "%(minutes)s minutes ago"
-msgstr ""
+#: frontend/static/piplmesh/js/home.js:27
+#, c-format
+msgid "%s minute ago"
+msgid_plural "%s minutes ago"
+msgstr[0] "pred %s minuto"
+msgstr[1] "pred %s minutama"
+msgstr[2] "pred %s minutami"
 
-#: frontend/static/piplmesh/js/home.js:80
+#: frontend/static/piplmesh/js/home.js:35
+msgid "Delete post"
+msgstr "Izbriši"
+
+#: frontend/static/piplmesh/js/home.js:78
 msgid "Oops, something went wrong..."
-msgstr ""
+msgstr "Ups, prišlo je do napake..."
 
 #: panels/map/static/piplmesh/panel/map/panel.js:15
 msgid "more info"
-msgstr ""
+msgstr "več informacij"
 
 #: panels/onlineusers/static/piplmesh/panel/onlineusers/panel.js:28
 msgid "User image"
 msgstr "Slika uporabnika"
 
 #: panels/onlineusers/static/piplmesh/panel/onlineusers/panel.js:35
-#, fuzzy
 msgid "User profile"
-msgstr "Slika uporabnika"
+msgstr "Profil uporabnika"

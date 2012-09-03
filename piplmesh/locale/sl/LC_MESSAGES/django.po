@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-24 14:23+0200\n"
+"POT-Creation-Date: 2012-08-25 09:50-0700\n"
 "PO-Revision-Date: 2012-05-18 12:29+0100\n"
 "Last-Translator: Martin Jakomin <martin.jakomin@gmail.com>\n"
 "Language-Team: \n"
@@ -340,14 +340,12 @@ msgid "Subject"
 msgstr ""
 
 #: frontend/forms.py:11
-#, fuzzy
 msgid "Your e-mail address"
-msgstr "Potrdi svoj e-mail naslov"
+msgstr "Tvoj e-mail naslov"
 
 #: frontend/views.py:49
-#, fuzzy
 msgid "Thank you. Your message has been successfully sent."
-msgstr "Tvoje geslo je bilo uspešno posodobljeno."
+msgstr "Hvala. Tvoje sporočilo je bilo uspešno poslano."
 
 #: frontend/templates/403.html:5 frontend/templates/403.html.py:10
 msgid "403 Forbidden"
@@ -455,13 +453,12 @@ msgid "Send my current location"
 msgstr "Pošlji mojo trenutno lokacijo"
 
 #: frontend/templates/posts.html:3
-#, fuzzy
 msgid "submit"
 msgstr "Pošlji"
 
 #: frontend/templates/posts.html:8
 msgid "Write a post..."
-msgstr ""
+msgstr "Napiši sporočilo..."
 
 #: frontend/templates/search.html:5
 msgid "Search"
@@ -588,6 +585,7 @@ msgstr ""
 #, python-format
 msgid "Source: <a href=\"%(url)s\">%(url_name)s</a>"
 msgstr ""
+
 
 #: panels/map/panel.py:8
 msgid "Map"

@@ -112,16 +112,15 @@ def send_update_on_new_post(sender, post_object, **kwargs):
         updates.send_update(
             HOME_CHANNEL_ID,
             {
-                'type': 'posts',
-                'action': 'NEW',
+                'type': 'post_new',
                 'post': {
                     'id': str(post_object.id),
                     'author': {
                         'username': post_object.author.username,
                     },
                     'message': post_object.message,
-                    'updated_time': post_object.updated_time.strftime('%Y-%m-%dT%H:%M:%S'),
-                    'created_time': post_object.created_time.strftime('%Y-%m-%dT%H:%M:%S'),
+                    'updated_time': post_object.updated_time.strftime('%a, %d %b %Y %H:%M:%S%Z'),
+                    'created_time': post_object.created_time.strftime('%a, %d %b %Y %H:%M:%S%Z'),
                 },
             }
         )

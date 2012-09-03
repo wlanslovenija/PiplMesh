@@ -39,23 +39,23 @@ function redrawUserList() {
     });
 }
 
-function updateUserList(data) {
+function connectUser(data) {
     var user = new User(data.user);
-    if (data.action === 'JOIN') {
-        onlineUsers[user._key] = user;
+    onlineUsers[user._key] = user;
+    redrawUserList();
+}
+
+function disconnectUser(data) {
+    var user = new User(data.user);
+    if (onlineUsers[user._key]) {
+        delete onlineUsers[user._key];
         redrawUserList();
-    }
-    else if (data.action === 'PART') {
-        if (onlineUsers[user._key]) {
-            delete onlineUsers[user._key];
-            redrawUserList();
-        }
     }
 }
 
 $(document).ready(function () {
-    $.updates.registerProcessor('home_channel', 'userlist', updateUserList);
-
+    $.updates.registerProcessor('home_channel', 'user_connect', connectUser);
+    $.updates.registerProcessor('home_channel', 'user_connect', disconnectUser);
     $('#search_users').change(redrawUserList).keyup(redrawUserList);
 
     redrawUserList();
