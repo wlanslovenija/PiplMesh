@@ -37,7 +37,7 @@
                             {% csrf_token %}
                             <div>
                                 <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" />
-                                <button type="submit" class="auth_button" value="value">{% trans "Logout" %}</button>
+                                <button type="submit" class="logout_button" value="value">{% trans "Logout" %}</button>
                             </div>
                         </form>
                     </li>

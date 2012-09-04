@@ -7,7 +7,7 @@ import datetime, os
 MONGO_DATABASE_NAME = 'PiplMesh'
 
 import mongoengine
-mongoengine.connect(MONGO_DATABASE_NAME)
+mongoengine.connect(MONGO_DATABASE_NAME, tz_aware=True)
 
 settings_dir = os.path.abspath(os.path.dirname(__file__))
 
@@ -38,6 +38,7 @@ MANAGERS = ADMINS
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = 'Europe/Ljubljana'
+USE_TZ = True
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -46,6 +47,10 @@ LANGUAGE_CODE = 'sl'
 LANGUAGES = (
     ('sl', _('Slovenian')),
     ('en', _('English')),
+)
+
+LOCALE_PATHS = (
+    os.path.join(settings_dir, 'locale'),
 )
 
 URL_VALIDATOR_USER_AGENT = 'Django'
@@ -144,6 +149,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
     'sekizai.context_processors.sekizai',
+    'django_browserid.context_processors.browserid_form',
     'piplmesh.frontend.context_processors.global_vars',
 )
 
@@ -189,6 +195,7 @@ INSTALLED_APPS = (
     'tastypie_mongoengine',
     'sekizai',
     'missing',
+    'django_browserid',
 )
 
 PUSH_SERVER = {
@@ -276,6 +283,7 @@ AUTHENTICATION_BACKENDS = (
     'piplmesh.account.backends.TwitterBackend',
     'piplmesh.account.backends.FoursquareBackend',
     'piplmesh.account.backends.GoogleBackend',
+    'piplmesh.account.backends.BrowserIDBackend',
     'piplmesh.account.backends.LazyUserBackend',
 )
 

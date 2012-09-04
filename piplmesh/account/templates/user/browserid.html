@@ -1,0 +1,12 @@
+{% load future i18n staticfiles sekizai_tags %}
+
+{% addtoblock "js" %}<script src="{% static "browserid/browserid.js" %}" type="text/javascript"></script>{% endaddtoblock %}
+{% addtoblock "js" %}<script src="{% static "piplmesh/js/browserid_login.js" %}" type="text/javascript"></script>{% endaddtoblock %}
+
+<div id="browserid_form">
+    <form method="post" action="{% url "browserid_verify" %}">
+        {% csrf_token %}
+        <div id="browserid_submit">{{ browserid_form.as_p }}</div>
+        <p><button type="submit" id="browserid" class="browserid-signin" title="{% trans "Sign in with Persona" %}"><span class="browserid_button_text">{% trans "Sign in with Persona" %}</span></button></p>
+    </form>
+</div>
