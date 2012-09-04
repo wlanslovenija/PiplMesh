@@ -6,31 +6,31 @@ function Post(data) {
 
     // Calculates difference between current time and the time when the post was created and generates a message
     function formatPostDate(post_date) {
-        // TODO: check for cross browser compatibility, currently works in Chrome and Firefox on Ubuntu
+        // TODO: Check for cross browser compatibility, currently works in Chrome and Firefox on Ubuntu
         var created_time_diff = (new Date().getTime() - new Date(post_date)) / (60 * 1000); // Converting time from milliseconds to minutes
         if (created_time_diff < 2) { // minutes
             msg = gettext("just now");
         }
         else if (created_time_diff >= 60 * 24) { // 24 hours, 1 day
             var days = Math.round(created_time_diff / (60 * 24));
-            var format = ngettext("%(day)s day ago", "%(day)s days ago", {'day': days});
-            msg = interpolate(format, {'day': days}, true);
+            var format = ngettext("%(days)s day ago", "%(days)s days ago", days);
+            msg = interpolate(format, {'days': days}, true);
         }
         else if (created_time_diff >= 60) { // 60 minutes, 1 hour
             var hours = Math.round(created_time_diff / 60);
-            var format = ngettext("%(hour)s hour ago", "%(hour)s hours ago", hours);
-            msg = interpolate(format, {'hour': hours}, true);
+            var format = ngettext("%(hours)s hour ago", "%(hours)s hours ago", hours);
+            msg = interpolate(format, {'hours': hours}, true);
         }
         else {
             var minutes = Math.round(created_time_diff);
-            var format = ngettext("%(minute)s minute ago", "%(minute)s minutes ago", minutes);
-            msg = interpolate(format, {'minute': minutes}, true);
+            var format = ngettext("%(minutes)s minute ago", "%(minutes)s minutes ago", minutes);
+            msg = interpolate(format, {'minutes': minutes}, true);
         }
         return msg;
     }
 
     function generateHtml() {
-        // TODO: add other post options
+        // TODO: Add other post options
         var post_options = $('<ul />').addClass('options')
             .append($('<li/>').append($('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))));
 
@@ -57,7 +57,7 @@ function Post(data) {
 
     self.addToTop = function () {
         if (!checkIfPostExists()) {
-            // TODO: animation has to be considered and maybe improved
+            // TODO: Animation has to be considered and maybe improved
             generateHtml(data).prependTo($('.posts')).hide().slideToggle('slow');
         }
     }
