@@ -615,6 +615,8 @@ button.browserid-signin:hover {
     width: 260px;
     float: left;
     margin-left: 10px;
+    padding-bottom: 80px;
+    height: 100%;
 }
 
 .placeholder {
