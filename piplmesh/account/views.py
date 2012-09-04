@@ -17,6 +17,9 @@ import tweepy
 
 from piplmesh.account import forms, models
 
+import django_browserid
+from django_browserid import views as browserid_views
+
 FACEBOOK_SCOPE = 'email'
 GOOGLE_SCOPE = 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
 
@@ -219,6 +222,26 @@ class FoursquareCallbackView(generic_views.RedirectView):
             # TODO: Message user that they have not been logged in because they cancelled the foursquare app
             # TODO: Use information provided from foursquare as to why the login was not successful
             return super(FoursquareCallbackView, self).get(request, *args, **kwargs)
+        
+class BrowserIDVerifyView(browserid_views.Verify):
+    """
+    This view authenticates the user via Mozilla Persona (BrowserID).
+    """
+    
+    def form_valid(self, form):
+        """Handles the return post request from the browserID form and puts
+        interesting variables into the class. If everything checks out, then
+        we call handle_user to decide how to handle a valid user
+        """
+        self.assertion = form.cleaned_data['assertion']
+        self.audience = django_browserid.get_audience(self.request)
+        self.user = auth.authenticate(browserid_assertion=self.assertion, browserid_audience=self.audience, request=self.request)
+        assert self.user.is_authenticated()
+
+        if self.user and self.user.is_active:
+            return self.login_success()
+
+        return self.login_failure()
 
 class RegistrationView(edit_views.FormView):
     """

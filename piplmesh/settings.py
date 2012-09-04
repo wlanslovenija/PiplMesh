@@ -149,6 +149,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
     'sekizai.context_processors.sekizai',
+    'django_browserid.context_processors.browserid_form',
     'piplmesh.frontend.context_processors.global_vars',
 )
 
@@ -194,6 +195,7 @@ INSTALLED_APPS = (
     'tastypie_mongoengine',
     'sekizai',
     'missing',
+    'django_browserid',
 )
 
 PUSH_SERVER = {
@@ -281,6 +283,7 @@ AUTHENTICATION_BACKENDS = (
     'piplmesh.account.backends.TwitterBackend',
     'piplmesh.account.backends.FoursquareBackend',
     'piplmesh.account.backends.GoogleBackend',
+    'piplmesh.account.backends.BrowserIDBackend',
     'piplmesh.account.backends.LazyUserBackend',
 )
 

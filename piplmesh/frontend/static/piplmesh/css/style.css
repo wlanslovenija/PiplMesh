@@ -286,7 +286,7 @@ input.gsc-search-button {
 }
 
 /* -------------------- AUTHENTICATION ------------------------ */
-.auth_button {
+.logout_button {
     background: none;
     border: none;
     padding: 0px;
@@ -297,7 +297,7 @@ input.gsc-search-button {
     text-decoration: none;
 }
 
-.auth_button:hover span {
+.logout_button:hover span {
     text-decoration: underline;
 }
 
@@ -343,7 +343,8 @@ input.gsc-search-button {
 .google_button_text,
 .foursquare_button_text,
 .twitter_button_text,
-.fb_button_text {
+.fb_button_text,
+.browserid_button_text {
     width: 150px;
     padding: 4px 0 5px 24px;
     margin-left: -2px;
@@ -392,6 +393,27 @@ input.gsc-search-button {
 
 .google_button_text {
     background-image: url('../images/google_button.png');
+}
+
+/* ---------------- BROWSERID LOGIN BUTTON ------------------- */
+
+button.browserid-signin {
+    background: url("../images/btn-browserid.png") no-repeat scroll -1px 50% #555555;
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+    outline: none;
+    font-size: 11px;
+    line-height: 14px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+button.browserid-signin:hover {
+    background-color: #666666;
 }
 
 /* --------------------- LOGIN ------------------------ */
