@@ -3,7 +3,7 @@ import smtplib
 from django import http, template
 from django.conf import settings
 from django.contrib import messages
-from django.core import mail, urlresolvers, serializers
+from django.core import mail, urlresolvers
 from django.core.files import storage
 from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
