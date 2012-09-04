@@ -607,6 +607,7 @@ button.browserid-signin:hover {
 /* ------------------ DROP-DOWN LOGIN ---------------------------- */
 .drop_down_login_container {
     position: relative;
+    display: block;
 }
 
 .drop_down_login_options {
@@ -618,18 +619,12 @@ button.browserid-signin:hover {
     z-index: 100;
     margin: 0;
     padding: 0;
-}
-
-.drop_down_login_options ul {
-    position: static;
     font-size: 10px;
     list-style: none;
-    margin: 0;
-    padding: 0;
     text-align: right;
 }
 
-.drop_down_login_options ul li {
+.drop_down_login_options li {
     border: none;
     display: block;
     margin: 0;
@@ -637,7 +632,7 @@ button.browserid-signin:hover {
     white-space: nowrap;
 }
 
-.drop_down_login_options ul li p {
+.drop_down_login_options li p {
     margin: 0;
     padding: 0;
 }
