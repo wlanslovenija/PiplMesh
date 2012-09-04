@@ -286,7 +286,7 @@ input.gsc-search-button {
 }
 
 /* -------------------- AUTHENTICATION ------------------------ */
-.auth_button {
+.logout_button {
     background: none;
     border: none;
     padding: 0px;
@@ -297,7 +297,7 @@ input.gsc-search-button {
     text-decoration: none;
 }
 
-.auth_button:hover span {
+.logout_button:hover span {
     text-decoration: underline;
 }
 
