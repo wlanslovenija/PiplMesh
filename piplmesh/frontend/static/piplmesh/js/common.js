@@ -1,3 +1,9 @@
+$(document).ready(function () {
+    $('.logout_button').click(function (event) {
+        navigator.id.logout();
+    });
+});
+
 $(document).ajaxSend(function(event, xhr, settings) {
     function getCookie(name) {
         var cookieValue = null;

@@ -20,7 +20,6 @@ v1_api.register(resources.PostResource())
 js_info_dict = {
     'packages': (
         'django.conf',
-        'piplmesh.frontend',
     ),
 }
 
@@ -57,6 +56,9 @@ urlpatterns = patterns('',
     # Google
     url(r'^google/login/$', account_views.GoogleLoginView.as_view(), name='google_login'),
     url(r'^google/callback/$', account_views.GoogleCallbackView.as_view(), name='google_callback'),
+    
+    # BrowserID
+    url(r'^browserid/', account_views.BrowserIDVerifyView.as_view(), name='browserid_verify'),
 
     # Profile, account
     url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='profile'),
