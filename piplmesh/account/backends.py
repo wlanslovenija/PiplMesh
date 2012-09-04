@@ -188,10 +188,12 @@ class GoogleBackend(MongoEngineBackend):
 
         user.google_access_token = google_access_token
         user.google_profile_data = google_profile_data
+        
+        username_guess = google_profile_data.get('email').rsplit('@', 1)[0] or None
 
-        if user.lazyuser_username:
+        if user.lazyuser_username and username_guess:
             # Best username guess we can get from Google OAuth
-            user.username = google_profile_data.get('email').rsplit('@', 1)[0]
+            user.username = username_guess
             user.lazyuser_username = False
         if user.first_name is None:
             user.first_name = google_profile_data.get('given_name') or None
@@ -251,10 +253,12 @@ class FoursquareBackend(MongoEngineBackend):
 
         user.foursquare_access_token = foursquare_access_token
         user.foursquare_profile_data = foursquare_profile_data
+        
+        username_guess = foursquare_profile_data.get('contact', {}).get('email').rsplit('@', 1)[0] or None
 
-        if user.lazyuser_username:
+        if user.lazyuser_username and username_guess:
             # Best username guess we can get from Foursquare
-            user.username = foursquare_profile_data.get('contact', {}).get('email').rsplit('@', 1)[0]
+            user.username = username_guess
             user.lazyuser_username = False
         if user.first_name is None:
             user.first_name = foursquare_profile_data.get('firstName') or None
