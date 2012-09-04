@@ -603,3 +603,36 @@ button.browserid-signin:hover {
 .contact_form textarea {
     width: 300px;
 }
+
+/* ------------------ DROP-DOWN LOGIN ---------------------------- */
+.drop_down_login_container {
+    position: relative;
+    display: block;
+}
+
+.drop_down_login_options {
+    display: none;
+    position: absolute;
+    background-color: #FCFCFC;
+    border: #d7d7d7 solid 1px;
+    right: -20px;
+    z-index: 100;
+    margin: 0;
+    padding: 0;
+    font-size: 10px;
+    list-style: none;
+    text-align: right;
+}
+
+.drop_down_login_options li {
+    border: none;
+    display: block;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.drop_down_login_options li p {
+    margin: 0;
+    padding: 0;
+}
