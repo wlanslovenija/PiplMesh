@@ -1,3 +1,3 @@
 from django import dispatch
 
-post_created = dispatch.Signal(providing_args=('post_object'))
+post_created = dispatch.Signal(providing_args=('post'))

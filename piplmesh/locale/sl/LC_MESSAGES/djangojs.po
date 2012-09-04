@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-03 12:55-0700\n"
+"POT-Creation-Date: 2012-09-04 02:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jon Premik <jon.premik@gmail.com>\n"
 "Language-Team: \n"
@@ -25,42 +25,41 @@ msgstr "Gesli se ne ujemata."
 msgid "Invalid e-mail."
 msgstr "Neveljaven e-mail naslov."
 
-#: frontend/static/piplmesh/js/home.js:14
+#: frontend/static/piplmesh/js/home.js:12
 msgid "just now"
 msgstr "ta trenutek"
 
-#: frontend/static/piplmesh/js/home.js:18
-#, c-format
-msgid "%s day ago"
-msgid_plural "%s days ago"
-msgstr[0] "pred %s dnevom"
-msgstr[1] "pred %s dnevoma"
-msgstr[2] "pred %s dnevi"
+#: frontend/static/piplmesh/js/home.js:16
+msgid "%(day)s day ago"
+msgid_plural "%(day)s days ago"
+msgstr[0] "pred %(day)s dnevi"
+msgstr[1] "pred %(day)s  dnevom"
+msgstr[2] "pred %(day)s  dnevoma"
+msgstr[3] "pred %(day)s  dnevi"
 
-#: frontend/static/piplmesh/js/home.js:23
-#, c-format
-msgid "%s hour ago"
-msgid_plural "%s hours ago"
-msgstr[0] "pred %s uro"
-msgstr[1] "pred %s urama"
-msgstr[2] "pred %s urami"
+#: frontend/static/piplmesh/js/home.js:21
+msgid "%(hour)s hour ago"
+msgid_plural "%(hour)s hours ago"
+msgstr[0] "pred %(hour)s urami"
+msgstr[1] "pred %(hour)s uro"
+msgstr[2] "pred %(hour)s urama"
+msgstr[3] "pred %(hour)s urami"
 
+#: frontend/static/piplmesh/js/home.js:26
+msgid "%(minute)s minute ago"
+msgid_plural "%(minute)s minutes ago"
+msgstr[0] "pred %(minute)s minutami"
+msgstr[1] "pred %(minute)s minuto"
+msgstr[2] "pred %(minute)s minutama"
+msgstr[3] "pred %(minute)s minutami"
 
-#: frontend/static/piplmesh/js/home.js:28
-#, c-format
-msgid "%s minute ago"
-msgid_plural "%s minutes ago"
-msgstr[0] "pred %s minuto"
-msgstr[1] "pred %s minutama"
-msgstr[2] "pred %s minutami"
-
-#: frontend/static/piplmesh/js/home.js:37
-msgid "Delete post"
+#: frontend/static/piplmesh/js/home.js:35
+msgid "Delete"
 msgstr "Izbriši"
 
-#: frontend/static/piplmesh/js/home.js:80
+#: frontend/static/piplmesh/js/home.js:78
 msgid "Oops, something went wrong..."
-msgstr "Ups, prišlo je do napake..."
+msgstr "Ups, prišlo je do napake ..."
 
 #: panels/map/static/piplmesh/panel/map/panel.js:15
 msgid "more info"

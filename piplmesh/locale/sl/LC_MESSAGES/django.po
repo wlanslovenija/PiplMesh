@@ -454,11 +454,11 @@ msgstr "Pošlji mojo trenutno lokacijo"
 
 #: frontend/templates/posts.html:3
 msgid "submit"
-msgstr "Pošlji"
+msgstr "pošlji"
 
 #: frontend/templates/posts.html:8
 msgid "Write a post..."
-msgstr "Napiši sporočilo..."
+msgstr "Napiši sporočilo ..."
 
 #: frontend/templates/search.html:5
 msgid "Search"
@@ -585,7 +585,6 @@ msgstr ""
 #, python-format
 msgid "Source: <a href=\"%(url)s\">%(url_name)s</a>"
 msgstr ""
-
 
 #: panels/map/panel.py:8
 msgid "Map"

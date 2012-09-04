@@ -8,23 +8,23 @@ function Post(data) {
     function formatPostDate(post_date) {
         // TODO: check for cross browser compatibility, currently works in Chrome and Firefox on Ubuntu
         var created_time_diff = (new Date().getTime() - new Date(post_date)) / (60 * 1000); // Converting time from milliseconds to minutes
-        if (created_time_diff < 1) { // minutes
+        if (created_time_diff < 2) { // minutes
             msg = gettext("just now");
         }
         else if (created_time_diff >= 60 * 24) { // 24 hours, 1 day
             var days = Math.round(created_time_diff / (60 * 24));
-            var format = ngettext("%s day ago", "%s days ago",  (days > 2) ? 3 : days);
-            msg = interpolate(format, [days]);
+            var format = ngettext("%(day)s day ago", "%(day)s days ago", {'day': days});
+            msg = interpolate(format, {'day': days}, true);
         }
         else if (created_time_diff >= 60) { // 60 minutes, 1 hour
-            var hours = [Math.round(created_time_diff / 60)];
-            var format = ngettext("%s hour ago", "%s hours ago", (hours > 2) ? 3 : hours);
-            msg = interpolate(format, [hours]);
+            var hours = Math.round(created_time_diff / 60);
+            var format = ngettext("%(hour)s hour ago", "%(hour)s hours ago", hours);
+            msg = interpolate(format, {'hour': hours}, true);
         }
         else {
             var minutes = Math.round(created_time_diff);
-            var format = ngettext("%s minute ago", "%s minutes ago",  (minutes > 2) ? 3 : minutes);
-            msg = interpolate(format, [minutes]);
+            var format = ngettext("%(minute)s minute ago", "%(minute)s minutes ago", minutes);
+            msg = interpolate(format, {'minute': minutes}, true);
         }
         return msg;
     }
@@ -32,11 +32,11 @@ function Post(data) {
     function generateHtml() {
         // TODO: add other post options
         var post_options = $('<ul />').addClass('options')
-            .append($('<li/>').append($('<a />').addClass('delete-post').addClass('hand').text(gettext("Delete post"))));
+            .append($('<li/>').append($('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))));
 
         var post = $('<li/>').addClass('post')
             .append(post_options)
-            .append($('<span/>').addClass('author').text(self.author['username']))
+            .append($('<span/>').addClass('author').text(self.author.username))
             .append($('<p/>').addClass('content').text(self.message))
             .append($('<span/>').addClass('date').text(formatPostDate(self.created_time)));
         post.data('id', data.id);
@@ -51,21 +51,21 @@ function Post(data) {
 
     self.addToBottom = function () {
         if (!checkIfPostExists()) {
-            $(".posts").append(generateHtml(data));
+            $('.posts').append(generateHtml(data));
         }
     }
 
     self.addToTop = function () {
         if (!checkIfPostExists()) {
             // TODO: animation has to be considered and maybe improved
-            generateHtml(data).prependTo($(".posts")).hide().slideToggle('slow');
+            generateHtml(data).prependTo($('.posts')).hide().slideToggle('slow');
         }
     }
 }
 
 function showLastPosts(offset){
-    $.getJSON(API_POST_URL+'?limit='+POSTS_LIMIT+'&offset='+offset, function (data) {
-        $(data.objects).each(function () {
+    $.getJSON(API_POST_URL, {'limit': POSTS_LIMIT, 'offset': offset}, function (data) {
+        $(data.objects).each(function (i, post) {
             new Post(this).addToBottom();
         });
     });
@@ -90,27 +90,25 @@ $(document).ready(function () {
     // Saving text from post input box
     var input_box_text = $('#post_text').val();
 
-    // Shows last updated posts, starting at offset 0, limited to POSTS_LIMIT
+    // Shows last updated posts, starting at offset 0, limited by POSTS_LIMIT
     showLastPosts(0);
 
-    $('#submit_post').click(function () {
+    $('#submit_post').click(function (event) {
         var message = $('#post_text').val();
         var is_published = true;
-         $.ajax({
+        $.ajax({
             type: 'POST',
             url: API_POST_URL,
             data: JSON.stringify({
-                    'message': message,
-                    'is_published': is_published
+                'message': message,
+                'is_published': is_published
             }),
             contentType: 'application/json',
             dataType: 'json',
-            success: function (output, status, header) {
-                $('#post_text').val(input_box_text);
-                $('#post_text').css('min-height', 25);
+            success: function (data, textStatus, jqXHR) {
+                $('#post_text').val(input_box_text).css('min-height', 25);
             }
         });
-
     });
 
     $('#post_text').expandingTextArea();
@@ -122,17 +120,18 @@ $(document).ready(function () {
     });
 
     $('#post_text').blur(function (event) {
-        if ($('#post_text').val().trim() == '') {
+        if (!$('#post_text').val().trim()) {
             $('#post_text').val(input_box_text);
             $('#post_text').css('min-height', 25);
         }
     });
 
     $('#post_text').keydown(function (event) {
-        if ($(this).val().trim().length < 1) {
-            $('#submit_post').attr('disabled', 'disabled');
-        } else {
-            $('#submit_post').removeAttr('disabled');
+        if (!$(this).val().trim()) {
+            $('#submit_post').prop('disabled', 'disabled');
+        }
+        else {
+            $('#submit_post').removeProp('disabled');
         }
     });
 

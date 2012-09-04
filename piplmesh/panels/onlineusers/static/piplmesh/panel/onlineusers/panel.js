@@ -39,13 +39,13 @@ function redrawUserList() {
     });
 }
 
-function connectUser(data) {
+function userConnected(data) {
     var user = new User(data.user);
     onlineUsers[user._key] = user;
     redrawUserList();
 }
 
-function disconnectUser(data) {
+function userDisconnected(data) {
     var user = new User(data.user);
     if (onlineUsers[user._key]) {
         delete onlineUsers[user._key];
@@ -54,8 +54,8 @@ function disconnectUser(data) {
 }
 
 $(document).ready(function () {
-    $.updates.registerProcessor('home_channel', 'user_connect', connectUser);
-    $.updates.registerProcessor('home_channel', 'user_connect', disconnectUser);
+    $.updates.registerProcessor('home_channel', 'user_connect', userConnected);
+    $.updates.registerProcessor('home_channel', 'user_disconnect', userDisconnected);
     $('#search_users').change(redrawUserList).keyup(redrawUserList);
 
     redrawUserList();

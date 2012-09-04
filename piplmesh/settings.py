@@ -335,5 +335,5 @@ DEFAULT_USER_IMAGE = 'piplmesh/images/unknown.png'
 
 CSRF_FAILURE_VIEW = 'piplmesh.frontend.views.forbidden_view'
 
-# Tastypie setting to format time
+# We are using rfc-2822 because it's better supported when parsing dates in JavaScript
 TASTYPIE_DATETIME_FORMATTING = 'rfc-2822'

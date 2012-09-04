@@ -74,7 +74,7 @@ class PostResource(AuthoredResource):
 
     def obj_create(self, bundle, request=None, **kwargs):
         bundle = super(PostResource, self).obj_create(bundle, request=request, **kwargs)
-        signals.post_created.send(sender=self, post_object=bundle.obj)
+        signals.post_created.send(sender=self, post=bundle.obj)
         return bundle
 
     class Meta:
