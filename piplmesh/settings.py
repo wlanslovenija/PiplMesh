@@ -7,7 +7,7 @@ import datetime, os
 MONGO_DATABASE_NAME = 'PiplMesh'
 
 import mongoengine
-mongoengine.connect(MONGO_DATABASE_NAME)
+mongoengine.connect(MONGO_DATABASE_NAME, tz_aware=True)
 
 settings_dir = os.path.abspath(os.path.dirname(__file__))
 
@@ -38,6 +38,7 @@ MANAGERS = ADMINS
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = 'Europe/Ljubljana'
+USE_TZ = True
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
