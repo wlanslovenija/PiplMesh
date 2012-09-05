@@ -118,7 +118,7 @@ $(document).ready(function () {
         $(this).next('.content').slideToggle('fast');
 
         var panel_id = $(this).parent().attr('id');
-        var collapsed =  visible ? true : false;
+        var collapsed =  visible;
 
         $.ajax({
             type: "POST",
