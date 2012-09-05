@@ -42,7 +42,12 @@
                         </form>
                     </li>
                 {% else %}
-                    <li><a href="{% url "login" %}?{{ REDIRECT_FIELD_NAME }}={{ next_url }}">{% trans "Login" %}</a></li>
+                    <li class="drop_down_login_container">
+                        <a href="{% url "login" %}?{{ REDIRECT_FIELD_NAME }}={{ next_url }}">{% trans "Login" %}</a>
+                        <ul class="drop_down_login_options">
+                            {% include "user/other_login_options.html" %}
+                        </ul>
+                    </li>
                     <li class="last"><a href="{% url "registration" %}">{% trans "Register" %}</a></li>
                 {% endif %}
             </ul>
