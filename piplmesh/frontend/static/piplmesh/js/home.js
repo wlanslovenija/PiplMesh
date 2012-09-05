@@ -1,5 +1,5 @@
 var POSTS_LIMIT = 20;
-var POSTS_DATE_UPDATE_INTERVAL = 30000;
+var POSTS_DATE_UPDATE_INTERVAL = 60000;
 
 // Calculates difference between current time and the time when the post was created and generates a message
 function formatPostDate(post_date) {
@@ -41,7 +41,7 @@ function Post(data) {
         var post_options = $('<ul />')
             .addClass('options')
             .append(
-                 delete_link
+                delete_link
             );
 
         var post = $('<li/>')
@@ -120,14 +120,14 @@ $(document).ready(function () {
         var is_published = true;
         $.ajax({
             'type': 'POST',
-            url: API_POST_URL,
-            data: JSON.stringify({
+            'url': API_POST_URL,
+            'data': JSON.stringify({
                 'message': message,
                 'is_published': is_published
             }),
-            contentType: 'application/json',
-            dataType: 'json',
-            success: function (data, textStatus, jqXHR) {
+            'contentType': 'application/json',
+            'dataType': 'json',
+            'success': function (data, textStatus, jqXHR) {
                 $('#post_text').val(input_box_text).css('min-height', 25);
             }
         });
@@ -169,7 +169,7 @@ $(document).ready(function () {
     // TODO: Improve date updating so that interval is set on each date individually
     setInterval(function () {
         $('.post').each(function (i, post) {
-            $(this).data('object').updateDate(this);
+            $(this).data('post').updateDate(this);
         });
     }, POSTS_DATE_UPDATE_INTERVAL);
 });
