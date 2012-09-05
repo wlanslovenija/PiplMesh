@@ -105,7 +105,7 @@ function makeColumnsSortable() {
 }
 
 function makePanelsOrderUpdatable() {
-    $('.panels_column').bind("sortstop", function (event, ui) {
+    $('.panels_column').bind('sortstop', function (event, ui) {
         sendOrderOfPanelsToServer();
     });
 }
