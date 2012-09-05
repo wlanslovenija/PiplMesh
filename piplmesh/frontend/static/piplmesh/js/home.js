@@ -103,7 +103,7 @@ $(document).ready(function () {
 
     $('#submit_post').click(function (event) {
         var message = $('#post_text').val();
-        $('#post_text').attr('disabled', true);
+        $('#submit_post').attr('disabled', true);
         var is_published = true;
         $.ajax({
             'type': 'POST',
