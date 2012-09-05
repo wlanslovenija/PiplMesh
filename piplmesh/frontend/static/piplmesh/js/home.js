@@ -1,51 +1,55 @@
 var POSTS_LIMIT = 20;
+var POSTS_DATE_UPDATE_INTERVAL = 5000;
+
+// Calculates difference between current time and the time when the post was created and generates a message
+function formatPostDate(post_date) {
+    // TODO: Check for cross browser compatibility, currently works in Chrome and Firefox on Ubuntu
+    var created_time_diff = (new Date().getTime() - Date.parse(post_date)) / (60 * 1000); // Converting time from milliseconds to minutes
+    if (created_time_diff < 2) { // minutes
+        msg = gettext("just now");
+    }
+    else if (created_time_diff >= 60 * 24) { // 24 hours, 1 day
+        var days = Math.round(created_time_diff / (60 * 24));
+        var format = ngettext("%(days)s day ago", "%(days)s days ago", days);
+        msg = interpolate(format, {'days': days}, true);
+    }
+    else if (created_time_diff >= 60) { // 60 minutes, 1 hour
+        var hours = Math.round(created_time_diff / 60);
+        var format = ngettext("%(hours)s hour ago", "%(hours)s hours ago", hours);
+        msg = interpolate(format, {'hours': hours}, true);
+    }
+    else {
+        var minutes = Math.round(created_time_diff);
+        var format = ngettext("%(minutes)s minute ago", "%(minutes)s minutes ago", minutes);
+        msg = interpolate(format, {'minutes': minutes}, true);
+    }
+    return msg;
+}
 
 function Post(data) {
     var self = this;
-    $.extend(self, data);
 
-    // Calculates difference between current time and the time when the post was created and generates a message
-    function formatPostDate(post_date) {
-        // TODO: Check for cross browser compatibility, currently works in Chrome and Firefox on Ubuntu
-        var created_time_diff = (new Date().getTime() - new Date(post_date)) / (60 * 1000); // Converting time from milliseconds to minutes
-        if (created_time_diff < 2) { // minutes
-            msg = gettext("just now");
-        }
-        else if (created_time_diff >= 60 * 24) { // 24 hours, 1 day
-            var days = Math.round(created_time_diff / (60 * 24));
-            var format = ngettext("%(days)s day ago", "%(days)s days ago", days);
-            msg = interpolate(format, {'days': days}, true);
-        }
-        else if (created_time_diff >= 60) { // 60 minutes, 1 hour
-            var hours = Math.round(created_time_diff / 60);
-            var format = ngettext("%(hours)s hour ago", "%(hours)s hours ago", hours);
-            msg = interpolate(format, {'hours': hours}, true);
-        }
-        else {
-            var minutes = Math.round(created_time_diff);
-            var format = ngettext("%(minutes)s minute ago", "%(minutes)s minutes ago", minutes);
-            msg = interpolate(format, {'minutes': minutes}, true);
-        }
-        return msg;
-    }
+    $.extend(self, data);
 
     function generateHtml() {
         // TODO: Add other post options
         var post_options = $('<ul />').addClass('options')
-            .append($('<li/>').append($('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))));
+            .append($('<li/>')
+            .append($('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))));
 
         var post = $('<li/>').addClass('post')
             .append(post_options)
             .append($('<span/>').addClass('author').text(self.author.username))
             .append($('<p/>').addClass('content').text(self.message))
-            .append($('<span/>').addClass('date').text(formatPostDate(self.created_time)));
-        post.data('id', data.id);
+            .append($('<span/>').addClass('date').text(formatPostDate(self.created_time)))
+            .data('object', self);
+
         return post;
     }
 
     function checkIfPostExists() {
         return $('.post').is(function (index) {
-            return $(this).data('id') == self.id;
+            return $(this).data('object').id == self.id;
         });
     }
 
@@ -60,6 +64,10 @@ function Post(data) {
             // TODO: Animation has to be considered and maybe improved
             generateHtml(data).prependTo($('.posts')).hide().slideToggle('slow');
         }
+    }
+
+    self.updateDate = function (dom_element) {
+        $(dom_element).find('.date').text(formatPostDate(self.created_time));
     }
 }
 
@@ -126,21 +134,28 @@ $(document).ready(function () {
         }
     });
 
-    $('#post_text').keydown(function (event) {
+    $('#post_text').keyup(function (event) {
         if (!$(this).val().trim()) {
-            $('#submit_post').prop('disabled', 'disabled');
+            $('#submit_post').attr('disabled', true);
         }
         else {
-            $('#submit_post').removeProp('disabled');
+            $('#submit_post').prop('disabled', false);
         }
     });
 
     $(window).scroll(function (event) {
         if (document.body.scrollHeight - $(this).scrollTop() <= $(this).height()) {
-            var last_post_id = $('.post:last').data('id');
-            if (last_post_id) {
-                showLastPosts(last_post_id);
+            var last_post= $('.post:last').data('object');
+            if (last_post) {
+                showLastPosts(last_post.id);
             }
         }
     });
+
+    // Update post dates
+    setInterval(function () {
+        $('.post').each(function (i, post) {
+            $(this).data('object').updateDate(this);
+        });
+    }, POSTS_DATE_UPDATE_INTERVAL);
 });

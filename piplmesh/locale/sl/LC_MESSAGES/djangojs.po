@@ -27,31 +27,31 @@ msgstr "Neveljaven e-mail naslov."
 
 #: frontend/static/piplmesh/js/home.js:12
 msgid "just now"
-msgstr "ta trenutek"
+msgstr "pravkar"
 
 #: frontend/static/piplmesh/js/home.js:16
 msgid "%(days)s day ago"
 msgid_plural "%(days)s days ago"
-msgstr[0] "pred %(days)s dnevi"
-msgstr[1] "pred %(days)s  dnevom"
-msgstr[2] "pred %(days)s  dnevoma"
+msgstr[0] "pred %(days)s dnevom"
+msgstr[1] "pred %(days)s  dnevoma"
+msgstr[2] "pred %(days)s  dnevi"
 msgstr[3] "pred %(days)s  dnevi"
 
 #: frontend/static/piplmesh/js/home.js:21
 msgid "%(hours)s hour ago"
 msgid_plural "%(hours)s hours ago"
-msgstr[0] "pred %(hours)s urami"
-msgstr[1] "pred %(hours)s uro"
+msgstr[0] "pred %(hours)s uro"
+msgstr[1] "pred %(hours)s urama"
 msgstr[2] "pred %(hours)s urama"
 msgstr[3] "pred %(hours)s urami"
 
 #: frontend/static/piplmesh/js/home.js:26
 msgid "%(minutes)s minute ago"
 msgid_plural "%(minutes)s minutes ago"
-msgstr[0] "pred %(minutes)s minutami"
-msgstr[1] "pred %(minutes)s minuto"
-msgstr[2] "pred %(minutes)s minutama"
-msgstr[3] "pred %(minute)s minutami"
+msgstr[0] "pred %(minutes)s minuto"
+msgstr[1] "pred %(minutes)s minutama"
+msgstr[2] "pred %(minutes)s minutami"
+msgstr[3] "pred %(minutes)s minutami"
 
 #: frontend/static/piplmesh/js/home.js:35
 msgid "Delete"
