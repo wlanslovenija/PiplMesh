@@ -110,10 +110,7 @@ def panels_collapse(request):
 
         return http.HttpResponse()
     else:
-        message = {}
-
-        for panel in request.user.panels_collapsed:
-            message[panel] = request.user.panels_collapsed[panel]
+        message = request.user.panels_collapsed
 
         return http.HttpResponse(simplejson.dumps(message), mimetype='application/json')
 
