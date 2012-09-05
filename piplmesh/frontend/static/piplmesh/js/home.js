@@ -11,21 +11,20 @@ function movePanel(id, columnIndex) {
 
 function initializeEmptyColumnsForPanels() {
     var currentColumns = $('#panels').children().length;
-    var noOfColumns = howManyColumns();
+    var numberOfColumns = howManyColumns();
 
-    for (var i = currentColumns; i < noOfColumns; i++) {
-        var newColumn = $(document.createElement('div'));
+    for (var i = currentColumns; i < numberOfColumns; i++) {
+        var newColumn = $('<div/>');
         newColumn.addClass('panels_column');
         $('#panels').append(newColumn);
     }
 }
 
 function orderPanelsDefault() {
-    var numOfPanels = $('.panels_column').children().length;
-    var numOfColumns = howManyColumns();
+    var numberOfColumns = howManyColumns();
 
     $('.panel').each(function (index, panel) {
-        var toColumn = index % numOfColumns;
+        var toColumn = index % numberOfColumns;
         var columns = $('#panels').children();
 
         $(panel).appendTo(columns.eq(toColumn));
@@ -34,16 +33,16 @@ function orderPanelsDefault() {
 
 function sendOrderOfPanelsToServer() {
     var items = [];
-
-    $('#panels').children().each(function (index, value) {
-        var column = [];
-        $(this).children().each(function (index, value) {
+    
+    $('#panels').children().each(function (index, column) {
+        var columnArray = [];
+        $(column).children().each(function (index, panel) {
             var item = {
-                id: $(this).prop('id'),
+                id: $(panel).prop('id'),
             };
-            column.push(item);
+            columnArray.push(item);
         });
-        items.push(column);
+        items.push(columnArray);
     });
 
     $.ajax({
@@ -57,14 +56,15 @@ function orderPanels() {
     $.ajax({
         type: 'GET',
         url: urls['panels_order'],
-        data: {noOfColumns: howManyColumns()},
+        data: {'numberOfColumns': howManyColumns()},
         success: function (data) {
             if (data['panels'].length == 0) {
                 orderPanelsDefault();
-            } else {
+            } 
+            else {
                 for (var i = 0; i < data['panels'].length; i++) {
                     for (var j = 0; j < data['panels'][i].length; j++) {
-                        movePanel(data['panels'][i][j]['id'],i);
+                        movePanel(data['panels'][i][j]['id'], i);
                     }
                 }
             }
@@ -75,7 +75,7 @@ function orderPanels() {
 function collapsePanels() {
     $.get(urls['panels_collapse'], function (data) {
         $.each(data, function (panelId, collapsed) {
-            if (collapsed == true) {
+            if (collapsed) {
                 $('#' + panelId + ' .content').css('display', 'none');
             }
         });
@@ -123,7 +123,7 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             url: urls['panels_collapse'],
-            data: {panel_id: panel_id, collapsed: collapsed}
+            data: {'panel_id': panel_id, 'collapsed': collapsed}
         });
     });
 

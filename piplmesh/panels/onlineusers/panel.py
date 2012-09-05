@@ -6,7 +6,7 @@ from piplmesh.account import models
 class OnlineUsersPanel(panels.BasePanel):
     def get_context(self, context):
         context = super(OnlineUsersPanel, self).get_context(context)
-        
+
         context.update({
             'header': _("Online users"),
             'online_users': models.User.objects(is_online=True),

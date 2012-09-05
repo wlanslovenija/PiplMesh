@@ -127,7 +127,7 @@ def panels_order(request):
 
         return http.HttpResponse(no_of_columns)
     else:
-        no_of_columns = str(request.GET['noOfColumns'])
+        no_of_columns = str(request.GET['numberOfColumns'])
 
         if request.user.panels_order.has_key(no_of_columns):
             order = {"panels": request.user.panels_order[no_of_columns]}

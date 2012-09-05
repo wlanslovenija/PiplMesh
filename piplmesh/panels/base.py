@@ -47,7 +47,7 @@ class BasePanel(object):
 
     def get_context(self, context):
         context.update({
-            'id': self.get_name()
+            'name': self.get_name()
         })
         
         return context

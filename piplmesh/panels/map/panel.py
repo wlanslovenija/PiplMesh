@@ -8,7 +8,6 @@ class MapPanel(panels.BasePanel):
         
         context.update({
             'header': _("Map"),
-            'id': 'map',
         })
         return context
 
