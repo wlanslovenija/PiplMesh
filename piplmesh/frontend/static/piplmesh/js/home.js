@@ -33,21 +33,15 @@ function Post(data) {
 
     function generateHtml() {
         // TODO: Improve and add other post options
-        var delete_link = $('<li/>')
-            .append(
+        var delete_link = $('<li/>').append(
                 $('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))
             );
 
-        var post_options = $('<ul />')
-            .addClass('options')
-            .append(
+        var post_options = $('<ul />').addClass('options').append(
                 delete_link
             );
 
-        var post = $('<li/>')
-            .addClass('post')
-            .data('post', self)
-            .append(
+        var post = $('<li/>').addClass('post').data('post', self).append(
                 post_options
             ).append(
                 $('<span/>').addClass('author').text(self.author.username)
