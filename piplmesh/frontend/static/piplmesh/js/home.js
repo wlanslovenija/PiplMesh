@@ -48,9 +48,6 @@ function sendOrderOfPanelsToServer() {
         data: {
             'order': JSON.stringify(order),
             'number_of_columns': howManyColumns()
-        },
-        success: function (data) {
-            console.log(data);
         }
     });
 }
