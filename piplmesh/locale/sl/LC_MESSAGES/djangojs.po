@@ -33,16 +33,16 @@ msgstr "pravkar"
 msgid "%(days)s day ago"
 msgid_plural "%(days)s days ago"
 msgstr[0] "pred %(days)s dnevom"
-msgstr[1] "pred %(days)s  dnevoma"
-msgstr[2] "pred %(days)s  dnevi"
-msgstr[3] "pred %(days)s  dnevi"
+msgstr[1] "pred %(days)s dnevoma"
+msgstr[2] "pred %(days)s dnevi"
+msgstr[3] "pred %(days)s dnevi"
 
 #: frontend/static/piplmesh/js/home.js:21
 msgid "%(hours)s hour ago"
 msgid_plural "%(hours)s hours ago"
 msgstr[0] "pred %(hours)s uro"
 msgstr[1] "pred %(hours)s urama"
-msgstr[2] "pred %(hours)s urama"
+msgstr[2] "pred %(hours)s urami"
 msgstr[3] "pred %(hours)s urami"
 
 #: frontend/static/piplmesh/js/home.js:26
