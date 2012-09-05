@@ -71,7 +71,7 @@ function Post(data) {
     }
 }
 
-function showLastPosts(offset){
+function showLastPosts(offset) {
     $.getJSON(API_POST_URL, {'limit': POSTS_LIMIT, 'offset': offset}, function (data) {
         $(data.objects).each(function (i, post) {
             new Post(this).addToBottom();
@@ -103,9 +103,10 @@ $(document).ready(function () {
 
     $('#submit_post').click(function (event) {
         var message = $('#post_text').val();
+        $('#post_text').attr('disabled', true);
         var is_published = true;
         $.ajax({
-            type: 'POST',
+            'type': 'POST',
             url: API_POST_URL,
             data: JSON.stringify({
                 'message': message,
@@ -145,7 +146,7 @@ $(document).ready(function () {
 
     $(window).scroll(function (event) {
         if (document.body.scrollHeight - $(this).scrollTop() <= $(this).height()) {
-            var last_post= $('.post:last').data('object');
+            var last_post = $('.post:last').data('object');
             if (last_post) {
                 showLastPosts(last_post.id);
             }
