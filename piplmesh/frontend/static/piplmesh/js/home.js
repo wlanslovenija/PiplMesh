@@ -1,5 +1,5 @@
 var POSTS_LIMIT = 20;
-var POSTS_DATE_UPDATE_INTERVAL = 5000;
+var POSTS_DATE_UPDATE_INTERVAL = 30000;
 
 // Calculates difference between current time and the time when the post was created and generates a message
 function formatPostDate(post_date) {
@@ -32,24 +32,37 @@ function Post(data) {
     $.extend(self, data);
 
     function generateHtml() {
-        // TODO: Add other post options
-        var post_options = $('<ul />').addClass('options')
-            .append($('<li/>')
-            .append($('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))));
+        // TODO: Improve and add other post options
+        var delete_link = $('<li/>')
+            .append(
+                $('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))
+            );
 
-        var post = $('<li/>').addClass('post')
-            .append(post_options)
-            .append($('<span/>').addClass('author').text(self.author.username))
-            .append($('<p/>').addClass('content').text(self.message))
-            .append($('<span/>').addClass('date').text(formatPostDate(self.created_time)))
-            .data('object', self);
+        var post_options = $('<ul />')
+            .addClass('options')
+            .append(
+                 delete_link
+            );
+
+        var post = $('<li/>')
+            .addClass('post')
+            .data('post', self)
+            .append(
+                post_options
+            ).append(
+                $('<span/>').addClass('author').text(self.author.username)
+            ).append(
+                $('<p/>').addClass('content').text(self.message)
+            ).append(
+               $('<span/>').addClass('date').text(formatPostDate(self.created_time))
+            );
 
         return post;
     }
 
     function checkIfPostExists() {
         return $('.post').is(function (index) {
-            return $(this).data('object').id == self.id;
+            return $(this).data('post').id == self.id;
         });
     }
 
@@ -103,7 +116,7 @@ $(document).ready(function () {
 
     $('#submit_post').click(function (event) {
         var message = $('#post_text').val();
-        $('#submit_post').attr('disabled', true);
+        $('#submit_post').prop('disabled', true);
         var is_published = true;
         $.ajax({
             'type': 'POST',
@@ -137,7 +150,7 @@ $(document).ready(function () {
 
     $('#post_text').keyup(function (event) {
         if (!$(this).val().trim()) {
-            $('#submit_post').attr('disabled', true);
+            $('#submit_post').prop('disabled', true);
         }
         else {
             $('#submit_post').prop('disabled', false);
@@ -146,14 +159,14 @@ $(document).ready(function () {
 
     $(window).scroll(function (event) {
         if (document.body.scrollHeight - $(this).scrollTop() <= $(this).height()) {
-            var last_post = $('.post:last').data('object');
+            var last_post = $('.post:last').data('post');
             if (last_post) {
                 showLastPosts(last_post.id);
             }
         }
     });
 
-    // Update post dates
+    // TODO: Improve date updating so that interval is set on each date individually
     setInterval(function () {
         $('.post').each(function (i, post) {
             $(this).data('object').updateDate(this);
