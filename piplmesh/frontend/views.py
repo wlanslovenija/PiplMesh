@@ -119,18 +119,17 @@ def panels_collapse(request):
 
 def panels_order(request):
     if request.method == 'POST':
-        panels = simplejson.loads(request.POST['json'])
-        no_of_columns = str(len(panels))
+        order = simplejson.loads(request.POST['order'])
 
-        request.user.panels_order[no_of_columns] = panels
+        request.user.panels_order[request.POST['number_of_columns']] = order
         request.user.save()
 
-        return http.HttpResponse(no_of_columns)
+        return http.HttpResponse()
     else:
-        no_of_columns = str(request.GET['numberOfColumns'])
+        number_of_columns = str(request.GET['numberOfColumns'])
 
-        if request.user.panels_order.has_key(no_of_columns):
-            order = {"panels": request.user.panels_order[no_of_columns]}
+        if request.user.panels_order.has_key(number_of_columns):
+            order = {"panels": request.user.panels_order[number_of_columns]}
         else:
             order = {"panels": []}
 

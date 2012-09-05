@@ -32,23 +32,26 @@ function orderPanelsDefault() {
 }
 
 function sendOrderOfPanelsToServer() {
-    var items = [];
-    
+    var order = [];
+
     $('#panels').children().each(function (index, column) {
         var columnArray = [];
         $(column).children().each(function (index, panel) {
-            var item = {
-                id: $(panel).prop('id'),
-            };
-            columnArray.push(item);
-        });
-        items.push(columnArray);
-    });
+            columnArray.push($(panel).prop('id'));
+        })
+        order.push(columnArray);
+    })
 
     $.ajax({
         type: 'POST',
         url: urls['panels_order'],
-        data: {json: JSON.stringify(items)}
+        data: {
+            'order': JSON.stringify(order),
+            'number_of_columns': howManyColumns()
+        },
+        success: function (data) {
+            console.log(data);
+        }
     });
 }
 
@@ -60,11 +63,11 @@ function orderPanels() {
         success: function (data) {
             if (data['panels'].length == 0) {
                 orderPanelsDefault();
-            } 
+            }
             else {
                 for (var i = 0; i < data['panels'].length; i++) {
                     for (var j = 0; j < data['panels'][i].length; j++) {
-                        movePanel(data['panels'][i][j]['id'], i);
+                        movePanel(data['panels'][i][j], i);
                     }
                 }
             }
