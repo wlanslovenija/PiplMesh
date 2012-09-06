@@ -625,7 +625,7 @@ button.browserid-signin:hover {
     min-height: 50px;
     width: 260px;
     float: left;
-    margin-left: 10px;
+    padding-left: 10px;
     padding-bottom: 80px;
     height: 100%;
 }

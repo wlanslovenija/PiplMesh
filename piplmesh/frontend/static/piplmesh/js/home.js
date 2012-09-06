@@ -2,7 +2,7 @@ var POSTS_LIMIT = 20;
 var POSTS_DATE_UPDATE_INTERVAL = 60000; // ms
 
 function howManyColumns() {
-    var panelsWidth = $('#panels').width();
+    var panelsWidth = $('#panels').innerWidth();
     var columnPanelsWidth = $('.panels_column').outerWidth();
 
     return parseInt(panelsWidth / columnPanelsWidth);
@@ -13,6 +13,7 @@ function movePanel(id, columnIndex) {
 }
 
 function initializeEmptyColumnsForPanels() {
+    var panels = $('.panel').detach();
     var currentColumns = $('#panels').children().length;
     var numberOfColumns = howManyColumns();
 
@@ -21,6 +22,10 @@ function initializeEmptyColumnsForPanels() {
         newColumn.addClass('panels_column');
         $('#panels').append(newColumn);
     }
+
+    var removeColumsFromIndex = numberOfColumns - 1;
+    $('#panels').find('.panels_column:gt(' + removeColumsFromIndex + ')').remove();
+    panels.appendTo('.panels_column:first');
 }
 
 function orderPanelsDefault() {
@@ -60,7 +65,9 @@ function orderPanels() {
     $.ajax({
         'type': 'GET',
         'url': URLS['panels_order'],
-        'data': {'numberOfColumns': howManyColumns()},
+        'data': {
+            'numberOfColumns': howManyColumns()
+        },
         'success': function (data) {
             if (data['panels'].length == 0) {
                 orderPanelsDefault();
@@ -87,8 +94,6 @@ function collapsePanels() {
 }
 
 function initializePanels() {
-    $('.panels').detach();
-
     initializeEmptyColumnsForPanels();
     orderPanels();
     collapsePanels();
