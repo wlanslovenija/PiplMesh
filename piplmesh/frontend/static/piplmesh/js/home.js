@@ -223,6 +223,7 @@ $(document).ready(function () {
         });
     });
 
+    // TODO: AJAX request should be send only, when window is not resizing anymore
     $(window).resize(function () {
         initializePanels();
     });
