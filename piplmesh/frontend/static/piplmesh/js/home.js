@@ -69,13 +69,13 @@ function orderPanels() {
             'numberOfColumns': howManyColumns()
         },
         'success': function (data) {
-            if (data['panels'].length == 0) {
+            if (data.panels.length == 0) {
                 orderPanelsDefault();
             }
             else {
-                for (var i = 0; i < data['panels'].length; i++) {
-                    for (var j = 0; j < data['panels'][i].length; j++) {
-                        movePanel(data['panels'][i][j], i);
+                for (var i = 0; i < data.panels.length; i++) {
+                    for (var j = 0; j < data.panels[i].length; j++) {
+                        movePanel(data.panels[i][j], i);
                     }
                 }
             }
