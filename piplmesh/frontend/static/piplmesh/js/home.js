@@ -49,6 +49,7 @@ function sendOrderOfPanelsToServer() {
         'type': 'POST',
         'url': URLS['panels_order'],
         'data': {
+            // TODO: Remove JSON and send data with normal POST variable
             'order': JSON.stringify(order),
             'number_of_columns': howManyColumns()
         }
@@ -210,7 +211,10 @@ $(document).ready(function () {
         $.ajax({
             'type': 'POST',
             'url': URLS['panels_collapse'],
-            'data': {'panel_id': panel_id, 'collapsed': collapsed}
+            'data': {
+                'panel_id': panel_id,
+                'collapsed': collapsed
+            }
         });
     });
 
