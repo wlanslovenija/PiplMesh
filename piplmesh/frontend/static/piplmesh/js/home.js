@@ -5,8 +5,6 @@ function howManyColumns() {
     var panelsWidth = $('#panels').width();
     var columnPanelsWidth = $('.panels_column').outerWidth();
 
-    console.log(panelsWidth);
-
     return parseInt(panelsWidth / columnPanelsWidth);
 }
 
