@@ -3,7 +3,7 @@ import json, urllib, urlparse
 from django import dispatch, http, shortcuts
 from django.conf import settings
 from django.contrib import auth, messages
-from django.contrib.auth import views as auth_views
+from django.contrib.auth import signals as auth_signals, views as auth_views
 from django.core import urlresolvers
 from django.template import loader
 from django.views import generic as generic_views
@@ -463,3 +463,19 @@ def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
         pull__connections=None,
         set__connection_last_unsubscribe=timezone.now(),
     )
+
+@dispatch.receiver(auth_signals.user_logged_in)
+def user_login_message(sender, request, user, **kwargs):
+    """
+    Shows success login message.
+    """
+
+    messages.success(request, _("You have been successfully logged in."))
+
+@dispatch.receiver(auth_signals.user_logged_out)
+def user_logout_message(sender, request, user, **kwargs):
+    """
+    Shows success logout message.
+    """
+
+    messages.success(request, _("You have been successfully logged out."))
