@@ -16,7 +16,7 @@ django-pushserver==0.1.9
 django-sekizai==0.5
 django-staticfiles==1.2.1
 -e git+https://github.com/aljana/django-tastypie.git@4924c9e980480ca6ac7dda932b0ce5b676e5948e#egg=django-tastypie
--e git+https://github.com/aljana/django-tastypie-mongoengine.git@d424148918295d65da3491a18e55b043768f649a#egg=django_tastypie_mongoengine-dev
+django-tastypie-mongoengine==0.2.2
 docutils==0.9.1
 kombu==2.3.2
 lxml==2.3
