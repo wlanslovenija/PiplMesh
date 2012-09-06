@@ -46,9 +46,9 @@ function sendOrderOfPanelsToServer() {
     })
 
     $.ajax({
-        type: 'POST',
-        url: URLS['panels_order'],
-        data: {
+        'type': 'POST',
+        'url': URLS['panels_order'],
+        'data': {
             'order': JSON.stringify(order),
             'number_of_columns': howManyColumns()
         }
@@ -57,10 +57,10 @@ function sendOrderOfPanelsToServer() {
 
 function orderPanels() {
     $.ajax({
-        type: 'GET',
-        url: URLS['panels_order'],
-        data: {'numberOfColumns': howManyColumns()},
-        success: function (data) {
+        'type': 'GET',
+        'url': URLS['panels_order'],
+        'data': {'numberOfColumns': howManyColumns()},
+        'success': function (data) {
             if (data['panels'].length == 0) {
                 orderPanelsDefault();
             }
@@ -208,9 +208,9 @@ $(document).ready(function () {
         var collapsed =  visible;
 
         $.ajax({
-            type: "POST",
-            url: URLS['panels_collapse'],
-            data: {'panel_id': panel_id, 'collapsed': collapsed}
+            'type': 'POST',
+            'url': URLS['panels_collapse'],
+            'data': {'panel_id': panel_id, 'collapsed': collapsed}
         });
     });
 

@@ -84,6 +84,7 @@ class User(auth.User):
     email_confirmed = mongoengine.BooleanField(default=False)
     email_confirmation_token = mongoengine.EmbeddedDocumentField(EmailConfirmationToken)
 
+    # TODO: Model for panel settings should be more semantic.
     panels_collapsed = mongoengine.DictField()
     panels_order = mongoengine.DictField()
 
