@@ -1,6 +1,124 @@
 var POSTS_LIMIT = 20;
 var POSTS_DATE_UPDATE_INTERVAL = 60000; // ms
 
+function howManyColumns() {
+    var panelsWidth = $('#panels').innerWidth();
+    var columnPanelsWidth = $('.panels_column').outerWidth();
+
+    return parseInt(panelsWidth / columnPanelsWidth);
+}
+
+function movePanel(id, columnIndex) {
+    $('#' + id).appendTo($('#panels').children().eq(columnIndex));
+}
+
+function initializeEmptyColumnsForPanels() {
+    var panels = $('.panel').detach();
+    var currentColumns = $('#panels').children().length;
+    var numberOfColumns = howManyColumns();
+
+    for (var i = currentColumns; i < numberOfColumns; i++) {
+        var newColumn = $('<div/>');
+        newColumn.addClass('panels_column');
+        $('#panels').append(newColumn);
+    }
+
+    var removeColumsFromIndex = numberOfColumns - 1;
+    $('#panels').find('.panels_column:gt(' + removeColumsFromIndex + ')').remove();
+    panels.appendTo('.panels_column:first');
+}
+
+function orderPanelsDefault() {
+    var numberOfColumns = howManyColumns();
+
+    $('.panel').each(function (index, panel) {
+        var toColumn = index % numberOfColumns;
+        var columns = $('#panels').children();
+
+        $(panel).appendTo(columns.eq(toColumn));
+    });
+}
+
+function sendOrderOfPanelsToServer() {
+    var order = [];
+
+    $('#panels').children().each(function (index, column) {
+        var columnArray = [];
+        $(column).children().each(function (index, panel) {
+            columnArray.push($(panel).prop('id'));
+        })
+        order.push(columnArray);
+    })
+
+    $.ajax({
+        'type': 'POST',
+        'url': URLS['panels_order'],
+        'data': {
+            // TODO: Remove JSON and send data with normal POST variable
+            'order': JSON.stringify(order),
+            'number_of_columns': howManyColumns()
+        }
+    });
+}
+
+function orderPanels() {
+    $.ajax({
+        'type': 'GET',
+        'url': URLS['panels_order'],
+        'data': {
+            'numberOfColumns': howManyColumns()
+        },
+        'success': function (data) {
+            if (data.panels.length == 0) {
+                orderPanelsDefault();
+            }
+            else {
+                for (var i = 0; i < data.panels.length; i++) {
+                    for (var j = 0; j < data.panels[i].length; j++) {
+                        movePanel(data.panels[i][j], i);
+                    }
+                }
+            }
+        }
+    });
+}
+
+function collapsePanels() {
+    $.get(URLS['panels_collapse'], function (data) {
+        $.each(data, function (panelId, collapsed) {
+            if (collapsed) {
+                $('#' + panelId + ' .content').css('display', 'none');
+            }
+        });
+    });
+}
+
+function initializePanels() {
+    initializeEmptyColumnsForPanels();
+    orderPanels();
+    collapsePanels();
+    makeColumnsSortable();
+    makePanelsOrderUpdatable();
+}
+
+function makeColumnsSortable() {
+    $('.panels_column').sortable({
+        'connectWith': '.panels_column',
+        'handle': '',
+        'cursor': 'move',
+        'placeholder': 'placeholder',
+        'forcePlaceholderSize': true,
+        'opacity': 0.6,
+        'helper': 'clone'
+    }).disableSelection();
+}
+
+function makePanelsOrderUpdatable() {
+    $('.panels_column').bind('sortstop', function (event, ui) {
+        sendOrderOfPanelsToServer();
+    });
+}
+
 // Calculates difference between current time and the time when the post was created and generates a message
 function formatDiffTime(time) {
     // TODO: Check for cross browser compatibility, currently works in Chrome and Firefox on Ubuntu
@@ -82,12 +200,32 @@ function showLastPosts(offset) {
 }
 
 $(document).ready(function () {
+    initializePanels();
+
     $.updates.registerProcessor('home_channel', 'post_new', function (data) {
         new Post(data.post).addToTop();
     });
 
     $('.panel .header').click(function (event) {
+        var visible = $(this).next().is(':visible');
         $(this).next('.content').slideToggle('fast');
+
+        var panel_id = $(this).parent().attr('id');
+        var collapsed =  visible;
+
+        $.ajax({
+            'type': 'POST',
+            'url': URLS['panels_collapse'],
+            'data': {
+                'panel_id': panel_id,
+                'collapsed': collapsed
+            }
+        });
+    });
+
+    // TODO: AJAX request should be send only, when window is not resizing anymore
+    $(window).resize(function () {
+        initializePanels();
     });
 
     // Saving text from post input box

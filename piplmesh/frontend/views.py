@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core import mail, urlresolvers
 from django.core.files import storage
+from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
 from django.views import generic as generic_views
 
@@ -117,3 +118,35 @@ def send_update_on_new_post(sender, post, request, bundle, **kwargs):
         }, 'application/json')
 
         updates.send_update(HOME_CHANNEL_ID, serialized, True)
+
+def panels_collapse(request):
+    if request.method == 'POST':
+        if (request.POST['collapsed'] == 'true'):
+            request.user.panels_collapsed[request.POST['panel_id']] = True
+        else:
+            request.user.panels_collapsed[request.POST['panel_id']] = False
+        request.user.save()
+
+        return http.HttpResponse()
+    else:
+        message = request.user.panels_collapsed
+
+        return http.HttpResponse(simplejson.dumps(message), mimetype='application/json')
+
+def panels_order(request):
+    if request.method == 'POST':
+        order = simplejson.loads(request.POST['order'])
+
+        request.user.panels_order[request.POST['number_of_columns']] = order
+        request.user.save()
+
+        return http.HttpResponse()
+    else:
+        number_of_columns = str(request.GET['numberOfColumns'])
+
+        if request.user.panels_order.has_key(number_of_columns):
+            order = {"panels": request.user.panels_order[number_of_columns]}
+        else:
+            order = {"panels": []}
+
+        return http.HttpResponse(simplejson.dumps(order), mimetype='application/json')

@@ -1,10 +1,17 @@
+html {
+    height: 100%;
+} 
+
 body {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 13px;
     background: url('../images/background.png') repeat-x top left;
     color: #000000;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    min-width: 840px;
+    height: 100%;
 }
 
 a {
@@ -43,6 +50,11 @@ button span {
 }
 .gravatar {
     border: 0px;
+}
+
+p {
+    padding: 0;
+    margin: 0;
 }
 
 .hand {
@@ -265,7 +277,9 @@ input.gsc-search-button {
 
 /* -------------------- MAIN ------------------------ */
 #content {
+    padding: 20px;
     margin: 20px;
+    height: 100%;
 }
 
 #main {
@@ -593,26 +607,59 @@ button.browserid-signin:hover {
 }
 
 /* ------------------ PANELS ---------------------------- */
-#panels {
-    float: right;
-}
-
 .panel {
     width: 260px;
+    margin-bottom: 10px;
 }
 
 .panel .header {
     color: #FCFCFC;
     height: 20px;
     text-align: center;
+    background-position: right;
     background-color: #68AE2C;
-    cursor: pointer;
+    cursor: move;
+}
+
+.panel .header:hover {
+    background: url("../images/maximize_icon.png") no-repeat;
+    background-position: 240px 50%;
+    background-color: #68AE2C;
+}
+
+.panels_column {
+    width: 260px;
+    float: left;
+    padding-left: 10px;
+    height: 100%;
+}
+
+.placeholder {
+    background-color: #f0f0f0;
+    border: 1px dashed #ddd;
+    margin-bottom: 5px;
+}
+
+/* ----------------- MAIN LAYOUT ------------------------------- */
+#content {
+    height: 100%;
+    overflow: hidden;
+}
+
+#wall {
+    width: 520px;
+    float: left;
+}
+
+#panels {
+    margin-left: 520px;
+    height: 100%;
 }
 
 /* --------------------- POST------------------------ */
 .new_post {
     border: 1px solid #999;
-    width: 700px;
+    width: 520px;
     background: #EEE;
 }
 
@@ -635,7 +682,7 @@ button.browserid-signin:hover {
 .posts {
     list-style-type: none;
     padding: 10px 0;
-    width: 700px;
+    width: 510px;
     clear: right;
 }
 
@@ -667,6 +714,10 @@ button.browserid-signin:hover {
 /* ------------------ CONTACT ---------------------------- */
 .contact_form textarea {
     width: 300px;
+}
+
+.contact_comment p {
+    margin-left: 100px;
 }
 
 /* ------------------ DROP-DOWN LOGIN ---------------------------- */
