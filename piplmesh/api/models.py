@@ -6,7 +6,7 @@ import mongoengine
 
 from . import base
 
-import account.models as account_models
+import piplmesh.account.models as account_models
 
 POST_MESSAGE_MAX_LENGTH = 500
 COMMENT_MESSAGE_MAX_LENGTH = 300
