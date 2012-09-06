@@ -120,8 +120,8 @@ def send_update_on_new_post(sender, post, **kwargs):
                         'username': post.author.username,
                     },
                     'message': post.message,
-                    'updated_time': formatting.rfc2822_date(post.updated_time),
-                    'created_time': formatting.rfc2822_date(post.created_time),
+                    'updated_time': formatting.format_datetime(post.updated_time),
+                    'created_time': formatting.format_datetime(post.created_time),
                 },
             }
         )
