@@ -15,7 +15,9 @@
             'home_channel': '{% filter escapejs %}{% channel_url HOME_CHANNEL_ID %}{% endfilter %}'
         });
 
-        var API_POST_URL = "{% url "api_dispatch_list" api_name=API_NAME resource_name="post" %}";
+        var URLS = {
+            'post': '{% filter escapejs %}{% url "api_dispatch_list" api_name=API_NAME resource_name="post" %}{% endfilter %}'
+        };
         /* ]]> */
     </script>
 {% endblock %}

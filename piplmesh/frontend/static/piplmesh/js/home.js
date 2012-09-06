@@ -1,55 +1,50 @@
 var POSTS_LIMIT = 20;
-var POSTS_DATE_UPDATE_INTERVAL = 60000;
+var POSTS_DATE_UPDATE_INTERVAL = 60000; // ms
 
 // Calculates difference between current time and the time when the post was created and generates a message
-function formatPostDate(post_date) {
+function formatDiffTime(time) {
     // TODO: Check for cross browser compatibility, currently works in Chrome and Firefox on Ubuntu
-    var created_time_diff = (new Date().getTime() - Date.parse(post_date)) / (60 * 1000); // Converting time from milliseconds to minutes
+    var created_time_diff = (new Date().getTime() - Date.parse(time)) / (60 * 1000); // Converting time from milliseconds to minutes
     if (created_time_diff < 2) { // minutes
-        msg = gettext("just now");
+        var msg = gettext("just now");
     }
     else if (created_time_diff >= 60 * 24) { // 24 hours, 1 day
         var days = Math.round(created_time_diff / (60 * 24));
         var format = ngettext("%(days)s day ago", "%(days)s days ago", days);
-        msg = interpolate(format, {'days': days}, true);
+        var msg = interpolate(format, {'days': days}, true);
     }
     else if (created_time_diff >= 60) { // 60 minutes, 1 hour
         var hours = Math.round(created_time_diff / 60);
         var format = ngettext("%(hours)s hour ago", "%(hours)s hours ago", hours);
-        msg = interpolate(format, {'hours': hours}, true);
+        var msg = interpolate(format, {'hours': hours}, true);
     }
     else {
         var minutes = Math.round(created_time_diff);
         var format = ngettext("%(minutes)s minute ago", "%(minutes)s minutes ago", minutes);
-        msg = interpolate(format, {'minutes': minutes}, true);
+        var msg = interpolate(format, {'minutes': minutes}, true);
     }
     return msg;
 }
 
 function Post(data) {
     var self = this;
-
     $.extend(self, data);
 
     function generateHtml() {
         // TODO: Improve and add other post options
         var delete_link = $('<li/>').append(
-                $('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))
-            );
+            $('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))
+        );
 
-        var post_options = $('<ul />').addClass('options').append(
-                delete_link
-            );
+        var post_options = $('<ul />').addClass('options').append(delete_link);
 
-        var post = $('<li/>').addClass('post').data('post', self).append(
-                post_options
-            ).append(
-                $('<span/>').addClass('author').text(self.author.username)
-            ).append(
-                $('<p/>').addClass('content').text(self.message)
-            ).append(
-               $('<span/>').addClass('date').text(formatPostDate(self.created_time))
-            );
+        var post = $('<li/>').addClass('post').data('post', self).append(post_options).append(
+            $('<span/>').addClass('author').text(self.author.username)
+        ).append(
+            $('<p/>').addClass('content').text(self.message)
+        ).append(
+           $('<span/>').addClass('date').text(formatDiffTime(self.created_time))
+        );
 
         return post;
     }
@@ -64,22 +59,22 @@ function Post(data) {
         if (!checkIfPostExists()) {
             $('.posts').append(generateHtml(data));
         }
-    }
+    };
 
     self.addToTop = function () {
         if (!checkIfPostExists()) {
             // TODO: Animation has to be considered and maybe improved
             generateHtml(data).prependTo($('.posts')).hide().slideToggle('slow');
         }
-    }
+    };
 
     self.updateDate = function (dom_element) {
-        $(dom_element).find('.date').text(formatPostDate(self.created_time));
+        $(dom_element).find('.date').text(formatDiffTime(self.created_time));
     }
 }
 
 function showLastPosts(offset) {
-    $.getJSON(API_POST_URL, {'limit': POSTS_LIMIT, 'offset': offset}, function (data) {
+    $.getJSON(URLS['post'], {'limit': POSTS_LIMIT, 'offset': offset}, function (data) {
         $(data.objects).each(function (i, post) {
             new Post(this).addToBottom();
         });
@@ -87,13 +82,6 @@ function showLastPosts(offset) {
 }
 
 $(document).ready(function () {
-    $.ajaxSetup({
-        error: function (jqXHR, textStatus, errorThrown) {
-            window.console.error(jqXHR, textStatus, errorThrown);
-            alert(gettext("Oops, something went wrong..."));
-        }
-    });
-
     $.updates.registerProcessor('home_channel', 'post_new', function (data) {
         new Post(data.post).addToTop();
     });
@@ -110,11 +98,11 @@ $(document).ready(function () {
 
     $('#submit_post').click(function (event) {
         var message = $('#post_text').val();
-        $('#submit_post').prop('disabled', true);
+        $(this).prop('disabled', true);
         var is_published = true;
         $.ajax({
             'type': 'POST',
-            'url': API_POST_URL,
+            'url': URLS['post'],
             'data': JSON.stringify({
                 'message': message,
                 'is_published': is_published
@@ -123,26 +111,25 @@ $(document).ready(function () {
             'dataType': 'json',
             'success': function (data, textStatus, jqXHR) {
                 $('#post_text').val(input_box_text).css('min-height', 25);
+            },
+            'error': function (jqXHR, textStatus, errorThrown) {
+                // There was an error, we enable form back
+                $('#submit_post').prop('disabled', false);
             }
         });
     });
 
-    $('#post_text').expandingTextArea();
-    $('#post_text').focus(function (event) {
-        if ($('#post_text').val() == input_box_text) {
-            $('#post_text').val('');
+    $('#post_text').expandingTextArea().focus(function (event) {
+        if ($(this).val() == input_box_text) {
+            $(this).val('');
         }
-        $('#post_text').css('min-height', 50);
-    });
-
-    $('#post_text').blur(function (event) {
-        if (!$('#post_text').val().trim()) {
-            $('#post_text').val(input_box_text);
-            $('#post_text').css('min-height', 25);
+        $(this).css('min-height', 50);
+    }).blur(function (event) {
+        if (!$(this).val().trim()) {
+            $(this).val(input_box_text);
+            $(this).css('min-height', 25);
         }
-    });
-
-    $('#post_text').keyup(function (event) {
+    }).keyup(function (event) {
         if (!$(this).val().trim()) {
             $('#submit_post').prop('disabled', true);
         }
