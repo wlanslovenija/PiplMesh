@@ -26,8 +26,7 @@ def check_online_users():
             updates.send_update(
                 views.HOME_CHANNEL_ID,
                 {
-                    'type': 'userlist',
-                    'action': 'JOIN',
+                    'type': 'user_connect',
                     'user': {
                         'username': user.username,
                         'profile_url': user.get_profile_url(),
@@ -50,8 +49,7 @@ def check_online_users():
             updates.send_update(
                 views.HOME_CHANNEL_ID,
                 {
-                    'type': 'userlist',
-                    'action': 'PART',
+                    'type': 'user_disconnect',
                     'user': {
                         'username': user.username,
                         'profile_url': user.get_absolute_url(),

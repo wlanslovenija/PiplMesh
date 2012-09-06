@@ -1,9 +1,9 @@
 from tastypie import authorization as tastypie_authorization, fields as tastypie_fields
 
-from tastypie_mongoengine import fields, resources
+from tastypie_mongoengine import fields, paginator, resources
 
 from piplmesh.account import models as account_models
-from piplmesh.api import authorization, models as api_models
+from piplmesh.api import authorization, models as api_models, signals
 
 class UserResource(resources.MongoEngineResource):
     class Meta:
@@ -59,13 +59,26 @@ class AttachmentResource(AuthoredResource):
         }
 
 class PostResource(AuthoredResource):
-    updated_time = tastypie_fields.DateTimeField(attribute='updated_time', null=False, readonly=True)
+    """
+    Query set is ordered by updated time for following reasons:
 
+        * those who open web page will get posts in updated time order,
+        * others with already opened page will get updated posts again as they will request them based on ID of current newest post.
+
+    This is useful if we would like to show on the client side that post has been updated (but we do not necessary have to reorder them).
+    """
+
+    updated_time = tastypie_fields.DateTimeField(attribute='updated_time', null=False, readonly=True)
     comments = fields.EmbeddedListField(of='piplmesh.api.resources.CommentResource', attribute='comments', default=lambda: [], null=True, full=False)
     attachments = fields.EmbeddedListField(of='piplmesh.api.resources.AttachmentResource', attribute='attachments', default=lambda: [], null=True, full=True)
 
+    def obj_create(self, bundle, request=None, **kwargs):
+        bundle = super(PostResource, self).obj_create(bundle, request=request, **kwargs)
+        signals.post_created.send(sender=self, post=bundle.obj, request=request or bundle.request, bundle=bundle)
+        return bundle
+
     class Meta:
-        queryset = api_models.Post.objects.all()
+        queryset = api_models.Post.objects.all().order_by('-updated_time')
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
-        # TODO: Make proper authorization, current implementation is for development use only
         authorization = authorization.PostAuthorization()
+        paginator_class = paginator.Paginator

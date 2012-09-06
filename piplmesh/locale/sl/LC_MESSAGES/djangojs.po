@@ -5,17 +5,70 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
-"Report-Msgid-Bugs-To: https://github.com/wlanslovenija/PiplMesh\n"
-"POT-Creation-Date: 2012-05-24 15:16+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-04 02:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jon Premik <jon.premik@gmail.com>\n"
+"Language-Team: \n"
+"Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sl\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)\n"
-"Language-Team: \n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
+"%100==4 ? 2 : 3)\n"
 
-#: frontend/static/piplmesh/js/home.js:23
+#: account/static/piplmesh/js/registration.js:20
+msgid "Passwords do not match."
+msgstr "Gesli se ne ujemata."
+
+#: account/static/piplmesh/js/registration.js:54
+msgid "Invalid e-mail."
+msgstr "Neveljaven e-mail naslov."
+
+#: frontend/static/piplmesh/js/home.js:12
+msgid "just now"
+msgstr "pravkar"
+
+#: frontend/static/piplmesh/js/home.js:16
+msgid "%(days)s day ago"
+msgid_plural "%(days)s days ago"
+msgstr[0] "pred %(days)s dnevom"
+msgstr[1] "pred %(days)s dnevoma"
+msgstr[2] "pred %(days)s dnevi"
+msgstr[3] "pred %(days)s dnevi"
+
+#: frontend/static/piplmesh/js/home.js:21
+msgid "%(hours)s hour ago"
+msgid_plural "%(hours)s hours ago"
+msgstr[0] "pred %(hours)s uro"
+msgstr[1] "pred %(hours)s urama"
+msgstr[2] "pred %(hours)s urami"
+msgstr[3] "pred %(hours)s urami"
+
+#: frontend/static/piplmesh/js/home.js:26
+msgid "%(minutes)s minute ago"
+msgid_plural "%(minutes)s minutes ago"
+msgstr[0] "pred %(minutes)s minuto"
+msgstr[1] "pred %(minutes)s minutama"
+msgstr[2] "pred %(minutes)s minutami"
+msgstr[3] "pred %(minutes)s minutami"
+
+#: frontend/static/piplmesh/js/home.js:35
+msgid "Delete"
+msgstr "Izbriši"
+
+#: frontend/static/piplmesh/js/home.js:78
+msgid "Oops, something went wrong..."
+msgstr "Ups, prišlo je do napake ..."
+
+#: panels/map/static/piplmesh/panel/map/panel.js:15
+msgid "more info"
+msgstr "več informacij"
+
+#: panels/onlineusers/static/piplmesh/panel/onlineusers/panel.js:28
 msgid "User image"
 msgstr "Slika uporabnika"
+
+#: panels/onlineusers/static/piplmesh/panel/onlineusers/panel.js:35
+msgid "User profile"
+msgstr "Profil uporabnika"

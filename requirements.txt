@@ -12,17 +12,17 @@ django-appconf==0.5
 django-celery==3.0.4
 django-classy-tags==0.3.4.1
 django-missing==0.1.4
-django-pushserver==0.1.9
+django-pushserver==0.1.10
 django-sekizai==0.5
 django-staticfiles==1.2.1
-django-tastypie==0.9.11
--e git+https://github.com/mitar/django-tastypie-mongoengine.git@bafa941db41e18025948c600f9dd71b42fb40acc#egg=django_tastypie_mongoengine-dev
+-e git+https://github.com/aljana/django-tastypie.git@4924c9e980480ca6ac7dda932b0ce5b676e5948e#egg=django-tastypie
+django-tastypie-mongoengine==0.2.2
 docutils==0.9.1
 kombu==2.3.2
 lxml==2.3
 mimeparse==0.1.3
 -e git+https://github.com/mitar/django-mongodbforms.git@01201c7b14127a3cb2cb027965320ed8ec499a4e#egg=mongodbforms-dev
-mongoengine==0.6.9
+-e git+https://github.com/aljana/mongoengine.git@ea718749a5c517f7b63278d7d1b630ffdc7303bb#egg=mongoengine
 -e git+https://github.com/mitar/django-mongogeneric.git@0d9d320398865d04e5c9d72b47543ecf68471813#egg=mongogeneric-dev
 py-hbpush==0.1.3
 pymongo==2.2.1
