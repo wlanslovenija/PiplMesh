@@ -45,6 +45,10 @@ button span {
     border: 0px;
 }
 
+.hand {
+    cursor: pointer;
+}
+
 /* -------------------- FORMS --------------------- */
 form input[type="submit"], form input[type="reset"] {
     border: 1px solid gray;
@@ -266,6 +270,7 @@ input.gsc-search-button {
 
 #main {
     overflow: hidden;
+    float: left;
 }
 
 .result {
@@ -473,6 +478,7 @@ button.browserid-signin:hover {
     color: #474747;
     border-top: 1px solid #BBB;
     height: 60px;
+    clear: both;
 }
 
 #footer a {
@@ -587,6 +593,10 @@ button.browserid-signin:hover {
 }
 
 /* ------------------ PANELS ---------------------------- */
+#panels {
+    float: right;
+}
+
 .panel {
     width: 260px;
 }
@@ -597,6 +607,61 @@ button.browserid-signin:hover {
     text-align: center;
     background-color: #68AE2C;
     cursor: pointer;
+}
+
+/* --------------------- POST------------------------ */
+.new_post {
+    border: 1px solid #999;
+    width: 700px;
+    background: #EEE;
+}
+
+.new_post form textarea {
+    display: block;
+    background: #EEE;
+    min-height: 25px;
+    height: 25px;
+    width: 99%;
+    border: none;
+    outline: none;
+    resize: none;
+    font-size: 12px;
+}
+
+.new_post .new_post_details {
+    float: right;
+}
+
+.posts {
+    list-style-type: none;
+    padding: 10px 0;
+    width: 700px;
+    clear: right;
+}
+
+.post {
+    padding: 5px 0 10px 0;
+    border-bottom: 1px solid #AAA;
+    background: #FFF;
+    clear: both;
+}
+
+.post .author {
+    font-weight: bold;
+    padding-right: 5px;
+}
+
+.post .content {
+    margin: 5px 0;
+}
+
+.post .date {
+    color: #AAA;
+}
+
+.post .options {
+    font-size: 10px;
+    float: right;
 }
 
 /* ------------------ CONTACT ---------------------------- */

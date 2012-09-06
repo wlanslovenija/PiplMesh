@@ -1,6 +1,6 @@
 import smtplib
 
-from django import http, template
+from django import dispatch, http, template
 from django.conf import settings
 from django.contrib import messages
 from django.core import mail, urlresolvers
@@ -9,11 +9,14 @@ from django.utils.translation import ugettext_lazy as _
 from django.views import generic as generic_views
 
 from tastypie import http as tastypie_http
+from tastypie.utils import formatting
 
 from mongogeneric import detail
 
+from pushserver.utils import updates
+
 from piplmesh.account import models as account_models
-from piplmesh.api import models as api_models, resources
+from piplmesh.api import models as api_models, resources, signals
 from piplmesh.frontend import forms
 
 HOME_CHANNEL_ID = 'home'
@@ -98,3 +101,28 @@ def forbidden_view(request, reason=''):
         'reason': reason,
         'no_referer': reason == csrf.REASON_NO_REFERER,
     })))
+
+# TODO: Handle signal just before result is sent to client and not when object is created. We should try using same serialization as Tastypie.
+
+@dispatch.receiver(signals.post_created)
+def send_update_on_new_post(sender, post, **kwargs):
+    """
+    Sends update to push server when a new post is created.
+    """
+    if post.is_published:
+        updates.send_update(
+            HOME_CHANNEL_ID,
+            {
+                'type': 'post_new',
+                'post': {
+                    'id': str(post.id),
+                    'author': {
+                        'username': post.author.username,
+                    },
+                    'message': post.message,
+                    'updated_time': formatting.rfc2822_date(post.updated_time),
+                    'created_time': formatting.rfc2822_date(post.created_time),
+                },
+            }
+        )
+        # TODO: Send other fields (attachments etc) to update

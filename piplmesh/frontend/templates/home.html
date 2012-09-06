@@ -1,11 +1,12 @@
 {% extends "plain.html" %}
 
-{% load staticfiles pushserver panels %}
+{% load future i18n staticfiles pushserver panels %}
 
 {% block fulltitle %}wlan slovenija{% endblock %}
 
 {% block js %}
     {{ block.super }}
+    <script src="{% static "piplmesh/jquery/jquery.exptextarea.js" %}" type="text/javascript"></script>
     <script src="{% static "pushserver/updates.js" %}" type="text/javascript"></script>
     <script src="{% static "piplmesh/js/home.js" %}" type="text/javascript"></script>
     <script type="text/javascript">
@@ -13,32 +14,19 @@
         $.updates.subscribe({
             'home_channel': '{% filter escapejs %}{% channel_url HOME_CHANNEL_ID %}{% endfilter %}'
         });
+
+        var API_POST_URL = "{% url "api_dispatch_list" api_name=API_NAME resource_name="post" %}";
         /* ]]> */
     </script>
 {% endblock %}
 
 {% block content %}
     <div id="main">
-        <p>
-        HOME PAGE CONTENT HERE
-        </p>
-        <p>
-        SOME MORE JUICY CONTENT
-        </p>
-        <p>
-        HOME PAGE CONTENT HERE
-        </p>
-        <p>
-        SOME MORE JUICY CONTENT
-        </p>
-        <p>
-        HOME PAGE CONTENT HERE
-        </p>
-        <p>
-        SOME MORE JUICY CONTENT
-        </p>
+        {% include "posts.html" %}
     </div>
-    {% for panel in user.get_panels %}
-        {% render_panel panel %}
-    {% endfor %}
+    <div id="panels">
+        {% for panel in user.get_panels %}
+            {% render_panel panel %}
+        {% endfor %}
+    </div>
 {% endblock %}

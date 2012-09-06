@@ -12,7 +12,8 @@ from piplmesh import panels
 # PiplMesh panels auto-discovery
 panels.panels_pool.discover_panels()
 
-v1_api = api.Api(api_name='v1')
+API_NAME = 'v1'
+v1_api = api.Api(api_name=API_NAME)
 v1_api.register(resources.UserResource())
 v1_api.register(resources.UploadedFileResource())
 v1_api.register(resources.PostResource())
