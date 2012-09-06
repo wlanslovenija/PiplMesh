@@ -1,3 +1,7 @@
+html {
+    height: 100%;
+} 
+
 body {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 13px;
@@ -7,6 +11,7 @@ body {
     margin: 0;
     width: 100%;
     min-width: 840px;
+    height: 100%;
 }
 
 a {
@@ -274,6 +279,7 @@ input.gsc-search-button {
 #content {
     padding: 20px;
     margin: 20px;
+    height: 100%;
 }
 
 #main {
@@ -622,11 +628,9 @@ button.browserid-signin:hover {
 }
 
 .panels_column {
-    min-height: 50px;
     width: 260px;
     float: left;
     padding-left: 10px;
-    padding-bottom: 80px;
     height: 100%;
 }
 
@@ -639,23 +643,22 @@ button.browserid-signin:hover {
 /* ----------------- MAIN LAYOUT ------------------------------- */
 #content {
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
 }
 
 #wall {
-    border: #bbb 1px solid;
-    min-height: 500px;
     width: 520px;
     float: left;
 }
 
 #panels {
     margin-left: 520px;
+    height: 100%;
 }
 
 /* --------------------- POST------------------------ */
 .new_post {
-    border-bottom: 1px solid #999;
+    border: 1px solid #999;
     width: 520px;
     background: #EEE;
 }
@@ -681,8 +684,6 @@ button.browserid-signin:hover {
     padding: 10px 0;
     width: 510px;
     clear: right;
-    padding-left: 5px;
-    padding-right: 5px;
 }
 
 .post {
