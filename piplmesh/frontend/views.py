@@ -91,7 +91,7 @@ def upload_view(request):
 
 def forbidden_view(request, reason=''):
     """
-    Displays 403 fobidden page. For example, when request fails CSRF protection.
+    Displays 403 forbidden page. For example, when request fails CSRF protection.
     """
 
     from django.middleware import csrf
@@ -102,27 +102,18 @@ def forbidden_view(request, reason=''):
         'no_referer': reason == csrf.REASON_NO_REFERER,
     })))
 
-# TODO: Handle signal just before result is sent to client and not when object is created. We should try using same serialization as Tastypie.
-
 @dispatch.receiver(signals.post_created)
-def send_update_on_new_post(sender, post, **kwargs):
+def send_update_on_new_post(sender, post, request, bundle, **kwargs):
     """
     Sends update to push server when a new post is created.
     """
     if post.is_published:
-        updates.send_update(
-            HOME_CHANNEL_ID,
-            {
-                'type': 'post_new',
-                'post': {
-                    'id': str(post.id),
-                    'author': {
-                        'username': post.author.username,
-                    },
-                    'message': post.message,
-                    'updated_time': formatting.format_datetime(post.updated_time),
-                    'created_time': formatting.format_datetime(post.created_time),
-                },
-            }
-        )
-        # TODO: Send other fields (attachments etc) to update
+        output_bundle = sender.full_dehydrate(bundle)
+        output_bundle = sender.alter_detail_data_to_serialize(request, output_bundle)
+
+        serialized = sender.serialize(request, {
+            'type': 'post_new',
+            'post': output_bundle.data,
+        }, 'application/json')
+
+        updates.send_update(HOME_CHANNEL_ID, serialized, True)
