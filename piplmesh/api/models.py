@@ -6,6 +6,8 @@ import mongoengine
 
 from . import base
 
+import account.models as account_models
+
 POST_MESSAGE_MAX_LENGTH = 500
 COMMENT_MESSAGE_MAX_LENGTH = 300
 
@@ -32,6 +34,8 @@ class Post(base.AuthoredDocument):
 
     comments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Comment), default=lambda: [], required=False)
     attachments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Attachment), default=lambda: [], required=False)
+
+    hugs = mongoengine.ListField(mongoengine.ReferenceField(account_models.User, default=lambda: [], required=False))
 
     # TODO: Prevent posting comments if post is not published
     # TODO: Prevent adding attachments if post is published
