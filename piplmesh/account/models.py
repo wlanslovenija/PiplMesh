@@ -14,7 +14,7 @@ from django.utils.translation import ugettext_lazy as _
 import mongoengine
 from mongoengine.django import auth
 
-from . import fields, utils
+from . import fields, signals, utils
 from .. import panels
 
 LOWER_DATE_LIMIT = 366 * 120
@@ -26,6 +26,9 @@ def upper_birthdate_limit():
 
 def lower_birthdate_limit():
     return datetime.datetime.today() - datetime.timedelta(LOWER_DATE_LIMIT)
+
+def generate_channel_id():
+    return os.urandom(16).encode('hex')
 
 class Connection(mongoengine.EmbeddedDocument):
     http_if_none_match = mongoengine.StringField()
@@ -62,7 +65,7 @@ class User(auth.User):
     birthdate = fields.LimitedDateTimeField(upper_limit=upper_birthdate_limit, lower_limit=lower_birthdate_limit)
     gender = fields.GenderField()
     language = fields.LanguageField()
-    channel_id = mongoengine.UUIDField(binary=False)
+    channel_id = mongoengine.UUIDField(binary=False, default=generate_channel_id)
 
     facebook_access_token = mongoengine.StringField(max_length=150)
     facebook_profile_data = mongoengine.DictField()
@@ -88,10 +91,6 @@ class User(auth.User):
     # TODO: Model for panel settings should be more semantic.
     panels_collapsed = mongoengine.DictField()
     panels_order = mongoengine.DictField()
-
-    def generate_channel_id(self):
-        self.channel_id = os.urandom(16).encode('hex')
-        return self
 
     @models.permalink
     def get_absolute_url(self):
@@ -160,6 +159,9 @@ class User(auth.User):
         else:
             return staticfiles_storage.url(settings.DEFAULT_USER_IMAGE)
 
+    def get_user_channel(self):
+        return "user_%s" % self.channel_id
+ 
     @classmethod
     def create_user(cls, username, email=None, password=None):
         now = timezone.now()
@@ -176,6 +178,5 @@ class User(auth.User):
             date_joined=now,
         )
         user.set_password(password)
-        user.generate_channel_id()
         user.save()
         return user

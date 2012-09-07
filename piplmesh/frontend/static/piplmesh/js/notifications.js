@@ -10,7 +10,7 @@ $(document).ready(function () {
         addPost("Bla bla bla bla Post...");
     });
     $('#addCom').click(function (){
-        addComment("Tralala dela");
+        addComment("HAHAHAH dela");
     });
     
     
@@ -81,7 +81,7 @@ function addPost(message) {
 function addComment(comment) {
     $.ajax({
         type: 'POST',
-        url: '/api/v1/post/5049b8f76c20b15e161ddb08/comments/',
+        url: '/api/v1/post/5049d3ff6c20b1717739aac9/comments/',
         data: JSON.stringify({'message': comment}),
         contentType: 'application/json',
         dataType: "json",

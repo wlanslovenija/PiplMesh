@@ -59,44 +59,6 @@ class Notification(mongoengine.Document):
     # TODO: This is probably not the best approach.
     comment = mongoengine.IntField()
 
-    # @classmethod
-    # def add_notification(cls, user, post, comment_pk):
-    #     notification = cls()
-    #     notification.recipient = user
-    #     notification.post = post
-    #     notification.comment = comment_pk
-    #     notification.save()
-    #     return notification
-
-    # @classmethod
-    # def notification_post_save(cls, sender, document, **kwargs):
-        # if 'created' in kwargs:
-            # if kwargs['created']:
-                # push notification to subscriber
-                # nr = api_resources.NotificationResource()
-                # notification_obj = nr.obj_get(id=document.id)
-                # uri = nr.get_resource_uri(notification_obj)
-
-                # channel = "user/%s" % document.recipient.channel_id
-                # updates.send_update(
-                #     channel,
-                #     {
-                #         'type': 'notifications',
-                #         'action': 'JOIN',
-                #         'notifications': {
-                #             'recipient': document.recipient.username,
-                #             'comment': int(document.comment),
-                #             'created_time': document.created_time.isoformat(),
-                #             'content': document.post.comments[int(document.comment)].message,
-                #             'post': str(document.post.id),
-                #             'read': document.read,
-                #             #'resource_uri': uri,
-                #        },
-                #     }
-                # )
-
-# mongoengine.signals.post_save.connect(Notification.notification_post_save, sender=Notification)
-
 class UploadedFile(base.AuthoredDocument):
     """
     This class document type for uploaded files.

@@ -8,8 +8,8 @@ function howManyColumns() {
     return parseInt(panelsWidth / columnPanelsWidth);
 }
 
-function movePanel(id, columnIndex) {
-    $('#' + id).appendTo($('#panels').children().eq(columnIndex));
+function movePanel(name, columnIndex) {
+    $('#panel-' + name).appendTo($('#panels').children().eq(columnIndex));
 }
 
 function initializeEmptyColumnsForPanels() {
@@ -40,54 +40,49 @@ function orderPanelsDefault() {
 }
 
 function sendOrderOfPanelsToServer() {
-    var order = [];
+    var names = [];
+    var columns = [];
+    var numberOfColumns = 0;
 
-    $('#panels').children().each(function (index, column) {
-        var columnArray = [];
-        $(column).children().each(function (index, panel) {
-            columnArray.push($(panel).prop('id'));
-        })
-        order.push(columnArray);
-    })
-
-    $.ajax({
-        'type': 'POST',
-        'url': URLS['panels_order'],
-        'data': {
-            // TODO: Remove JSON and send data with normal POST variable
-            'order': JSON.stringify(order),
-            'number_of_columns': howManyColumns()
-        }
+    $('#panels').children().each(function (i, column) {
+        numberOfColumns++;
+        $(column).children().each(function (j, panel) {
+            names.push($(panel).prop('id').substr('panel-'.length));
+            columns.push(i);
+        });
     });
+
+    if (numberOfColumns) {
+        $.post(URLS.panels_order, {
+            'names': names,
+            'columns': columns,
+            'number_of_columns': numberOfColumns
+        });
+    }
 }
 
 function orderPanels() {
-    $.ajax({
-        'type': 'GET',
-        'url': URLS['panels_order'],
-        'data': {
-            'numberOfColumns': howManyColumns()
-        },
-        'success': function (data) {
-            if (data.panels.length == 0) {
-                orderPanelsDefault();
-            }
-            else {
-                for (var i = 0; i < data.panels.length; i++) {
-                    for (var j = 0; j < data.panels[i].length; j++) {
-                        movePanel(data.panels[i][j], i);
-                    }
-                }
-            }
+    $.getJSON(URLS.panels_order, {
+        'number_of_columns': howManyColumns()
+    }, function (data, textStatus, jqXHR) {
+        if (data.length == 0) {
+            orderPanelsDefault();
+        }
+        else {
+            $.each(data, function (i, column) {
+                $.each(column, function (j, panel) {
+                    movePanel(panel, i);
+                });
+            });
         }
     });
 }
 
 function collapsePanels() {
-    $.get(URLS['panels_collapse'], function (data) {
-        $.each(data, function (panelId, collapsed) {
+    $.getJSON(URLS.panels_collapse, function (data, textStatus, jqXHR) {
+        $.each(data, function (name, collapsed) {
             if (collapsed) {
-                $('#' + panelId + ' .content').css('display', 'none');
+                $('#panel-' + name + ' .content').css('display', 'none');
             }
         });
     });
@@ -192,9 +187,12 @@ function Post(data) {
 }
 
 function showLastPosts(offset) {
-    $.getJSON(URLS['post'], {'limit': POSTS_LIMIT, 'offset': offset}, function (data) {
+    $.getJSON(URLS.post, {
+        'limit': POSTS_LIMIT,
+        'offset': offset
+    }, function (data) {
         $(data.objects).each(function (i, post) {
-            new Post(this).addToBottom();
+            new Post(post).addToBottom();
         });
     });
 }
@@ -207,24 +205,19 @@ $(document).ready(function () {
     });
 
     $('.panel .header').click(function (event) {
-        var visible = $(this).next().is(':visible');
+        var collapsed = $(this).next().is(':visible');
         $(this).next('.content').slideToggle('fast');
 
-        var panel_id = $(this).parent().attr('id');
-        var collapsed =  visible;
+        var name = $(this).parent().prop('id').substr('panel-'.length);
 
-        $.ajax({
-            'type': 'POST',
-            'url': URLS['panels_collapse'],
-            'data': {
-                'panel_id': panel_id,
-                'collapsed': collapsed
-            }
+        $.post(URLS.panels_collapse, {
+            'name': name,
+            'collapsed': collapsed
         });
     });
 
-    // TODO: AJAX request should be send only, when window is not resizing anymore
-    $(window).resize(function () {
+    // TODO: Ajax request to store panels state is currently send many times while resizing, it should be send only at the end
+    $(window).resize(function (event) {
         initializePanels();
     });
 
@@ -240,7 +233,7 @@ $(document).ready(function () {
         var is_published = true;
         $.ajax({
             'type': 'POST',
-            'url': URLS['post'],
+            'url': URLS.post,
             'data': JSON.stringify({
                 'message': message,
                 'is_published': is_published
@@ -288,7 +281,7 @@ $(document).ready(function () {
     // TODO: Improve date updating so that interval is set on each date individually
     setInterval(function () {
         $('.post').each(function (i, post) {
-            $(this).data('post').updateDate(this);
+            $(post).data('post').updateDate(this);
         });
     }, POSTS_DATE_UPDATE_INTERVAL);
 });

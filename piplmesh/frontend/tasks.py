@@ -1,4 +1,4 @@
-import datetime, os
+import datetime
 
 from django.conf import settings
 from django.utils import timezone
@@ -24,7 +24,7 @@ def check_online_users():
             connections__not__in=([], None), # None if field is missing altogether, not__in seems not to be equal to nin
         ).update(set__is_online=True):
             updates.send_update(
-                settings.HOME_CHANNEL_ID,
+                views.HOME_CHANNEL_ID,
                 {
                     'type': 'user_connect',
                     'user': {
@@ -46,8 +46,10 @@ def check_online_users():
             connections__in=([], None), # None if field is missing altogether
             connection_last_unsubscribe__lt=timezone.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
         ).update(set__is_online=False):
+            user.channel_id = models.generate_channel_id()
+            user.save()
             updates.send_update(
-                settings.HOME_CHANNEL_ID,
+                views.HOME_CHANNEL_ID,
                 {
                     'type': 'user_disconnect',
                     'user': {
