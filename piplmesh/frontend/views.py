@@ -5,11 +5,11 @@ from django.conf import settings
 from django.contrib import messages
 from django.core import mail, urlresolvers
 from django.core.files import storage
+from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
 from django.views import generic as generic_views
 
 from tastypie import http as tastypie_http
-from tastypie.utils import formatting
 
 from mongogeneric import detail
 
@@ -117,3 +117,30 @@ def send_update_on_new_post(sender, post, request, bundle, **kwargs):
         }, 'application/json')
 
         updates.send_update(HOME_CHANNEL_ID, serialized, True)
+
+def panels_collapse(request):
+    if request.method == 'POST':
+        request.user.panels_collapsed[request.POST['name']] = True if request.POST['collapsed'] == 'true' else False
+        request.user.save()
+        return http.HttpResponse()
+    else:
+        return http.HttpResponse(simplejson.dumps(request.user.panels_collapsed), mimetype='application/json')
+
+def panels_order(request):
+    if request.method == 'POST':
+        panels = []
+
+        for name, column in zip(request.POST.getlist('names'), request.POST.getlist('columns')):
+            column = int(column)
+            if column == len(panels):
+                panels.append([])
+            panels[column].append(name)
+
+        request.user.panels_order[request.POST['number_of_columns']] = panels
+        request.user.save()
+
+        return http.HttpResponse()
+    else:
+        number_of_columns = request.GET['number_of_columns']
+        panels = request.user.panels_order.get(number_of_columns, [])
+        return http.HttpResponse(simplejson.dumps(panels), mimetype='application/json')

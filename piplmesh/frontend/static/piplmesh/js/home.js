@@ -1,6 +1,119 @@
 var POSTS_LIMIT = 20;
 var POSTS_DATE_UPDATE_INTERVAL = 60000; // ms
 
+function howManyColumns() {
+    var panelsWidth = $('#panels').innerWidth();
+    var columnPanelsWidth = $('.panels_column').outerWidth();
+
+    return parseInt(panelsWidth / columnPanelsWidth);
+}
+
+function movePanel(name, columnIndex) {
+    $('#panel-' + name).appendTo($('#panels').children().eq(columnIndex));
+}
+
+function initializeEmptyColumnsForPanels() {
+    var panels = $('.panel').detach();
+    var currentColumns = $('#panels').children().length;
+    var numberOfColumns = howManyColumns();
+
+    for (var i = currentColumns; i < numberOfColumns; i++) {
+        var newColumn = $('<div/>');
+        newColumn.addClass('panels_column');
+        $('#panels').append(newColumn);
+    }
+
+    var removeColumsFromIndex = numberOfColumns - 1;
+    $('#panels').find('.panels_column:gt(' + removeColumsFromIndex + ')').remove();
+    panels.appendTo('.panels_column:first');
+}
+
+function orderPanelsDefault() {
+    var numberOfColumns = howManyColumns();
+
+    $('.panel').each(function (index, panel) {
+        var toColumn = index % numberOfColumns;
+        var columns = $('#panels').children();
+
+        $(panel).appendTo(columns.eq(toColumn));
+    });
+}
+
+function sendOrderOfPanelsToServer() {
+    var names = [];
+    var columns = [];
+    var numberOfColumns = 0;
+
+    $('#panels').children().each(function (i, column) {
+        numberOfColumns++;
+        $(column).children().each(function (j, panel) {
+            names.push($(panel).prop('id').substr('panel-'.length));
+            columns.push(i);
+        });
+    });
+
+    if (numberOfColumns) {
+        $.post(URLS.panels_order, {
+            'names': names,
+            'columns': columns,
+            'number_of_columns': numberOfColumns
+        });
+    }
+}
+
+function orderPanels() {
+    $.getJSON(URLS.panels_order, {
+        'number_of_columns': howManyColumns()
+    }, function (data, textStatus, jqXHR) {
+        if (data.length == 0) {
+            orderPanelsDefault();
+        }
+        else {
+            $.each(data, function (i, column) {
+                $.each(column, function (j, panel) {
+                    movePanel(panel, i);
+                });
+            });
+        }
+    });
+}
+
+function collapsePanels() {
+    $.getJSON(URLS.panels_collapse, function (data, textStatus, jqXHR) {
+        $.each(data, function (name, collapsed) {
+            if (collapsed) {
+                $('#panel-' + name + ' .content').css('display', 'none');
+            }
+        });
+    });
+}
+
+function initializePanels() {
+    initializeEmptyColumnsForPanels();
+    orderPanels();
+    collapsePanels();
+    makeColumnsSortable();
+    makePanelsOrderUpdatable();
+}
+
+function makeColumnsSortable() {
+    $('.panels_column').sortable({
+        'connectWith': '.panels_column',
+        'handle': '',
+        'cursor': 'move',
+        'placeholder': 'placeholder',
+        'forcePlaceholderSize': true,
+        'opacity': 0.6,
+        'helper': 'clone'
+    }).disableSelection();
+}
+
+function makePanelsOrderUpdatable() {
+    $('.panels_column').bind('sortstop', function (event, ui) {
+        sendOrderOfPanelsToServer();
+    });
+}
+
 // Calculates difference between current time and the time when the post was created and generates a message
 function formatDiffTime(time) {
     // TODO: Check for cross browser compatibility, currently works in Chrome and Firefox on Ubuntu
@@ -130,20 +243,38 @@ function Post(data) {
 }
 
 function showLastPosts(offset) {
-    $.getJSON(URLS['post'], {'limit': POSTS_LIMIT, 'offset': offset}, function (data) {
+    $.getJSON(URLS.post, {
+        'limit': POSTS_LIMIT,
+        'offset': offset
+    }, function (data) {
         $(data.objects).each(function (i, post) {
-            new Post(this).addToBottom();
+            new Post(post).addToBottom();
         });
     });
 }
 
 $(document).ready(function () {
+    initializePanels();
+
     $.updates.registerProcessor('home_channel', 'post_new', function (data) {
         new Post(data.post).addToTop();
     });
 
     $('.panel .header').click(function (event) {
+        var collapsed = $(this).next().is(':visible');
         $(this).next('.content').slideToggle('fast');
+
+        var name = $(this).parent().prop('id').substr('panel-'.length);
+
+        $.post(URLS.panels_collapse, {
+            'name': name,
+            'collapsed': collapsed
+        });
+    });
+
+    // TODO: Ajax request to store panels state is currently send many times while resizing, it should be send only at the end
+    $(window).resize(function (event) {
+        initializePanels();
     });
 
     // Saving text from post input box
@@ -158,7 +289,7 @@ $(document).ready(function () {
         var is_published = true;
         $.ajax({
             'type': 'POST',
-            'url': URLS['post'],
+            'url': URLS.post,
             'data': JSON.stringify({
                 'message': message,
                 'is_published': is_published
@@ -206,7 +337,7 @@ $(document).ready(function () {
     // TODO: Improve date updating so that interval is set on each date individually
     setInterval(function () {
         $('.post').each(function (i, post) {
-            $(this).data('post').updateDate(this);
+            $(post).data('post').updateDate(this);
         });
     }, POSTS_DATE_UPDATE_INTERVAL);
 });

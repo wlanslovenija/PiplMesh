@@ -77,6 +77,10 @@ urlpatterns = patterns('',
 
     # Internals
     url(r'^' + PUSH_SERVER_URL, include('pushserver.urls')),
+
+    # Panels
+    url(r'^panels/collapse/$', frontend_views.panels_collapse, name='panels_collapse'),
+    url(r'^panels/order/$', frontend_views.panels_order, name='panels_order'),
 )
 
 if getattr(settings, 'DEBUG', False):
