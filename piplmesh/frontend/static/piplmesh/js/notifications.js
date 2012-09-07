@@ -2,20 +2,9 @@
 $(document).ready(function () {
     $('.notifications').click(function (){
         $('#notif_box').slideToggle('fast');
-        // if ($('#notif_box').hasClass('show')) {
-        //     $('#notif_box').slideUp('fast');
-        //     $('#notif_box').toggleClass('show');
-        // } else {
-        //     $('#notif_box').slideDown('fast');
-        //     $('#notif_box').toggleClass('show');
-        // }
     });
     $(".close_notif_box").click(function (){
         $('#notif_box').slideToggle('fast');
-        // if ($('#notif_box').hasClass('show')) {
-        //     $('#notif_box').slideUp('fast');
-        //     $('#notif_box').toggleClass('show');
-        // }
     });
     $('#addPost').click(function (){
         addPost("Bla bla bla bla Post...");
@@ -49,7 +38,7 @@ function buildNotification(notification) {
 }
 
 function loadNotifications() {
-    $.getJSON('/api/v1/notification/', function (notifications) {
+    $.getJSON(URLS['notifications'], function (notifications) {
         var list = [];
 
         $.each(notifications.objects, function (i, notification) {
@@ -92,7 +81,7 @@ function addPost(message) {
 function addComment(comment) {
     $.ajax({
         type: 'POST',
-        url: '/api/v1/post/5028f60e6c20b15ae4000001/comments/',
+        url: '/api/v1/post/5049b8f76c20b15e161ddb08/comments/',
         data: JSON.stringify({'message': comment}),
         contentType: 'application/json',
         dataType: "json",
