@@ -10,7 +10,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.views import generic as generic_views
 
 from tastypie import http as tastypie_http
-from tastypie.utils import formatting
 
 from mongogeneric import detail
 
@@ -121,32 +120,27 @@ def send_update_on_new_post(sender, post, request, bundle, **kwargs):
 
 def panels_collapse(request):
     if request.method == 'POST':
-        if (request.POST['collapsed'] == 'true'):
-            request.user.panels_collapsed[request.POST['panel_id']] = True
-        else:
-            request.user.panels_collapsed[request.POST['panel_id']] = False
+        request.user.panels_collapsed[request.POST['name']] = True if request.POST['collapsed'] == 'true' else False
         request.user.save()
-
         return http.HttpResponse()
     else:
-        message = request.user.panels_collapsed
-
-        return http.HttpResponse(simplejson.dumps(message), mimetype='application/json')
+        return http.HttpResponse(simplejson.dumps(request.user.panels_collapsed), mimetype='application/json')
 
 def panels_order(request):
     if request.method == 'POST':
-        order = simplejson.loads(request.POST['order'])
+        panels = []
 
-        request.user.panels_order[request.POST['number_of_columns']] = order
+        for name, column in zip(request.POST.getlist('names'), request.POST.getlist('columns')):
+            column = int(column)
+            if column == len(panels):
+                panels.append([])
+            panels[column].append(name)
+
+        request.user.panels_order[request.POST['number_of_columns']] = panels
         request.user.save()
 
         return http.HttpResponse()
     else:
-        number_of_columns = str(request.GET['numberOfColumns'])
-
-        if request.user.panels_order.has_key(number_of_columns):
-            order = {"panels": request.user.panels_order[number_of_columns]}
-        else:
-            order = {"panels": []}
-
-        return http.HttpResponse(simplejson.dumps(order), mimetype='application/json')
+        number_of_columns = request.GET['number_of_columns']
+        panels = request.user.panels_order.get(number_of_columns, [])
+        return http.HttpResponse(simplejson.dumps(panels), mimetype='application/json')
