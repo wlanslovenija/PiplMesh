@@ -6,6 +6,8 @@ from django.utils import crypto, translation
 from mongoengine import queryset
 from mongoengine.django import auth
 
+from django_browserid import auth as browserid_auth, base as browserid_base
+
 import tweepy
 
 from piplmesh.account import models
@@ -141,7 +143,7 @@ class TwitterBackend(MongoEngineBackend):
         user.twitter_access_token = models.TwitterAccessToken(key=twitter_access_token.key, secret=twitter_access_token.secret)
         user.twitter_profile_data = twitter_profile_data
 
-        if user.lazyuser_username and twitter_profile_data.get('username'):
+        if user.lazyuser_username and twitter_profile_data.get('screen_name'):
             # TODO: Does Twitter have same restrictions on username content as we do?
             user.username = twitter_profile_data.get('screen_name')
             user.lazyuser_username = False
@@ -186,7 +188,13 @@ class GoogleBackend(MongoEngineBackend):
 
         user.google_access_token = google_access_token
         user.google_profile_data = google_profile_data
+        
+        username_guess = google_profile_data.get('email', '').rsplit('@', 1)[0]
 
+        if user.lazyuser_username and username_guess:
+            # Best username guess we can get from Google OAuth
+            user.username = username_guess
+            user.lazyuser_username = False
         if user.first_name is None:
             user.first_name = google_profile_data.get('given_name') or None
         if user.last_name is None:
@@ -238,6 +246,7 @@ class FoursquareBackend(MongoEngineBackend):
         try:
             user = self.user_class.objects.get(foursquare_profile_data__id=foursquare_profile_data.get('id'))
         except self.user_class.DoesNotExist:
+            # TODO: Based on user preference, we might create a new user here, not just link with existing, if existing user is lazy user
             # We reload to make sure user object is recent
             request.user.reload()
             user =  request.user
@@ -245,7 +254,13 @@ class FoursquareBackend(MongoEngineBackend):
 
         user.foursquare_access_token = foursquare_access_token
         user.foursquare_profile_data = foursquare_profile_data
+        
+        username_guess = foursquare_profile_data.get('contact', {}).get('email', '').rsplit('@', 1)[0]
 
+        if user.lazyuser_username and username_guess:
+            # Best username guess we can get from Foursquare
+            user.username = username_guess
+            user.lazyuser_username = False
         if user.first_name is None:
             user.first_name = foursquare_profile_data.get('firstName') or None
         if user.last_name is None:
@@ -255,6 +270,46 @@ class FoursquareBackend(MongoEngineBackend):
         if user.gender is None:
             # TODO: Does it really map so cleanly?
             user.gender = foursquare_profile_data.get('gender') or None
+
+        user.save()
+
+        return user
+
+class BrowserIDBackend(MongoEngineBackend, browserid_auth.BrowserIDBackend):
+    """
+    Persona authentication.
+
+    Persona profile data fields are:
+        email: email user uses for Persona
+    """
+    
+    def authenticate(self, browserid_assertion=None, browserid_audience=None, request=None):
+        result = browserid_base.verify(browserid_assertion, browserid_audience)
+        if not result:
+            return None
+
+        email = result['email']
+
+        try:
+            user = self.user_class.objects.get(browserid_profile_data__email=email)
+            # TODO: What is we get more than one user?
+        except self.user_class.DoesNotExist:
+            # TODO: Based on user preference, we might create a new user here, not just link with existing, if existing user is lazy user
+            # We reload to make sure user object is recent
+            request.user.reload()
+            user = request.user
+            # TODO: Is it OK to override BrowserID link if it already exist with some other BrowserID user?
+        
+        user.browserid_profile_data = result
+        
+        if user.lazyuser_username:
+            # Best username guess we can get from BrowserID
+            user.username = email.rsplit('@', 1)[0]
+            user.lazyuser_username = False
+        if user.email is None:
+            user.email = email or None
+            # BrowserID takes care of email confirmation
+            user.email_confirmed = True
 
         user.save()
 

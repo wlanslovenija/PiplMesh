@@ -4,6 +4,8 @@ from piplmesh import panels
 
 class MapPanel(panels.BasePanel):
     def get_context(self, context):
+        context = super(MapPanel, self).get_context(context)
+        
         context.update({
             'header': _("Map"),
         })

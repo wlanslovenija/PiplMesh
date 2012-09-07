@@ -46,6 +46,10 @@ class BasePanel(object):
         return templates
 
     def get_context(self, context):
+        context.update({
+            'name': self.get_name()
+        })
+        
         return context
 
     def render(self, request, context):

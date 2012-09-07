@@ -13,6 +13,7 @@ HOROSCOPE_OBSOLETE = 2 # days
 
 class HoroscopePanel(panels.BasePanel):
     def get_context(self, context):
+        context = super(HoroscopePanel, self).get_context(context)
         user = self.request.user
 
         context.update({

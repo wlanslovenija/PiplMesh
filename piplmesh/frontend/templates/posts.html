@@ -1,0 +1,16 @@
+{% load i18n %}
+
+<div class="new_post">
+    <form method="post" action="">
+        <textarea id="post_text" rows="3" cols="84">{% trans "Write a post..." %}</textarea>
+        <div class="new_post_details">
+            {% comment %}
+                TODO: add buttons for settings
+            {% endcomment %}
+            <input type="button" name="submit_post" id="submit_post" value="{% trans "submit" %}" disabled="disabled"/>
+        </div>
+    </form> 
+</div>
+
+<ul class="posts">
+</ul>

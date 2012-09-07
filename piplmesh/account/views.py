@@ -3,7 +3,7 @@ import json, urllib, urlparse
 from django import dispatch, http, shortcuts
 from django.conf import settings
 from django.contrib import auth, messages
-from django.contrib.auth import views as auth_views
+from django.contrib.auth import signals as auth_signals, views as auth_views
 from django.core import urlresolvers
 from django.template import loader
 from django.views import generic as generic_views
@@ -16,6 +16,9 @@ from pushserver import signals
 import tweepy
 
 from piplmesh.account import forms, models
+
+import django_browserid
+from django_browserid import views as browserid_views
 
 FACEBOOK_SCOPE = 'email'
 GOOGLE_SCOPE = 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
@@ -219,6 +222,26 @@ class FoursquareCallbackView(generic_views.RedirectView):
             # TODO: Message user that they have not been logged in because they cancelled the foursquare app
             # TODO: Use information provided from foursquare as to why the login was not successful
             return super(FoursquareCallbackView, self).get(request, *args, **kwargs)
+        
+class BrowserIDVerifyView(browserid_views.Verify):
+    """
+    This view authenticates the user via Mozilla Persona (BrowserID).
+    """
+    
+    def form_valid(self, form):
+        """Handles the return post request from the browserID form and puts
+        interesting variables into the class. If everything checks out, then
+        we call handle_user to decide how to handle a valid user
+        """
+        self.assertion = form.cleaned_data['assertion']
+        self.audience = django_browserid.get_audience(self.request)
+        self.user = auth.authenticate(browserid_assertion=self.assertion, browserid_audience=self.audience, request=self.request)
+        assert self.user.is_authenticated()
+
+        if self.user and self.user.is_active:
+            return self.login_success()
+
+        return self.login_failure()
 
 class RegistrationView(edit_views.FormView):
     """
@@ -440,3 +463,19 @@ def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
         pull__connections=None,
         set__connection_last_unsubscribe=timezone.now(),
     )
+
+@dispatch.receiver(auth_signals.user_logged_in)
+def user_login_message(sender, request, user, **kwargs):
+    """
+    Shows success login message.
+    """
+
+    messages.success(request, _("You have been successfully logged in."))
+
+@dispatch.receiver(auth_signals.user_logged_out)
+def user_logout_message(sender, request, user, **kwargs):
+    """
+    Shows success logout message.
+    """
+
+    messages.success(request, _("You have been successfully logged out."))

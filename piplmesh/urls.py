@@ -12,7 +12,8 @@ from piplmesh import panels
 # PiplMesh panels auto-discovery
 panels.panels_pool.discover_panels()
 
-v1_api = api.Api(api_name='v1')
+API_NAME = 'v1'
+v1_api = api.Api(api_name=API_NAME)
 v1_api.register(resources.UserResource())
 v1_api.register(resources.UploadedFileResource())
 v1_api.register(resources.PostResource())
@@ -21,7 +22,6 @@ v1_api.register(resources.NotificationResource())
 js_info_dict = {
     'packages': (
         'django.conf',
-        'piplmesh.frontend',
     ),
 }
 
@@ -58,6 +58,9 @@ urlpatterns = patterns('',
     # Google
     url(r'^google/login/$', account_views.GoogleLoginView.as_view(), name='google_login'),
     url(r'^google/callback/$', account_views.GoogleCallbackView.as_view(), name='google_callback'),
+    
+    # BrowserID
+    url(r'^browserid/', account_views.BrowserIDVerifyView.as_view(), name='browserid_verify'),
 
     # Profile, account
     url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='profile'),
@@ -75,6 +78,10 @@ urlpatterns = patterns('',
 
     # Internals
     url(r'^' + PUSH_SERVER_URL, include('pushserver.urls')),
+
+    # Panels
+    url(r'^panels/collapse/$', frontend_views.panels_collapse, name='panels_collapse'),
+    url(r'^panels/order/$', frontend_views.panels_order, name='panels_order'),
 )
 
 if getattr(settings, 'DEBUG', False):
