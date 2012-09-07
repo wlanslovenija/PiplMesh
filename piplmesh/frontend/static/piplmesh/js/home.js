@@ -226,8 +226,8 @@ $(document).ready(function () {
         });
     });
 
-    // TODO: AJAX request should be send only, when window is not resizing anymore
-    $(window).resize(function () {
+    // TODO: Ajax request to store panels state is currently send many times while resizing, it should be send only at the end
+    $(window).resize(function (event) {
         initializePanels();
     });
 

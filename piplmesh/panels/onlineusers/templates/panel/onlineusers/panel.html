@@ -23,7 +23,9 @@
     {% endaddtoblock %}
     <ul id="userlist"></ul>
     <form action="" id="usersearch">
-        <img src="{% static "piplmesh/panel/onlineusers/magnifying_glass.png" %}" alt="{% trans "Search users" %}" />
-        <input type="text" id="search_users" />
+        <div>
+            <img src="{% static "piplmesh/panel/onlineusers/magnifying_glass.png" %}" alt="{% trans "Search users" %}" />
+            <input type="text" id="search_users" />
+        </div>
     </form>
 {% endblock %}
