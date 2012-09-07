@@ -52,7 +52,7 @@ function sendOrderOfPanelsToServer() {
 
     $.ajax({
         'type': 'POST',
-        'url': URLS['panels_order'],
+        'url': URLS.panels_order,
         'data': {
             // TODO: Remove JSON and send data with normal POST variable
             'order': JSON.stringify(order),
@@ -64,7 +64,7 @@ function sendOrderOfPanelsToServer() {
 function orderPanels() {
     $.ajax({
         'type': 'GET',
-        'url': URLS['panels_order'],
+        'url': URLS.panels_order,
         'data': {
             'numberOfColumns': howManyColumns()
         },
@@ -84,7 +84,7 @@ function orderPanels() {
 }
 
 function collapsePanels() {
-    $.get(URLS['panels_collapse'], function (data) {
+    $.get(URLS.panels_collapse, function (data) {
         $.each(data, function (panelId, collapsed) {
             if (collapsed) {
                 $('#' + panelId + ' .content').css('display', 'none');
@@ -192,7 +192,10 @@ function Post(data) {
 }
 
 function showLastPosts(offset) {
-    $.getJSON(URLS['post'], {'limit': POSTS_LIMIT, 'offset': offset}, function (data) {
+    $.getJSON(URLS.post, {
+        'limit': POSTS_LIMIT,
+        'offset': offset
+    }, function (data) {
         $(data.objects).each(function (i, post) {
             new Post(this).addToBottom();
         });
@@ -215,7 +218,7 @@ $(document).ready(function () {
 
         $.ajax({
             'type': 'POST',
-            'url': URLS['panels_collapse'],
+            'url': URLS.panels_collapse,
             'data': {
                 'panel_id': panel_id,
                 'collapsed': collapsed
@@ -240,7 +243,7 @@ $(document).ready(function () {
         var is_published = true;
         $.ajax({
             'type': 'POST',
-            'url': URLS['post'],
+            'url': URLS.post,
             'data': JSON.stringify({
                 'message': message,
                 'is_published': is_published
