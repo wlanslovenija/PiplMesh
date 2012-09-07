@@ -7,33 +7,29 @@
 {% block content %}
     <div class="Privacy">
         <h1>{% trans "Privacy policy" %}</h1>
-        <em>Last modified: Septembr 6, 2012</em>
-		<p>Personal identification information
-
-		<p>We may collect personal identification information from users in a variety of ways, including, but not limited to, when users visit our site or register on the site. Users may be asked for, as appropriate, name and/or email address. Users may, however, visit our Site anonymously. We will collect personal identification information from users only if they voluntarily submit such information to us. Users can always refuse to supply personally identification information.</p>
-
-		<p>Non-personal identification information</p>
-
-		<p>We may collect non-personal identification information about users type of device, the browser name, the operating system and other similar technical information.</p>
-
-		<p>How we use information we collected</p>
-
-		<p>PiplMesh may collect and use users personal information to improve customer service (helps us respond to your customer service requests and support), to personalize user experience (helps us understand how our users as a group use the services and resources provided on our Site) and to send periodic emails (as response to their inquiries, questions, and/or other requests).</p>
-
-		<p>How we protect your information</p>
-
-		<p>Sensitive and private data exchange over a SSL secured communication channel and is encrypted.</p>
-
-		<p>Sharing your personal information</p>
-
-		<p>We do not sell or trade users personal identification information to others. We may share generic aggregated demographic information not linked to any personal identification information regarding visitors and users in commercial purposes.</p>
-
-		<p>Changes to this privacy policy</p>
-
-		<p>We have the discretion to update this privacy policy at any time. When we do, we will post a notification on the main page of our Site. You acknowledge and agree that it is your responsibility to review this privacy policy periodically and become aware of modifications.</p>
-
-		<p>Your acceptance of these terms</p>
-
-		<p>By using this Site, you signify your acceptance of this policy. If you do not agree to this policy, please do not use our Site. Your continued use of the Site following the posting of changes to this policy will be deemed your acceptance of those changes.</p>
+        <p>{% blocktrans %}<em>Last modified: Septembr 6, 2012</em>{% endblocktrans %}</p>
+        <h2>{% trans "Personal identification information" %}</h2>
+        <p>{% blocktrans %}We may collect personal identification information from users in a variety of ways, including, but not limited to, when users visit our site or register on the site. Users may be asked for, as appropriate, name and/or email address. Users may, however, visit our site anonymously. We will collect personal identification information from users only if they voluntarily submit such information to us. Users can always refuse to supply personally identification information.{% endblocktrans %}</p>
+        <p>{% blocktrans %}We will never ask you for your password or any other personal information via email. Never reply to such an email. If you have any questions regarding the validity of an email sent to you, contact us via support system or web page.{% endblocktrans %}</p>
+        <h2>{% trans "Non-personal identification information" %}</h2>
+        <p>{% blocktrans %}We may collect non-personal identification information about users type of device, the browser name, the operating system and other similar technical information. This includes the users location as it is connected to the network via access point whoose location is already known.{% endblocktrans %}</p>
+        <h2>{% trans "Web browser cookies" %}</h2>
+        <p>{% blocktrans %}Our site may use "cookies" to enhance your experience. Users web browser places cookies on their hard drive for record-keeping purposes and sometimes to track information about them. User may choose to set their web browser to refuse cookies. If they do so, note that some parts of the site may not function properly.{% endblocktrans %}</p>
+        <h2>{% trans "How we use information we collected" %}</h2>
+        <p>{% blocktrans %}We may collect and use users personal information to:
+        <ul><li>improve customer service (helps us respond to your customer service requests and support),</li>
+            <li>personalize user experience (helps us understand how our users as a group use the services and resources provided on our site) and to</li>
+            <li>send periodic emails (as response to their inquiries, questions, and/or other requests).</li>
+        </ul>{% endblocktrans %}</p>
+        <h2>{% trans "How we protect your information" %}</h2>
+        <p>{% blocktrans %}Sensitive and private data exchange over a SSL secured communication channel and is encrypted. If you leave our site we do not guarantee your safety.{% endblocktrans %}</p>
+        <h2>{% trans "Sharing your personal information" %}</h2>
+        <p>{% blocktrans %}We do not sell or trade users personal identification information to others. We may share generic aggregated demographic information not linked to any personal identification information regarding visitors and users for commercial purposes.{% endblocktrans %}</p>
+        <h2>{% trans "Third party websites" %}</h2>
+        <p>{% blocktrans %}Users may find advertising or other content on our site that link to the sites and services of our partners, advertisers, sponsors and other third parties. We do not control the content or links that appear on these sites and are not responsible for the practices employed by websites linked to or from our site. These sites or services, including their content and links, may be constantly changing. In addition, these sites and services may have their own privacy policies. Browsing and interaction on any other website, including websites which have a link to our site, is subject to that website's own terms and policies.{% endblocktrans %}</p>
+        <h2>{% trans "Changes to this privacy policy" %}</h2>
+        <p>{% blocktrans %}We have the discretion to update this privacy policy at any time. When we do, we will post a notification on the main page of our site. You acknowledge and agree that it is your responsibility to review this privacy policy periodically and become aware of modifications.{% endblocktrans %}</p>
+        <h2>{% trans "Your acceptance of these terms" %}</h2>
+        <p>{% blocktrans %}By using this site, you signify your acceptance of this policy. If you do not agree to this policy, please do not use our site. Your continued use of the site following the posting of changes to this policy will be deemed your acceptance of those changes.{% endblocktrans %}</p>
     </div>
 {% endblock %}
