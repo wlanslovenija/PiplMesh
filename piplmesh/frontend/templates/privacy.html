@@ -1,6 +1,6 @@
 {% extends "plain.html" %}
 
-{% load i18n %}
+{% load future i18n %}
 
 {% block title %}{% trans "Privacy policy" %}{% endblock %}
 
@@ -9,8 +9,8 @@
     <p><em>{% blocktrans %}Last modified: Septembr 7, 2012{% endblocktrans %}</em></p>
     <h2>{% trans "Personal identification information" %}</h2>
     <p>{% blocktrans %}We may collect personal identification information from users in a variety of ways, including, but not limited to, when users visit our site or register on the site. Users may be asked for, as appropriate, name and/or e-mail address. Users may, however, visit our site anonymously. We will collect personal identification information from users only if they voluntarily submit such information to us. Users can always refuse to supply personally identification information.{% endblocktrans %}</p>
-    {% url contact as contact_url %}
-    <p>{% blocktrans %}We will never ask you for your password or any other personal information via e-mail. Never reply to such an e-mail. If you have any questions regarding the validity of an e-mail sent to you, contact us via our <a href="{{ contact_url }}">contact page</a>.{% endblocktrans %}</p>
+    {% url "contact" as contact_url %}
+    <p>{% blocktrans %}We will never ask you for your password or any other personal information via e-mail. Never reply to such an e-mail. If you have any questions regarding the validity of an e-mail sent to you, contact us via our <a href="{{ contact_url }}">contact page</a> or send us e-mail.{% endblocktrans %}</p>
     <h2>{% trans "Non-personal identification information" %}</h2>
     <p>{% blocktrans %}We may collect non-personal identification information about your hardware model, operating system version, the browser, unique device identifiers, log informations (such as the date and time of your request and referral URL, crashes, system activity, hardware settings, browser information etc.) and other similar technical information. This includes the users location as it is connected to the network via access point whoose location is already known.{% endblocktrans %}</p>
     <h2>{% trans "Web browser cookies" %}</h2>
