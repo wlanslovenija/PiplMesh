@@ -655,8 +655,43 @@ button.browserid-signin:hover {
     margin: 5px 0;
 }
 
+.post .footer {
+    overflow: auto;
+    width: 100%;
+}
+
 .post .date {
     color: #AAA;
+    float: left;
+}
+
+.post .hugs_runs {
+    color: #555;
+    float: right;
+    /*width: 150px;
+    border: #0064D9 dashed thick;*/
+}
+
+.post .hugs_runs_display {
+    color: #555;
+    position: absolute;
+    border: #AAA solid 1px;
+    padding: 2px;
+    background: #FFFFFF;
+    display: none;
+    z-index: 1;
+}
+
+.post .hugs_runs_display ul {
+    list-style: none;
+    display: inline-block;
+    margin: 2px;
+    padding: 0px;
+    /*border: #000 solid 1px;*/
+}
+
+.post .hugs_runs_display ul .first {
+    font-weight: bold;
 }
 
 .post .options {

@@ -36,14 +36,70 @@ function Post(data) {
             $('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))
         );
 
-        var post_options = $('<ul />').addClass('options').append(delete_link);
+        var hug = $('<li/>').addClass('hug').append(
+            $('<a/>').addClass('hand').text(gettext("Hug"))
+        );
+        var run = $('<li/>').addClass('run').append(
+            $('<a/>').addClass('hand').append(gettext("Run"))
+        );
+
+        var post_options = $('<ul />').addClass('options').append(delete_link).append(hug).append(run);
+
+        var huggers = $('<ul/>');
+        if (self.hugs.length < 1) {
+            huggers.append(
+                $('<li/>').addClass('first').text(gettext("No huggers"))
+            );
+        } else {
+            huggers.append(
+                $('<li/>').addClass('first').text(gettext("Huggers")+":")
+            );
+            for (hugger in self.hugs){
+                huggers.append($('<li/>').text(self.hugs[hugger]));
+            }
+        }
+
+        var runners = $('<ul/>');
+        if (self.runs.length < 1) {
+            runners.append(
+                $('<li/>').addClass('first').text(gettext("No runners"))
+            );
+        } else {
+            runners.append(
+                $('<li/>').addClass('first').text(gettext("Runners")+":")
+            );
+            for(var i = 0; i<self.runs.length; i++){
+                runners.append($('<li/>').text(self.runs[i]));
+            }
+        }
+
+        hugs_runs = $('<div/>').addClass('hugs_runs').text(gettext("Hugs") + ": " + self.hugs.length + " "
+            + gettext("Runs") + ": " + self.runs.length)
+            .append(
+            $('<div/>').addClass('hugs_runs_display').append(
+                huggers
+            ).append(
+                runners
+            )
+        );
+
+        hugs_runs.hover(function () {
+                $('.hugs_runs_display', this).show();
+            },
+            function () {
+                $('.hugs_runs_display', this).hide();
+            });
 
         var post = $('<li/>').addClass('post').data('post', self).append(post_options).append(
             $('<span/>').addClass('author').text(self.author.username)
         ).append(
             $('<p/>').addClass('content').text(self.message)
         ).append(
-           $('<span/>').addClass('date').text(formatDiffTime(self.created_time))
+            $('<div/>').addClass('footer').append(
+                $('<span/>').addClass('date').text(formatDiffTime(self.created_time))
+            ).append(
+                hugs_runs
+            )
         );
 
         return post;
