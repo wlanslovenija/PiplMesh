@@ -7,7 +7,6 @@ from tastypie_mongoengine import fields, resources
 from pushserver.utils import updates
 
 from piplmesh.account import models as account_models
-
 from piplmesh.api import authorization, models as api_models
 
 class UserResource(resources.MongoEngineResource):
@@ -38,7 +37,7 @@ class CommentResource(AuthoredResource):
             if subscriber != bundle.obj.author:
                 # add notification to db
                 notification = api_models.Notification.objects.create(recipient=subscriber, post=self.instance, comment=bundle.obj.pk)
-                # notification = api_models.Notification.add_notification(subscriber, self.instance, bundle.obj.pk)
+                #notification = api_models.Notification.add_notification(subscriber, self.instance, bundle.obj.pk)
 
         if bundle.obj.author not in self.instance.subscribers:
             self.instance.subscribers.append(bundle.obj.author)
@@ -51,32 +50,39 @@ class CommentResource(AuthoredResource):
         # TODO: Make proper authorization, current implementation is for development use only
         authorization = tastypie_authorization.Authorization()
 
+class NotificationAuthorization(tastypie_authorization.Authorization):
+    def apply_limits(self, request, object_list):
+        if request:
+            object_list = object_list.filter(recipient=request.user)
+        return object_list
+
 class NotificationResource(resources.MongoEngineResource):
     # created_time = tastypie_fields.DateTimeField(attribute='created_time', null=False, readonly=True)
     # post = tastypie_fields.CharField(attribute='post', default='', null=False, blank=True)
     # author = fields.ReferenceField(to='piplmesh.api.resources.UserResource', attribute='author', null=False, full=True, readonly=True)
     content = tastypie_fields.CharField(attribute='content', default='', null=False, blank=True)
 
-    def hydrate(self, bundle):
-        bundle = super(NotificationResource, self).hydrate(bundle)
-#        bundle.obj.comment_author = bundle.data['post'].comments[int(bundle.obj.comment)].message
-        return bundle
+#     def hydrate(self, bundle):
+#         bundle = super(NotificationResource, self).hydrate(bundle)
+#         bundle.obj.comment_author = bundle.data['post'].comments[int(bundle.obj.comment)].message
+#         return bundle
 
     def dehydrate(self, bundle):
-        bundle.data['recipient'] = bundle.obj.post.comments[bundle.obj.comment].author
+        bundle.data['author'] = bundle.obj.post.comments[bundle.obj.comment].author
         bundle.data['content'] = bundle.obj.post.comments[bundle.obj.comment].message
-        bundle.data['post'] = bundle.obj.post.id
+        # bundle.data['post'] = bundle.obj.post.id
         return bundle
 
-    def get_object_list(self, request):
-        obj_list = super(NotificationResource, self).get_object_list(request)
-        if request:
-            obj_list = obj_list.filter(recipient=request.user)
-        return obj_list
+    # def get_object_list(self, request):
+    #     obj_list = super(NotificationResource, self).get_object_list(request)
+    #     if request:
+    #         obj_list = obj_list.filter(recipient=request.user)
+    #     return obj_list
 
     class Meta:
         queryset = api_models.Notification.objects.all()
-        fields = ['id', 'created_time', 'comment', 'resource_uri', 'read', 'post']
+        # fields = ['id', 'created_time', 'comment', 'resource_uri', 'read', 'post']
+        authorization = NotificationAuthorization()
 
 class ImageAttachmentResource(AuthoredResource):
     image_file = fields.ReferenceField(to='piplmesh.api.resources.UploadedFileResource', attribute='image_file', null=False, full=True)

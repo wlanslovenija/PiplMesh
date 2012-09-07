@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-import datetime, hashlib, urllib, os
+import datetime, hashlib, os, urllib
 
 from django.conf import settings
 from django.contrib.auth import hashers, models as auth_models
@@ -12,7 +12,6 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 import mongoengine
-
 from mongoengine.django import auth
 
 from . import fields, utils
@@ -63,7 +62,7 @@ class User(auth.User):
     birthdate = fields.LimitedDateTimeField(upper_limit=upper_birthdate_limit, lower_limit=lower_birthdate_limit)
     gender = fields.GenderField()
     language = fields.LanguageField()
-    channel_id = mongoengine.StringField()
+    channel_id = mongoengine.UUIDField()
 
     facebook_access_token = mongoengine.StringField(max_length=150)
     facebook_profile_data = mongoengine.DictField()

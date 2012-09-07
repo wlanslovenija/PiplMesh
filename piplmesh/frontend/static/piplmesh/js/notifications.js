@@ -1,29 +1,31 @@
 
-$(document).ready(function() {
-    $(".notifications").click(function (){
-        if ($("#notif_box").hasClass('show')) {
-            $("#notif_box").slideUp('fast');
-            $("#notif_box").toggleClass('show');
-        } else {
-            $("#notif_box").slideDown('fast');
-            $("#notif_box").toggleClass('show');
-        }
+$(document).ready(function () {
+    $('.notifications').click(function (){
+        $('#notif_box').slideToggle('fast');
+        // if ($('#notif_box').hasClass('show')) {
+        //     $('#notif_box').slideUp('fast');
+        //     $('#notif_box').toggleClass('show');
+        // } else {
+        //     $('#notif_box').slideDown('fast');
+        //     $('#notif_box').toggleClass('show');
+        // }
     });
     $(".close_notif_box").click(function (){
-        if ($("#notif_box").hasClass('show')) {
-            $("#notif_box").slideUp('fast');
-            $("#notif_box").toggleClass('show');
-        }
+        $('#notif_box').slideToggle('fast');
+        // if ($('#notif_box').hasClass('show')) {
+        //     $('#notif_box').slideUp('fast');
+        //     $('#notif_box').toggleClass('show');
+        // }
     });
-    $("#addPost").click(function (){
+    $('#addPost').click(function (){
         addPost("Bla bla bla bla Post...");
     });
-    $("#addCom").click(function (){
+    $('#addCom').click(function (){
         addComment("Tralala dela");
     });
     
     
-    $.updates.registerProcessor('notification_channel', 'notifications', AddNewNotification);
+    $.updates.registerProcessor('user_channel', 'notifications', AddNewNotification);
 
     //$('#notif_content').change(redrawUserList).keyup(redrawUserList);
 
@@ -47,10 +49,10 @@ function buildNotification(notification) {
 }
 
 function loadNotifications() {
-    $.getJSON('/api/v1/notification/', function(notifications) {
+    $.getJSON('/api/v1/notification/', function (notifications) {
         var list = [];
 
-        $.each(notifications.objects, function(i, notification) {
+        $.each(notifications.objects, function (i, notification) {
             var notif = buildNotification(notification)
             list.unshift('<li class="notification">' + notif.author + notif.content + notif.date + '</li>');
         })
