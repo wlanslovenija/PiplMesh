@@ -22,10 +22,10 @@ USERNAME_REGEX = r'[\w.@+-]+'
 CONFIRMATION_TOKEN_VALIDITY = 5 # days
 
 def upper_birthdate_limit():
-    return datetime.datetime.today()
+    return timezone.now().date()
 
 def lower_birthdate_limit():
-    return datetime.datetime.today() - datetime.timedelta(LOWER_DATE_LIMIT)
+    return timezone.now().date() - datetime.timedelta(LOWER_DATE_LIMIT)
 
 class Connection(mongoengine.EmbeddedDocument):
     http_if_none_match = mongoengine.StringField()
