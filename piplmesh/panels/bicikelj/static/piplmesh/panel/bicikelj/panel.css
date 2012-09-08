@@ -1,0 +1,20 @@
+.station_name {
+    font-size: 13px;
+    color: #32FF32;
+}
+
+.station_availability {
+    font-size: xx-small;
+}
+
+.station_free {
+    font-size: xx-small;
+}
+
+.bicikelj_error {
+    font-size: x-small;
+}
+
+.station_ticket {
+    font-size: xx-small;
+}
