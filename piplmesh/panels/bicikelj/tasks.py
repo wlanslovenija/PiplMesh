@@ -9,8 +9,6 @@ from . import models, stations
 def update_station_info():
     station_info = stations.fetch_data()
     for station in station_info:
-        print station['id']
-        print station
         if not models.BicikeljStation.objects(id=station['id'], timestamp=station['timestamp']):
             models.BicikeljStation(
                                    name=station['name'],
