@@ -6,19 +6,12 @@ from . import models
 BICIKELJ_STATIONS_URL = 'http://www.bicikelj.si/service/carto'
 BICIKELJ_INFO_URL = 'http://www.bicikelj.si/service/stationdetails/ljubljana/'
 BICIKELJ_BOUNDS = 0.00965
-ZOOM_LEVEL = 15
-MAP_WIDTH = 450
-C = 0.703119412486786 # constant at 60 degrees
-
-def max_distance(zoom, width):
-    return C*width/math.pow(2,zoom)
 
 def get_stations_nearby(lat, lng):
-    maxd = max_distance(ZOOM_LEVEL,MAP_WIDTH)
     ids = []
     while 1:
         try:
-            ids.append(models.BicikeljStation.objects(location__near= [lat, lng], location__within_box=[(lat-abs(maxd),lng-abs(maxd)),(lat+abs(maxd),lng+abs(maxd))], id__nin=ids).first().id)
+            ids.append(models.BicikeljStation.objects(location__near= [lat, lng], location__within_box=[(lat-BICIKELJ_BOUNDS,lng-BICIKELJ_BOUNDS),(lat+BICIKELJ_BOUNDS,lng+BICIKELJ_BOUNDS)], id__nin=ids).first().id)
         except:
             break
     stations = [models.BicikeljStation.objects(id=n).order_by('-timestamp').first() for n in ids]
@@ -28,7 +21,6 @@ def fetch_data():
     stations_data = urllib2.urlopen(BICIKELJ_STATIONS_URL).read()
     stations_xml_data = minidom.parseString(stations_data)
     stations_nodes = stations_xml_data.getElementsByTagName('marker')
-    print stations_nodes
     info_data = [urllib2.urlopen(BICIKELJ_INFO_URL+str(number)).read() for number in range(1,len(stations_nodes)+1)]
     info_xml_data = [minidom.parseString(info_data[i]) for i in range(len(stations_nodes))]
     data = [
