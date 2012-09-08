@@ -33,6 +33,9 @@ class SearchView(generic_views.TemplateView):
 
 class AboutView(generic_views.TemplateView):
     template_name = 'about.html'
+
+class PrivacyView(generic_views.TemplateView):
+    template_name = 'privacy.html'
       
 class ContactView(generic_views.FormView):
     """
