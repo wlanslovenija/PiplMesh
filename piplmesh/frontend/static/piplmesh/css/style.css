@@ -704,8 +704,6 @@ button.browserid-signin:hover {
 .post .hugs_runs {
     color: #555;
     float: right;
-    /*width: 150px;
-    border: #0064D9 dashed thick;*/
 }
 
 .post .hugs_runs_display {
@@ -723,7 +721,6 @@ button.browserid-signin:hover {
     display: inline-block;
     margin: 2px;
     padding: 0px;
-    /*border: #000 solid 1px;*/
 }
 
 .post .hugs_runs_display ul .first {

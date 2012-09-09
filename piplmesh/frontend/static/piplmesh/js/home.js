@@ -172,7 +172,6 @@ function Post(data) {
         }
 
         hug_link.click(function () {
-            //alert(post.data('post').id);
             var selected = hug_link.data('selected');
             if (selected == undefined || selected == false) {
                 $.post(URLS.hug_run, {
