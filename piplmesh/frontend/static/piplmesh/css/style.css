@@ -733,6 +733,7 @@ button.browserid-signin:hover {
 .post .options {
     font-size: 10px;
     float: right;
+    width: 50px;
 }
 
 /* ------------------ CONTACT ---------------------------- */

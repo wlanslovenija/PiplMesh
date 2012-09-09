@@ -145,16 +145,83 @@ function Post(data) {
 
     function generateHtml() {
         // TODO: Improve and add other post options
+
+        var post = $('<li/>').addClass('post').data('post', self);
+
         var delete_link = $('<li/>').append(
             $('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))
         );
 
-        var hug = $('<li/>').addClass('hug').append(
-            $('<a/>').addClass('hand').text(gettext("Hug"))
-        );
-        var run = $('<li/>').addClass('run').append(
-            $('<a/>').addClass('hand').append(gettext("Run"))
-        );
+        var hug_link = $('<a/>').addClass('hand').text(gettext("Hug"));
+        var hug = $('<li/>').addClass('hug').append(hug_link);
+        var run_link = $('<a/>').addClass('hand').append(gettext("Run"));
+        var run = $('<li/>').addClass('run').append(run_link);
+
+        for(var i = 0; i<self.hugs.length; i++){
+            if(username == self.hugs[i]){
+                hug_link.data('selected', true);
+                hug_link.css('font-weight', 'bold').text(gettext("Unhug"));
+            }
+        }
+
+        for(var i = 0; i<self.runs.length; i++){
+            if(username == self.runs[i]){
+                run_link.data('selected', true);
+                run_link.css('font-weight', 'bold').text(gettext("Unrun"));
+            }
+        }
+
+        hug_link.click(function () {
+            //alert(post.data('post').id);
+            var selected = hug_link.data('selected');
+            if (selected == undefined || selected == false) {
+                $.post(URLS.hug_run, {
+                    'type': 'hug',
+                    'id': post.data('post').id
+                }, function () {
+                    hug_link.data('selected', true);
+                    hug_link.css('font-weight', 'bold').text(gettext("Unhug"));
+                    run_link.data('selected', false);
+                    run_link.css('font-weight', 'normal').text(gettext("Run"));
+                });
+
+            } else {
+                $.post(URLS.hug_run, {
+                    'type': 'unhug',
+                    'id': post.data('post').id
+                }, function () {
+                    hug_link.data('selected', false);
+                    hug_link.css('font-weight', 'normal').text(gettext("Hug"));
+                    run_link.data('selected', false);
+                    run_link.css('font-weight', 'normal').text(gettext("Run"));
+                });
+            }
+        });
+        run_link.click(function () {
+            var selected = run_link.data('selected');
+            if (selected == undefined || selected == false) {
+                $.post(URLS.hug_run, {
+                    'type': 'run',
+                    'id': post.data('post').id
+                }, function () {
+                    run_link.data('selected', true);
+                    run_link.css('font-weight', 'bold').text(gettext("Unrun"));
+                    hug_link.data('selected', false);
+                    hug_link.css('font-weight', 'normal').text(gettext("Hug"));
+                });
+
+            } else {
+                $.post(URLS.hug_run, {
+                    'type': 'unrun',
+                    'id': post.data('post').id
+                }, function () {
+                    run_link.data('selected', false);
+                    run_link.css('font-weight', 'normal').text(gettext("Run"));
+                    hug_link.data('selected', false);
+                    hug_link.css('font-weight', 'normal').text(gettext("Hug"));
+                });
+            }
+        });
 
         var post_options = $('<ul />').addClass('options').append(delete_link).append(hug).append(run);
 
@@ -167,7 +234,7 @@ function Post(data) {
             huggers.append(
                 $('<li/>').addClass('first').text(gettext("Huggers")+":")
             );
-            for (hugger in self.hugs){
+            for (var hugger in self.hugs){
                 huggers.append($('<li/>').text(self.hugs[hugger]));
             }
         }
@@ -203,7 +270,7 @@ function Post(data) {
                 $('.hugs_runs_display', this).hide();
             });
 
-        var post = $('<li/>').addClass('post').data('post', self).append(post_options).append(
+        post.append(post_options).append(
             $('<span/>').addClass('author').text(self.author.username)
         ).append(
             $('<p/>').addClass('content').text(self.message)

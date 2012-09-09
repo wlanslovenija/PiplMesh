@@ -36,7 +36,7 @@ class AboutView(generic_views.TemplateView):
 
 class PrivacyView(generic_views.TemplateView):
     template_name = 'privacy.html'
-      
+
 class ContactView(generic_views.FormView):
     """
     This view checks if all contact data are valid and then sends e-mail to site managers.
@@ -147,3 +147,38 @@ def panels_order(request):
         number_of_columns = request.GET['number_of_columns']
         panels = request.user.panels_order.get(number_of_columns, [])
         return http.HttpResponse(simplejson.dumps(panels), mimetype='application/json')
+
+def hug_run(request):
+    """
+    Process clicks on Hug and Run buttons
+    """
+    if request.method == 'POST':
+        type = request.POST['type']
+        id = request.POST['id']
+        post = api_models.Post.objects.get(pk=id)
+        user = request.user
+        if type == 'hug':
+            if user not in post.hugs:
+                post.hugs.append(user)
+            if user in post.runs:
+                post.runs.remove(user)
+            post.save()
+        elif type == 'unhug':
+            if user in post.hugs:
+                post.hugs.remove(user)
+            post.save()
+        elif type == 'run':
+            if user not in post.runs:
+                post.runs.append(user)
+            if user in post.hugs:
+                post.hugs.remove(user)
+            post.save()
+        elif type == 'unrun':
+            if user in post.runs:
+                post.runs.remove(user)
+            post.save()
+        else:
+            return http.HttpResponseBadRequest()
+        # TODO trigger signal to resend updated post
+        return http.HttpResponse()
+    return http.HttpResponseBadRequest()
