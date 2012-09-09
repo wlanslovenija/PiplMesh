@@ -31,6 +31,7 @@ urlpatterns = patterns('',
     url(r'^$', frontend_views.HomeView.as_view(), name='home'),
     
     url(r'^about/$', frontend_views.AboutView.as_view(), name='about'),
+    url(r'^privacy/$', frontend_views.PrivacyView.as_view(), name='privacy'),
     url(r'^contact/$', frontend_views.ContactView.as_view(), name='contact'),   
     url(r'^outside/$', frontend_views.OutsideView.as_view(), name='outside'),
     url(r'^search/', frontend_views.SearchView.as_view(), name='search'),

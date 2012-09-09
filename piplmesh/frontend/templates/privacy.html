@@ -1,0 +1,53 @@
+{% extends "plain.html" %}
+
+{% load future i18n %}
+
+{% block title %}{% trans "Privacy policy" %}{% endblock %}
+
+{% block content %}
+    <h1>{% trans "Privacy policy" %}</h1>
+    <p><em>{% blocktrans %}Last modified: Septembr 7, 2012{% endblocktrans %}</em></p>
+    <h2>{% trans "Personally identifiable information" %}</h2>
+    <p>{% blocktrans %}We may collect your personally identifiable information in a variety of ways, including, but not limited to, when you register with our site or as content you publish on the site. You may, however, use our site anonymously. We collect personally identifiable information from you only if you voluntarily submit such information to us. You can always refuse to supply personally identifiable information.{% endblocktrans %}</p>
+    {% url "contact" as contact_url %}
+    <p>{% blocktrans %}We will never ask you for your password or any other personal information via e-mail. Never reply to such an e-mail. If you have any questions regarding the validity of an e-mail sent to you, contact us via our <a href="{{ contact_url }}">contact page</a>.{% endblocktrans %}</p>
+    <h2>{% trans "Non-personally identifiable data" %}</h2>
+    <p>{% blocktrans %}We may collect non-personally identifiable data as content you publish on our site.{% endblocktrans %}</p>
+    <p>{% blocktrans %}We may collect non-personally identifiable data about your hardware, operating system, the browser, browser's requests (such as the date and time of your request and referral URL) and other similar technical data. This includes your geographical location as provided by you or your location in the network.{% endblocktrans %}</p>
+    <h2>{% trans "Web browser cookies" %}</h2>
+    <p>{% blocktrans %}Our site uses <a class="ext-link" href="https://en.wikipedia.org/wiki/HTTP_cookie">cookies</a> to identify which browser requests belong to which user to allow or disallow access to data stored on the site and provide personalized user experience. Make sure to keep these cookies private as failure to do so might compromise your privacy or privacy of data you stored on the site.
+    <p>You may choose to set your web browser to refuse cookies. If you do so, you may not be allowed to access some parts of the site or they may not function properly.{% endblocktrans %}</p>
+    <h2>{% trans "How we use data we collected" %}</h2>
+    <p>{% blocktrans %}We may collect and use your personal data to:{% endblocktrans %}</p>
+    <ul>
+        <li>{% blocktrans %}provide you with features, services, and resources you use on the site{% endblocktrans %}</li>
+        <li>{% blocktrans %}help solve any issues you might be facing with our site{% endblocktrans %}</li>
+        <li>{% blocktrans %}improve customer service (helps us better respond to your customer service requests and support){% endblocktrans %}</li>
+        <li>{% blocktrans %}personalize and improve features and user experience (helps us understand how our users as a group use features, services, and resources provided on our site){% endblocktrans %}</li>
+        <li>{% blocktrans %}send occasional e-mails (as response to your inquiries, questions, and/or other requests){% endblocktrans %}</li>
+        <li>{% blocktrans %}send periodic e-mails (if you choose to receive them){% endblocktrans %}</li>
+        <li>{% blocktrans %}conduct or help others conduct research with publicly, openly and freely available results using aggregated and/or non-personally identifiable data{% endblocktrans %}</li>
+    </ul>
+    <p>{% blocktrans %}Your personal data may be processed outside the country where you live.{% endblocktrans %}</p>
+    <h2>{% trans "What can you do with collected data" %}</h2>
+    <ul>
+        <li>{% blocktrans %}review and control your data{% endblocktrans %}</li>
+        <li>{% blocktrans %}update data or delete it, unless we have to keep it for legal purposes{% endblocktrans %}</li>
+        <li>{% blocktrans %}export your account and all data linked with your account{% endblocktrans %}</li>
+        <li>{% blocktrans %}disable your account so the account and all data linked with your account become hidden{% endblocktrans %}</li>
+        <li>{% blocktrans %}delete your account and all data linked with your account{% endblocktrans %}</li>
+    </ul>
+    <h2>{% trans "Sharing your personal data" %}</h2>
+    <p>{% blocktrans %}We do not share, sell or trade users personally identifiable information to others unless one of the following circumstances apply:{% endblocktrans %}</p>
+    <ul>
+        <li>{% blocktrans %}with your consent{% endblocktrans %}</li>
+        <li>{% blocktrans %}for legal reasons (to meet any applicable law, regulation, legal process or enforceable governmental request, to investigate potential violations and to detect, prevent, or otherwise address fraud, security or technical issues){% endblocktrans %}</li>
+    </ul>
+    <p>{% blocktrans %}We may share generic aggregated demographic data not linked to any personally identifiable information regarding visitors and users. We may share aggregated, non-personally identifiable data publicly and with our partners.{% endblocktrans %}</p>
+    <h2>{% trans "Third party websites" %}</h2>
+    <p>{% blocktrans %}You may find advertising or other content on our site that link to the sites and services of our partners, advertisers, sponsors and other third parties. We do not control the content or links that appear on these sites and are not responsible for the practices employed by websites linked to or from our site. These sites or services, including their content and links, may be constantly changing. In addition, these sites and services may have their own privacy policies. Browsing and interaction on any other website, including websites which have a link to our site, is subject to that website's own terms and policies.{% endblocktrans %}</p>
+    <h2>{% trans "Changes to this privacy policy" %}</h2>
+    <p>{% blocktrans %}We have the discretion to update this privacy policy at any time. When we do, we will inform you through a notification on our site. You acknowledge and agree that it is your responsibility to review this privacy policy periodically and become aware of modifications.{% endblocktrans %}</p>
+    <h2>{% trans "Your acceptance of this privacy policy" %}</h2>
+    <p>{% blocktrans %}By using this site, you signify your acceptance of this policy. If you do not agree to this policy, please do not use our site. Your continued use of the site following the posting of changes to this policy will be deemed your acceptance of those changes.{% endblocktrans %}</p>
+{% endblock %}

@@ -6,5 +6,8 @@
 
 {% block content %}
     <h1>{% trans "About" %}</h1>
-    <p>TODO.</p>
+    <p>{% blocktrans %}PiplMesh is the project of students at <a class="ext-link" href="http://www.fri.uni-lj.si/">Faculty of Computer and Information Science</a> of University of Ljubljana and <em><a class="ext-link" href="http://wlan-si.net/">wlan slovenija</a></em> open wireless network. Its main goal is the development of an open source social networking and info portal for wireless networks used as a welcome page when users connect to the network.{% endblocktrans %}</p>
+    <p>{% blocktrans %}You can read more about the project on <a class="ext-link" href="http://dev.wlan-si.net/wiki/PiplMesh/">development pages</a> at <em>wlan slovenija</em> website.{% endblocktrans %}</p>
+    <p>{% blocktrans %}For development <a class="ext-link" href="https://github.com/wlanslovenija/PiplMesh">GitHub</a> is used. If you have found a bug or have any other technical issue with the site, please use GitHub to <a class="ext-link" href="https://github.com/wlanslovenija/PiplMesh/issues/new">report it</a>. Source code and <a href="https://github.com/wlanslovenija/PiplMesh/issues?state=open">known issues</a> are found there. A <a class="ext-link" href="https://github.com/wlanslovenija/PiplMesh/stargazers/">list of contributors</a> is also avaible as GitHub profiles list.{% endblocktrans %}</p>
+    <p>{% blocktrans %}All work is done voluntarily, so you are very welcome to help us make it even better.{% endblocktrans %}</p>
 {% endblock %}
