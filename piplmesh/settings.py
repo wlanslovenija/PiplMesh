@@ -132,6 +132,8 @@ EMAIL_SUBJECT_PREFIX = '[PiplMesh] '
 DEFAULT_FROM_EMAIL = 'webmaster@localhost'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
