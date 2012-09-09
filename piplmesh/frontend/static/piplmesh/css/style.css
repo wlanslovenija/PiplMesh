@@ -48,13 +48,9 @@ button span {
 .hidden {
     visibility: hidden;
 }
+
 .gravatar {
     border: 0px;
-}
-
-p {
-    padding: 0;
-    margin: 0;
 }
 
 .hand {
@@ -276,10 +272,8 @@ input.gsc-search-button {
 }
 
 /* -------------------- MAIN ------------------------ */
-#content {
-    padding: 20px;
+#content {;
     margin: 20px;
-    height: 100%;
 }
 
 #main {
@@ -641,11 +635,6 @@ button.browserid-signin:hover {
 }
 
 /* ----------------- MAIN LAYOUT ------------------------------- */
-#content {
-    height: 100%;
-    overflow: hidden;
-}
-
 #wall {
     width: 520px;
     float: left;
