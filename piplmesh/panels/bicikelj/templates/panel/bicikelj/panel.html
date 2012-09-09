@@ -5,21 +5,19 @@
 {% block content %}
     {% addtoblock "css" %}<link href="{% static "piplmesh/panel/bicikelj/panel.css" %}" rel="stylesheet" type="text/css" media="screen" />{% endaddtoblock %}
     <div id="bicikelj">
-        {% if not stations %}
-        <span class="bicikelj_error">{% trans "No Bicikelj stations nearby" %}</span>
-        {% else %}
-           {% for station in stations %}
-                <dl>
-                    <dt><span class="station_name">{{ station.name }}</span></dt>
-                    <dd>
-                        <ul>
-                            <li><span class="station_availability"><b>{{ station.available }}</b>{% trans " available bikes" %}</span></li>
-                            <li><span class="station_free"><b>{{ station.free }}</b>{% trans "free places" %}</span></li>
-                        </ul>
-                    </dd>
-                </dl>
-            {% endfor %}
-        {% endif %}
+        {% for station in stations %}
+            <dl>
+                <dt><span class="station_name">{{ station.name }}</span></dt>
+                <dd>
+                    <ul>
+                        <li><span class="station_availability">{% blocktrans %}<b>{{ station.available }}</b> available bikes{% endblocktrans %}</span></li>
+                        <li><span class="station_free">{% blocktrans %}<b>{{ station.free }}</b> free places %}{% endblocktrans %}</span></li>
+                    </ul>
+                </dd>
+            </dl>
+        {% empty %}
+            <span class="bicikelj_error">{% trans "No Bicikelj stations nearby" %}</span>
+        {% endfor %}
     </div>
     <script type="text/javascript">
         /* TODO
