@@ -7,21 +7,15 @@ from . import models, stations
 
 @task.task
 def update_station_info():
-    station_info = stations.fetch_data()
-    for station in station_info:
-        if not models.BicikeljStation.objects(id=station['id'], timestamp=station['timestamp']):
-            models.BicikeljStation(
-                                   name=station['name'],
-                                   address=station['address'],
-                                   id=station['id'],
-                                   location=station['location'],
-                                   timestamp=station['timestamp'],
-                                   available = station['available'],
-                                   free = station['free'],
-                                   total = station['total'],
-                                   open = station['open'],
-            ).save()
+    stations_data = stations.fetch_data()
+    for station in stations_data:
+        station_object, created = models.BicikeljStation.objects.get_or_create(
+            station_id=station[0]['station_id'],
+            timestamp=station[0]['timestamp'],
+            defaults = station[1]
+        )
+        if created:
             updates.send_update(
                 views.HOME_CHANNEL_ID,
                 # TODO
-                )
+            )
