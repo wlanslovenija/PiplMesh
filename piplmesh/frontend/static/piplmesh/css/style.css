@@ -146,13 +146,7 @@ input.gsc-search-button:hover,
 }
 
 /* Styles common to different forms and form elements */
-.form_fields .errorlist,
-#password_change,
-.buttons,
-.contact_comment p,
-.login h1,
-.registration h1,
-.contact_form h1 {
+.automatic-width {
     margin-left: 100px;
     padding-left: 25px;
 }
@@ -718,10 +712,6 @@ button.browserid-signin:hover {
 /* ------------------ CONTACT ---------------------------- */
 .contact_form textarea {
     width: 300px;
-}
-
-.contact_comment p {
-    margin-left: 100px;
 }
 
 /* ------------------ DROP-DOWN LOGIN ---------------------------- */

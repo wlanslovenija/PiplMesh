@@ -11,13 +11,13 @@
 
 {% block content %}
     <div class="contact_form">
-        <h1>{% trans "Contact" %}</h1>
+        <h1 class="automatic-width">{% trans "Contact" %}</h1>
         {% with form_submit=_("Send") %}
             {% url contact as form_action %}
             {% include "form/form.html" %}
         {% endwith %}
     </div>
-    <div class="contact_comment">
+    <div class="contact_comment automatic-width">
         {% url about as about_url %}
         <p>{% blocktrans %}If you have found a bug or have any other technical issue with the site, please use <a href="https://github.com/wlanslovenija/PiplMesh/issues?state=open">GitHub to report it</a>. This site is developed and run as an open source project and all work is done voluntarily, so you are very welcome to help us make it even better. See <a href="{{ about_url }}">about page</a> for more information.{% endblocktrans %}</p>
     </div>

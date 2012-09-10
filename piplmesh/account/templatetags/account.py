@@ -12,8 +12,10 @@ def user_image(context, user=None):
     }
 
 @register.simple_tag
-def active(request, pattern):
-    import re
-    if re.search(pattern, request.path):
+def active(request, url_name):
+    from django.core.urlresolvers import resolve 
+    startswith = request.path.startswith('/'+url_name)
+    resolved_name = resolve(request.path).url_name
+    if startswith or url_name == resolved_name:
         return 'current_item'
     return ''

@@ -22,7 +22,7 @@ where the form should redirect after submission.
             <ul class="form_fields">
                 {% for field in form %}
                     {% if field.errors %}
-                        <li class="field_error">
+                        <li class="field_error automatic-width">
                             {{ field.errors }}
                         </li>
                     {% endif %}
@@ -39,5 +39,5 @@ where the form should redirect after submission.
                 {% endfor %}
             </ul>
         {% endif %}
-        <div class="buttons"><input type="submit" value="{{ form_submit }}" /></div>
+        <div class="buttons automatic-width"><input type="submit" value="{{ form_submit }}" /></div>
     </form>
