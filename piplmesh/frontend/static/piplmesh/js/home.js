@@ -206,9 +206,10 @@ function AddNewNotification(newNotification) {
 
 function buildNotification(notification) {
     var new_notif = {};
-    new_notif.author = notification.author + ' je komentiral <a href="#" >objavo</a><br />';
+    var author = gettext("commented on");
+    var post = gettext("post");
+    new_notif.author = notification.author + ' ' + author + ' <a href="#" >' + post + '</a>.<br />';
     new_notif.message = '<span class="notification_message">' + notification.content + '</span><br />';
-    // 'Napisano ' + formatDate(notification.created_time)
     new_notif.date = formatDiffTime(notification.created_time);
     return new_notif;
 }
@@ -229,14 +230,6 @@ function loadNotifications() {
         $('#notif_content').html(content);
         $('.notifications').html(unread_counter);
     });
-}
-
-function formatDate(time) {
-    var days = new Array("Pon", "Tor", "Sre", "Čet", "Pet", "Sob", "Ned");
-    var months = new Array("Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Avg", "Sep", "Okt", "Nov", "December");
-    var time = new Date(time);
-    var date = days[time.getDay()] + ', ' + time.getDate() + ' ' + months[time.getMonth()] + ' ' + time.getFullYear() + ', ' + time.getHours() + ':' + time.getMinutes();
-    return date;
 }
 
 function addComment(comment) {
