@@ -6,26 +6,20 @@ $(document).ready(function () {
     $(".close_notif_box").click(function (){
         $('#notif_box').slideToggle('fast');
     });
-    $('#addPost').click(function (){
-        addPost("Bla bla bla bla Post...");
-    });
     $('#addCom').click(function (){
         addComment("HAHAHAH dela");
     });
-    
-    
-    $.updates.registerProcessor('user_channel', 'notifications', AddNewNotification);
 
-    //$('#notif_content').change(redrawUserList).keyup(redrawUserList);
+    $.updates.registerProcessor('user_channel', 'notifications', AddNewNotification);
 
     loadNotifications();
 });
 
 
 function AddNewNotification(newNotification) {
-    console.info($('.username').html());
+    $('.notifications').html(parseInt($('.notifications').html())+1);
     var notif = buildNotification(newNotification.notifications)
-    var content = '<li class="notification">' + notif.author + notif.content + notif.date + '</li>';
+    var content = '<li class="notification">' + notif.author + notif.message + notif.date + '</li>';
     $('.notification_list').prepend(content)
 }
 
@@ -40,15 +34,18 @@ function buildNotification(notification) {
 function loadNotifications() {
     $.getJSON(URLS['notifications'], function (notifications) {
         var list = [];
-
+        var unread_counter = 0;
         $.each(notifications.objects, function (i, notification) {
-            var notif = buildNotification(notification)
-            list.unshift('<li class="notification">' + notif.author + notif.content + notif.date + '</li>');
+            if (notification.read == false) {
+                unread_counter += 1;
+            }
+            var notif = buildNotification(notification);
+            list.unshift('<li class="notification">' + notif.author + notif.message + notif.date + '</li>');
         })
 
         var content = '<ul class="notification_list">' + list.join('') + '</ul>';
         $('#notif_content').html(content);
-        console.log('loadNoti');
+        $('.notifications').html(unread_counter);
     });
 }
 
@@ -61,27 +58,10 @@ function formatDate(time) {
     return date;
 }
 
-function addPost(message) {
-    $.ajax({
-        type: 'POST',
-        url: '/api/v1/post/',
-        data: JSON.stringify({'message': message, 'is_published': true}),
-        contentType: 'application/json',
-        dataType: "json",
-        success: function () {
-            alert("Post napisan.");
-        },
-        error: function (error) {
-            console.log(error);
-            alert("Oops, something went wrong... ");
-        }
-    });
-}
-
 function addComment(comment) {
     $.ajax({
         type: 'POST',
-        url: '/api/v1/post/5049d3ff6c20b1717739aac9/comments/',
+        url: '/api/v1/post/504da96e6c20b1163738747f/comments/',
         data: JSON.stringify({'message': comment}),
         contentType: 'application/json',
         dataType: "json",

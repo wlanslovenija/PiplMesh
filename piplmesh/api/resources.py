@@ -37,9 +37,7 @@ class CommentResource(AuthoredResource):
             if subscriber != bundle.obj.author:
                 # add notification to db
                 notification = api_models.Notification.objects.create(recipient=subscriber, post=self.instance, comment=bundle.obj.pk)
-                signals.notification_created.send(sender=self, notification=notification, request=request or bundle.request)
-
-                #notification = api_models.Notification.add_notification(subscriber, self.instance, bundle.obj.pk)
+                # signals.notification_created.send(sender=self, notification=notification, request=request or bundle.request, bundle=bundle)
 
         if bundle.obj.author not in self.instance.subscribers:
             self.instance.subscribers.append(bundle.obj.author)
@@ -52,12 +50,6 @@ class CommentResource(AuthoredResource):
         # TODO: Make proper authorization, current implementation is for development use only
         authorization = tastypie_authorization.Authorization()
 
-class NotificationAuthorization(tastypie_authorization.Authorization):
-    def apply_limits(self, request, object_list):
-        if request:
-            object_list = object_list.filter(recipient=request.user)
-        return object_list
-
 class NotificationResource(resources.MongoEngineResource):
     content = tastypie_fields.CharField(attribute='content', default='', null=False, blank=True)
 
@@ -66,15 +58,9 @@ class NotificationResource(resources.MongoEngineResource):
         bundle.data['content'] = bundle.obj.post.comments[bundle.obj.comment].message
         return bundle
 
-    def obj_create(self, bundle, request=None, **kwargs):
-        bundle = super(NotificationResource, self).obj_create(bundle, request=request, **kwargs)
-        print "Res: :)"
-        # signals.notification_created.send(sender=self, notification=bundle.obj, request=request or bundle.request)
-        return bundle
-
     class Meta:
         queryset = api_models.Notification.objects.all()
-        authorization = NotificationAuthorization()
+        authorization = authorization.NotificationAuthorization()
 
 class ImageAttachmentResource(AuthoredResource):
     image_file = fields.ReferenceField(to='piplmesh.api.resources.UploadedFileResource', attribute='image_file', null=False, full=True)

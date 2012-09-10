@@ -9,3 +9,9 @@ class PostAuthorization(tastypie_authorization.Authorization):
             object_list = object_list.filter(is_published=True)
 
         return object_list
+
+class NotificationAuthorization(tastypie_authorization.Authorization):
+    def apply_limits(self, request, object_list):
+        if request:
+            object_list = object_list.filter(recipient=request.user)
+        return object_list

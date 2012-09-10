@@ -8,11 +8,13 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core import mail
 from django.db import models
 from django.test import client
-from django.utils import timezone
+from django.utils import crypto, timezone
 from django.utils.translation import ugettext_lazy as _
 
 import mongoengine
 from mongoengine.django import auth
+
+import uuid
 
 from . import fields, signals, utils
 from .. import panels
@@ -28,7 +30,7 @@ def lower_birthdate_limit():
     return timezone.now().date() - datetime.timedelta(LOWER_DATE_LIMIT)
 
 def generate_channel_id():
-    return os.urandom(16).encode('hex')
+    return uuid.uuid1()
 
 class Connection(mongoengine.EmbeddedDocument):
     http_if_none_match = mongoengine.StringField()
@@ -160,7 +162,7 @@ class User(auth.User):
             return staticfiles_storage.url(settings.DEFAULT_USER_IMAGE)
 
     def get_user_channel(self):
-        return "user_%s" % self.channel_id
+        return "user/%s" % self.channel_id
  
     @classmethod
     def create_user(cls, username, email=None, password=None):
