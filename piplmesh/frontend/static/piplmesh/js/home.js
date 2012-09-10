@@ -157,23 +157,23 @@ function Post(data) {
         var run_link = $('<a/>').addClass('hand').append(gettext("Run"));
         var run = $('<li/>').addClass('run').append(run_link);
 
-        for(var i = 0; i<self.hugs.length; i++){
-            if(username == self.hugs[i]){
+        $.each(self.hugs, function (index, value){
+            if(user.username == value){
                 hug_link.data('selected', true);
                 hug_link.css('font-weight', 'bold').text(gettext("Unhug"));
             }
-        }
+        });
 
-        for(var i = 0; i<self.runs.length; i++){
-            if(username == self.runs[i]){
+        $.each(self.runs, function (index, value){
+            if(user.username == value){
                 run_link.data('selected', true);
                 run_link.css('font-weight', 'bold').text(gettext("Unrun"));
             }
-        }
+        });
 
-        hug_link.click(function () {
+        hug_link.click(function (event) {
             var selected = hug_link.data('selected');
-            if (selected == undefined || selected == false) {
+            if (!selected) {
                 $.post(URLS.hug_run, {
                     'type': 'hug',
                     'id': post.data('post').id
@@ -183,8 +183,8 @@ function Post(data) {
                     run_link.data('selected', false);
                     run_link.css('font-weight', 'normal').text(gettext("Run"));
                 });
-
-            } else {
+            }
+            else {
                 $.post(URLS.hug_run, {
                     'type': 'unhug',
                     'id': post.data('post').id
@@ -196,9 +196,9 @@ function Post(data) {
                 });
             }
         });
-        run_link.click(function () {
+        run_link.click(function (event) {
             var selected = run_link.data('selected');
-            if (selected == undefined || selected == false) {
+            if (!selected) {
                 $.post(URLS.hug_run, {
                     'type': 'run',
                     'id': post.data('post').id
@@ -208,8 +208,8 @@ function Post(data) {
                     hug_link.data('selected', false);
                     hug_link.css('font-weight', 'normal').text(gettext("Hug"));
                 });
-
-            } else {
+            }
+            else {
                 $.post(URLS.hug_run, {
                     'type': 'unrun',
                     'id': post.data('post').id
@@ -225,47 +225,42 @@ function Post(data) {
         var post_options = $('<ul />').addClass('options').append(delete_link).append(hug).append(run);
 
         var huggers = $('<ul/>');
-        if (self.hugs.length < 1) {
+        if (!self.hugs) {
             huggers.append(
                 $('<li/>').addClass('first').text(gettext("No huggers"))
             );
         } else {
             huggers.append(
-                $('<li/>').addClass('first').text(gettext("Huggers")+":")
+                $('<li/>').addClass('first').text(gettext("Huggers:"))
             );
-            for (var hugger in self.hugs){
-                huggers.append($('<li/>').text(self.hugs[hugger]));
-            }
+            $.each(self.hugs, function (index, value){
+                huggers.append($('<li/>').text(value));
+            });
         }
 
         var runners = $('<ul/>');
-        if (self.runs.length < 1) {
+        if (!self.runs) {
             runners.append(
                 $('<li/>').addClass('first').text(gettext("No runners"))
             );
         } else {
             runners.append(
-                $('<li/>').addClass('first').text(gettext("Runners")+":")
+                $('<li/>').addClass('first').text(gettext("Runners:"))
             );
-            for(var i = 0; i<self.runs.length; i++){
-                runners.append($('<li/>').text(self.runs[i]));
-            }
+            $.each(self.runs, function (index, value){
+                runners.append($('<li/>').text(value));
+            });
         }
 
         hugs_runs = $('<div/>').addClass('hugs_runs').text(gettext("Hugs") + ": " + self.hugs.length + " "
             + gettext("Runs") + ": " + self.runs.length)
-            .append(
-            $('<div/>').addClass('hugs_runs_display').append(
-                huggers
-            ).append(
-                runners
-            )
+            .append($('<div/>').addClass('hugs_runs_display').append(huggers).append(runners)
         );
 
-        hugs_runs.hover(function () {
+        hugs_runs.hover(function (event) {
                 $('.hugs_runs_display', this).show();
             },
-            function () {
+            function (event) {
                 $('.hugs_runs_display', this).hide();
             });
 
@@ -324,6 +319,10 @@ $(document).ready(function () {
 
     $.updates.registerProcessor('home_channel', 'post_new', function (data) {
         new Post(data.post).addToTop();
+    });
+    $.updates.registerProcessor('home_channel', 'post_update', function (data) {
+        var post = new Post(data.post);
+        alert("dela?");
     });
 
     $('.panel .header').click(function (event) {

@@ -22,7 +22,8 @@
             'hug_run': '{% filter escapejs %}{% url "hug_run" %}{% endfilter %}'
         };
 
-        var username = '{% filter escapejs %}{{ request.user.username }}{% endfilter %}';
+        var user = new Object();
+        user.username = '{% filter escapejs %}{{ request.user.username }}{% endfilter %}';
         /* ]]> */
     </script>
 {% endblock %}
