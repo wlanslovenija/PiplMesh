@@ -8,19 +8,20 @@
         {% for station in stations %}
             <dl>
                 <dt><span class="station_name">{{ station.name }}</span></dt>
-                <dd>
-                    <ul>
-                        <li><span class="station_availability">{% blocktrans %}<b>{{ station.available }}</b> available bikes{% endblocktrans %}</span></li>
-                        <li><span class="station_free">{% blocktrans %}<b>{{ station.free }}</b> free places %}{% endblocktrans %}</span></li>
-                    </ul>
-                </dd>
+                {% if not station.very_old_data %}
+                    <dd>
+                        <ul>
+                            {% if station.old_data %}
+                                <span class="bicikelj_error">{% trans "WARNING: stale data" %}</span>
+                            {% endif %}
+                            <li><span class="station_availability">{% blocktrans with available=station.available %}<b>{{ available }}</b> available bikes{% endblocktrans %}</span></li>
+                            <li><span class="station_free">{% blocktrans with free=station.free %}<b>{{ free }}</b> free places{% endblocktrans %}</span></li>
+                        </ul>
+                    </dd>
+                {% endif %}
             </dl>
         {% empty %}
             <span class="bicikelj_error">{% trans "No Bicikelj stations nearby" %}</span>
         {% endfor %}
     </div>
-    <script type="text/javascript">
-        /* TODO
-    </script>
-
 {% endblock %}
