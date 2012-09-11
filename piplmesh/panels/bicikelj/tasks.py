@@ -13,4 +13,4 @@ def update_station_info():
             timestamp=station['timestamp'],
             defaults=station,
         )
-        # TODO: if created, send an update to server
+        # TODO: if created, send an update to server, otherwise update fetch_time
