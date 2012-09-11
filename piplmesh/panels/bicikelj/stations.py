@@ -25,7 +25,7 @@ def get_stations_nearby(latitude, longitude):
     stations_nearby_all = models.BicikeljStation.objects(
                 location__near=(latitude, longitude),
                 location__within_box=((latitude-BICIKELJ_BOUNDS_LATITUDE,longitude-BICIKELJ_BOUNDS_LONGITUDE),(latitude+BICIKELJ_BOUNDS_LATITUDE,longitude+BICIKELJ_BOUNDS_LONGITUDE)),
-                fetch_time__gt=datetime.now() - timedelta(seconds=12*settings.POLL_BICIKELJ_INTERVAL),
+                fetch_time__gt=datetime.now() - timedelta(seconds=10*settings.POLL_BICIKELJ_INTERVAL),
     )
     n = stations_nearby_all[0].station_id
     station_idx = []
@@ -37,7 +37,7 @@ def get_stations_nearby(latitude, longitude):
     stations_nearby = [stations_nearby_all[i] for i in station_idx]
     for station in stations_nearby:
         station.old_data = station.fetch_time < UTC.localize(datetime.now() - timedelta(seconds=2*settings.POLL_BICIKELJ_INTERVAL))
-        station.very_old_data = station.fetch_time < UTC.localize(datetime.now() - timedelta(seconds=10*settings.POLL_BICIKELJ_INTERVAL))
+    # TODO: check if some stations nearby have data older than 10 minutes. Then display just their names, without current information
     return stations_nearby
 
 def fetch_data():
