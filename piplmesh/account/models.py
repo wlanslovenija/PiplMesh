@@ -16,7 +16,7 @@ from mongoengine.django import auth
 
 import uuid
 
-from . import fields, signals, utils
+from . import fields, utils
 from .. import panels
 
 LOWER_DATE_LIMIT = 366 * 120
@@ -30,7 +30,7 @@ def lower_birthdate_limit():
     return timezone.now().date() - datetime.timedelta(LOWER_DATE_LIMIT)
 
 def generate_channel_id():
-    return uuid.uuid1()
+    return uuid.uuid4()
 
 class Connection(mongoengine.EmbeddedDocument):
     http_if_none_match = mongoengine.StringField()

@@ -4,7 +4,7 @@ from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
 
 from tastypie import api
 
-from piplmesh.account import models, views as account_views, signals
+from piplmesh.account import models, views as account_views
 from piplmesh.api import resources
 from piplmesh.frontend import debug as debug_views, views as frontend_views
 from piplmesh import panels

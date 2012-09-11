@@ -156,10 +156,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'piplmesh.account.middleware.LazyUserMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     'piplmesh.account.middleware.UserBasedLocaleMiddleware',
     'piplmesh.frontend.middleware.NodesMiddleware',
 )

@@ -5,7 +5,7 @@ from django.utils import timezone
 import json
 import mongoengine
 
-from pushserver.utils import updates
+from pushserver import utils
 from piplmesh.account import models as account_models
 from . import base
 
@@ -77,7 +77,7 @@ class Notification(mongoengine.Document):
                        },
         }
         serialized = json.dumps(notif)
-        updates.send_update(document.recipient.get_user_channel(), serialized, True)
+        utils.updates.send_update(document.recipient.get_user_channel(), serialized, True)
 
 mongoengine.signals.post_save.connect(Notification.post_save, sender=Notification)
 
