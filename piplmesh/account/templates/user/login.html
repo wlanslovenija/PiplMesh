@@ -11,7 +11,7 @@
 
 {% block content %}
     <div class="login">
-        <h1 class="automatic-width">{% trans "Login" %}</h1>
+        <h1>{% trans "Login" %}</h1>
         <div class="login_form">
             {% with next|default:request_get_next|default:LOGIN_REDIRECT_URL as next %}
                 {% trans "Login" as form_submit %}

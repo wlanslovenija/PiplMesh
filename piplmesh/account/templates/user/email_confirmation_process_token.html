@@ -6,7 +6,7 @@
 
 {% block content %}
     {% include "user/menu.html" %}
-    <div class="account" id="email_confirmation_process_token">
+    <div id="email_confirmation_process_token" class="account">
         <h1>{% trans "Confirm your e-mail address" %}</h1>
         <p>
             {% blocktrans with email=user.email %}You are just one step away from confirming your e-mail address. If for some reason the input box below is empty, paste the token in manually from the confirmation e-mail you have received.{% endblocktrans %}

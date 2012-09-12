@@ -16,7 +16,7 @@
         {% with form_submit=_("Submit") %}
             {% include "form/form.html" %}
         {% endwith %}
-        <div id="password_change" class="automatic-width">
+        <div id="password_change">
             <p><a href="{% url "password_change" %}">{% trans "Change your password" %}</a></p>
             {% if not user.email_confirmed and user.email %}
                 <p><a href="{% url "email_confirmation_send_token" %}">{% trans "Please confirm your e-mail address" %}</a></p>

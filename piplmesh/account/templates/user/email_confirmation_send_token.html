@@ -6,7 +6,7 @@
 
 {% block content %}
     {% include "user/menu.html" %}
-    <div class="account" id="email_confirmation">
+    <div id="email_confirmation" class="account">
         <h1>{% trans "E-mail address confirmation" %}</h1>
         <p>
             {% blocktrans with email=user.email %}Clicking the button below will send a confirmation mail to {{ email }}.{% endblocktrans %}

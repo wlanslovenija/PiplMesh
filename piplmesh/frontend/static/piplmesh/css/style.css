@@ -88,9 +88,13 @@ form input[type="submit"], form input[type="reset"] {
 
 .form_fields .field label.main {
     float: left;
+    min-width: 75px;
     padding-right: 25px;
-    min-width: 100px;
     text-align: right;
+}
+
+.align_to_label_width {
+    padding-left: 25px;
 }
 
 .input_invalid {
@@ -146,11 +150,6 @@ input.gsc-search-button:hover,
 }
 
 /* Styles common to different forms and form elements */
-.automatic-width {
-    margin-left: 100px;
-    padding-left: 25px;
-}
-
 .form_fields .field,
 .buttons {
     margin-bottom: 1.5em;
@@ -431,14 +430,6 @@ button.browserid-signin:hover {
 }
 
 /* --------------------- LOGIN ------------------------ */
-.login {
-    width: 640px;
-}
-
-.registration {
-    width: 450px;
-}
-
 #other_login_options p {
     margin-top: 0;
 }
