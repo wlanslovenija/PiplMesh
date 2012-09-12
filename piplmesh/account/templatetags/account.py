@@ -11,11 +11,8 @@ def user_image(context, user=None):
         'user_image_url': user.get_image_url(),
     }
 
-@register.simple_tag
-def active(request, url_name):
-    from django.core.urlresolvers import resolve 
-    startswith = request.path.startswith('/'+url_name)
-    resolved_name = resolve(request.path).url_name
-    if startswith or url_name == resolved_name:
-        return 'current_item'
-    return ''
+@register.filter(name='is_active')
+def is_active(current_path, url_path):
+    if current_path.startswith(url_path):
+        return True
+    return False
