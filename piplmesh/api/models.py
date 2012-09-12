@@ -2,7 +2,6 @@ from __future__ import absolute_import
 
 from django.utils import timezone
 
-import json
 import mongoengine
 
 from pushserver import utils
@@ -59,27 +58,6 @@ class Notification(mongoengine.Document):
 
     # TODO: This is probably not the best approach.
     comment = mongoengine.IntField()
-
-    @classmethod
-    def post_save(cls, sender, document, **kwargs):
-        """
-        Sends update to push server when a new notification is created.
-        """
-
-        notif = {'type': 'notifications',
-            'notifications': {'author' : str(document.post.comments[int(document.comment)].author),
-                            'recipient': str(document.recipient.username),
-                            'comment': str(int(document.comment)),
-                            'created_time': str(document.created_time.isoformat()),
-                            'content': str(document.post.comments[int(document.comment)].message),
-                            'post': str(document.post.id),
-                            'read': str(document.read),
-                       },
-        }
-        serialized = json.dumps(notif)
-        utils.updates.send_update(document.recipient.get_user_channel(), serialized, True)
-
-mongoengine.signals.post_save.connect(Notification.post_save, sender=Notification)
 
 class UploadedFile(base.AuthoredDocument):
     """

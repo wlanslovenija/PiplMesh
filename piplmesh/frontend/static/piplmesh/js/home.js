@@ -235,7 +235,7 @@ function loadNotifications() {
 function addComment(comment) {
     $.ajax({
         type: 'POST',
-        url: '/api/v1/post/504da96e6c20b1163738747f/comments/',
+        url: '/api/v1/post/5050512b6c20b1028c45cf86/scomments/',
         data: JSON.stringify({'message': comment}),
         contentType: 'application/json',
         dataType: "json",
