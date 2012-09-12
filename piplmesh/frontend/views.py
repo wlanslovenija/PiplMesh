@@ -14,6 +14,7 @@ from tastypie import http as tastypie_http
 from mongogeneric import detail
 
 from pushserver.utils import updates
+from tastypie.utils import formatting
 
 from piplmesh.account import models as account_models
 from piplmesh.api import models as api_models, resources, signals
@@ -43,7 +44,7 @@ class ContactView(generic_views.FormView):
     
     User is redirected back to the contact page.
     """
-    
+
     template_name = 'contact.html'
     success_url = urlresolvers.reverse_lazy('contact')
     form_class = forms.ContactForm
@@ -121,6 +122,35 @@ def send_update_on_new_post(sender, post, request, bundle, **kwargs):
 
         updates.send_update(HOME_CHANNEL_ID, serialized, True)
 
+@dispatch.receiver(signals.post_updated)
+def send_update_on_updated_post(sender, post, request, bundle, **kwargs):
+    """
+    Sends update to push server when a post is updated.
+    """
+    if post.is_published:
+        hugs = []
+        for hug in post.hugs:
+            hugs.append(hug.username)
+        runs = []
+        for run in post.runs:
+            runs.append(run.username)
+        update = {
+            'type': 'post_update',
+            'post': {
+                'id': post.id.__str__(),
+                'author': {
+                    'username': post.author.username,
+                },
+                'message': post.message,
+                'hugs': hugs,
+                'runs': runs,
+                'updated_time': formatting.rfc2822_date(post.updated_time),
+                'created_time': formatting.rfc2822_date(post.created_time),
+            }
+        }
+
+        updates.send_update(HOME_CHANNEL_ID, update, False)
+
 def panels_collapse(request):
     if request.method == 'POST':
         request.user.panels_collapsed[request.POST['name']] = True if request.POST['collapsed'] == 'true' else False
@@ -179,6 +209,6 @@ def hug_run(request):
             post.save()
         else:
             return http.HttpResponseBadRequest()
-        # TODO trigger signal to resend updated post
+        signals.post_updated.send(sender=None, post=post, request=request, bundle=None)
         return http.HttpResponse()
     return http.HttpResponseBadRequest()

@@ -281,6 +281,17 @@ function Post(data) {
     self.updateDate = function (dom_element) {
         $(dom_element).find('.date').text(formatDiffTime(self.created_time));
     }
+
+    self.updatePost = function () {
+        if (checkIfPostExists()){
+            $('.post').filter(function () {
+                return $(this).data('post') && $(this).data('post').id == self.id;
+            }).replaceWith(generateHtml());
+        }
+        else {
+            generateHtml(data).prependTo($('.posts')).hide().slideToggle('slow');
+        }
+    }
 }
 
 function showLastPosts(offset) {
@@ -302,7 +313,7 @@ $(document).ready(function () {
     });
     $.updates.registerProcessor('home_channel', 'post_update', function (data) {
         var post = new Post(data.post);
-        alert("dela?");
+        post.updatePost();
     });
 
     $('.panel .header').click(function (event) {

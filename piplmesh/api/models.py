@@ -35,8 +35,8 @@ class Post(base.AuthoredDocument):
     comments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Comment), default=lambda: [], required=False)
     attachments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Attachment), default=lambda: [], required=False)
 
-    hugs = mongoengine.ListField(mongoengine.ReferenceField(account_models.User, default=lambda: [], required=False))
-    runs = mongoengine.ListField(mongoengine.ReferenceField(account_models.User, default=lambda: [], required=False))
+    hugs = mongoengine.ListField(mongoengine.ReferenceField(account_models.User), default=lambda: [], required=False)
+    runs = mongoengine.ListField(mongoengine.ReferenceField(account_models.User), default=lambda: [], required=False)
 
     # TODO: Prevent posting comments if post is not published
     # TODO: Prevent adding attachments if post is published
