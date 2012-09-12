@@ -285,7 +285,8 @@ function Post(data) {
     self.updatePost = function () {
         if (checkIfPostExists()){
             $('.post').filter(function () {
-                return $(this).data('post') && $(this).data('post').id == self.id;
+                return $(this).data('post') && $(this).data('post').id == self.id
+                    && $(this).data('post').updated_time < self.updated_time;
             }).replaceWith(generateHtml());
         }
         else {
