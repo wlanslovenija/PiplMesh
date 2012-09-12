@@ -1,1 +1,1 @@
-/* TODO: attach DOM elements to stations and deal with pushed updates
+/* TODO: update displayed data from pushed updates */
