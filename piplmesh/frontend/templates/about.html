@@ -5,8 +5,8 @@
 {% block title %}{% trans "About" %}{% endblock %}
 
 {% block js %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-    <script src="{% static "piplmesh/jquery/jquery-about.js" %}" type="text/javascript"></script>
+    {{ block.super }}
+    <script src="{% static "piplmesh/js/about.js" %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block content %}
@@ -15,6 +15,6 @@
     <p>{% blocktrans %}You can read more about the project on <a class="ext-link" href="http://dev.wlan-si.net/wiki/PiplMesh/">development pages</a> at <em>wlan slovenija</em> website.{% endblocktrans %}</p>
     <p>{% blocktrans %}For development <a class="ext-link" href="https://github.com/wlanslovenija/PiplMesh">GitHub</a> is used. If you have found a bug or have any other technical issue with the site, please use GitHub to <a class="ext-link" href="https://github.com/wlanslovenija/PiplMesh/issues/new">report it</a>. Source code and <a href="https://github.com/wlanslovenija/PiplMesh/issues?state=open">known issues</a> are found there. A <a class="ext-link" href="https://github.com/wlanslovenija/PiplMesh/stargazers/">list of contributors</a> is also avaible as GitHub profiles list.{% endblocktrans %}</p>
     <p>{% blocktrans %}All work is done voluntarily, so you are very welcome to help us make it even better.{% endblocktrans %}</p>
-    <p id="contributors_list">{% trans "List of contributors:" %}</p> 
+    <h2>{% trans "List of contributors:" %}</h2> 
     <div class="contributors"></div>
 {% endblock %}

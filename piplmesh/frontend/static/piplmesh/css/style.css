@@ -711,16 +711,13 @@ button.browserid-signin:hover {
 
 /* ------------------ ABOUT ---------------------------- */
 .contributors img {
-    width: 50px;  
+    width: 50px;
+    height: 50px;
 }
 
-.contributors span {  
+.contributors span {
     display: block;
     margin-left: 50px;
-}
-
-#contributors_list {
-    font-weight: bold;
 }
 
 /* ------------------ DROP-DOWN LOGIN ---------------------------- */
