@@ -1,1 +1,1 @@
-/* TODO: update displayed data from pushed updates */
+/* TODO: Update displayed data with pushed updates */
