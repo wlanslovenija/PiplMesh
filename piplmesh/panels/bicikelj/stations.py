@@ -36,7 +36,11 @@ def get_stations_nearby(latitude, longitude):
             newest_station.old_data = newest_station.fetch_time < timezone.now() - datetime.timedelta(seconds=2 * settings.POLL_BICIKELJ_INTERVAL)
             yield newest_station
             newest_station = station
-        elif station.fetch_time > newest_station.fetch_time:
+        # timestamp changes even if there is no change in stands availability and even if there is a change
+        # in stands availability, it happens that timestamp does not change, so we use also fetch time
+        elif station.timestamp > newest_station.timestamp:
+            newest_station = station
+        elif station.timestamp == newest_station.timestamp and station.fetch_time > newest_station.fetch_time:
             newest_station = station
     newest_station.old_data = newest_station.fetch_time < timezone.now() - datetime.timedelta(seconds=2 * settings.POLL_BICIKELJ_INTERVAL)
     yield newest_station
@@ -47,7 +51,6 @@ def fetch_data():
         info_tree = objectify.parse(urllib2.urlopen(BICIKELJ_INFO_URL % int(node.attrib['number']))).getroot()
         yield {
             'station_id': int(node.attrib['number']),
-            'timestamp': datetime.datetime.fromtimestamp(int(info_tree.updated)),
             'name': node.attrib['name'],
             'address': node.attrib['address'],
             'location': (float(node.attrib['lat']), float(node.attrib['lng'])),
@@ -55,5 +58,4 @@ def fetch_data():
             'free': int(info_tree.free),
             'total': int(info_tree.total),
             'open': bool(info_tree.open),
-            'fetch_time': timezone.now(),
-        }
+        }, datetime.datetime.utcfromtimestamp(int(info_tree.updated)), timezone.now()
