@@ -715,9 +715,9 @@ button.browserid-signin:hover {
     height: 50px;
 }
 
-.contributors span {
-    display: block;
-    margin-left: 50px;
+.contributors ul {
+    list-style: none;
+    margin-left: 10px;
 }
 
 /* ------------------ DROP-DOWN LOGIN ---------------------------- */

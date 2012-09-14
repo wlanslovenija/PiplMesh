@@ -1,18 +1,19 @@
-$(document).ready(function() {
-    $.getJSON("https://api.github.com/repos/wlanslovenija/PiplMesh/contributors", "PiplMesh", function(data){
-        $.each(data, function(i,element){
-            var contributors = $('<span>').append(
-                $('<img/>').attr({
-                    src: element.avatar_url,
-                    alt: 'github ' + element.login + ' picture'
+$(document).ready(function () {
+    $.getJSON('https://api.github.com/repos/wlanslovenija/PiplMesh/contributors', function(data) { 
+        var contributors = $('<ul/>');
+        $.each(data, function(i, contributor){
+            var contributor = $('<li/>').append(
+                $('<img/>').prop({
+                    'src': contributor.avatar_url,
+                    'alt': gettext("contributor github picture")
                 })
             ).append(
-                $('<a/>').attr({
-                href: 'https://github.com/' + element.login                    
-                }).append(element.login)
+                $('<a/>').prop({
+                    'href': 'https://github.com/' + contributor.login                    
+                }).append(contributor.login)
             );
-            $('.contributors').append(contributors);
+            contributors.append(contributor);
         });
-	    
+        $('.contributors').append(contributors);
 	}); 
 });
