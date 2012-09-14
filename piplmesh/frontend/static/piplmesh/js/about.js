@@ -15,5 +15,5 @@ $(document).ready(function () {
             contributors.append(contributor);
         });
         $('.contributors').append(contributors);
-	}); 
+    }); 
 });
