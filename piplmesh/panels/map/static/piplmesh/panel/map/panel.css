@@ -11,8 +11,8 @@
     top: 100px;
     cursor: pointer;
     height: 100px;
-    width: 49px;
-    z-index: 60000000;
+    width: 39px;
+    z-index: 300020;
 }
 #map {
     height: 100%;
@@ -51,14 +51,21 @@
     padding: 0px;
     border: none;
 }
-.close {
-    background-image: url(http://jquerytools.org/media/img/overlay/close.png);
-    position: absolute;
-    right: -22px;
-    top: -22px;
+#closeButton{
+    position: fixed;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    outline: none;
+    background: none;
+    float: none;
+    clear: none;
+    z-index: 300040;
+    right: 0px;
+    top: 0px;
+    height: 60px;
+    width: 62px;
     cursor: pointer;
-    height: 35px;
-    width: 35px;
 }
 .centered {
     margin-right: auto;
@@ -86,5 +93,4 @@
     clear: none;
     display: block;
     background-color: black;
-    opacity:0.4;
 }

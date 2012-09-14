@@ -9,7 +9,8 @@
 {% addtoblock "js" %}
 <script type="text/javascript">
 /* <![CDATA[ */
-var imageUrl = "{% static "piplmesh/panel/map/images/close.png" %}";
+var imageCloseUrl = "url("+"{% static "piplmesh/panel/map/images/close.png" %}"+")";
+var imageExtendUrl = "url("+"{% static "piplmesh/panel/map/images/extend.png" %}"+")";
 var node = {
     'name': '{{ request.node.name|escapejs }}',
     'latitude': '{{ request.node.latitude|escapejs }}',
@@ -21,10 +22,7 @@ var node = {
 </script>
 {% endaddtoblock %}
 <div id="basic-map" class="small">
-    <div id="basic-map-extend-img">
-        <img src="{% static "piplmesh/panel/map/images/extend.png" %}"> </img>
-    </div>
-
+    <div id="basic-map-extend-img"></div>
     <div id="map-info"></div>
     <div id="map"></div>
 </div>
