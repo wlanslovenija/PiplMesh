@@ -186,7 +186,8 @@ INSTALLED_APPS = (
     'piplmesh.utils',
     'piplmesh.panels',
     'piplmesh.panels.horoscope', # To load manage.py command
-
+    'piplmesh.panels.weather',
+    
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
@@ -228,6 +229,7 @@ PUSH_SERVER = {
 
 CHECK_ONLINE_USERS_INTERVAL = 10 # seconds
 CHECK_FOR_NEW_HOROSCOPE = 6 # am every day
+CHECK_FOR_NEW_WEATHER = 30 # minutes
 POLL_BICIKELJ_INTERVAL = 60 # seconds
 
 CELERY_RESULT_BACKEND = 'mongodb'
@@ -249,6 +251,11 @@ CELERYBEAT_SCHEDULE = {
     'update_horoscope': {
         'task': 'piplmesh.panels.horoscope.tasks.update_horoscope',
         'schedule': crontab(hour=CHECK_FOR_NEW_HOROSCOPE),
+        'args': (),
+    },
+    'update_weather': {
+        'task': 'piplmesh.panels.weather.tasks.update_weather',
+        'schedule': datetime.timedelta(minutes=CHECK_FOR_NEW_WEATHER),
         'args': (),
     },
     'update_station_info': {

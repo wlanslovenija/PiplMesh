@@ -1,0 +1,27 @@
+{% extends "panel/panel.html" %}
+
+{% load i18n static sekizai_tags %}
+
+{% block content %}
+    {% addtoblock "css" %}<link href="{% static "piplmesh/panel/weather/panel.css" %}" rel="stylesheet" type="text/css" media="screen" />{% endaddtoblock %}
+    {% if error_data or error_obsolete %}
+        <span class="error">{% trans "Weather data is temporarily unavailable." %}</span>
+    {% else %}
+        <ul id="weather">
+            <li>
+                <ul>
+                    {% for weather in weather_objects %}
+                        <li>
+                            <span>{{ weather.at|date:"DATE_FORMAT" }}</span>
+                            {{ weather.temperature }}°C
+                            <img src="http://api.yr.no/weatherapi/weathericon/1.0/?symbol={{ weather.symbol }};content_type=image/png" alt="weather icon" />
+                        </li> 
+                    {% endfor %}
+                </ul>
+            </li>
+            <li>
+                <p>{% blocktrans with date=created %}Forcast created on: {{ date }}{% endblocktrans %}</p>
+            </li>
+        </ul>
+    {% endif %}
+{% endblock %}
