@@ -709,6 +709,17 @@ button.browserid-signin:hover {
     margin-left: 100px;
 }
 
+/* ------------------ ABOUT ---------------------------- */
+.contributors img {
+    width: 50px;
+    height: 50px;
+}
+
+.contributors ul {
+    list-style: none;
+    margin-left: 10px;
+}
+
 /* ------------------ DROP-DOWN LOGIN ---------------------------- */
 .drop_down_login_container {
     position: relative;

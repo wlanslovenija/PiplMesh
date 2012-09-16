@@ -228,6 +228,7 @@ PUSH_SERVER = {
 
 CHECK_ONLINE_USERS_INTERVAL = 10 # seconds
 CHECK_FOR_NEW_HOROSCOPE = 6 # am every day
+POLL_BICIKELJ_INTERVAL = 60 # seconds
 
 CELERY_RESULT_BACKEND = 'mongodb'
 CELERY_MONGODB_BACKEND_SETTINGS = {
@@ -248,6 +249,11 @@ CELERYBEAT_SCHEDULE = {
     'update_horoscope': {
         'task': 'piplmesh.panels.horoscope.tasks.update_horoscope',
         'schedule': crontab(hour=CHECK_FOR_NEW_HOROSCOPE),
+        'args': (),
+    },
+    'update_station_info': {
+        'task': 'piplmesh.panels.bicikelj.tasks.update_station_info',
+        'schedule': datetime.timedelta(seconds=POLL_BICIKELJ_INTERVAL),
         'args': (),
     },
 }
