@@ -295,7 +295,7 @@ AUTHENTICATION_BACKENDS = (
     'piplmesh.account.backends.LazyUserBackend',
 )
 
-TEST_RUNNER = 'piplmesh.test_runner.MongoEngineTestSuiteRunner'
+TEST_RUNNER = 'tastypie_mongoengine.test_runner.MongoEngineTestSuiteRunner'
 TEST_RUNNER_FILTER = (
     'piplmesh.',
 )
