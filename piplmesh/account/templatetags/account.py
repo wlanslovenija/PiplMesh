@@ -11,7 +11,7 @@ def user_image(context, user=None):
         'user_image_url': user.get_image_url(),
     }
 
-@register.filter(name='is_active')
+@register.filter()
 def is_active(current_path, url_path):
     if current_path.startswith(url_path):
         return True
