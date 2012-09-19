@@ -197,57 +197,76 @@ function showLastPosts(offset) {
     });
 }
 
-function AddNewNotification(newNotification) {
-    $('.notifications').html(parseInt($('.notifications').html())+1);
-    var notif = buildNotification(newNotification.notifications)
-    var content = '<li class="notification">' + notif.author + notif.message + notif.date + '</li>';
-    $('.notification_list').prepend(content)
+function addNewNotification(newNotification) {
+    var notification_counter = parseInt($('#notifications_count').text()) + 1;
+    $('#notifications_count').html(notification_counter);
+    $('.notification_list').prepend(buildNotification(newNotification.notification));
 }
 
 function buildNotification(notification) {
-    var new_notif = {};
-    var author = gettext("commented on");
-    var post = gettext("post");
-    new_notif.author = notification.author + ' ' + author + ' <a href="#" >' + post + '</a>.<br />';
-    new_notif.message = '<span class="notification_message">' + notification.content + '</span><br />';
-    new_notif.date = formatDiffTime(notification.created_time);
-    return new_notif;
+    var format = gettext("%(author)s commented on post.");
+    var author = interpolate(format, {'author': notification.author}, true);
+
+    var new_notification = $('<li/>').addClass('notification').append(
+        $('<span/>').addClass('notification_element').text(author)
+    ).append(
+        $('<span/>').addClass('notification_message').addClass('notification_element').text(notification.content)
+    ).append(
+        $('<span/>').addClass('notification_element').addClass('notification_created_time').text(formatDiffTime(notification.created_time))
+    );
+    new_notification.data('data', notification);
+
+    return new_notification;
+}
+
+function updateNotificationDate(element) {
+    $(element).find('.notification_created_time').text(formatDiffTime(element.data('data').created_time));
 }
 
 function loadNotifications() {
-    $.getJSON(URLS['notifications'], function (notifications) {
-        var list = [];
+    $.getJSON(URLS['notifications'], function (notifications, textStatus, jqXHR) {
         var unread_counter = 0;
+
+        var content = $('<ul/>').addClass('notification_list');
+
         $.each(notifications.objects, function (i, notification) {
             if (notification.read == false) {
                 unread_counter += 1;
             }
-            var notif = buildNotification(notification);
-            list.unshift('<li class="notification">' + notif.author + notif.message + notif.date + '</li>');
+            content.prepend(buildNotification(notification));
         })
 
-        var content = '<ul class="notification_list">' + list.join('') + '</ul>';
-        $('#notif_content').html(content);
-        $('.notifications').html(unread_counter);
+        $('#notifications_content').html(content);
+        $('#notifications_count').html(unread_counter);
     });
 }
 
 function addComment(comment) {
     $.ajax({
         type: 'POST',
-        url: '/api/v1/post/5050512b6c20b1028c45cf86/scomments/',
+        url: '/api/v1/post/5050512b6c20b1028c45cf86/comments/',
         data: JSON.stringify({'message': comment}),
         contentType: 'application/json',
-        dataType: "json",
-        success: function () {
+        dataType: 'json',
+        success: function (data, textStatus, jqXHR) {
             alert("Komentar napisan.");
         },
-        error: function (error) {
-            console.log(error);
-            alert("Oops, something went wrong... ");
-        }
     });
 }
+
+function readNotification() {
+    $.ajax({
+        type: 'PUT',
+        url: '/api/v1/notification/5059d2376c20b16665eeb7de/',
+        data: JSON.stringify({'read': true, 'recipient':'test'}),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (data, textStatus, jqXHR) {
+            alert("Notification prebran.");
+        },
+    });
+}
+
 
 $(document).ready(function () {
     initializePanels();
@@ -269,17 +288,20 @@ $(document).ready(function () {
     });
 
     // Notifications
-    $('.notifications').click(function (){
-        $('#notif_box').slideToggle('fast');
+    $('#notifications_count').click(function () {
+        $('#notifications_box').slideToggle('fast');
     });
-    $(".close_notif_box").click(function (){
-        $('#notif_box').slideToggle('fast');
+    $('.close_notifications_box').click(function () {
+        $('#notifications_box').slideToggle('fast');
     });
-    $('#addCom').click(function (){
+    $('#add_comment').click(function () {
         addComment("HAHAHAH dela");
     });
+    $('#read_notif').click(function () {
+        readNotification();
+    });
 
-    $.updates.registerProcessor('user_channel', 'notifications', AddNewNotification);
+    $.updates.registerProcessor('user_channel', 'notification', addNewNotification);
 
     loadNotifications();
 
@@ -349,6 +371,9 @@ $(document).ready(function () {
     setInterval(function () {
         $('.post').each(function (i, post) {
             $(post).data('post').updateDate(this);
+        });
+        $('.notification').each(function (i, notification) {
+            updateNotificationDate($(notification));
         });
     }, POSTS_DATE_UPDATE_INTERVAL);
 });

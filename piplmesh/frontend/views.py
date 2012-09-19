@@ -124,8 +124,8 @@ def send_update_on_new_notification(sender, notification, request, **kwargs):
     Sends update to push server when a new notification is created.
     """
     serialized = sender.serialize(None, {
-        'type': 'notifications',
-        'notifications': {'author' : notification.post.comments[int(notification.comment)].author,
+        'type': 'notification',
+        'notification': {'author' : notification.post.comments[int(notification.comment)].author,
                         'recipient': notification.recipient.username,
                         'comment': int(notification.comment),
                         'created_time': notification.created_time.isoformat(),

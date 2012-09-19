@@ -211,23 +211,27 @@ input.gsc-search-button:hover,
     white-space: nowrap;
 }
 
-.notifications {
+#notifications_count {
     border: 1px solid #999;
     cursor: pointer;
     padding: 5px;
 }
 
-.close_notif_box {
+.close_notification_box {
     background: #eee;
     clear: both;
     cursor: pointer;
+}
+
+.notification_element {
+    display: block;
 }
 
 .notification_message {
     font-size: 1.1em;
 }
 
-#notif_box {
+#notifications_box {
     border: 1px solid #999;
     background: #ffffff;
     position: absolute;
@@ -252,14 +256,11 @@ li.notification {
     width: 262px;
 }
 
-li.notification:hover{
+li.notification:hover {
     background-color: #e5f5d5;
 }
 
-#notif_content {
-}
-
-.close_notif_box {
+.close_notification_box {
     text-align: right;
     padding-right: 5px;	
 }

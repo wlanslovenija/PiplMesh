@@ -35,13 +35,13 @@ class CommentResource(AuthoredResource):
 
         for subscriber in self.instance.subscribers:
             if subscriber != bundle.obj.author:
-                # add notification to db
                 notification = api_models.Notification.objects.create(recipient=subscriber, post=self.instance, comment=bundle.obj.pk)
                 signals.notification_created.send(sender=self, notification=notification, request=request or bundle.request, bundle=bundle)
 
         if bundle.obj.author not in self.instance.subscribers:
             self.instance.subscribers.append(bundle.obj.author)
             self.instance.save()
+
         return bundle
 
     class Meta:
