@@ -1,0 +1,25 @@
+{% extends "panel/panel.html" %}
+
+{% load i18n staticfiles sekizai_tags %}
+
+{% block content %}
+    {% addtoblock "css" %}<link href="{% static "piplmesh/panel/bicikelj/panel.css" %}" rel="stylesheet" type="text/css" media="screen" />{% endaddtoblock %}
+    <div id="bicikelj">
+        {% for station in stations %}
+            <dl>
+                <dt><span class="station_name">{{ station.name }}</span></dt>
+                <dd>
+                    <ul>
+                        {% if station.old_data %}
+                            <span class="bicikelj_error">{% trans "WARNING: Stale data" %}</span>
+                        {% endif %}
+                        <li><span class="station_availability">{% blocktrans count available=station.available %}<b>{{ available }}</b> available bike{% plural %}<b>{{ available }}</b> available bikes{% endblocktrans %}</span></li>
+                        <li><span class="station_free">{% blocktrans count free=station.free %}<b>{{ free }}</b> free place{% plural %}<b>{{ free }}</b> free places{% endblocktrans %}</span></li>
+                    </ul>
+                </dd>
+            </dl>
+        {% empty %}
+            <span class="bicikelj_error">{% trans "No Bicikelj stations nearby." %}</span>
+        {% endfor %}
+    </div>
+{% endblock %}

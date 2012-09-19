@@ -119,6 +119,10 @@ form input[type="submit"], form input[type="reset"] {
     list-style: disc;
 }
 
+.form_fields .errorlist li {
+    text-align: left;
+}
+
 input.gsc-search-button,
 .buttons input {
     background-attachment: scroll;
@@ -703,6 +707,17 @@ button.browserid-signin:hover {
 /* ------------------ CONTACT ---------------------------- */
 .contact_form textarea {
     width: 300px;
+}
+
+/* ------------------ ABOUT ---------------------------- */
+.contributors img {
+    width: 50px;
+    height: 50px;
+}
+
+.contributors ul {
+    list-style: none;
+    margin-left: 10px;
 }
 
 /* ------------------ DROP-DOWN LOGIN ---------------------------- */

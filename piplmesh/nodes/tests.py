@@ -2,7 +2,9 @@ from __future__ import absolute_import
 
 from django.test import client, utils
 
-from piplmesh import nodes, test_runner
+from tastypie_mongoengine import test_runner
+
+from piplmesh import nodes
 
 @utils.override_settings(NODES_BACKENDS=('piplmesh.nodes.backends.RandomNodesBackend',))
 class BasicTest(test_runner.MongoEngineTestCase):
