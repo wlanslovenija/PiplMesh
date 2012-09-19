@@ -13,6 +13,4 @@ def user_image(context, user=None):
 
 @register.filter()
 def is_active(current_path, url_path):
-    if current_path.startswith(url_path):
-        return True
-    return False
+    return  current_path.startswith(url_path)
