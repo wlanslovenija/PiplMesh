@@ -1,6 +1,6 @@
 $(document).ready(function () {
     var max = 0;
-    $('.field label.main').each(function () {
+    $('.field label.main').each(function (index, element) {
         if ($(this).width() > max)
             max = $(this).width();
     });
