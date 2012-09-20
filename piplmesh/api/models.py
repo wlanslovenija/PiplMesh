@@ -52,7 +52,7 @@ class Notification(mongoengine.Document):
     """
 
     recipient = mongoengine.ReferenceField(account_models.User, required=True)
-    created_time = mongoengine.DateTimeField(default=lambda: timezone.now(), required=True)
+    created_time = mongoengine.DateTimeField(default=timezone.now, required=True)
     read = mongoengine.BooleanField(default=False)
     post = mongoengine.ReferenceField(Post)
 

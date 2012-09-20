@@ -254,20 +254,6 @@ function addComment(comment) {
     });
 }
 
-function readNotification() {
-    $.ajax({
-        type: 'PUT',
-        url: '/api/v1/notification/5059d2376c20b16665eeb7de/',
-        data: JSON.stringify({'read': true, 'recipient':'test'}),
-        contentType: 'application/json',
-        dataType: 'json',
-        success: function (data, textStatus, jqXHR) {
-            alert("Notification prebran.");
-        },
-    });
-}
-
-
 $(document).ready(function () {
     initializePanels();
 
@@ -296,9 +282,6 @@ $(document).ready(function () {
     });
     $('#add_comment').click(function () {
         addComment("HAHAHAH dela");
-    });
-    $('#read_notif').click(function () {
-        readNotification();
     });
 
     $.updates.registerProcessor('user_channel', 'notification', addNewNotification);
