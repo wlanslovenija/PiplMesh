@@ -119,17 +119,17 @@ def send_update_on_new_post(sender, post, request, bundle, **kwargs):
         updates.send_update(HOME_CHANNEL_ID, serialized, True)
 
 @dispatch.receiver(signals.notification_created)
-def send_update_on_new_notification(sender, notification, request, **kwargs):
+def send_update_on_new_notification(sender, notification, request, bundle, **kwargs):
     """
     Sends update to push server when a new notification is created.
     """
-    serialized = sender.serialize(None, {
+    serialized = sender.serialize(request, {
         'type': 'notification',
-        'notification': {'author' : notification.post.comments[int(notification.comment)].author,
+        'notification': {'comment_author' : notification.post.comments[int(notification.comment)].author,
                         'recipient': notification.recipient.username,
                         'comment': int(notification.comment),
                         'created_time': notification.created_time.isoformat(),
-                        'content': notification.post.comments[int(notification.comment)].message,
+                        'comment_message': notification.post.comments[int(notification.comment)].message,
                         'post': str(notification.post.id),
                         'read': notification.read,
                    },

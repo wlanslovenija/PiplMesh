@@ -205,12 +205,12 @@ function addNewNotification(newNotification) {
 
 function buildNotification(notification) {
     var format = gettext("%(author)s commented on post.");
-    var author = interpolate(format, {'author': notification.author}, true);
+    var author = interpolate(format, {'author': notification.comment_author}, true);
 
     var new_notification = $('<li/>').addClass('notification').append(
         $('<span/>').addClass('notification_element').text(author)
     ).append(
-        $('<span/>').addClass('notification_message').addClass('notification_element').text(notification.content)
+        $('<span/>').addClass('notification_message').addClass('notification_element').text(notification.comment_message)
     ).append(
         $('<span/>').addClass('notification_element').addClass('notification_created_time').text(formatDiffTime(notification.created_time))
     );
@@ -224,13 +224,13 @@ function updateNotificationDate(element) {
 }
 
 function loadNotifications() {
-    $.getJSON(URLS['notifications'], function (notifications, textStatus, jqXHR) {
+    $.getJSON(URLS.notifications, function (notifications, textStatus, jqXHR) {
         var unread_counter = 0;
 
         var content = $('<ul/>').addClass('notification_list');
 
         $.each(notifications.objects, function (i, notification) {
-            if (notification.read == false) {
+            if (!notification.read) {
                 unread_counter += 1;
             }
             content.prepend(buildNotification(notification));

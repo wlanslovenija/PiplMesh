@@ -51,16 +51,18 @@ class CommentResource(AuthoredResource):
         authorization = tastypie_authorization.Authorization()
 
 class NotificationResource(resources.MongoEngineResource):
-    content = tastypie_fields.CharField(default='', null=False, blank=True)
+    comment_message = tastypie_fields.CharField(default='', null=False, blank=True)
+    comment_author = tastypie_fields.CharField(default='', null=False, blank=True)
 
-    def dehydrate(self, bundle):
-        bundle.data['author'] = bundle.obj.post.comments[bundle.obj.comment].author
-        bundle.data['content'] = bundle.obj.post.comments[bundle.obj.comment].message
-        return bundle
+    def dehydrate_comment_author(self, bundle):
+        return bundle.obj.post.comments[bundle.obj.comment].author
+
+    def dehydrate_comment_message(self, bundle):
+        return bundle.obj.post.comments[bundle.obj.comment].message
 
     class Meta:
         queryset = api_models.Notification.objects.all()
-        allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
+        allowed_methods = ('get', 'patch')
         authorization = authorization.NotificationAuthorization()
 
 class ImageAttachmentResource(AuthoredResource):

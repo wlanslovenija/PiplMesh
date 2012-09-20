@@ -46,6 +46,7 @@ def check_online_users():
             connections__in=([], None), # None if field is missing altogether
             connection_last_unsubscribe__lt=timezone.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
         ).update(set__is_online=False):
+            user.reload()
             user.channel_id = models.generate_channel_id()
             user.save()
             updates.send_update(
