@@ -1,13 +1,8 @@
 {% extends "plain.html" %}
 
-{% load i18n staticfiles %}
+{% load future i18n %}
 
 {% block title %}{% trans "Contact" %}{% endblock %}
-
-{% block js %}
-    {{ block.super }}
-    <script src="{% static "piplmesh/js/forms.js" %}" type="text/javascript"></script>
-{% endblock %}
 
 {% block content %}
     <div class="contact_form">
@@ -18,7 +13,7 @@
         {% endwith %}
     </div>
     <div class="contact_comment">
-        {% url about as about_url %}
+        {% url "about" as about_url %}
         <p>{% blocktrans %}If you have found a bug or have any other technical issue with the site, please use <a href="https://github.com/wlanslovenija/PiplMesh/issues?state=open">GitHub to report it</a>. This site is developed and run as an open source project and all work is done voluntarily, so you are very welcome to help us make it even better. See <a href="{{ about_url }}">about page</a> for more information.{% endblocktrans %}</p>
     </div>
 {% endblock %}
