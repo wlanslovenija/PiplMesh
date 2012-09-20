@@ -10,3 +10,7 @@ def user_image(context, user=None):
     return {
         'user_image_url': user.get_image_url(),
     }
+
+@register.filter()
+def is_active(current_path, url_path):
+    return  current_path.startswith(url_path)
