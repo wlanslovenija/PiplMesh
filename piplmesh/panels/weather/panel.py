@@ -32,7 +32,7 @@ class WeatherPanel(panels.BasePanel):
 
 def get_weather_content(latitude, longitude):
     date = datetime.datetime.now()
-    for i in range(0, 3):
+    for interval in range(0, 3):
         state = models.State.objects(latitude=latitude, longitude=longitude, at__lte=date).order_by('-at').first()
         precipitation = models.Precipitation.objects(latitude=latitude, longitude=longitude, date_from__lte=date, date_to__gte=date).order_by('-date_from').first()
         weather_object = {
