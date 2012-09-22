@@ -38,13 +38,13 @@ class Weather(mongoengine.Document):
     }
 
 class Precipitation(Weather):
-    date_from = mongoengine.DateTimeField(required=True)
-    date_to = mongoengine.DateTimeField(required=True)
+    date_from = mongoengine.DateTimeField(required=True, unique_with=('created', 'latitude', 'longitude', 'date_to'))
+    date_to = mongoengine.DateTimeField(required=True, unique_with=('created', 'latitude', 'longitude', 'date_from'))
     precipitation = mongoengine.DecimalField(required=True)
     symbol = mongoengine.IntField(choices=SYMBOLS, required=True)
 
 class State(Weather):
-    at = mongoengine.DateTimeField(required=True)
+    at = mongoengine.DateTimeField(required=True, unique_with=('created', 'latitude', 'longitude'))
     temperature = mongoengine.DecimalField(required=True)
     wind_direction = mongoengine.StringField(required=True)
     wind_angle = mongoengine.DecimalField(required=True)
@@ -56,5 +56,3 @@ class State(Weather):
     low_clouds = mongoengine.DecimalField(required=True)
     medium_clouds = mongoengine.DecimalField(required=True)
     high_clouds = mongoengine.DecimalField(required=True)
-
-#TO-DO unique fields
