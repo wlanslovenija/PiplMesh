@@ -7,5 +7,5 @@ def fetch_data(latitude, longitude):
     parser = etree.XMLParser(remove_blank_text=True)
     lookup = objectify.ObjectifyElementClassLookup()
     parser.setElementClassLookup(lookup)
-    weather = objectify.parse(weather_url,parser).getroot()
+    weather = objectify.parse(weather_url, parser).getroot()
     return weather

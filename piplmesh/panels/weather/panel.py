@@ -9,37 +9,39 @@ from piplmesh import nodes, panels
 
 from . import models, weather
 
-WEATHER_OBSOLETE = 6
+WEATHER_OBSOLETE = 6 #hours
+FORECAST_HOUR = 14 #2:00 PM
 
 class WeatherPanel(panels.BasePanel): 
-    
     def get_context(self, context):
-
         latitude = nodes.get_node(self.request).latitude
-        longitude = nodes.get_node(self.request).longitude      
-        precipitation = models.Precipitation.objects(latitude=latitude, longitude=longitude).order_by('+date_to')
-        state = models.State.objects(latitude=latitude, longitude=longitude).order_by('+at')
-        
-        if datetime.datetime.now() > state[0].created + datetime.timedelta(hours=WEATHER_OBSOLETE):
+        longitude = nodes.get_node(self.request).longitude
+        state = models.State.objects(latitude=latitude, longitude=longitude).order_by('+created').first()
+        if state is None:
             context.update({
-                'error_obsolete': True,
+                'error_data': True,
             })
             return context
-
-        weather_objects = []
-        for i in range(0,3):
-            weather_object= {
-                'at': state[i*10].at,
-                'temperature':  state[i*9].temperature,
-                'symbol':  precipitation[i*18].symbol
-            }
-            weather_objects.append(weather_object)
-
+            
         context.update({
             'header': _("Weather"),
-            'weather_objects': weather_objects,
-            'created': state[0].created,
+            'weather_objects': get_weather_content(latitude, longitude),
+            'created': state.created,
         })
         return context
-    
+
+def get_weather_content(latitude, longitude):
+    date = datetime.datetime.now()
+    for i in range(0, 3):
+        state = models.State.objects(latitude=latitude, longitude=longitude, at__lte=date).order_by('-at').first()
+        precipitation = models.Precipitation.objects(latitude=latitude, longitude=longitude, date_from__lte=date, date_to__gte=date).order_by('-date_from').first()
+        weather_object = {
+            'at': state.at,
+            'temperature':  state.temperature,
+            'symbol':  precipitation.symbol,
+        }      
+        date += datetime.timedelta(days=1)
+        date = date.replace(hour=FORECAST_HOUR, minute=0)
+        yield weather_object
+          
 panels.panels_pool.register(WeatherPanel)
