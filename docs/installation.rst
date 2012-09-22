@@ -111,3 +111,14 @@ The following Debian packages are needed:
 
 Be careful about required versions. It could be necessary to use packages from
 Debian testing or backports distribution.
+
+Ubuntu
+^^^^^^
+
+The following C libraries are needed:
+
+* libxml2_
+* libxslt_
+
+.. _libxml2: http://www.xmlsoft.org/downloads.html
+.. _libxslt: http://xmlsoft.org/XSLT/downloads.html
