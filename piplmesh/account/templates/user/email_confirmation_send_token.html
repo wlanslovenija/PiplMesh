@@ -5,22 +5,20 @@
 {% block title %}{% trans "E-mail address confirmation" %}{% endblock %}
 
 {% block content %}
-    <div id="menu_list">
-        <p><a href="{% url "profile" username=user.username %}">{% trans "Profile" %}</a></p>
-        <p id="current_item"><a href="{% url "account" %}">{% trans "Account" %}</a></p>
-    </div>
-    <p>
-        {% blocktrans with email=user.email %}Clicking the button below will send a confirmation mail to {{ email }}.{% endblocktrans %}
-    </p>
-    <div class="registration" id="email_confirmation">
+    {% include "user/menu.html" %}
+    <div id="email_confirmation" class="account">
+        <h1>{% trans "E-mail address confirmation" %}</h1>
+        <p>
+            {% blocktrans with email=user.email %}Clicking the button below will send a confirmation mail to {{ email }}.{% endblocktrans %}
+        </p>
         {% with form_submit=_("Click here to confirm your e-mail address") %}
             {% include "form/form.html" %}
         {% endwith %}
+        <dl class="faq">
+            <dt>{% trans "Why should I confirm my e-mail address?" %}</dt>
+            <dd>
+                {% blocktrans %}Confirming your e-mail address improves the security of your account. Once you've confirmed your e-mail address, you will be able to reset your password in the case you lost it or forget it.{% endblocktrans %}
+            </dd>
+        </dl>
     </div>
-    <dl class="faq">
-        <dt>{% trans "Why should I confirm my e-mail address?" %}</dt>
-        <dd>
-            {% blocktrans %}Confirming your e-mail address improves the security of your account. Once you've confirmed your e-mail address, you will be able to reset your password in the case you lost it or forget it.{% endblocktrans %}
-        </dd>
-    </dl>
 {% endblock %}
