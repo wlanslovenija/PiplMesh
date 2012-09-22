@@ -117,5 +117,3 @@ The following Debian packages are needed:
 
 Be careful about required versions. It could be necessary to use packages from
 Debian testing or backports distribution.
-
-
