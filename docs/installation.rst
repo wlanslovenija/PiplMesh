@@ -13,12 +13,16 @@ In addition to Python_ the following is required on the system to run PiplMesh:
 * Python virtualenv_ package
 * Python pip_ package (1.0+)
 * MongoDB_ (2.0+)
+* LibXML_
+* LibXSLT_
 
 .. _Python: http://python.org/
 .. _Django-supported: https://docs.djangoproject.com/en/1.4/ref/databases/
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
 .. _pip: http://pypi.python.org/pypi/pip
 .. _MongoDB: http://www.mongodb.org/
+.. _LibXML: http://www.xmlsoft.org
+.. _LibXSLT: http://www.xmlsoft.org/XSLT
 
 Other prerequisites (Python packages) are installed later.
 
@@ -108,6 +112,8 @@ The following Debian packages are needed:
 * ``python-virtualenv``
 * ``python-pip``
 * ``mongodb``
+* ``libxml2-dev``
+* ``libxslt1-dev``
 
 Be careful about required versions. It could be necessary to use packages from
 Debian testing or backports distribution.
