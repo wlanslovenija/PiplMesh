@@ -123,6 +123,7 @@ def send_update_on_new_notification(sender, notification, request, **kwargs):
     """
     Sends update to push server when a new notification is created.
     """
+    # TODO: In the future serialization has to be done automatically using Tastypie
     serialized = sender.serialize(request, {
         'type': 'notification',
         'notification': {
