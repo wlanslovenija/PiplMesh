@@ -203,24 +203,24 @@ function addNewNotification(newNotification) {
     $('.notification_list').prepend(buildNotification(newNotification.notification));
 }
 
-function buildNotification(object) {
+function buildNotification(notification) {
     var format = gettext("%(author)s commented on post.");
-    var author = interpolate(format, {'author': object.comment_author}, true);
+    var author = interpolate(format, {'author': notification.comment_author}, true);
 
-    var notification = $('<li/>').addClass('notification').append(
+    var new_notification = $('<li/>').addClass('notification').append(
         $('<span/>').addClass('notification_element').text(author)
     ).append(
-        $('<span/>').addClass('notification_message').addClass('notification_element').text(object.comment_message)
+        $('<span/>').addClass('notification_message').addClass('notification_element').text(notification.comment_message)
     ).append(
-        $('<span/>').addClass('notification_element').addClass('notification_created_time').text(formatDiffTime(object.created_time))
+        $('<span/>').addClass('notification_element').addClass('notification_created_time').text(formatDiffTime(notification.created_time))
     );
-    notification.data('data', object);
+    new_notification.data('notification', notification);
 
-    return notification;
+    return new_notification;
 }
 
 function updateNotificationDate(element) {
-    $(element).find('.notification_created_time').text(formatDiffTime(element.data('data').created_time));
+    $(element).find('.notification_created_time').text(formatDiffTime(element.data('notification').created_time));
 }
 
 function loadNotifications() {
@@ -243,15 +243,17 @@ function loadNotifications() {
 
 // This is just for testing purposes. It can be base for future development.
 function addComment(comment) {
+    // TODO: Change this for any post
+    var post_url = $('.post').first().data('post').resource_uri;
+
     $.ajax({
         type: 'POST',
-        // TODO: This url has to be dynamic
-        url: '/api/v1/post/5050512b6c20b1028c45cf86/comments/',
+        url: post_url + 'comments/',
         data: JSON.stringify({'message': comment}),
         contentType: 'application/json',
         dataType: 'json',
         success: function (data, textStatus, jqXHR) {
-            alert("Komentar napisan.");
+            alert("Comment posted.");
         },
     });
 }
@@ -283,7 +285,7 @@ $(document).ready(function () {
         $('#notifications_box').slideToggle('fast');
     });
     $('#add_comment').click(function (event) {
-        addComment("HAHAHAH dela");
+        addComment("Test comment");
     });
 
     $.updates.registerProcessor('user_channel', 'notification', addNewNotification);
