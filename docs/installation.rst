@@ -126,7 +126,7 @@ so you have to install them manually before running ``pip install -r
 requirements.txt``::
 
     easy_install --allow-hosts=lxml.de,*.python.org lxml==X.Y
-    easy_install pymongo==X.Y
+    pip install pymongo==X.Y --install-option='--no_ext'
 
 Where ``X.Y`` is version of the package found in ``requirements.txt``.
 
