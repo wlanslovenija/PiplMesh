@@ -47,6 +47,7 @@ def check_online_users():
             connection_last_unsubscribe__lt=timezone.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
         ).update(set__is_online=False):
             user.reload()
+            # On user disconnect new channel_id is generated for safety reasons
             user.channel_id = models.generate_channel_id()
             user.save()
             updates.send_update(

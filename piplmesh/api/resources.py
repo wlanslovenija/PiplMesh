@@ -36,7 +36,7 @@ class CommentResource(AuthoredResource):
         for subscriber in self.instance.subscribers:
             if subscriber != bundle.obj.author:
                 notification = api_models.Notification.objects.create(recipient=subscriber, post=self.instance, comment=bundle.obj.pk)
-                signals.notification_created.send(sender=self, notification=notification, request=request or bundle.request, bundle=bundle)
+                signals.notification_created.send(sender=self, notification=notification, request=request or bundle.request)
 
         if bundle.obj.author not in self.instance.subscribers:
             self.instance.subscribers.append(bundle.obj.author)
@@ -62,7 +62,7 @@ class NotificationResource(resources.MongoEngineResource):
 
     class Meta:
         queryset = api_models.Notification.objects.all()
-        allowed_methods = ('get', 'patch')
+        allowed_methods = ('get')
         authorization = authorization.NotificationAuthorization()
 
 class ImageAttachmentResource(AuthoredResource):

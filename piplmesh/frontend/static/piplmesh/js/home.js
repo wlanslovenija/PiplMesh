@@ -203,20 +203,20 @@ function addNewNotification(newNotification) {
     $('.notification_list').prepend(buildNotification(newNotification.notification));
 }
 
-function buildNotification(notification) {
+function buildNotification(object) {
     var format = gettext("%(author)s commented on post.");
-    var author = interpolate(format, {'author': notification.comment_author}, true);
+    var author = interpolate(format, {'author': object.comment_author}, true);
 
-    var new_notification = $('<li/>').addClass('notification').append(
+    var notification = $('<li/>').addClass('notification').append(
         $('<span/>').addClass('notification_element').text(author)
     ).append(
-        $('<span/>').addClass('notification_message').addClass('notification_element').text(notification.comment_message)
+        $('<span/>').addClass('notification_message').addClass('notification_element').text(object.comment_message)
     ).append(
-        $('<span/>').addClass('notification_element').addClass('notification_created_time').text(formatDiffTime(notification.created_time))
+        $('<span/>').addClass('notification_element').addClass('notification_created_time').text(formatDiffTime(object.created_time))
     );
-    new_notification.data('data', notification);
+    notification.data('data', object);
 
-    return new_notification;
+    return notification;
 }
 
 function updateNotificationDate(element) {
@@ -231,19 +231,21 @@ function loadNotifications() {
 
         $.each(notifications.objects, function (i, notification) {
             if (!notification.read) {
-                unread_counter += 1;
+                unread_counter++;
             }
             content.prepend(buildNotification(notification));
         })
 
         $('#notifications_content').html(content);
-        $('#notifications_count').html(unread_counter);
+        $('#notifications_count').text(unread_counter);
     });
 }
 
+// This is just for testing purposes. It can be base for future development.
 function addComment(comment) {
     $.ajax({
         type: 'POST',
+        // TODO: This url has to be dynamic
         url: '/api/v1/post/5050512b6c20b1028c45cf86/comments/',
         data: JSON.stringify({'message': comment}),
         contentType: 'application/json',
@@ -277,10 +279,10 @@ $(document).ready(function () {
     $('#notifications_count').click(function () {
         $('#notifications_box').slideToggle('fast');
     });
-    $('.close_notifications_box').click(function () {
+    $('.close_notifications_box').click(function (event) {
         $('#notifications_box').slideToggle('fast');
     });
-    $('#add_comment').click(function () {
+    $('#add_comment').click(function (event) {
         addComment("HAHAHAH dela");
     });
 

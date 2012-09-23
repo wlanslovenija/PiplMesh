@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-import datetime, hashlib, os, urllib
+import datetime, hashlib, urllib
 
 from django.conf import settings
 from django.contrib.auth import hashers, models as auth_models
@@ -8,7 +8,7 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core import mail
 from django.db import models
 from django.test import client
-from django.utils import crypto, timezone
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 import mongoengine

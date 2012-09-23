@@ -16,4 +16,5 @@ class NotificationAuthorization(tastypie_authorization.Authorization):
             object_list = object_list.filter(recipient=request.user)
         else:
             object_list = []
+
         return object_list
