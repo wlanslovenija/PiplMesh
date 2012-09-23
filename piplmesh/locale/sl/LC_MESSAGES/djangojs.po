@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-10 15:01+0200\n"
-"PO-Revision-Date: 2012-09-10 15:02+0100\n"
+"POT-Creation-Date: 2012-09-24 00:27+0200\n"
+"PO-Revision-Date: 2012-09-24 00:29+0100\n"
 "Last-Translator: Nejc Zupan <nejc.zupca@gmail.com>\n"
 "Language-Team: \n"
 "Language: sl\n"
@@ -60,13 +60,9 @@ msgstr[3] "pred %(minutes)s minutami"
 msgid "Delete"
 msgstr "Izbriši"
 
-#: frontend/static/piplmesh/js/home.js:209
-msgid "commented on"
-msgstr "je komentiral"
-
-#: frontend/static/piplmesh/js/home.js:210
-msgid "post"
-msgstr "objavo"
+#: frontend/static/piplmesh/js/home.js:207
+msgid "%(author)s commented on post."
+msgstr "%(author)s je komentiral objavo."
 
 #: panels/map/static/piplmesh/panel/map/panel.js:15
 msgid "more info"
@@ -80,3 +76,8 @@ msgstr "Slika uporabnika"
 msgid "User profile"
 msgstr "Profil uporabnika"
 
+#~ msgid "commented on"
+#~ msgstr "je komentiral"
+
+#~ msgid "post"
+#~ msgstr "objavo"
