@@ -26,7 +26,7 @@
                 {% csrf_token %}
                 {% trans "Mock location" %}:
                 <select name="mocked_location" onchange="this.form.submit();">
-                    <option value="-1">{% trans "Select location" %}</option>
+                    <option value="-1">{% trans "No mocking" %}</option>
                     {% for node in request.nodes %}
                         <option value="{{ node.id }}" {% if node.id == request.node.id %} selected="selected" {% endif %}>{{ node.name }}</option>
                     {% endfor %}
