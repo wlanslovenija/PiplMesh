@@ -37,7 +37,10 @@ urlpatterns = patterns('',
     url(r'^search/', frontend_views.SearchView.as_view(), name='search'),
     
     url(r'^upload/$', frontend_views.upload_view, name='upload'),
-    
+
+    # Mock location
+    url(r'^location/$', frontend_views.mock_location, name='mock_location'),
+
     # Registration, login, logout
     url(r'^register/$', account_views.RegistrationView.as_view(), name='registration'),
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'user/login.html'}, name='login'),

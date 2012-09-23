@@ -15,6 +15,7 @@ from mongogeneric import detail
 
 from pushserver.utils import updates
 
+from piplmesh import nodes
 from piplmesh.account import models as account_models
 from piplmesh.api import models as api_models, resources, signals
 from piplmesh.frontend import forms
@@ -147,3 +148,15 @@ def panels_order(request):
         number_of_columns = request.GET['number_of_columns']
         panels = request.user.panels_order.get(number_of_columns, [])
         return http.HttpResponse(simplejson.dumps(panels), mimetype='application/json')
+
+def mock_location(request):
+    next = request.REQUEST.get('next', None)
+    if not next:
+        next = request.META.get('HTTP_REFERER', None)
+    if not next:
+        next = '/'
+    response = http.HttpResponseRedirect(next)
+    if request.method == 'POST':
+        mock_location = request.POST.get('mocked_location', None)
+        request.session[nodes.MOCKED_SESSION_KEY] = mock_location
+    return response

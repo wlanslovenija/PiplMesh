@@ -7,6 +7,7 @@ LATITUDE_SESSION_KEY = '_latitude'
 LONGITUDE_SESSION_KEY = '_longitude'
 
 SESSION_KEY = '_nodes_id'
+MOCKED_SESSION_KEY = '_nodes_id_mocked'
 BACKEND_SESSION_KEY = '_nodes_backend'
 CLOSEST_LATITUDE_SESSION_KEY = '_nodes_latitude'
 CLOSEST_LONGITUDE_SESSION_KEY = '_nodes_longitude'
@@ -63,10 +64,22 @@ def get_node(request):
 
     node = None
     try:
-        node_id = request.session[SESSION_KEY]
-        backend_path = request.session[BACKEND_SESSION_KEY]
-        backend = load_backend(backend_path)
-        node = backend.get_node(node_id)
+        mocked_node_id = request.session[MOCKED_SESSION_KEY]
+        # value '-1' resets mocking
+        if mocked_node_id == "-1":
+            mocked_node_id = None
+        # use mocked node if set
+        if mocked_node_id is not None:
+            mocked_node_id = int(mocked_node_id)
+            for backend in get_backends():
+                mockedNode = backend.get_node(mocked_node_id)
+                if mockedNode is not None:
+                   return mockedNode
+        else:
+            node_id = request.session[SESSION_KEY]
+            backend_path = request.session[BACKEND_SESSION_KEY]
+            backend = load_backend(backend_path)
+            node = backend.get_node(node_id)
     except KeyError:
         pass
 

@@ -181,6 +181,12 @@ input.gsc-search-button:hover,
     height: 50px;
 }
 
+#header #mock_location {
+    position:absolute;
+    top: 5px;
+    right:300px;
+}
+
 #header .user {
     margin-right: 20px;
     position: absolute;
