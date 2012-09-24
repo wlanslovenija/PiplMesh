@@ -15,5 +15,5 @@ class ContactForm(forms.Form):
 
 class LocationsForm(forms.Form):
     locationChoices = [("%s_%s" % (backend.get_full_name(), node.id), node.name) for backend, node in nodes.get_all_nodes_with_backends()]
-    locationChoices.insert(0, ('-1', 'None'))
-    locations = forms.ChoiceField(choices=locationChoices, label=None, required=False)
+    locationChoices.insert(0, ('-1', _("Don't mock location")))
+    locations = forms.ChoiceField(choices=locationChoices, label='', required=False)
