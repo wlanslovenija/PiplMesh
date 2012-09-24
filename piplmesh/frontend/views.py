@@ -65,6 +65,23 @@ class UserView(detail.DetailView):
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
+class LocationsView(generic_views.FormView):
+    form_class = forms.LocationsForm
+    success_url = urlresolvers.reverse_lazy('home')
+
+    def form_valid(self, form):
+        location = form.cleaned_data['locations']
+
+        if location == '-1':
+            nodes.flush_session(self.request)
+        else:
+            node_backend, node_id = location.rsplit('_')
+            self.request.session[nodes.SESSION_KEY] = int(node_id)
+            self.request.session[nodes.BACKEND_SESSION_KEY] = node_backend
+            self.request.session[nodes.MOCKING_SESSION_KEY] = True
+
+        return super(LocationsView, self).form_valid(form)
+
 def upload_view(request):
     if request.method != 'POST':
         return http.HttpResponseBadRequest()

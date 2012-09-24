@@ -46,7 +46,7 @@ urlpatterns = patterns('',
     url(r'^upload/$', frontend_views.upload_view, name='upload'),
 
     # Mock location
-    url(r'^location/$', frontend_views.mock_location, name='mock_location'),
+    url(r'^location/$', frontend_views.LocationsView.as_view(), name='mock_location'),
 
     # Registration, login, logout
     url(r'^register/$', account_views.RegistrationView.as_view(), name='registration'),

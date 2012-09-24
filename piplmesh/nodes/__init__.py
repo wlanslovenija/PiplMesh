@@ -7,13 +7,13 @@ LATITUDE_SESSION_KEY = '_latitude'
 LONGITUDE_SESSION_KEY = '_longitude'
 
 SESSION_KEY = '_nodes_id'
-MOCKED_SESSION_KEY = '_nodes_id_mocked'
 BACKEND_SESSION_KEY = '_nodes_backend'
 CLOSEST_LATITUDE_SESSION_KEY = '_nodes_latitude'
 CLOSEST_LONGITUDE_SESSION_KEY = '_nodes_longitude'
+MOCKING_SESSION_KEY = '_nodes_mocking'
 
 def flush_session(request):
-    for key in (SESSION_KEY, BACKEND_SESSION_KEY, CLOSEST_LATITUDE_SESSION_KEY, CLOSEST_LONGITUDE_SESSION_KEY):
+    for key in (SESSION_KEY, BACKEND_SESSION_KEY, CLOSEST_LATITUDE_SESSION_KEY, CLOSEST_LONGITUDE_SESSION_KEY, MOCKING_SESSION_KEY):
         try:
             del(request.session[key])
         except KeyError:
@@ -51,7 +51,7 @@ def distance(latitude_a, longitude_a, latitude_b, longitude_b):
     a = math.sin(dlatitude / 2)**2 + math.cos(latitude_a) * math.cos(latitude_b) * math.sin(dlongitude / 2)**2
     return 2 * math.asin(math.sqrt(a))
 
-def get_node(request):
+def get_node(request, allow_mocking=True):
     """
     Returns wireless node from which request originated. Or the closest
     wireless node based on geolocation data stored in request session.
@@ -64,22 +64,15 @@ def get_node(request):
 
     node = None
     try:
-        mocked_node_id = request.session[MOCKED_SESSION_KEY]
-        # value '-1' resets mocking
-        if mocked_node_id == "-1":
-            mocked_node_id = None
-        # use mocked node if set
-        if mocked_node_id is not None:
-            mocked_node_id = int(mocked_node_id)
-            for backend in get_backends():
-                mockedNode = backend.get_node(mocked_node_id)
-                if mockedNode is not None:
-                   return mockedNode
-        else:
-            node_id = request.session[SESSION_KEY]
-            backend_path = request.session[BACKEND_SESSION_KEY]
-            backend = load_backend(backend_path)
-            node = backend.get_node(node_id)
+        mocking = request.session[MOCKING_SESSION_KEY]
+        node_id = request.session[SESSION_KEY]
+        backend_path = request.session[BACKEND_SESSION_KEY]
+        backend = load_backend(backend_path)
+        node = backend.get_node(node_id)
+
+        if allow_mocking and mocking:
+            return node
+
     except KeyError:
         pass
 
@@ -118,7 +111,7 @@ def get_node(request):
 
         # Compare our current best match with the new one
         if node is None or distance(request.session[LATITUDE_SESSION_KEY], request.session[LONGITUDE_SESSION_KEY], new_node.latitude, new_node.longitude) < distance(request.session[LATITUDE_SESSION_KEY], request.session[LONGITUDE_SESSION_KEY], node.latitude, node.longitude):
-            node_backend = "%s.%s" % (backend.__module__, backend.__class__.__name__)
+            node_backend = backend.get_full_name()
             node = new_node
 
     if node is None:
@@ -141,3 +134,12 @@ def get_all_nodes():
     for backend in get_backends():
         for node in backend.get_all_nodes():
             yield node
+
+def get_all_nodes_with_backends():
+    """
+    Returns an iterator over all known nodes with backend.
+    """
+
+    for backend in get_backends():
+        for node in backend.get_all_nodes():
+            yield (backend, node)

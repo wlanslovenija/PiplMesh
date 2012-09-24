@@ -8,7 +8,6 @@ class NodesMiddleware(object):
     def process_request(self, request):
         outside_url = urlresolvers.reverse('outside')
         request.node = nodes.get_node(request)
-        request.nodes = nodes.get_all_nodes()
 
         if request.path == outside_url:
             if request.node is None:

@@ -39,3 +39,6 @@ class RandomNodesBackend(object):
             node = copy.copy(node)
             node.id = i
             yield node
+
+    def get_full_name(self):
+        return "%s.%s" % (self.__module__, self.__class__.__name__)
