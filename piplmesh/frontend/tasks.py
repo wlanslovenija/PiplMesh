@@ -46,10 +46,14 @@ def check_online_users():
             connections__in=([], None), # None if field is missing altogether
             connection_last_unsubscribe__lt=timezone.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
         ).update(set__is_online=False):
+            # On user disconnect we recycle channel_id, this is to improve security if somebody
+            # intercepted current channel_id as there is no authentication on HTTP push channels
+            # This is the best place to recycle channel_id as we know that user does not listen
+            # anymore to any channel
             user.reload()
-            # On user disconnect new channel_id is generated for safety reasons
             user.channel_id = models.generate_channel_id()
             user.save()
+
             updates.send_update(
                 views.HOME_CHANNEL_ID,
                 {

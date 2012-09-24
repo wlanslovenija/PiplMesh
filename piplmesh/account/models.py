@@ -162,6 +162,11 @@ class User(auth.User):
             return staticfiles_storage.url(settings.DEFAULT_USER_IMAGE)
 
     def get_user_channel(self):
+        """
+        User channel is a HTTP push channel dedicated to the user. We make it private by making
+        it unguessable and we cycle it regularly (every time user disconnects from all channels).
+        """
+
         return "user/%s" % self.channel_id
  
     @classmethod

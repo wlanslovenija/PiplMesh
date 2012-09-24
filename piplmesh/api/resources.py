@@ -1,10 +1,6 @@
-from django.conf import settings
-
 from tastypie import authorization as tastypie_authorization, fields as tastypie_fields
 
 from tastypie_mongoengine import fields, paginator, resources
-
-from pushserver.utils import updates
 
 from piplmesh.account import models as account_models
 from piplmesh.api import authorization, models as api_models, signals
@@ -62,7 +58,7 @@ class NotificationResource(resources.MongoEngineResource):
 
     class Meta:
         queryset = api_models.Notification.objects.all()
-        allowed_methods = ('get')
+        allowed_methods = ('get',)
         authorization = authorization.NotificationAuthorization()
 
 class ImageAttachmentResource(AuthoredResource):

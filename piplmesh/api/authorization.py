@@ -13,8 +13,7 @@ class PostAuthorization(tastypie_authorization.Authorization):
 class NotificationAuthorization(tastypie_authorization.Authorization):
     def apply_limits(self, request, object_list):
         if request and hasattr(request, 'user'):
-            object_list = object_list.filter(recipient=request.user)
+            return object_list.filter(recipient=request.user)
         else:
-            object_list = []
-
-        return object_list
+            # TODO: Should be in fact empty queryset, https://github.com/MongoEngine/mongoengine/issues/127
+            return []

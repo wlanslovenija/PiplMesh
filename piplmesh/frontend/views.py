@@ -12,7 +12,7 @@ from django.views import generic as generic_views
 from tastypie import http as tastypie_http
 
 from mongogeneric import detail
-import time
+
 from pushserver.utils import updates
 
 from piplmesh.account import models as account_models

@@ -75,9 +75,3 @@ msgstr "Slika uporabnika"
 #: panels/onlineusers/static/piplmesh/panel/onlineusers/panel.js:35
 msgid "User profile"
 msgstr "Profil uporabnika"
-
-#~ msgid "commented on"
-#~ msgstr "je komentiral"
-
-#~ msgid "post"
-#~ msgstr "objavo"

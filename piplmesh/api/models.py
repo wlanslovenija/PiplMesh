@@ -4,9 +4,8 @@ from django.utils import timezone
 
 import mongoengine
 
-from pushserver import utils
-from piplmesh.account import models as account_models
 from . import base
+from piplmesh.account import models as account_models
 
 POST_MESSAGE_MAX_LENGTH = 500
 COMMENT_MESSAGE_MAX_LENGTH = 300
@@ -51,12 +50,12 @@ class Notification(mongoengine.Document):
     This class defines document type for notifications.
     """
 
-    recipient = mongoengine.ReferenceField(account_models.User, required=True)
     created_time = mongoengine.DateTimeField(default=timezone.now, required=True)
+    recipient = mongoengine.ReferenceField(account_models.User, required=True)
     read = mongoengine.BooleanField(default=False)
     post = mongoengine.ReferenceField(Post)
 
-    # TODO: This is probably not the best approach.
+    # TODO: This is probably not the best approach
     comment = mongoengine.IntField()
 
 class UploadedFile(base.AuthoredDocument):

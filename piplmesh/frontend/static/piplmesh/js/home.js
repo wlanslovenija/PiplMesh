@@ -199,7 +199,7 @@ function showLastPosts(offset) {
 
 function addNewNotification(newNotification) {
     var notification_counter = parseInt($('#notifications_count').text()) + 1;
-    $('#notifications_count').html(notification_counter);
+    $('#notifications_count').text(notification_counter);
     $('.notification_list').prepend(buildNotification(newNotification.notification));
 }
 
@@ -241,13 +241,14 @@ function loadNotifications() {
     });
 }
 
-// This is just for testing purposes. It can be base for future development.
+// TODO: This is just for testing purposes. It can be base for future development.
 function addComment(comment) {
     // TODO: Change this for any post
     var post_url = $('.post').first().data('post').resource_uri;
 
     $.ajax({
         type: 'POST',
+        // TODO: Should probably not construct URL like that
         url: post_url + 'comments/',
         data: JSON.stringify({'message': comment}),
         contentType: 'application/json',
@@ -278,7 +279,7 @@ $(document).ready(function () {
     });
 
     // Notifications
-    $('#notifications_count').click(function () {
+    $('#notifications_count').click(function (event) {
         $('#notifications_box').slideToggle('fast');
     });
     $('.close_notifications_box').click(function (event) {
