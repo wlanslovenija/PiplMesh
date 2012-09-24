@@ -1,6 +1,5 @@
 $(document).ready(function (event) {
-    var myOptions;
-    var nodeLocation;
+    var mapControls;
     var map;
     var nodeName = $('<p/>').text(node.name).append(' | ');
     var nodeWebsite = $('<a/>').prop('href', node.url).text(gettext("more info"));
@@ -16,6 +15,11 @@ $(document).ready(function (event) {
         mapControls = {
             'zoom': 12,
             'center': nodeLocation,
+            'mapTypeControl': true,
+            'mapTypeControlOptions': {
+                'style': google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                'position': google.maps.ControlPosition.TOP_LEFT
+            },
             'scrollwheel': false,
             'navigationControl': false,
             'scaleControl': false,
@@ -26,24 +30,20 @@ $(document).ready(function (event) {
         map = new google.maps.Map($("#map")[0], mapControls);
         $('#basic-map-extend-img').css("background-image", imageExtendUrl);
         var marker = new google.maps.Marker({
-                'position': nodeLocation,
-                'map': map,
-                'title': node.name
+            'position': nodeLocation,
+            'map': map,
+            'title': node.name
         });
     }
     function configureAdvancedMap(){
-        map.set('scrollwheel',true);
-        map.set('navigationControl',true);
-        map.set('scaleControl', true);
-        map.set('draggable', true);
-        map.set('streetViewControl', true);
+        map.navigationControl = true;
+        map.scaleControl = true;
+        map.draggable = true;
+        map.streetViewControl = true;
+        map.set('mapTypeControlOptions',google.maps.ControlPosition.TOP_RIGHT);
     }
     function configureBasicMap(){
-        map.set('scrollwheel',false);
-        map.set('navigationControl',false);
-        map.set('scaleControl', false);
-        map.set('draggable', false);
-        map.set('streetViewControl', false);
+        map.setOptions(mapControls);
     }
     function closeAdvancedMap(){
         $('#closeButton').remove();
@@ -71,7 +71,7 @@ $(document).ready(function (event) {
         $('#basic-map-extend-img').hide();
         $('<div/>').attr('id', 'advanced-map').appendTo(document.body);
         $('<div/>').attr('id', 'overlay').fadeTo("fast", 0.8, function (){
-        //Animation complete
+            //Animation complete
         }).appendTo(document.body).click(closeAdvancedMap);
         $('<div/>').attr('id', 'closeButton').appendTo(document.body).click(closeAdvancedMap);
         $('#closeButton').css("background-image", imageCloseUrl);
