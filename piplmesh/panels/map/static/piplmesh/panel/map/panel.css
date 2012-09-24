@@ -8,12 +8,11 @@
 #basic-map-extend-img {
     position: absolute;
     right: -1.5px;
-    top: 29.5px;
+    top: 29px;
     cursor: pointer;
     height: 24px;
     width: 24px;
     z-index: 300020;
-    border: 1px solid #CCCCCC;
 }
 #map {
     height: 100%;
@@ -64,7 +63,7 @@
     z-index: 300040;
     right: 0px;
     top: 0px;
-    height: 60px;
+    height: 61px;
     width: 52px;
     cursor: pointer;
 }
