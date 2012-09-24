@@ -4,6 +4,8 @@ from django.utils import timezone
 
 import mongoengine
 
+from pushserver import utils
+from piplmesh.account import models as account_models
 from . import base
 
 POST_MESSAGE_MAX_LENGTH = 500
@@ -33,6 +35,8 @@ class Post(base.AuthoredDocument):
     comments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Comment), default=lambda: [], required=False)
     attachments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Attachment), default=lambda: [], required=False)
 
+    subscribers = mongoengine.ListField(mongoengine.ReferenceField(account_models.User), default=lambda: [], required=False)
+
     # TODO: Prevent posting comments if post is not published
     # TODO: Prevent adding attachments if post is published
     # TODO: Prevent marking post as unpublished once it was published
@@ -41,6 +45,19 @@ class Post(base.AuthoredDocument):
     def save(self, *args, **kwargs):
         self.updated_time = timezone.now()
         return super(Post, self).save(*args, **kwargs)
+
+class Notification(mongoengine.Document):
+    """
+    This class defines document type for notifications.
+    """
+
+    recipient = mongoengine.ReferenceField(account_models.User, required=True)
+    created_time = mongoengine.DateTimeField(default=timezone.now, required=True)
+    read = mongoengine.BooleanField(default=False)
+    post = mongoengine.ReferenceField(Post)
+
+    # TODO: This is probably not the best approach.
+    comment = mongoengine.IntField()
 
 class UploadedFile(base.AuthoredDocument):
     """

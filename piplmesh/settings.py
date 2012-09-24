@@ -212,7 +212,7 @@ PUSH_SERVER = {
     'locations': (
         {
             'type': 'subscriber',
-            'url': r'/updates/([^/]+)/',
+            'url': r'/updates/(.+)/',
             'polling': 'long',
             'create_on_get': True,
             'allow_origin': 'http://127.0.0.1:8000',
@@ -221,7 +221,7 @@ PUSH_SERVER = {
         },
         {
             'type': 'publisher',
-            'url': r'/send-update/([^/]+)/',
+            'url': r'/send-update/(.+)/',
         },
     ),
 }

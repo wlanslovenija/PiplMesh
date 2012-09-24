@@ -197,6 +197,67 @@ function showLastPosts(offset) {
     });
 }
 
+function addNewNotification(newNotification) {
+    var notification_counter = parseInt($('#notifications_count').text()) + 1;
+    $('#notifications_count').html(notification_counter);
+    $('.notification_list').prepend(buildNotification(newNotification.notification));
+}
+
+function buildNotification(notification) {
+    var format = gettext("%(author)s commented on post.");
+    var author = interpolate(format, {'author': notification.comment_author}, true);
+
+    var new_notification = $('<li/>').addClass('notification').append(
+        $('<span/>').addClass('notification_element').text(author)
+    ).append(
+        $('<span/>').addClass('notification_message').addClass('notification_element').text(notification.comment_message)
+    ).append(
+        $('<span/>').addClass('notification_element').addClass('notification_created_time').text(formatDiffTime(notification.created_time))
+    );
+    new_notification.data('notification', notification);
+
+    return new_notification;
+}
+
+function updateNotificationDate(element) {
+    $(element).find('.notification_created_time').text(formatDiffTime(element.data('notification').created_time));
+}
+
+function loadNotifications() {
+    $.getJSON(URLS.notifications, function (notifications, textStatus, jqXHR) {
+        var unread_counter = 0;
+
+        var content = $('<ul/>').addClass('notification_list');
+
+        $.each(notifications.objects, function (i, notification) {
+            if (!notification.read) {
+                unread_counter++;
+            }
+            content.prepend(buildNotification(notification));
+        })
+
+        $('#notifications_content').html(content);
+        $('#notifications_count').text(unread_counter);
+    });
+}
+
+// This is just for testing purposes. It can be base for future development.
+function addComment(comment) {
+    // TODO: Change this for any post
+    var post_url = $('.post').first().data('post').resource_uri;
+
+    $.ajax({
+        type: 'POST',
+        url: post_url + 'comments/',
+        data: JSON.stringify({'message': comment}),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (data, textStatus, jqXHR) {
+            alert("Comment posted.");
+        },
+    });
+}
+
 $(document).ready(function () {
     initializePanels();
 
@@ -215,6 +276,21 @@ $(document).ready(function () {
             'collapsed': collapsed
         });
     });
+
+    // Notifications
+    $('#notifications_count').click(function () {
+        $('#notifications_box').slideToggle('fast');
+    });
+    $('.close_notifications_box').click(function (event) {
+        $('#notifications_box').slideToggle('fast');
+    });
+    $('#add_comment').click(function (event) {
+        addComment("Test comment");
+    });
+
+    $.updates.registerProcessor('user_channel', 'notification', addNewNotification);
+
+    loadNotifications();
 
     // TODO: Ajax request to store panels state is currently send many times while resizing, it should be send only at the end
     $(window).resize(function (event) {
@@ -282,6 +358,9 @@ $(document).ready(function () {
     setInterval(function () {
         $('.post').each(function (i, post) {
             $(post).data('post').updateDate(this);
+        });
+        $('.notification').each(function (i, notification) {
+            updateNotificationDate($(notification));
         });
     }, POSTS_DATE_UPDATE_INTERVAL);
 });

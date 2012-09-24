@@ -1,6 +1,10 @@
+from django.conf import settings
+
 from tastypie import authorization as tastypie_authorization, fields as tastypie_fields
 
 from tastypie_mongoengine import fields, paginator, resources
+
+from pushserver.utils import updates
 
 from piplmesh.account import models as account_models
 from piplmesh.api import authorization, models as api_models, signals
@@ -26,11 +30,40 @@ class AuthoredResource(resources.MongoEngineResource):
         return bundle
 
 class CommentResource(AuthoredResource):
+    def obj_create(self, bundle, request=None, **kwargs):
+        bundle = super(CommentResource, self).obj_create(bundle, request=request, **kwargs)
+
+        for subscriber in self.instance.subscribers:
+            if subscriber != bundle.obj.author:
+                notification = api_models.Notification.objects.create(recipient=subscriber, post=self.instance, comment=bundle.obj.pk)
+                signals.notification_created.send(sender=self, notification=notification, request=request or bundle.request)
+
+        if bundle.obj.author not in self.instance.subscribers:
+            self.instance.subscribers.append(bundle.obj.author)
+            self.instance.save()
+
+        return bundle
+
     class Meta:
         object_class = api_models.Comment
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         # TODO: Make proper authorization, current implementation is for development use only
         authorization = tastypie_authorization.Authorization()
+
+class NotificationResource(resources.MongoEngineResource):
+    comment_message = tastypie_fields.CharField(default='', null=False, blank=True)
+    comment_author = tastypie_fields.CharField(default='', null=False, blank=True)
+
+    def dehydrate_comment_author(self, bundle):
+        return bundle.obj.post.comments[bundle.obj.comment].author
+
+    def dehydrate_comment_message(self, bundle):
+        return bundle.obj.post.comments[bundle.obj.comment].message
+
+    class Meta:
+        queryset = api_models.Notification.objects.all()
+        allowed_methods = ('get')
+        authorization = authorization.NotificationAuthorization()
 
 class ImageAttachmentResource(AuthoredResource):
     image_file = fields.ReferenceField(to='piplmesh.api.resources.UploadedFileResource', attribute='image_file', null=False, full=True)
@@ -74,6 +107,8 @@ class PostResource(AuthoredResource):
 
     def obj_create(self, bundle, request=None, **kwargs):
         bundle = super(PostResource, self).obj_create(bundle, request=request, **kwargs)
+        bundle.obj.subscribers.append(bundle.request.user)
+        bundle.obj.save()
         signals.post_created.send(sender=self, post=bundle.obj, request=request or bundle.request, bundle=bundle)
         return bundle
 

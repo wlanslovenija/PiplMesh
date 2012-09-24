@@ -12,7 +12,7 @@ from django.views import generic as generic_views
 from tastypie import http as tastypie_http
 
 from mongogeneric import detail
-
+import time
 from pushserver.utils import updates
 
 from piplmesh.account import models as account_models
@@ -120,6 +120,26 @@ def send_update_on_new_post(sender, post, request, bundle, **kwargs):
         }, 'application/json')
 
         updates.send_update(HOME_CHANNEL_ID, serialized, True)
+
+@dispatch.receiver(signals.notification_created)
+def send_update_on_new_notification(sender, notification, request, **kwargs):
+    """
+    Sends update to push server when a new notification is created.
+    """
+    # TODO: In the future serialization has to be done automatically using Tastypie
+    serialized = sender.serialize(request, {
+        'type': 'notification',
+        'notification': {
+            'comment_author': notification.post.comments[int(notification.comment)].author,
+            'recipient': notification.recipient.username,
+            'comment': int(notification.comment),
+            'created_time': notification.created_time,
+            'comment_message': notification.post.comments[int(notification.comment)].message,
+            'post': str(notification.post.id),
+            'read': notification.read,
+        },
+    }, 'application/json')
+    updates.send_update(notification.recipient.get_user_channel(), serialized, True)
 
 def panels_collapse(request):
     if request.method == 'POST':
