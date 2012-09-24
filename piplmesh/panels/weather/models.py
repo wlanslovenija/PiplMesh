@@ -26,7 +26,8 @@ SYMBOLS = (
     (22, _("Light rain and thunder")),
     (23, _("Sleet thunder")),
 )
-    
+
+#TODO unique fields  
 class Weather(mongoengine.Document):
     created = mongoengine.DateTimeField(required=True)
     latitude = mongoengine.DecimalField(required=True)
@@ -38,13 +39,13 @@ class Weather(mongoengine.Document):
     }
 
 class Precipitation(Weather):
-    date_from = mongoengine.DateTimeField(required=True, unique_with=('created', 'latitude', 'longitude', 'date_to'))
-    date_to = mongoengine.DateTimeField(required=True, unique_with=('created', 'latitude', 'longitude', 'date_from'))
+    date_from = mongoengine.DateTimeField(required=True)
+    date_to = mongoengine.DateTimeField(required=True)
     precipitation = mongoengine.DecimalField(required=True)
     symbol = mongoengine.IntField(choices=SYMBOLS, required=True)
 
 class State(Weather):
-    at = mongoengine.DateTimeField(required=True, unique_with=('created', 'latitude', 'longitude'))
+    at = mongoengine.DateTimeField(required=True)
     temperature = mongoengine.DecimalField(required=True)
     wind_direction = mongoengine.StringField(required=True)
     wind_angle = mongoengine.DecimalField(required=True)

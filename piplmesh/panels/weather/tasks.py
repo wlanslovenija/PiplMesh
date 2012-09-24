@@ -6,7 +6,7 @@ from lxml import etree, objectify
 
 from piplmesh import nodes
 
-from . import models, weather as weather_functions
+from . import models
 
 source_url = 'http://api.met.no/'
 
@@ -27,7 +27,7 @@ def update_weather():
     """
     
     for node in nodes.get_all_nodes():   
-        weather_object = weather_functions.fetch_data(node.latitude, node.longitude)
+        weather_object = fetch_data(node.latitude, node.longitude)
         for product in weather_object.product.iterchildren():
             if product.attrib['from'] == product.attrib['to']:
                 models.State.objects(

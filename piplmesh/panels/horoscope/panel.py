@@ -58,7 +58,7 @@ class HoroscopePanel(panels.BasePanel):
                 'error_obsolete': True,
             })
             return context
-
+        
         context.update({
             'horoscope_forecast': horoscope.forecast,
             'horoscope_sign': models.HOROSCOPE_SIGNS_DICT[user_sign],

@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from piplmesh import nodes, panels
 
-from . import models, weather
+from . import models
 
 WEATHER_OBSOLETE = 6 # hours
 FORECAST_HOUR = 14 # 14:00 o'clock or 2:00 PM
