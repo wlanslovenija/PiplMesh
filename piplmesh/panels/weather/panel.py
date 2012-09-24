@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 import datetime
 
-from django.utils import translation
+from django.utils import timezone, translation
 from django.utils.translation import ugettext_lazy as _
 
 from piplmesh import nodes, panels
@@ -31,7 +31,7 @@ class WeatherPanel(panels.BasePanel):
         return context
 
 def get_weather_content(latitude, longitude):
-    date = datetime.datetime.now()
+    date = timezone.now()
     for interval in range(0, 3):
         state = models.State.objects(latitude=latitude, longitude=longitude, at__lte=date).order_by('-at').first()
         precipitation = models.Precipitation.objects(latitude=latitude, longitude=longitude, date_from__lte=date, date_to__gte=date).order_by('-date_from').first()
