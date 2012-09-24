@@ -28,6 +28,7 @@ mimeparse==0.1.3
 py-hbpush==0.1.3
 pymongo==2.3
 python-dateutil==1.5
+pytz==2012d
 tornado==2.3
 tweepy==1.9
 wsgiref==0.1.2

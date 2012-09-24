@@ -240,22 +240,25 @@ CELERY_MONGODB_BACKEND_SETTINGS = {
 
 BROKER_URL = 'mongodb://127.0.0.1:27017/celery'
 
+CELERY_ENABLE_UTC = USE_TZ
+CELERY_TIMEZONE = TIME_ZONE
+
 CELERYBEAT_SCHEDULE = {
     'check_online_users': {
         'task': 'piplmesh.frontend.tasks.check_online_users',
         'schedule': datetime.timedelta(seconds=CHECK_ONLINE_USERS_INTERVAL),
         'args': (),
     },
-    'update_horoscope': {
-        'task': 'piplmesh.panels.horoscope.tasks.update_horoscope',
-        'schedule': crontab(hour=CHECK_FOR_NEW_HOROSCOPE),
-        'args': (),
-    },
-    'update_station_info': {
-        'task': 'piplmesh.panels.bicikelj.tasks.update_station_info',
-        'schedule': datetime.timedelta(seconds=POLL_BICIKELJ_INTERVAL),
-        'args': (),
-    },
+#    'update_horoscope': {
+#        'task': 'piplmesh.panels.horoscope.tasks.update_horoscope',
+#        'schedule': crontab(hour=CHECK_FOR_NEW_HOROSCOPE),
+#        'args': (),
+#    },
+#    'update_station_info': {
+#        'task': 'piplmesh.panels.bicikelj.tasks.update_station_info',
+#        'schedule': datetime.timedelta(seconds=POLL_BICIKELJ_INTERVAL),
+#        'args': (),
+#    },
 }
 
 # A sample logging configuration. The only tangible logging
