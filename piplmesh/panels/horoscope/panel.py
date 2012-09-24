@@ -4,6 +4,7 @@ import datetime
 
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
+from django.utils.timezone import utc
 
 from piplmesh import panels
 
@@ -53,7 +54,7 @@ class HoroscopePanel(panels.BasePanel):
             })
             return context
 
-        if datetime.datetime.now() > horoscope.date + datetime.timedelta(days=HOROSCOPE_OBSOLETE):
+        if datetime.datetime.utcnow().replace(tzinfo=utc) > horoscope.date + datetime.timedelta(days=HOROSCOPE_OBSOLETE):
             context.update({
                 'error_obsolete': True,
             })
