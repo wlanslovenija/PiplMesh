@@ -8,8 +8,8 @@ from celery import task
 from pushserver.utils import updates
 
 from piplmesh.account import models
-from piplmesh.frontend import views
 
+HOME_CHANNEL_ID = 'home'
 CHECK_ONLINE_USERS_RECONNECT_TIMEOUT = 2 * settings.CHECK_ONLINE_USERS_INTERVAL
 
 @task.task
@@ -24,7 +24,7 @@ def check_online_users():
             connections__not__in=([], None), # None if field is missing altogether, not__in seems not to be equal to nin
         ).update(set__is_online=True):
             updates.send_update(
-                views.HOME_CHANNEL_ID,
+                HOME_CHANNEL_ID,
                 {
                     'type': 'user_connect',
                     'user': {
@@ -55,7 +55,7 @@ def check_online_users():
             user.save()
 
             updates.send_update(
-                views.HOME_CHANNEL_ID,
+                HOME_CHANNEL_ID,
                 {
                     'type': 'user_disconnect',
                     'user': {
@@ -65,3 +65,7 @@ def check_online_users():
                     },
                 }
             )
+
+@task.task
+def send_update_on_new_post(serialized_update):
+    updates.send_update(HOME_CHANNEL_ID, serialized_update, True)

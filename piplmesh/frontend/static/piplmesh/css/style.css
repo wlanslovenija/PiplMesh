@@ -230,13 +230,12 @@ input.gsc-search-button:hover,
     margin-top: -1px;
     display: none;
     width: 270px;
-    right: 0px;
+    right: 0;
 }
 
-ul.notification_list {
+#notifications_list {
     list-style: none;
-    margin: 0px;
-    
+    margin: 0;
 }
 
 li.notification {

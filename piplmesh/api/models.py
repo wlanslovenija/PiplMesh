@@ -50,12 +50,12 @@ class Notification(mongoengine.Document):
     This class defines document type for notifications.
     """
 
-    created_time = mongoengine.DateTimeField(default=timezone.now, required=True)
+    created_time = mongoengine.DateTimeField(required=True)
     recipient = mongoengine.ReferenceField(account_models.User, required=True)
     read = mongoengine.BooleanField(default=False)
     post = mongoengine.ReferenceField(Post)
 
-    # TODO: This is probably not the best approach
+    # TODO: This is probably not the best approach, https://github.com/wlanslovenija/PiplMesh/issues/299
     comment = mongoengine.IntField()
 
 class UploadedFile(base.AuthoredDocument):
