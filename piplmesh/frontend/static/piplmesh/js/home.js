@@ -143,7 +143,7 @@ function Post(data) {
     var self = this;
     $.extend(self, data);
 
-    function generateHtml() {
+    function createDOM() {
         // TODO: Improve and add other post options
         var delete_link = $('<li/>').append(
             $('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))
@@ -169,16 +169,16 @@ function Post(data) {
     }
 
     self.addToBottom = function () {
-        if (!checkIfPostExists()) {
-            $('.posts').append(generateHtml(data));
-        }
+        if (checkIfPostExists()) return;
+
+        $('.posts').append(createDOM());
     };
 
     self.addToTop = function () {
-        if (!checkIfPostExists()) {
-            // TODO: Animation has to be considered and maybe improved
-            generateHtml(data).prependTo($('.posts')).hide().slideToggle('slow');
-        }
+        if (checkIfPostExists()) return;
+
+        // TODO: Animation has to be considered and maybe improved
+        createDOM(data).prependTo($('.posts')).hide().slideToggle('slow');
     };
 
     self.updateDate = function (dom_element) {
@@ -186,14 +186,79 @@ function Post(data) {
     }
 }
 
-function showLastPosts(offset) {
+function loadPosts(offset) {
     $.getJSON(URLS.post, {
         'limit': POSTS_LIMIT,
         'offset': offset
-    }, function (data) {
-        $(data.objects).each(function (i, post) {
+    }, function (data, textStatus, jqXHR) {
+        $.each(data.objects, function (i, post) {
             new Post(post).addToBottom();
         });
+    });
+}
+
+function Notification(data) {
+    var self = this;
+    $.extend(self, data);
+
+    function createDOM() {
+        var format = gettext("%(author)s commented on post.");
+        var author = interpolate(format, {'author': self.comment.author.username}, true);
+
+        var notification = $('<li/>').addClass('notification').data('notification', self).append(
+            $('<span/>').addClass('notification_element').text(author)
+        ).append(
+            $('<span/>').addClass('notification_message').addClass('notification_element').text(self.comment.message)
+        ).append(
+            $('<span/>').addClass('notification_element').addClass('notification_created_time').text(formatDiffTime(self.created_time))
+        );
+
+        return notification;
+    }
+
+    function checkIfNotificationExists() {
+        return $('.notification').is(function (index) {
+            return $(this).data('notification').id == self.id;
+        });
+    }
+
+    self.add = function () {
+        if (checkIfNotificationExists()) return;
+
+        if (!self.read) {
+            $('#notifications_count').text(parseInt($('#notifications_count').text()) + 1);
+        }
+        $('#notifications_list').prepend(createDOM());
+    };
+
+    self.updateDate = function (dom_element) {
+        $(dom_element).find('.notification_created_time').text(formatDiffTime(self.created_time));
+    }
+}
+
+function loadNotifications() {
+    $.getJSON(URLS.notifications, function (data, textStatus, jqXHR) {
+        $.each(data.objects, function (i, notification) {
+            new Notification(notification).add();
+        });
+    });
+}
+
+// TODO: This is just for testing purposes. It can be base for future development.
+function addComment(comment) {
+    // TODO: Change this for any post
+    var post_url = $('.post').first().data('post').resource_uri;
+
+    $.ajax({
+        type: 'POST',
+        // TODO: Should probably not construct URL like that
+        url: post_url + 'comments/',
+        data: JSON.stringify({'message': comment}),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (data, textStatus, jqXHR) {
+            alert("Comment posted.");
+        }
     });
 }
 
@@ -225,7 +290,7 @@ $(document).ready(function () {
     var input_box_text = $('#post_text').val();
 
     // Shows last updated posts, starting at offset 0, limited by POSTS_LIMIT
-    showLastPosts(0);
+    loadPosts(0);
 
     $('#submit_post').click(function (event) {
         var message = $('#post_text').val();
@@ -273,15 +338,33 @@ $(document).ready(function () {
         if (document.body.scrollHeight - $(this).scrollTop() <= $(this).height()) {
             var last_post = $('.post:last').data('post');
             if (last_post) {
-                showLastPosts(last_post.id);
+                loadPosts(last_post.id);
             }
         }
     });
+
+    // Notifications
+    $('#notifications_count').add('.close_notifications_box').click(function (event) {
+        $('#notifications_box').slideToggle('fast');
+    });
+    // TODO: Just for testing
+    $('#add_comment').click(function (event) {
+        addComment("Test comment");
+    });
+
+    $.updates.registerProcessor('user_channel', 'notification', function (data) {
+        new Notification(data.notification).add();
+    });
+
+    loadNotifications();
 
     // TODO: Improve date updating so that interval is set on each date individually
     setInterval(function () {
         $('.post').each(function (i, post) {
             $(post).data('post').updateDate(this);
+        });
+        $('.notification').each(function (i, notification) {
+            $(notification).data('notification').updateDate(this);
         });
     }, POSTS_DATE_UPDATE_INTERVAL);
 });

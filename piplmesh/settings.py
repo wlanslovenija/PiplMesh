@@ -212,7 +212,7 @@ PUSH_SERVER = {
     'locations': (
         {
             'type': 'subscriber',
-            'url': r'/updates/([^/]+)/',
+            'url': r'/updates/(.+)/',
             'polling': 'long',
             'create_on_get': True,
             'allow_origin': 'http://127.0.0.1:8000',
@@ -221,7 +221,7 @@ PUSH_SERVER = {
         },
         {
             'type': 'publisher',
-            'url': r'/send-update/([^/]+)/',
+            'url': r'/send-update/(.+)/',
         },
     ),
 }
@@ -239,6 +239,9 @@ CELERY_MONGODB_BACKEND_SETTINGS = {
 }
 
 BROKER_URL = 'mongodb://127.0.0.1:27017/celery'
+
+CELERY_ENABLE_UTC = USE_TZ
+CELERY_TIMEZONE = TIME_ZONE
 
 CELERYBEAT_SCHEDULE = {
     'check_online_users': {
