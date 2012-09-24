@@ -1,4 +1,5 @@
 $(document).ready(function (event) {
+    var nodeLocation;
     var mapControls;
     var map;
     var nodeName = $('<p/>').text(node.name).append(' | ');
