@@ -2,10 +2,21 @@ from __future__ import absolute_import
 
 from celery import task
 from datetime import datetime
+from lxml import etree, objectify
 
 from piplmesh import nodes
 
 from . import models, weather as weather_functions
+
+source_url = 'http://api.met.no/'
+
+def fetch_data(latitude, longitude):
+    weather_url = '%sweatherapi/locationforecast/1.8/?lat=%s;lon=%s' % (source_url, latitude, longitude)
+    parser = etree.XMLParser(remove_blank_text=True)
+    lookup = objectify.ObjectifyElementClassLookup()
+    parser.setElementClassLookup(lookup)
+    weather = objectify.parse(weather_url,parser).getroot()
+    return weather
 
 @task.task
 def update_weather():
@@ -18,15 +29,13 @@ def update_weather():
     for node in nodes.get_all_nodes():   
         weather_object = weather_functions.fetch_data(node.latitude, node.longitude)
         for product in weather_object.product.iterchildren():
-            DATE_FROM = datetime.strptime(product.attrib['from'], "%Y-%m-%dT%H:%M:%SZ")
-            DATE_TO = datetime.strptime(product.attrib['to'], "%Y-%m-%dT%H:%M:%SZ")
-            if DATE_FROM == DATE_TO:
+            if product.attrib['from'] == product.attrib['to']:
                 models.State.objects(
-                    created=datetime.strptime(weather_object.attrib['created'], "%Y-%m-%dT%H:%M:%SZ"),
+                    created=datetime.strptime(weather_object.attrib['created'], '%Y-%m-%dT%H:%M:%SZ'),
                     latitude=node.latitude, 
                     longitude=node.longitude,
                     model_name=weather_object.meta.model.attrib['name'],  
-                    at=DATE_FROM
+                    at=datetime.strptime(product.attrib['from'], '%Y-%m-%dT%H:%M:%SZ')
                 ).update(
                     set__temperature=product.location.temperature.attrib['value'],
                     set__wind_direction=product.location.windDirection.attrib['name'],
@@ -43,12 +52,12 @@ def update_weather():
                 )
             else:
                 models.Precipitation.objects(
-                    created=datetime.strptime(weather_object.attrib['created'], "%Y-%m-%dT%H:%M:%SZ"),
+                    created=datetime.strptime(weather_object.attrib['created'], '%Y-%m-%dT%H:%M:%SZ'),
                     latitude=node.latitude, 
                     longitude=node.longitude,
                     model_name=weather_object.meta.model.attrib['name'],
-                    date_from=DATE_FROM,
-                    date_to=DATE_TO
+                    date_from=datetime.strptime(product.attrib['from'], '%Y-%m-%dT%H:%M:%SZ'),
+                    date_to=datetime.strptime(product.attrib['to'], '%Y-%m-%dT%H:%M:%SZ')
                 ).update(
                     set__precipitation=product.location.precipitation.attrib['value'],
                     set__symbol=product.location.symbol.attrib['number'],
