@@ -31,6 +31,19 @@
                     {% user_image %}
                 </li>
                 <li class="username"><a href="{% url "profile" username=user.username %}">{{ user.username }}</a></li>
+                <li>
+                    <div id="notifications_count">0</div>
+                    <div id="notifications_box" class="hide">
+                        <div id="notifications_content">
+                            <ul id="notifications_list"></ul>
+                        </div>
+                        <div class='close_notification_box'>
+                            {# TODO: Remove, only for testing and development #}
+                            <div id="add_comment">Add test comment</div>
+                            Close
+                        </div>
+                   </div>
+                </li>
                 {% if user.is_authenticated %}
                     <li class="last">
                         <form method="post" action="{% url "logout" %}" id="logout_form">

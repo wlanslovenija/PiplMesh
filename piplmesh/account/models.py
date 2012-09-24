@@ -14,6 +14,8 @@ from django.utils.translation import ugettext_lazy as _
 import mongoengine
 from mongoengine.django import auth
 
+import uuid
+
 from . import fields, utils
 from .. import panels
 
@@ -26,6 +28,9 @@ def upper_birthdate_limit():
 
 def lower_birthdate_limit():
     return timezone.now().date() - datetime.timedelta(LOWER_DATE_LIMIT)
+
+def generate_channel_id():
+    return uuid.uuid4()
 
 class Connection(mongoengine.EmbeddedDocument):
     http_if_none_match = mongoengine.StringField()
@@ -62,6 +67,7 @@ class User(auth.User):
     birthdate = fields.LimitedDateTimeField(upper_limit=upper_birthdate_limit, lower_limit=lower_birthdate_limit)
     gender = fields.GenderField()
     language = fields.LanguageField()
+    channel_id = mongoengine.UUIDField(default=generate_channel_id)
 
     facebook_access_token = mongoengine.StringField(max_length=150)
     facebook_profile_data = mongoengine.DictField()
@@ -155,6 +161,14 @@ class User(auth.User):
         else:
             return staticfiles_storage.url(settings.DEFAULT_USER_IMAGE)
 
+    def get_user_channel(self):
+        """
+        User channel is a HTTP push channel dedicated to the user. We make it private by making
+        it unguessable and we cycle it regularly (every time user disconnects from all channels).
+        """
+
+        return "user/%s" % self.channel_id
+ 
     @classmethod
     def create_user(cls, username, email=None, password=None):
         now = timezone.now()

@@ -12,13 +12,15 @@
     <script type="text/javascript">
         /* <![CDATA[ */
         $.updates.subscribe({
-            'home_channel': '{% filter escapejs %}{% channel_url HOME_CHANNEL_ID %}{% endfilter %}'
+            'home_channel': '{% filter escapejs %}{% channel_url HOME_CHANNEL_ID %}{% endfilter %}',
+            'user_channel': '{% filter escapejs %}{% channel_url user.get_user_channel %}{% endfilter %}'
         });
 
         var URLS = {
             'panels_collapse': '{% filter escapejs %}{% url "panels_collapse" %}{% endfilter %}',
             'panels_order': '{% filter escapejs %}{% url "panels_order" %}{% endfilter %}',
-            'post': '{% filter escapejs %}{% url "api_dispatch_list" api_name=API_NAME resource_name="post" %}{% endfilter %}'
+            'post': '{% filter escapejs %}{% url "api_dispatch_list" api_name=API_NAME resource_name="post" %}{% endfilter %}',
+            'notifications': '{% filter escapejs %}{% url "api_dispatch_list" api_name=API_NAME resource_name="notification" %}{% endfilter %}'
         };
         /* ]]> */
     </script>

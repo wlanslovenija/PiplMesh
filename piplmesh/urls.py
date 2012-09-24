@@ -12,11 +12,18 @@ from piplmesh import panels
 # PiplMesh panels auto-discovery
 panels.panels_pool.discover_panels()
 
+# So that we can access resources outside their request handlers
+user_resource = resources.UserResource()
+uploadedfile_resource = resources.UploadedFileResource()
+post_resource = resources.PostResource()
+notification_resource = resources.NotificationResource()
+
 API_NAME = 'v1'
 v1_api = api.Api(api_name=API_NAME)
-v1_api.register(resources.UserResource())
-v1_api.register(resources.UploadedFileResource())
-v1_api.register(resources.PostResource())
+v1_api.register(user_resource)
+v1_api.register(uploadedfile_resource)
+v1_api.register(post_resource)
+v1_api.register(notification_resource)
 
 js_info_dict = {
     'packages': (

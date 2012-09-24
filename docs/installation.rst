@@ -13,12 +13,16 @@ In addition to Python_ the following is required on the system to run PiplMesh:
 * Python virtualenv_ package
 * Python pip_ package (1.0+)
 * MongoDB_ (2.0+)
+* Libxml2_
+* Libxslt_
 
 .. _Python: http://python.org/
 .. _Django-supported: https://docs.djangoproject.com/en/1.4/ref/databases/
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
 .. _pip: http://pypi.python.org/pypi/pip
 .. _MongoDB: http://www.mongodb.org/
+.. _Libxml2: http://www.xmlsoft.org
+.. _Libxslt: http://www.xmlsoft.org/XSLT/
 
 Other prerequisites (Python packages) are installed later.
 
@@ -108,6 +112,26 @@ The following Debian packages are needed:
 * ``python-virtualenv``
 * ``python-pip``
 * ``mongodb``
+* ``libxml2-dev``
+* ``libxslt1-dev``
 
 Be careful about required versions. It could be necessary to use packages from
 Debian testing or backports distribution.
+
+Windows
+^^^^^^^
+
+Some packages from ``requirements.txt`` file cannot be installed automatically,
+so you have to install them manually before running ``pip install -r
+requirements.txt``::
+
+    easy_install --allow-hosts=lxml.de,*.python.org lxml==X.Y
+    pip install pymongo==X.Y --install-option='--no_ext'
+
+Where ``X.Y`` is version of the package found in ``requirements.txt``.
+
+On Windows ``--beat`` argument to ``celeryd`` command is not supported. You
+have to run two daemons instead::
+
+    ./manage.py celeryd --loglevel=info --concurrency=1 --maxtasksperchild=10
+    ./manage.py celerybeat

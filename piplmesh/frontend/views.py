@@ -1,13 +1,16 @@
-import smtplib
+import traceback
 
 from django import dispatch, http, template
 from django.conf import settings
 from django.contrib import messages
 from django.core import mail, urlresolvers
 from django.core.files import storage
+from django.test import client
 from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
 from django.views import generic as generic_views
+
+from mongoengine import signals as mongoengine_signals
 
 from tastypie import http as tastypie_http
 
@@ -17,9 +20,7 @@ from pushserver.utils import updates
 
 from piplmesh.account import models as account_models
 from piplmesh.api import models as api_models, resources, signals
-from piplmesh.frontend import forms
-
-HOME_CHANNEL_ID = 'home'
+from piplmesh.frontend import forms, tasks
 
 class HomeView(generic_views.TemplateView):
     template_name = 'home.html'
@@ -36,7 +37,7 @@ class AboutView(generic_views.TemplateView):
 
 class PrivacyView(generic_views.TemplateView):
     template_name = 'privacy.html'
-      
+
 class ContactView(generic_views.FormView):
     """
     This view checks if all contact data are valid and then sends e-mail to site managers.
@@ -108,18 +109,56 @@ def forbidden_view(request, reason=''):
 @dispatch.receiver(signals.post_created)
 def send_update_on_new_post(sender, post, request, bundle, **kwargs):
     """
-    Sends update to push server when a new post is created.
+    Sends update through push server when a new post is created.
     """
     if post.is_published:
         output_bundle = sender.full_dehydrate(bundle)
         output_bundle = sender.alter_detail_data_to_serialize(request, output_bundle)
 
-        serialized = sender.serialize(request, {
+        serialized_update = sender.serialize(request, {
             'type': 'post_new',
             'post': output_bundle.data,
         }, 'application/json')
 
-        updates.send_update(HOME_CHANNEL_ID, serialized, True)
+        # We send update asynchronously as it could block and we
+        # want REST request to finish quick
+        tasks.send_update_on_new_post.delay(serialized_update)
+
+@mongoengine_signals.post_save.connect_via(sender=api_models.Notification)
+def send_update_on_new_notification(sender, document, created, **kwargs):
+    """
+    Sends update through push server to the user when a new notification is created.
+
+    Important: This signal should be processed only asynchronously (background task) as
+    it can block. So currently it is assumed that notification documents are created
+    only in background tasks.
+    """
+
+    notification = document
+
+    def test_if_running_as_celery_worker():
+        for filename, line_number, function_name, text in traceback.extract_stack():
+            if 'celery' in filename:
+                return True
+        return False
+
+    assert test_if_running_as_celery_worker()
+
+    # Dummy request object, it is used in serialization to get JSONP callback name, but we
+    # want always just JSON, so we can create dummy object and hopefuly get away with it
+    request = client.RequestFactory().request()
+
+    from piplmesh import urls
+
+    bundle = urls.notification_resource.build_bundle(obj=notification, request=request)
+    output_bundle = urls.notification_resource.full_dehydrate(bundle)
+    output_bundle = urls.notification_resource.alter_detail_data_to_serialize(request, output_bundle)
+
+    serialized = urls.notification_resource.serialize(request, {
+        'type': 'notification',
+        'notification': output_bundle.data,
+    }, 'application/json')
+    updates.send_update(notification.recipient.get_user_channel(), serialized, True)
 
 def panels_collapse(request):
     if request.method == 'POST':
