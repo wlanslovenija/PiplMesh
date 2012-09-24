@@ -67,7 +67,7 @@ class User(auth.User):
     birthdate = fields.LimitedDateTimeField(upper_limit=upper_birthdate_limit, lower_limit=lower_birthdate_limit)
     gender = fields.GenderField()
     language = fields.LanguageField()
-    channel_id = mongoengine.UUIDField(binary=False, default=generate_channel_id)
+    channel_id = mongoengine.UUIDField(default=generate_channel_id)
 
     facebook_access_token = mongoengine.StringField(max_length=150)
     facebook_profile_data = mongoengine.DictField()
