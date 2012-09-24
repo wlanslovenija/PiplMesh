@@ -21,6 +21,15 @@ $(document).ready(function () {
             $('.drop_down_login_options').hide();
         }
     );
+
+    var max_width = 0;
+    $('.field label.main').each(function (index, label) {
+        if ($(this).width() > max_width) {
+            max_width = $(this).width();
+		}
+    });
+    $('.field label.main').width(max_width);
+    $('.align_to_label_width').css('margin-left', max_width);
 });
 
 $(document).ajaxSend(function(event, xhr, settings) {

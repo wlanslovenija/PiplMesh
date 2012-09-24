@@ -470,7 +470,8 @@ def user_login_message(sender, request, user, **kwargs):
     Shows success login message.
     """
 
-    messages.success(request, _("You have been successfully logged in."))
+    # We fail silently because in tests messages middleware is not setup early enough
+    messages.success(request, _("You have been successfully logged in."), fail_silently=True)
 
 @dispatch.receiver(auth_signals.user_logged_out)
 def user_logout_message(sender, request, user, **kwargs):
@@ -478,4 +479,5 @@ def user_logout_message(sender, request, user, **kwargs):
     Shows success logout message.
     """
 
-    messages.success(request, _("You have been successfully logged out."))
+    # We fail silently because in tests messages middleware is not setup early enough
+    messages.success(request, _("You have been successfully logged out."), fail_silently=True)

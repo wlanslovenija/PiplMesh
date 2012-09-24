@@ -1,10 +1,11 @@
-import urlparse
+import time, urlparse
 
 from django.core import urlresolvers
 from django.test import client, utils
 from django.utils import simplejson as json
 
-from piplmesh import test_runner
+from tastypie_mongoengine import test_runner
+
 from piplmesh.account import models as account_models
 
 @utils.override_settings(DEBUG=True)
@@ -62,7 +63,10 @@ class BasicTest(test_runner.MongoEngineTestCase):
 
         post_created_time = response['created_time']
         post_updated_time = response['updated_time']
-        
+
+        # Delay so next update will be for sure different
+        time.sleep(1)
+
         # Test authorization
         response = self.client2.get(post_uri, content_type='application/json')
         self.assertEqual(response.status_code, 404)
@@ -96,6 +100,9 @@ class BasicTest(test_runner.MongoEngineTestCase):
         self.assertNotEqual(response['updated_time'], post_updated_time)
 
         post_updated_time = response['updated_time']
+
+        # Delay so next update will be for sure different
+        time.sleep(1)
 
         # Publishing a post
 

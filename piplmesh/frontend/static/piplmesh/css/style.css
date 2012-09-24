@@ -61,6 +61,7 @@ button span {
 form input[type="submit"], form input[type="reset"] {
     border: 1px solid gray;
     font-weight: bold;
+    width: auto;
     min-width: 105px;
     padding: 5px;
     cursor: pointer;
@@ -85,11 +86,15 @@ form input[type="submit"], form input[type="reset"] {
     border: none;
 }
 
-.form_fields .field label {
+.form_fields .field label.main {
     float: left;
+    min-width: 75px;
     padding-right: 25px;
-    min-width: 150px;
     text-align: right;
+}
+
+.align_to_label_width {
+    padding-left: 25px;
 }
 
 .input_invalid {
@@ -111,7 +116,6 @@ form input[type="submit"], form input[type="reset"] {
 }
 
 .form_fields .errorlist {
-    margin-left: 175px;
     list-style: disc;
 }
 
@@ -150,14 +154,6 @@ input.gsc-search-button:hover,
 }
 
 /* Styles common to different forms and form elements */
-.buttons,
-.contact_comment p,
-.login h1,
-.registration h1,
-.contact_form h1 {
-    margin-left: 175px;
-}
-
 .form_fields .field,
 .buttons {
     margin-bottom: 1.5em;
@@ -192,19 +188,72 @@ input.gsc-search-button:hover,
     right: 0; 
 }
 
-#header .user ul { 
+#header .user > ul { 
     font-size: 10px;
     list-style: none;
     margin: 0;
     text-align: right;
 }
 
-#header .user li {
+#header .user > li {
     float: left;
     border-right: 1px solid #d7d7d7;
     display: inline;
     padding: 0 .75em;
     white-space: nowrap;
+}
+
+#notifications_count {
+    border: 1px solid #999;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.close_notification_box {
+    background: #eee;
+    clear: both;
+    cursor: pointer;
+}
+
+.notification_element {
+    display: block;
+}
+
+.notification_message {
+    font-size: 1.1em;
+}
+
+#notifications_box {
+    border: 1px solid #999;
+    background: #ffffff;
+    position: absolute;
+    margin-top: -1px;
+    display: none;
+    width: 270px;
+    right: 0;
+}
+
+#notifications_list {
+    list-style: none;
+    margin: 0;
+}
+
+li.notification {
+    border-bottom: 1px solid #68AE2C;
+    text-align: left;
+    padding: 0 4px 0 4px;
+    margin-left: -40px;
+    cursor: pointer;
+    width: 262px;
+}
+
+li.notification:hover {
+    background-color: #e5f5d5;
+}
+
+.close_notification_box {
+    text-align: right;
+    padding-right: 5px;	
 }
 
 #header .user li.last { 
@@ -322,6 +371,14 @@ input.gsc-search-button {
     width: 500px;
 }
 
+#email_confirmation .buttons {
+    margin-left: 0;
+}
+
+#email_confirmation .faq {
+    width: 500px;
+}
+
 /* ---------------- OTHER LOGIN BUTTON ------------------- */
 .google_login_button,
 .foursquare_login_button,
@@ -430,14 +487,6 @@ button.browserid-signin:hover {
 }
 
 /* --------------------- LOGIN ------------------------ */
-.login {
-    width: 640px;
-}
-
-.registration {
-    width: 450px;
-}
-
 #other_login_options p {
     margin-top: 0;
 }
@@ -456,6 +505,7 @@ button.browserid-signin:hover {
 .form_fields,
 #other_login_options ul {
     margin: 0;
+    margin-top: 1em;
     padding: 0;
 }
 
@@ -543,61 +593,68 @@ button.browserid-signin:hover {
 }
 
 /* --------------------- PROFILE ------------------------ */
-#profile {
-    margin-left: 50%;
-    margin-top: 4%;
+.account,
+#menu_list,
+#picture,
+.profile {
     display: inline-block;
-    text-align: center;
+    vertical-align: top;
 }
 
 #menu_list {
-    text-align: left;
-    display: inline-block;
-    position: absolute;
-    margin-top: 5%;
+    list-style: none;
+    padding: 0;
+    margin-top: 0;
 }
 
-#picture {
-    margin-left: 30%;
-    margin-top: 8%;
-    text-align: left;
-    display: inline-block;
-    position: absolute;
+#menu_list li a {
+    display: block;
+    background-color: #68AE2C;
+    background-image: -moz-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0.2) 100%);
+    background-image: -webkit-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0.2) 100%);
+    background-image: -ms-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0.2) 100%);
+    background-image: -o-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0.2) 100%);
+    border-radius: 3px;
+    border-bottom-color: #999999;
+    border-right-color: #999999;
+    border-top-color: #CCCCCC;
+    border-left-color: #CCCCCC;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 1px 1px 0 #E7E7E7, 0 1px 0 #D7D7D7 inset, 0 -1px 0 #A2A2A2 inset;
+    color: #FFFFFF;
+    margin-bottom: 0.5em;
+    padding: 5px 0;
+    text-align: center;
+    width: 155px;
 }
 
-#current_item {
+#menu_list li.current_item a,
+#menu_list li a:hover {
+    background-image: -moz-linear-gradient(rgba(255,255,255,0.4) 10%, rgba(200,200,200,0.1) 100%);
+    background-image: -webkit-linear-gradient(rgba(255,255,255,0.4) 10%, rgba(200,200,200,0.1) 100%);
+    background-image: -ms-linear-gradient(rgba(255,255,255,0.4) 10%, rgba(200,200,200,0.1) 100%);
+    background-image: -o-linear-gradient(rgba(255,255,255,0.4) 10%, rgba(200,200,200,0.1) 100%);
+}
+
+#menu_list li.current_item a {
     text-decoration: underline;
-    color: #68AE2C;
+}
+
+#picture,
+#menu_list {
+    margin-right: 20px;
 }
 
 /* --------------------- ACCOUNT ------------------------ */
-#password_change {
-    margin-top: 3%;
-    margin-left: auto;
-    margin-right: auto;
-    width: 42%;
-}
-
-.button_account {
-    padding-top: 3px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 70%;
-}
-
-.button_account input {
-    height: 25px;
-    width: 100px;
-}
-
-.button_account ul {
-    list-style-type: none;
-    overflow: hidden;
-}
-
 .user_image {
     width: 50px;
     height: 50px;
+}
+
+.profile h1,
+.account h1 {
+    margin-top: 0;
 }
 
 /* ------------------ PANELS ---------------------------- */
@@ -738,8 +795,15 @@ button.browserid-signin:hover {
     width: 300px;
 }
 
-.contact_comment p {
-    margin-left: 100px;
+/* ------------------ ABOUT ---------------------------- */
+.contributors img {
+    width: 50px;
+    height: 50px;
+}
+
+.contributors ul {
+    list-style: none;
+    margin-left: 10px;
 }
 
 /* ------------------ DROP-DOWN LOGIN ---------------------------- */

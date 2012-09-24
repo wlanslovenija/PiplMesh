@@ -2,12 +2,12 @@
 
 {% load future i18n staticfiles %}
 
+{% block title %}{% trans "Registration" %}{% endblock %}
+
 {% block js %}
     {{ block.super }}
     <script src="{% static "piplmesh/js/registration.js" %}" type="text/javascript"></script>
 {% endblock %}
-
-{% block title %}{% trans "Registration" %}{% endblock %}
 
 {% block content %}
     <div class="registration">
