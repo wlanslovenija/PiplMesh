@@ -133,5 +133,5 @@ Where ``X.Y`` is version of the package found in ``requirements.txt``.
 On Windows ``--beat`` argument to ``celery worker`` command is not supported.
 You have to run two daemons instead::
 
-    ./manage.py celery worker --loglevel=info --concurrency=1 --maxtasksperchild=10
+    ./manage.py celery worker --loglevel=info --concurrency=4 --maxtasksperchild=10
     ./manage.py celery beat

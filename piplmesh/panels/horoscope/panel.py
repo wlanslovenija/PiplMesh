@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 import datetime
 
-from django.utils import translation
+from django.utils import timezone, translation
 from django.utils.translation import ugettext_lazy as _
 
 from piplmesh import panels
@@ -53,7 +53,7 @@ class HoroscopePanel(panels.BasePanel):
             })
             return context
 
-        if datetime.datetime.now() > horoscope.date + datetime.timedelta(days=HOROSCOPE_OBSOLETE):
+        if timezone.now() > horoscope.date + datetime.timedelta(days=HOROSCOPE_OBSOLETE):
             context.update({
                 'error_obsolete': True,
             })
