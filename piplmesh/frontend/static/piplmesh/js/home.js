@@ -250,13 +250,13 @@ function addComment(comment) {
     var post_url = $('.post').first().data('post').resource_uri;
 
     $.ajax({
-        type: 'POST',
+        'type': 'POST',
         // TODO: Should probably not construct URL like that
-        url: post_url + 'comments/',
-        data: JSON.stringify({'message': comment}),
-        contentType: 'application/json',
-        dataType: 'json',
-        success: function (data, textStatus, jqXHR) {
+        'url': post_url + 'comments/',
+        'data': JSON.stringify({'message': comment}),
+        'contentType': 'application/json',
+        'dataType': 'json',
+        'success': function (data, textStatus, jqXHR) {
             alert("Comment posted.");
         }
     });

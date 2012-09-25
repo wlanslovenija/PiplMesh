@@ -24,7 +24,7 @@ $(document).ready(function () {
 
     // Locations
     $('#id_locations').change(function (event) {
-        $(this).closest("form").submit();
+        $(this).closest('form').submit();
     });
 
     var max_width = 0;
