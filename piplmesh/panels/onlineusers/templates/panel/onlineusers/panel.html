@@ -1,6 +1,6 @@
 {% extends "panel/panel.html" %}
 
-{% load i18n static sekizai_tags %}
+{% load i18n staticfiles sekizai_tags %}
 
 {% block content %}
     {% addtoblock "css" %}<link href="{% static "piplmesh/panel/onlineusers/panel.css" %}" rel="stylesheet" type="text/css" media="screen" />{% endaddtoblock %}
@@ -23,7 +23,9 @@
     {% endaddtoblock %}
     <ul id="userlist"></ul>
     <form action="" id="usersearch">
-        <img src="{% static "piplmesh/panel/onlineusers/magnifying_glass.png" %}" alt="{% trans "Search users" %}" />
-        <input type="text" id="search_users" />
+        <div>
+            <img src="{% static "piplmesh/panel/onlineusers/magnifying_glass.png" %}" alt="{% trans "Search users" %}" />
+            <input type="text" id="search_users" />
+        </div>
     </form>
 {% endblock %}

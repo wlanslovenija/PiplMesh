@@ -21,11 +21,13 @@ where the form should redirect after submission.
         {% if form.fields %}
             <ul class="form_fields">
                 {% for field in form %}
-                    <li class="field_error">
-                        {{ field.errors }}
-                    </li>
+                    {% if field.errors %}
+                        <li class="field_error align_to_label_width">
+                            {{ field.errors }}
+                        </li>
+                    {% endif %}
                     <li class="field">
-                        <label for="{{ field.id_for_label }}">
+                        <label for="{{ field.id_for_label }}" class="main">
                             {% if field.field.required %}
                                 <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
                             {% else %}
@@ -37,5 +39,5 @@ where the form should redirect after submission.
                 {% endfor %}
             </ul>
         {% endif %}
-        <div class="buttons"><input type="submit" value="{{ form_submit }}" /></div>
+        <div class="buttons align_to_label_width"><input type="submit" value="{{ form_submit }}" /></div>
     </form>

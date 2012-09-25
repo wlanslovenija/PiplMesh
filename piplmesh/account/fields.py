@@ -1,6 +1,7 @@
 import datetime
 
 from django.conf import settings
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 import mongoengine
@@ -31,9 +32,11 @@ def limit_date(value, lower_limit, upper_limit, error):
         # If one object doesn't contain time (is date type), convert the other one to date object
         if not isinstance(tmp_value, datetime.datetime) or not isinstance(tmp_upper_limit, datetime.datetime):
             if isinstance(tmp_upper_limit, datetime.datetime):
-                tmp_upper_limit = tmp_upper_limit.date()
+                current_timezone = timezone.get_current_timezone()
+                tmp_upper_limit = current_timezone.normalize(tmp_upper_limit.astimezone(current_timezone)).date()
             elif isinstance(tmp_value, datetime.datetime):
-                tmp_value = tmp_value.date()
+                current_timezone = timezone.get_current_timezone()
+                tmp_value = current_timezone.normalize(tmp_value.astimezone(current_timezone)).date()
 
         if tmp_value > tmp_upper_limit:
             error('bounds')
@@ -50,9 +53,11 @@ def limit_date(value, lower_limit, upper_limit, error):
         # If one object doesn't contain time (is date type), convert the other one to date object
         if not isinstance(tmp_value, datetime.datetime) or not isinstance(tmp_lower_limit, datetime.datetime):
             if isinstance(tmp_lower_limit, datetime.datetime):
-                tmp_lower_limit = tmp_lower_limit.date()
+                current_timezone = timezone.get_current_timezone()
+                tmp_lower_limit = current_timezone.normalize(tmp_lower_limit.astimezone(current_timezone)).date()
             elif isinstance(tmp_value, datetime.datetime):
-                tmp_value = tmp_value.date()
+                current_timezone = timezone.get_current_timezone()
+                tmp_value = current_timezone.normalize(tmp_value.astimezone(current_timezone)).date()
 
         if tmp_value < tmp_lower_limit:
             error('bounds')

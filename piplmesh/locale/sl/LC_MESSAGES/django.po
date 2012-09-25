@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
-"Report-Msgid-Bugs-To: https://github.com/wlanslovenija/PiplMesh\n"
-"POT-Creation-Date: 2012-06-11 00:22+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-25 09:50-0700\n"
 "PO-Revision-Date: 2012-05-18 12:29+0100\n"
 "Last-Translator: Martin Jakomin <martin.jakomin@gmail.com>\n"
 "Language-Team: \n"
@@ -17,11 +17,11 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
 "%100==4 ? 2 : 3)\n"
 
-#: settings.py:45
+#: settings.py:47
 msgid "Slovenian"
 msgstr "Slovenščina"
 
-#: settings.py:46
+#: settings.py:48
 msgid "English"
 msgstr "Angleščina"
 
@@ -144,11 +144,11 @@ msgstr "Tvoj račun je bil uspešno posodobljen."
 msgid "Your password has been successfully changed."
 msgstr "Tvoje geslo je bilo uspešno posodobljeno."
 
-#: account/views.py:348
+#: account/views.py:350
 msgid "Confirmation e-mail has been sent to your e-mail address."
 msgstr "Potrditveni e-mail je bil poslan na tvoj e-mail naslov."
 
-#: account/views.py:364
+#: account/views.py:366
 msgid "You have successfully confirmed your e-mail address."
 msgstr "Uspešno si potrdil svoj e-mail naslov."
 
@@ -217,8 +217,8 @@ msgid ""
 "Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s day."
 msgid_plural ""
 "Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s days."
-msgstr[0] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
-msgstr[1] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dan."
+msgstr[0] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dan."
+msgstr[1] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dneva."
 msgstr[2] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
 msgstr[3] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
 
@@ -293,7 +293,7 @@ msgstr ""
 "si ga pozabil/a ali izgubil/a."
 
 #: account/templates/user/login.html:5 account/templates/user/login.html:12
-#: frontend/templates/header.html:45
+#: frontend/templates/header.html:46
 msgid "Login"
 msgstr "Prijavi se"
 
@@ -315,7 +315,7 @@ msgstr "Google prijava"
 
 #: account/templates/user/login.html:45
 #: account/templates/user/registration.html:14
-#: frontend/templates/header.html:46
+#: frontend/templates/header.html:47
 msgid "Register"
 msgstr "Registriraj se"
 
@@ -334,6 +334,18 @@ msgstr "Slika uporabnika"
 #: frontend/debug.py:6
 msgid "File"
 msgstr "Datoteka"
+
+#: frontend/forms.py:10
+msgid "Subject"
+msgstr ""
+
+#: frontend/forms.py:11
+msgid "Your e-mail address"
+msgstr "Tvoj e-mail naslov"
+
+#: frontend/views.py:49
+msgid "Thank you. Your message has been successfully sent."
+msgstr "Hvala. Tvoje sporočilo je bilo uspešno poslano."
 
 #: frontend/templates/403.html:5 frontend/templates/403.html.py:10
 msgid "403 Forbidden"
@@ -372,6 +384,29 @@ msgstr "404 Ne obstaja"
 msgid "The page you requested cannot be found."
 msgstr "Željena stran ne obstaja."
 
+#: frontend/templates/about.html:5 frontend/templates/about.html.py:8
+msgid "About"
+msgstr ""
+
+#: frontend/templates/contact.html:5 frontend/templates/contact.html.py:9
+msgid "Contact"
+msgstr ""
+
+#: frontend/templates/contact.html:10
+msgid "Send"
+msgstr ""
+
+#: frontend/templates/contact.html:17
+#, python-format
+msgid ""
+"If you have found a bug or have any other technical issue with the site, "
+"please use <a href=\"https://github.com/wlanslovenija/PiplMesh/issues?"
+"state=open\">GitHub to report it</a>. This site is developed and run as an "
+"open source project and all work is done voluntarily, so you are very "
+"welcome to help us make it even better. See <a href=\"%(about_url)s\">about "
+"page</a> for more information."
+msgstr ""
+
 #: frontend/templates/footer.html:6
 msgid "node database"
 msgstr "baza točk"
@@ -384,15 +419,23 @@ msgstr "razvoj"
 msgid "growing"
 msgstr "rast"
 
+#: frontend/templates/footer.html:9
+msgid "contact"
+msgstr ""
+
+#: frontend/templates/footer.html:9
+msgid "about"
+msgstr ""
+
 #: frontend/templates/gravatar.html:3
 msgid "User picture"
 msgstr "Slika uporabnika"
 
-#: frontend/templates/header.html:20
+#: frontend/templates/header.html:21
 msgid "See your query results on "
 msgstr "Poglej zadetke na "
 
-#: frontend/templates/header.html:40
+#: frontend/templates/header.html:41
 msgid "Logout"
 msgstr "Odjava"
 
@@ -408,6 +451,14 @@ msgstr ""
 #: frontend/templates/outside.html:11
 msgid "Send my current location"
 msgstr "Pošlji mojo trenutno lokacijo"
+
+#: frontend/templates/posts.html:3
+msgid "submit"
+msgstr "pošlji"
+
+#: frontend/templates/posts.html:8
+msgid "Write a post..."
+msgstr "Napiši sporočilo ..."
 
 #: frontend/templates/search.html:5
 msgid "Search"
@@ -459,6 +510,80 @@ msgstr "Facebook povezava"
 
 #: panels/dummy/panel.py:11
 msgid "Dummy panel"
+msgstr ""
+
+#: panels/horoscope/models.py:7
+msgid "Aries"
+msgstr ""
+
+#: panels/horoscope/models.py:8
+msgid "Pisces"
+msgstr ""
+
+#: panels/horoscope/models.py:9
+msgid "Taurus"
+msgstr ""
+
+#: panels/horoscope/models.py:10
+msgid "Gemini"
+msgstr ""
+
+#: panels/horoscope/models.py:11
+msgid "Cancer"
+msgstr ""
+
+#: panels/horoscope/models.py:12
+msgid "Leo"
+msgstr ""
+
+#: panels/horoscope/models.py:13
+msgid "Virgo"
+msgstr ""
+
+#: panels/horoscope/models.py:14
+msgid "Libra"
+msgstr ""
+
+#: panels/horoscope/models.py:15
+msgid "Scorpio"
+msgstr ""
+
+#: panels/horoscope/models.py:16
+msgid "Sagittarius"
+msgstr ""
+
+#: panels/horoscope/models.py:17
+msgid "Capricorn"
+msgstr ""
+
+#: panels/horoscope/models.py:18
+msgid "Aquarius"
+msgstr ""
+
+#: panels/horoscope/panel.py:19
+msgid "Today's horoscope"
+msgstr ""
+
+#: panels/horoscope/templates/panel/horoscope/panel.html:10
+msgid "Please, set your birthdate."
+msgstr ""
+
+#: panels/horoscope/templates/panel/horoscope/panel.html:12
+msgid "Horoscope is unavailable in your language."
+msgstr ""
+
+#: panels/horoscope/templates/panel/horoscope/panel.html:14
+msgid "Horoscope data is temporarily unavailable."
+msgstr ""
+
+#: panels/horoscope/templates/panel/horoscope/panel.html:18
+#, python-format
+msgid "Date: %(date)s"
+msgstr ""
+
+#: panels/horoscope/templates/panel/horoscope/panel.html:19
+#, python-format
+msgid "Source: <a href=\"%(url)s\">%(url_name)s</a>"
 msgstr ""
 
 #: panels/map/panel.py:8

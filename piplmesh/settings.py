@@ -7,12 +7,14 @@ import datetime, os
 MONGO_DATABASE_NAME = 'PiplMesh'
 
 import mongoengine
-mongoengine.connect(MONGO_DATABASE_NAME)
+mongoengine.connect(MONGO_DATABASE_NAME, tz_aware=True)
 
 settings_dir = os.path.abspath(os.path.dirname(__file__))
 
 import djcelery
 djcelery.setup_loader()
+
+from celery.task.schedules import crontab
 
 # Dummy function, so that "makemessages" can find strings which should be translated.
 _ = lambda s: s
@@ -36,6 +38,7 @@ MANAGERS = ADMINS
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = 'Europe/Ljubljana'
+USE_TZ = True
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -44,6 +47,10 @@ LANGUAGE_CODE = 'sl'
 LANGUAGES = (
     ('sl', _('Slovenian')),
     ('en', _('English')),
+)
+
+LOCALE_PATHS = (
+    os.path.join(settings_dir, 'locale'),
 )
 
 URL_VALIDATOR_USER_AGENT = 'Django'
@@ -125,6 +132,8 @@ EMAIL_SUBJECT_PREFIX = '[PiplMesh] '
 DEFAULT_FROM_EMAIL = 'webmaster@localhost'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -142,16 +151,17 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
     'sekizai.context_processors.sekizai',
+    'django_browserid.context_processors.browserid_form',
     'piplmesh.frontend.context_processors.global_vars',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'piplmesh.account.middleware.LazyUserMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     'piplmesh.account.middleware.UserBasedLocaleMiddleware',
     'piplmesh.frontend.middleware.NodesMiddleware',
 )
@@ -175,6 +185,7 @@ INSTALLED_APPS = (
     'piplmesh.nodes',
     'piplmesh.utils',
     'piplmesh.panels',
+    'piplmesh.panels.horoscope', # To load manage.py command
 
     'django.contrib.messages',
     'django.contrib.sessions',
@@ -186,6 +197,7 @@ INSTALLED_APPS = (
     'tastypie_mongoengine',
     'sekizai',
     'missing',
+    'django_browserid',
 )
 
 PUSH_SERVER = {
@@ -200,7 +212,7 @@ PUSH_SERVER = {
     'locations': (
         {
             'type': 'subscriber',
-            'url': r'/updates/([^/]+)/',
+            'url': r'/updates/(.+)/',
             'polling': 'long',
             'create_on_get': True,
             'allow_origin': 'http://127.0.0.1:8000',
@@ -209,12 +221,14 @@ PUSH_SERVER = {
         },
         {
             'type': 'publisher',
-            'url': r'/send-update/([^/]+)/',
+            'url': r'/send-update/(.+)/',
         },
     ),
 }
 
-CHECK_ONLINE_USERS_INTERVAL = 10
+CHECK_ONLINE_USERS_INTERVAL = 10 # seconds
+CHECK_FOR_NEW_HOROSCOPE = 6 # am every day
+POLL_BICIKELJ_INTERVAL = 60 # seconds
 
 CELERY_RESULT_BACKEND = 'mongodb'
 CELERY_MONGODB_BACKEND_SETTINGS = {
@@ -224,21 +238,25 @@ CELERY_MONGODB_BACKEND_SETTINGS = {
     'taskmeta_collection': 'celery_taskmeta',
 }
 
-BROKER_BACKEND = 'mongodb'
-BROKER_HOST = 'localhost'
-BROKER_PORT = 27017
-BROKER_USER = ''
-BROKER_PASSWORD = ''
-BROKER_VHOST = 'celery'
+BROKER_URL = 'mongodb://127.0.0.1:27017/celery'
 
-CELERY_IMPORTS = (
-    'piplmesh.frontend.tasks',
-)
+CELERY_ENABLE_UTC = USE_TZ
+CELERY_TIMEZONE = TIME_ZONE
 
 CELERYBEAT_SCHEDULE = {
     'check_online_users': {
         'task': 'piplmesh.frontend.tasks.check_online_users',
         'schedule': datetime.timedelta(seconds=CHECK_ONLINE_USERS_INTERVAL),
+        'args': (),
+    },
+    'update_horoscope': {
+        'task': 'piplmesh.panels.horoscope.tasks.update_horoscope',
+        'schedule': crontab(hour=CHECK_FOR_NEW_HOROSCOPE),
+        'args': (),
+    },
+    'update_station_info': {
+        'task': 'piplmesh.panels.bicikelj.tasks.update_station_info',
+        'schedule': datetime.timedelta(seconds=POLL_BICIKELJ_INTERVAL),
         'args': (),
     },
 }
@@ -276,10 +294,11 @@ AUTHENTICATION_BACKENDS = (
     'piplmesh.account.backends.TwitterBackend',
     'piplmesh.account.backends.FoursquareBackend',
     'piplmesh.account.backends.GoogleBackend',
+    'piplmesh.account.backends.BrowserIDBackend',
     'piplmesh.account.backends.LazyUserBackend',
 )
 
-TEST_RUNNER = 'piplmesh.test_runner.MongoEngineTestSuiteRunner'
+TEST_RUNNER = 'tastypie_mongoengine.test_runner.MongoEngineTestSuiteRunner'
 TEST_RUNNER_FILTER = (
     'piplmesh.',
 )
@@ -330,3 +349,6 @@ SEARCH_ENGINE_UNIQUE_ID = '003912915932446183218:zeq20qye9oa'
 DEFAULT_USER_IMAGE = 'piplmesh/images/unknown.png'
 
 CSRF_FAILURE_VIEW = 'piplmesh.frontend.views.forbidden_view'
+
+# We are using rfc-2822 because it's better supported when parsing dates in JavaScript
+TASTYPIE_DATETIME_FORMATTING = 'rfc-2822'

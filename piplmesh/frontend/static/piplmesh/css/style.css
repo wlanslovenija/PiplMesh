@@ -1,10 +1,17 @@
+html {
+    height: 100%;
+} 
+
 body {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 13px;
     background: url('../images/background.png') repeat-x top left;
     color: #000000;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    min-width: 840px;
+    height: 100%;
 }
 
 a {
@@ -24,6 +31,10 @@ a img {
     border: none;
 }
 
+h1 {
+    margin: 1em 0 0.75em 0;
+}
+
 /* Disables 3d push effect on button (IE) */
 button {
     position: relative;
@@ -37,14 +48,20 @@ button span {
 .hidden {
     visibility: hidden;
 }
+
 .gravatar {
     border: 0px;
+}
+
+.hand {
+    cursor: pointer;
 }
 
 /* -------------------- FORMS --------------------- */
 form input[type="submit"], form input[type="reset"] {
     border: 1px solid gray;
     font-weight: bold;
+    width: auto;
     min-width: 105px;
     padding: 5px;
     cursor: pointer;
@@ -52,14 +69,7 @@ form input[type="submit"], form input[type="reset"] {
 
 .form_fields {
     list-style-type: none;
-}
-
-.form_fields .field {
-    margin: 0.1em 0 0.1em 0;
-    padding: 0.2em 0.3em;
-    clear: left;
-    margin-left: 13em;
-    min-height: 2em;
+    padding-left: 0;
 }
 
 .form_fields .field input {
@@ -67,16 +77,24 @@ form input[type="submit"], form input[type="reset"] {
     border: 1px solid #AFAFAF;
 }
 
+.form_fields .field input:focus {
+    border-color: #666666;
+}
+
 .form_fields .field input[type="radio"], input[type="checkbox"] {
     width: auto;
     border: none;
 }
 
-.form_fields .field label {
+.form_fields .field label.main {
     float: left;
-    width: 16em;
-    padding-right: 2em;
-    margin-left: -13em;
+    min-width: 75px;
+    padding-right: 25px;
+    text-align: right;
+}
+
+.align_to_label_width {
+    padding-left: 25px;
 }
 
 .input_invalid {
@@ -88,26 +106,57 @@ form input[type="submit"], form input[type="reset"] {
 }
 
 /* Styling nested lists such as radio buttons */
-.form_fields .field ul {
-    padding-left: 0;
-    margin-left: 18em;
-}
-
 .form_fields .field ul li {
     display: inline;
 }
 
 .errorlist {
     color: #FF0000;
-    padding: 0.3em;
+    padding: 0.3em 0 0.3em 1em;
 }
 
 .form_fields .errorlist {
-    margin-left: 19em;
+    list-style: disc;
 }
 
 .form_fields .errorlist li {
     text-align: left;
+}
+
+input.gsc-search-button,
+.buttons input {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: transparent;
+    background-image: -moz-linear-gradient(#F1F1F1, #DFDFDF);
+    background-image: -ms-linear-gradient(#F1F1F1, #DFDFDF);
+    background-image: -webkit-linear-gradient(#F1F1F1, #DFDFDF);
+    background-image: -o-linear-gradient(#F1F1F1, #DFDFDF);
+    background-origin: padding-box;
+    background-position: 0 0;
+    border-radius: 3px;
+    border-bottom-color: #999999;
+    border-right-color: #999999;
+    border-top-color: #CCCCCC;
+    border-left-color: #CCCCCC;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 1px 1px 0 #E7E7E7, 0 1px 0 #FCFCFC inset, 0 -1px 0 #D7D7D7 inset;
+    color: #000000;
+}
+
+input.gsc-search-button:hover,
+.buttons input:hover {
+    background-image: -moz-linear-gradient(#F0F0F0, #D0D0D0);
+    background-image: -ms-linear-gradient(#F0F0F0, #D0D0D0);
+    background-image: -webkit-linear-gradient(#F0F0F0, #D0D0D0);
+    background-image: -o-linear-gradient(#F0F0F0, #D0D0D0);
+}
+
+/* Styles common to different forms and form elements */
+.form_fields .field,
+.buttons {
+    margin-bottom: 1.5em;
 }
 
 /* -------------------- HEADER --------------------- */
@@ -139,19 +188,72 @@ form input[type="submit"], form input[type="reset"] {
     right: 0; 
 }
 
-#header .user ul { 
+#header .user > ul { 
     font-size: 10px;
     list-style: none;
     margin: 0;
     text-align: right;
 }
 
-#header .user li {
+#header .user > li {
     float: left;
     border-right: 1px solid #d7d7d7;
     display: inline;
     padding: 0 .75em;
     white-space: nowrap;
+}
+
+#notifications_count {
+    border: 1px solid #999;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.close_notification_box {
+    background: #eee;
+    clear: both;
+    cursor: pointer;
+}
+
+.notification_element {
+    display: block;
+}
+
+.notification_message {
+    font-size: 1.1em;
+}
+
+#notifications_box {
+    border: 1px solid #999;
+    background: #ffffff;
+    position: absolute;
+    margin-top: -1px;
+    display: none;
+    width: 270px;
+    right: 0;
+}
+
+#notifications_list {
+    list-style: none;
+    margin: 0;
+}
+
+li.notification {
+    border-bottom: 1px solid #68AE2C;
+    text-align: left;
+    padding: 0 4px 0 4px;
+    margin-left: -40px;
+    cursor: pointer;
+    width: 262px;
+}
+
+li.notification:hover {
+    background-color: #e5f5d5;
+}
+
+.close_notification_box {
+    text-align: right;
+    padding-right: 5px;	
 }
 
 #header .user li.last { 
@@ -200,24 +302,9 @@ td.gsc-clear-button, table.gsc-branding {
 }
 
 input.gsc-search-button {
-    background-attachment: scroll;
-    background-clip: border-box;
-    background-color: transparent;
-    background-image: -moz-linear-gradient(#F1F1F1, #DFDFDF);
-    background-image: -ms-linear-gradient(#F1F1F1, #DFDFDF);
-    background-image: -webkit-linear-gradient(#F1F1F1, #DFDFDF);
-    background-origin: padding-box;
-    background-position: 0 0;
-    border-bottom-right-radius: 3px;
-    border-bottom-color: #999999;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-top-right-radius: 3px;
-    border-top-color: #CCCCCC;
-    border-top-style: solid;
-    border-top-width: 1px;
-    box-shadow: 1px 1px 0 #E7E7E7, 0 1px 0 #FCFCFC inset, 0 -1px 0 #D7D7D7 inset;
-    color: #000000;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-left-color: #969696;
     cursor: pointer;
     font-size: 1em;
     height: 28px;
@@ -234,12 +321,13 @@ input.gsc-search-button {
 }
 
 /* -------------------- MAIN ------------------------ */
-#content {
+#content {;
     margin: 20px;
 }
 
 #main {
     overflow: hidden;
+    float: left;
 }
 
 .result {
@@ -260,7 +348,7 @@ input.gsc-search-button {
 }
 
 /* -------------------- AUTHENTICATION ------------------------ */
-.auth_button {
+.logout_button {
     background: none;
     border: none;
     padding: 0px;
@@ -271,7 +359,7 @@ input.gsc-search-button {
     text-decoration: none;
 }
 
-.auth_button:hover span {
+.logout_button:hover span {
     text-decoration: underline;
 }
 
@@ -283,159 +371,147 @@ input.gsc-search-button {
     width: 500px;
 }
 
-/* ---------------- FB LOGIN BUTTON ------------------- */
+#email_confirmation .buttons {
+    margin-left: 0;
+}
+
+#email_confirmation .faq {
+    width: 500px;
+}
+
+/* ---------------- OTHER LOGIN BUTTON ------------------- */
+.google_login_button,
+.foursquare_login_button,
+.twitter_login_button,
 .fb_login_button {
-    background: #29447E url('../images/fb_login_button.png');
-    background-repeat: no-repeat;
     cursor: pointer;
     display: inline-block;
-    padding: 0 0 0 1px;
     text-decoration: none;
     outline: none;
     font-size: 11px;
     line-height: 14px;
-    margin: 0px;
+    margin: 0;
+    padding: 0;
     border: 0;
-    height: 22px;
-    width: 163px;
+    background-image: -moz-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0) 100%);
+    background-image: -ms-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0) 100%);
+    background-image: -o-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0) 100%);
+    border-radius: 3px;
 }
 
+.google_login_button:hover,
+.foursquare_login_button:hover,
+.twitter_login_button:hover,
 .fb_login_button:hover {
-    background-position: -163px;
+    background-image: -moz-linear-gradient(rgba(255,255,255,0.3) 10%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-linear-gradient(rgba(255,255,255,0.3) 10%, rgba(0,0,0,0) 100%);
+    background-image: -ms-linear-gradient(rgba(255,255,255,0.3) 10%, rgba(0,0,0,0) 100%);
+    background-image: -o-linear-gradient(rgba(255,255,255,0.3) 10%, rgba(0,0,0,0) 100%);
+}
+
+.google_button_text,
+.foursquare_button_text,
+.twitter_button_text,
+.fb_button_text,
+.browserid_button_text {
+    width: 150px;
+    padding: 4px 0 5px 24px;
+    margin-left: -2px;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-weight: bold;
+    color: white;
+    display: block;
+    text-align: center;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+/* ---------------- FACEBOOK LOGIN BUTTON ------------------- */
+.fb_login_button {
+    background-color: #3B5998;
 }
 
 .fb_button_text {
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    padding: 4px 6px 3px 6px;
-    margin: -3px 1px 0 21px;
-    text-shadow: none;
+    background-image: url('../images/facebook_logo24.png');
 }
 
 /* ---------------- TWITTER LOGIN BUTTON ------------------- */
 .twitter_login_button {
-    background: #3DBCDC url('../images/twitter_button.png');
-    background-position:  0 0;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    display: inline-block;
-    padding: 0 0 0 1px;
-    text-decoration: none;
-    outline: none;
-    font-size: 11px;
-    line-height: 14px;
-    margin: 0px;
-    outline: none;
-    border: 0;
+    background-color: #3DBCDC;
 }
 
 .twitter_button_text {
-    background: #3DBCDC;
-    border-top: solid 1px #879AC0;
-    border-bottom: solid 1px #1A356E;
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    padding: 2px 6px 3px 6px;
-    margin: 1px 1px 0 21px;
-    text-shadow: none;
+    background-image: url('../images/twitter_logo24.png');
 }
 
 /* ---------------- FOURSQUARE LOGIN BUTTON ------------------- */
 .foursquare_login_button {
-    background: #2090c6 url('../images/foursquare_button.png');
-    background-repeat: no-repeat;
-    cursor: pointer;
-    display: inline-block;
-    text-decoration: none;
-    outline: none;
-    font-size: 11px;
-    line-height: 20px;
-    border: 0;
-    height: 24px;
+    background-color: #2090c6;
 }
 
 .foursquare_button_text {
-    background: #2090c6;
-    border-top: solid 1px #879AC0;
-    border-bottom: solid 1px #1A356E;
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    margin: 0 0 0 20px;
-    text-shadow: none;
+    background-image: url('../images/foursquare_button.png');
 }
 
 /* ---------------- GOOGLE LOGIN BUTTON ------------------- */
 .google_login_button {
-    background: #0064D9 url('../images/google_button.png');
-    background-position: 0 0;
-    background-repeat: no-repeat;
+    background-color: #0064D9;
+}
+
+.google_button_text {
+    background-image: url('../images/google_button.png');
+}
+
+/* ---------------- BROWSERID LOGIN BUTTON ------------------- */
+
+button.browserid-signin {
+    background: url("../images/btn-browserid.png") no-repeat scroll -1px 50% #555555;
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF;
     cursor: pointer;
     display: inline-block;
-    padding: 0 0 0 1px;
     text-decoration: none;
     outline: none;
     font-size: 11px;
     line-height: 14px;
-    margin: 0px;
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
 
-.google_button_text {
-    background: #0064D9;
-    border-top: solid 1px #879AC0;
-    border-bottom: solid 1px #1A356E;
-    color: white;
-    display: block;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-weight: bold;
-    padding: 2px 6px 3px 6px;
-    margin: 1px 1px 0 21px;
-    text-shadow: none;
+button.browserid-signin:hover {
+    background-color: #666666;
 }
 
 /* --------------------- LOGIN ------------------------ */
-.login {
-    text-align: center;
-    margin: 20px 0px 20px 0px;
+#other_login_options p {
+    margin-top: 0;
 }
 
+#other_login_options,
 .login_form {
-    text-align: right;
     display: inline-block;
+    vertical-align: top;
 }
 
 #other_login_options {
-    margin-left: 50px;
-    display: inline-block;
-    text-align: left;
+    margin-left: 3em;
+    padding-left: 3em;
 }
 
+.form_fields,
 #other_login_options ul {
     margin: 0;
+    margin-top: 1em;
     padding: 0;
 }
 
 #other_login_options li {
-    padding-top: 15px;
+    padding-bottom: 0.5em;
     list-style-type: none;
-}
-
-.registration {
-    width: 960px;
-    margin: auto;
-    margin-top: 50px;
-}
-
-/* buttons */
-.buttons {
-    padding-top: 20px;
-    text-align: right;
-    width: 482px;
 }
 
 .buttons input {
@@ -460,6 +536,7 @@ input.gsc-search-button {
     color: #474747;
     border-top: 1px solid #BBB;
     height: 60px;
+    clear: both;
 }
 
 #footer a {
@@ -516,72 +593,215 @@ input.gsc-search-button {
 }
 
 /* --------------------- PROFILE ------------------------ */
-#profile {
-    margin-left: 50%;
-    margin-top: 4%;
+.account,
+#menu_list,
+#picture,
+.profile {
     display: inline-block;
-    text-align: center;
+    vertical-align: top;
 }
 
 #menu_list {
-    text-align: left;
-    display: inline-block;
-    position: absolute;
-    margin-top: 5%;
+    list-style: none;
+    padding: 0;
+    margin-top: 0;
 }
 
-#picture {
-    margin-left: 30%;
-    margin-top: 8%;
-    text-align: left;
-    display: inline-block;
-    position: absolute;
+#menu_list li a {
+    display: block;
+    background-color: #68AE2C;
+    background-image: -moz-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0.2) 100%);
+    background-image: -webkit-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0.2) 100%);
+    background-image: -ms-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0.2) 100%);
+    background-image: -o-linear-gradient(rgba(255,255,255,0.2) 10%, rgba(0,0,0,0.2) 100%);
+    border-radius: 3px;
+    border-bottom-color: #999999;
+    border-right-color: #999999;
+    border-top-color: #CCCCCC;
+    border-left-color: #CCCCCC;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 1px 1px 0 #E7E7E7, 0 1px 0 #D7D7D7 inset, 0 -1px 0 #A2A2A2 inset;
+    color: #FFFFFF;
+    margin-bottom: 0.5em;
+    padding: 5px 0;
+    text-align: center;
+    width: 155px;
 }
 
-#current_item {
+#menu_list li.current_item a,
+#menu_list li a:hover {
+    background-image: -moz-linear-gradient(rgba(255,255,255,0.4) 10%, rgba(200,200,200,0.1) 100%);
+    background-image: -webkit-linear-gradient(rgba(255,255,255,0.4) 10%, rgba(200,200,200,0.1) 100%);
+    background-image: -ms-linear-gradient(rgba(255,255,255,0.4) 10%, rgba(200,200,200,0.1) 100%);
+    background-image: -o-linear-gradient(rgba(255,255,255,0.4) 10%, rgba(200,200,200,0.1) 100%);
+}
+
+#menu_list li.current_item a {
     text-decoration: underline;
-    color: #68AE2C;
+}
+
+#picture,
+#menu_list {
+    margin-right: 20px;
 }
 
 /* --------------------- ACCOUNT ------------------------ */
-#password_change {
-    margin-top: 3%;
-    margin-left: auto;
-    margin-right: auto;
-    width: 42%;
-}
-
-.button_account {
-    padding-top: 3px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 70%;
-}
-
-.button_account input {
-    height: 25px;
-    width: 100px;
-}
-
-.button_account ul {
-    list-style-type: none;
-    overflow: hidden;
-}
-
 .user_image {
     width: 50px;
     height: 50px;
 }
 
+.profile h1,
+.account h1 {
+    margin-top: 0;
+}
+
 /* ------------------ PANELS ---------------------------- */
 .panel {
     width: 260px;
+    margin-bottom: 10px;
 }
 
 .panel .header {
     color: #FCFCFC;
     height: 20px;
     text-align: center;
+    background-position: right;
     background-color: #68AE2C;
-    cursor: pointer;
+    cursor: move;
+}
+
+.panel .header:hover {
+    background: url("../images/maximize_icon.png") no-repeat;
+    background-position: 240px 50%;
+    background-color: #68AE2C;
+}
+
+.panels_column {
+    width: 260px;
+    float: left;
+    padding-left: 10px;
+    height: 100%;
+}
+
+.placeholder {
+    background-color: #f0f0f0;
+    border: 1px dashed #ddd;
+    margin-bottom: 5px;
+}
+
+/* ----------------- MAIN LAYOUT ------------------------------- */
+#wall {
+    width: 520px;
+    float: left;
+}
+
+#panels {
+    margin-left: 520px;
+    height: 100%;
+}
+
+/* --------------------- POST------------------------ */
+.new_post {
+    border: 1px solid #999;
+    width: 520px;
+    background: #EEE;
+}
+
+.new_post form textarea {
+    display: block;
+    background: #EEE;
+    min-height: 25px;
+    height: 25px;
+    width: 99%;
+    border: none;
+    outline: none;
+    resize: none;
+    font-size: 12px;
+}
+
+.new_post .new_post_details {
+    float: right;
+}
+
+.posts {
+    list-style-type: none;
+    padding: 10px 0;
+    width: 510px;
+    clear: right;
+}
+
+.post {
+    padding: 5px 0 10px 0;
+    border-bottom: 1px solid #AAA;
+    background: #FFF;
+    clear: both;
+}
+
+.post .author {
+    font-weight: bold;
+    padding-right: 5px;
+}
+
+.post .content {
+    margin: 5px 0;
+}
+
+.post .date {
+    color: #AAA;
+}
+
+.post .options {
+    font-size: 10px;
+    float: right;
+}
+
+/* ------------------ CONTACT ---------------------------- */
+.contact_form textarea {
+    width: 300px;
+}
+
+/* ------------------ ABOUT ---------------------------- */
+.contributors img {
+    width: 50px;
+    height: 50px;
+}
+
+.contributors ul {
+    list-style: none;
+    margin-left: 10px;
+}
+
+/* ------------------ DROP-DOWN LOGIN ---------------------------- */
+.drop_down_login_container {
+    position: relative;
+    display: block;
+}
+
+.drop_down_login_options {
+    display: none;
+    position: absolute;
+    background-color: #FCFCFC;
+    border: #d7d7d7 solid 1px;
+    right: -20px;
+    z-index: 100;
+    margin: 0;
+    padding: 0;
+    font-size: 10px;
+    list-style: none;
+    text-align: right;
+}
+
+.drop_down_login_options li {
+    border: none;
+    display: block;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.drop_down_login_options li p {
+    margin: 0;
+    padding: 0;
 }

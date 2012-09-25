@@ -14,6 +14,8 @@ from django.utils.translation import ugettext_lazy as _
 import mongoengine
 from mongoengine.django import auth
 
+import uuid
+
 from . import fields, utils
 from .. import panels
 
@@ -22,10 +24,13 @@ USERNAME_REGEX = r'[\w.@+-]+'
 CONFIRMATION_TOKEN_VALIDITY = 5 # days
 
 def upper_birthdate_limit():
-    return datetime.datetime.today()
+    return timezone.now().date()
 
 def lower_birthdate_limit():
-    return datetime.datetime.today() - datetime.timedelta(LOWER_DATE_LIMIT)
+    return timezone.now().date() - datetime.timedelta(LOWER_DATE_LIMIT)
+
+def generate_channel_id():
+    return uuid.uuid4()
 
 class Connection(mongoengine.EmbeddedDocument):
     http_if_none_match = mongoengine.StringField()
@@ -62,6 +67,7 @@ class User(auth.User):
     birthdate = fields.LimitedDateTimeField(upper_limit=upper_birthdate_limit, lower_limit=lower_birthdate_limit)
     gender = fields.GenderField()
     language = fields.LanguageField()
+    channel_id = mongoengine.UUIDField(default=generate_channel_id)
 
     facebook_access_token = mongoengine.StringField(max_length=150)
     facebook_profile_data = mongoengine.DictField()
@@ -75,12 +81,18 @@ class User(auth.User):
     foursquare_access_token = mongoengine.StringField(max_length=150)
     foursquare_profile_data = mongoengine.DictField()
 
+    browserid_profile_data = mongoengine.DictField()
+
     connections = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Connection))
     connection_last_unsubscribe = mongoengine.DateTimeField()
     is_online = mongoengine.BooleanField(default=False)
 
     email_confirmed = mongoengine.BooleanField(default=False)
     email_confirmation_token = mongoengine.EmbeddedDocumentField(EmailConfirmationToken)
+
+    # TODO: Model for panel settings should be more semantic.
+    panels_collapsed = mongoengine.DictField()
+    panels_order = mongoengine.DictField()
 
     @models.permalink
     def get_absolute_url(self):
@@ -98,7 +110,12 @@ class User(auth.User):
 
     def is_authenticated(self):
         # TODO: Check if *_data fields are really false if not linked with third-party authentication
-        return self.has_usable_password() or self.facebook_profile_data or self.twitter_profile_data or self.google_profile_data or self.foursquare_profile_data
+        return self.has_usable_password() or \
+            self.facebook_profile_data or \
+            self.twitter_profile_data or \
+            self.google_profile_data or \
+            self.foursquare_profile_data or \
+            self.browserid_profile_data
 
     def check_password(self, raw_password):
         def setter(raw_password):
@@ -144,6 +161,14 @@ class User(auth.User):
         else:
             return staticfiles_storage.url(settings.DEFAULT_USER_IMAGE)
 
+    def get_user_channel(self):
+        """
+        User channel is a HTTP push channel dedicated to the user. We make it private by making
+        it unguessable and we cycle it regularly (every time user disconnects from all channels).
+        """
+
+        return "user/%s" % self.channel_id
+ 
     @classmethod
     def create_user(cls, username, email=None, password=None):
         now = timezone.now()

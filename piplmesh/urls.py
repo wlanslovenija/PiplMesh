@@ -12,15 +12,22 @@ from piplmesh import panels
 # PiplMesh panels auto-discovery
 panels.panels_pool.discover_panels()
 
-v1_api = api.Api(api_name='v1')
-v1_api.register(resources.UserResource())
-v1_api.register(resources.UploadedFileResource())
-v1_api.register(resources.PostResource())
+# So that we can access resources outside their request handlers
+user_resource = resources.UserResource()
+uploadedfile_resource = resources.UploadedFileResource()
+post_resource = resources.PostResource()
+notification_resource = resources.NotificationResource()
+
+API_NAME = 'v1'
+v1_api = api.Api(api_name=API_NAME)
+v1_api.register(user_resource)
+v1_api.register(uploadedfile_resource)
+v1_api.register(post_resource)
+v1_api.register(notification_resource)
 
 js_info_dict = {
     'packages': (
         'django.conf',
-        'piplmesh.frontend',
     ),
 }
 
@@ -29,12 +36,15 @@ PUSH_SERVER_URL = settings.PUSH_SERVER_URL.lstrip('/')
 
 urlpatterns = patterns('',
     url(r'^$', frontend_views.HomeView.as_view(), name='home'),
-
+    
+    url(r'^about/$', frontend_views.AboutView.as_view(), name='about'),
+    url(r'^privacy/$', frontend_views.PrivacyView.as_view(), name='privacy'),
+    url(r'^contact/$', frontend_views.ContactView.as_view(), name='contact'),   
     url(r'^outside/$', frontend_views.OutsideView.as_view(), name='outside'),
     url(r'^search/', frontend_views.SearchView.as_view(), name='search'),
-
+    
     url(r'^upload/$', frontend_views.upload_view, name='upload'),
-
+    
     # Registration, login, logout
     url(r'^register/$', account_views.RegistrationView.as_view(), name='registration'),
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'user/login.html'}, name='login'),
@@ -55,6 +65,9 @@ urlpatterns = patterns('',
     # Google
     url(r'^google/login/$', account_views.GoogleLoginView.as_view(), name='google_login'),
     url(r'^google/callback/$', account_views.GoogleCallbackView.as_view(), name='google_callback'),
+    
+    # BrowserID
+    url(r'^browserid/', account_views.BrowserIDVerifyView.as_view(), name='browserid_verify'),
 
     # Profile, account
     url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='profile'),
@@ -72,6 +85,10 @@ urlpatterns = patterns('',
 
     # Internals
     url(r'^' + PUSH_SERVER_URL, include('pushserver.urls')),
+
+    # Panels
+    url(r'^panels/collapse/$', frontend_views.panels_collapse, name='panels_collapse'),
+    url(r'^panels/order/$', frontend_views.panels_order, name='panels_order'),
 )
 
 if getattr(settings, 'DEBUG', False):

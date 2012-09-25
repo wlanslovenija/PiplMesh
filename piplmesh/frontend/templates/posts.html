@@ -1,0 +1,16 @@
+{% load i18n %}
+
+<div class="new_post">
+    <form method="post" action="">
+        {# CRSF protection is not needed as we are using this form in JavaScript #}
+        <div>
+            <textarea id="post_text" rows="3" cols="84">{% trans "Write a post..." %}</textarea>
+        </div>
+        <div class="new_post_details">
+            {# TODO: Add buttons for settings #}
+            <input type="button" name="submit_post" id="submit_post" value="{% trans "submit" %}" disabled="disabled" />
+        </div>
+    </form> 
+</div>
+
+<ul class="posts"></ul>

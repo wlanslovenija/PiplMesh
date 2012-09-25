@@ -1,44 +1,40 @@
 {% extends "plain.html" %}
 
-{% load static pushserver panels %}
+{% load future i18n staticfiles pushserver panels %}
 
 {% block fulltitle %}wlan slovenija{% endblock %}
 
 {% block js %}
     {{ block.super }}
+    <script src="{% static "piplmesh/jquery/jquery.exptextarea.js" %}" type="text/javascript"></script>
     <script src="{% static "pushserver/updates.js" %}" type="text/javascript"></script>
     <script src="{% static "piplmesh/js/home.js" %}" type="text/javascript"></script>
     <script type="text/javascript">
         /* <![CDATA[ */
         $.updates.subscribe({
-            'home_channel': '{% filter escapejs %}{% channel_url HOME_CHANNEL_ID %}{% endfilter %}'
+            'home_channel': '{% filter escapejs %}{% channel_url HOME_CHANNEL_ID %}{% endfilter %}',
+            'user_channel': '{% filter escapejs %}{% channel_url user.get_user_channel %}{% endfilter %}'
         });
+
+        var URLS = {
+            'panels_collapse': '{% filter escapejs %}{% url "panels_collapse" %}{% endfilter %}',
+            'panels_order': '{% filter escapejs %}{% url "panels_order" %}{% endfilter %}',
+            'post': '{% filter escapejs %}{% url "api_dispatch_list" api_name=API_NAME resource_name="post" %}{% endfilter %}',
+            'notifications': '{% filter escapejs %}{% url "api_dispatch_list" api_name=API_NAME resource_name="notification" %}{% endfilter %}'
+        };
         /* ]]> */
     </script>
 {% endblock %}
 
 {% block content %}
-    <div id="main">
-        <p>
-        HOME PAGE CONTENT HERE
-        </p>
-        <p>
-        SOME MORE JUICY CONTENT
-        </p>
-        <p>
-        HOME PAGE CONTENT HERE
-        </p>
-        <p>
-        SOME MORE JUICY CONTENT
-        </p>
-        <p>
-        HOME PAGE CONTENT HERE
-        </p>
-        <p>
-        SOME MORE JUICY CONTENT
-        </p>
+    <div id="wall">
+        {% include "posts.html" %}
     </div>
-    {% for panel in user.get_panels %}
-        {% render_panel panel %}
-    {% endfor %}
+    <div id="panels">
+        <div class="panels_column">
+            {% for panel in user.get_panels %}
+                {% render_panel panel %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

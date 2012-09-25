@@ -5,6 +5,10 @@
     margin-right: 20px;
     position: relative;
 }
+#map_canvas {
+    width: 260px;
+    height: 260px;
+}
 #basic-map-extend-img {
     position: absolute;
     right: -1.5px;

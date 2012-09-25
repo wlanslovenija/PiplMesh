@@ -48,7 +48,7 @@ $(document).ready(function (event) {
     }
     function closeAdvancedMap(){
         $('#closeButton').remove();
-        $('#overlay').fadeOut('slow', 0.0, function() {
+        $('#overlay').fadeOut('slow', 0.0, function () {
             // Animation complete.
             $('#overlay').remove();
         });
