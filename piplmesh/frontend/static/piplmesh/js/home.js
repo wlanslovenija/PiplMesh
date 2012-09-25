@@ -177,8 +177,19 @@ function Post(data) {
     self.addToTop = function () {
         if (checkIfPostExists()) return;
 
-        // TODO: Animation has to be considered and maybe improved
-        createDOM(data).prependTo($('.posts')).hide().slideToggle('slow');
+        var post = createDOM(data).prependTo($('.posts')).hide();
+        if (!isAutoShowIncoming()) {
+            post.addClass('notShown');
+        } else {
+            // TODO: Animation has to be considered and maybe improved
+            post.show(100);
+        }
+        updateUnreadCount();
+
+        $('#toggle').show();
+        if (!isAutoShowIncoming()) {
+            $('#show').show();
+        }
     };
 
     self.updateDate = function (dom_element) {
@@ -262,8 +273,27 @@ function addComment(comment) {
     });
 }
 
+function isAutoShowIncoming() {
+    return $('#toggle_queue > input').is(':checked');
+}
+
+function updateUnreadCount() {
+    var format = ngettext("You have %(count)s new message", "You have %(count)s new messages", $('.posts.notShown').length);
+    var msg = interpolate(format, {'count': $('.posts.notShown').length}, true);
+    $('#posts_in_queue').text(msg);
+}
+
+function showUnread() {
+    // TODO: Animation has to be considered and maybe improved
+    $('.posts.notShown').show(100).removeClass('notShown');
+}
+
 $(document).ready(function () {
     initializePanels();
+
+    $('#posts_in_queue').hide();
+    $('#toggle_queue').hide();
+    $('#load_posts').hide();
 
     $.updates.registerProcessor('home_channel', 'post_new', function (data) {
         new Post(data.post).addToTop();
@@ -332,6 +362,24 @@ $(document).ready(function () {
         else {
             $('#submit_post').prop('disabled', false);
         }
+    });
+
+    $('#load_posts > input').click(function (event) {
+        showUnread()
+        $('#posts_in_queue').hide();
+        $('#toggle_queue').hide();
+        $('#load_posts').hide();
+    });
+
+    $('#toggle_queue > input').click(function (event) {
+        if (isAutoShowIncoming()) {
+            showUnread();
+            updateUnreadCount();
+        } else {
+            $('#toggle_queue').hide();
+        }
+        $('#load_posts').hide();
+        $('#posts_in_queue').hide();
     });
 
     $(window).scroll(function (event) {
