@@ -7,28 +7,37 @@
     text-align: left;
 }
 
-#weather ul{
-    float: left;
+#weather ul {
+    float: center;
+    padding: 0;
 }
 
-#weather span{
-    font-size: 7px;
-}
-
-#weather li {
+#weather ul li {
     float: left;
     border: 1px solid gray;
     display: inline;
-    vertical-align: middle;
+    width: 100%;
+
+}
+
+#weather span {
+    font-size: 7px;
 }
 
 #forecast ul {
+    width: auto;
     list-style: none;
-    padding: 0;
     margin: 0;
+    
+    vertical-align: middle;
 }
 
-#forecast li {
+#forecast ul li {
     border: none;
-    padding: 5px;
+    padding: 0;
+    width: auto;
+    margin-left: 5px;
+    display: table-cell;
+    
+    vertical-align: middle;
 }
