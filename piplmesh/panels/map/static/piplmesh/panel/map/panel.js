@@ -52,15 +52,13 @@ $(document).ready(function (event) {
             // Animation complete.
             $('#overlay').remove();
         });
-        $('#advanced-map').animate ({
-            width: '-=86%'
-        }, 500, "linear", function (event){
+        $('#advanced-map').fadeOut ('fast', 0.0, function (event){
             //callback
             $('#map').detach().prependTo('#basic-map').insertAfter('#map-info');
             $('#advanced-map').remove();
             $('#basic-map-extend-img').show();
-            refreshMapCenter();
             configureBasicMap();
+            refreshMapCenter();
         });
     }
     function refreshMapCenter(){
@@ -68,21 +66,20 @@ $(document).ready(function (event) {
         google.maps.event.trigger(map, 'resize');
         map.setCenter(center);
     }
+    // TODO basic map resize animation should resize from its given position. That means if map is on the left side of the screen, animation should resize from the same side. Looks much prettier than a simple fade in pop up.
     function openAdvancedMap(){
         $('#basic-map-extend-img').hide();
         $('<div/>').attr('id', 'advanced-map').appendTo(document.body);
-        $('<div/>').attr('id', 'overlay').fadeTo("fast", 0.8, function (){
+        $('<div/>').attr('id', 'overlay').fadeTo("slow", 0.8, function (){
             //Animation complete
         }).appendTo(document.body).click(closeAdvancedMap);
         $('<div/>').attr('id', 'closeButton').appendTo(document.body).click(closeAdvancedMap);
         $('#closeButton').css("background-image", imageCloseUrl);
         $('#advanced-map').append($('<div/>').attr('id', 'advanced-map-container'));
+        $('#advanced-map-container').hide();
         $('#map').detach().prependTo('#advanced-map-container');
-        $('#advanced-map').animate ({
-            width: '86%'
-        }, 500, "linear", function (event){
-            refreshMapCenter();
-        });
+        $('#advanced-map-container').show();
+        refreshMapCenter();
         $(document).keyup(function (event) {
             //  alert(e.which);
             if (event.keyCode == 27) {

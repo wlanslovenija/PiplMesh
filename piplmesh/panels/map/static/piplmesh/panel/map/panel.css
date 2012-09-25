@@ -22,14 +22,13 @@
 #advanced-map {
     opacity: 1;
     background-color: #333;
-    border: 1px solid #666;
     -moz-box-shadow: 0 0 90px 5px #000;
     -webkit-box-shadow: 0 0 90px #000;
     position: fixed;
     top: 7%;
     bottom: 7%;
     left: 7%;
-    right: 93%;
+    right: 7%;
     z-index: 300010;
     text-align: center;
     margin: 0px;
