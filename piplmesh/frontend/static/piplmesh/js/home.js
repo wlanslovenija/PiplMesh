@@ -177,7 +177,7 @@ function Post(data) {
     self.addToTop = function () {
         if (checkIfPostExists()) return;
 
-        var post = createDOM(data).prependTo($('.posts')).hide();
+        var post = createDOM().hide().prependTo($('.posts'));
         if (!autoShowIncomingPosts()) {
             post.addClass('notShown');
         } else {
