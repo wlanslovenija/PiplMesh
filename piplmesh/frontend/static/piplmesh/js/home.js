@@ -187,7 +187,7 @@ function Post(data) {
         updateUnreadCount();
         $('#toggle_queue').show();
         if (!isAutoShowIncoming()) {
-            $('#load_posts').show();t
+            $('#load_posts').show();
             $('#posts_in_queue').show();
         }
     };
