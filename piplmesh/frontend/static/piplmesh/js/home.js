@@ -232,8 +232,11 @@ function Post(data) {
             });
         }
 
-        hugs_runs = $('<div/>').addClass('hugs_runs').text(self.hugs.length + gettext(" hugs, ") + self.runs.length
-            + gettext(" runs") )
+        var hugs = ngettext("%(hugs)s hug, ", "%(hugs)s hugs, ", self.hugs.length);
+        var hugs = interpolate(hugs, {'hugs':self.hugs.length}, true);
+        var runs = ngettext("%(runs)s run", "%(runs)s runs", self.runs.length);
+        var runs = interpolate(runs, {'runs':self.runs.length}, true);
+        hugs_runs = $('<div/>').addClass('hugs_runs').text(hugs + runs)
             .append($('<div/>').addClass('hugs_runs_display').append(huggers).append(runners)
         );
 

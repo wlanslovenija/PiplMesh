@@ -22,6 +22,16 @@ class Attachment(base.AuthoredEmbeddedDocument):
     This class defines document type for attachments on posts.
     """
 
+class Hug(base.AuthoredEmbeddedDocument):
+    """
+    This class defines document type for hugs.
+    """
+
+class Run(base.AuthoredEmbeddedDocument):
+    """
+    This class defines document type for runs.
+    """
+
 class Post(base.AuthoredDocument):
     """
     This class defines document type for posts.
@@ -34,8 +44,8 @@ class Post(base.AuthoredDocument):
     comments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Comment), default=lambda: [], required=False)
     attachments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Attachment), default=lambda: [], required=False)
 
-    hugs = mongoengine.ListField(mongoengine.ReferenceField(account_models.User), default=lambda: [], required=False)
-    runs = mongoengine.ListField(mongoengine.ReferenceField(account_models.User), default=lambda: [], required=False)
+    hugs = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Hug), default=lambda: [], required=False)
+    runs = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Run), default=lambda: [], required=False)
 
     subscribers = mongoengine.ListField(mongoengine.ReferenceField(account_models.User), default=lambda: [], required=False)
 

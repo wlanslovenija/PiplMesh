@@ -84,6 +84,20 @@ class AttachmentResource(AuthoredResource):
             'link': LinkAttachmentResource,
         }
 
+class RunResource(AuthoredResource):
+    class Meta:
+        object_class = api_models.Run
+        allowed_methods = ('get', 'post', 'delete')
+        # TODO: Make proper authorization, current implementation is for development use only
+        authorization = tastypie_authorization.Authorization()
+
+class HugResource(AuthoredResource):
+    class Meta:
+        object_class = api_models.Hug
+        allowed_methods = ('get', 'post', 'delete')
+        # TODO: Make proper authorization, current implementation is for development use only
+        authorization = tastypie_authorization.Authorization()
+
 class PostResource(AuthoredResource):
     """
     Query set is ordered by updated time for following reasons:
@@ -98,6 +112,8 @@ class PostResource(AuthoredResource):
     updated_time = tastypie_fields.DateTimeField(attribute='updated_time', null=False, readonly=True)
     comments = tastypie_mongoengine_fields.EmbeddedListField(of='piplmesh.api.resources.CommentResource', attribute='comments', default=lambda: [], null=True, full=False)
     attachments = tastypie_mongoengine_fields.EmbeddedListField(of='piplmesh.api.resources.AttachmentResource', attribute='attachments', default=lambda: [], null=True, full=True)
+    runs = tastypie_mongoengine_fields.EmbeddedListField(of='piplmesh.api.resources.RunResource', attribute='runs', default=lambda: [], null=True, full=True)
+    hugs = tastypie_mongoengine_fields.EmbeddedListField(of='piplmesh.api.resources.HugResource', attribute='hugs', default=lambda: [], null=True, full=True)
 
     def obj_create(self, bundle, request=None, **kwargs):
         bundle = super(PostResource, self).obj_create(bundle, request=request, **kwargs)
