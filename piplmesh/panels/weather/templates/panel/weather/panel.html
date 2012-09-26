@@ -4,7 +4,7 @@
 
 {% block content %}
     {% addtoblock "css" %}<link href="{% static "piplmesh/panel/weather/panel.css" %}" rel="stylesheet" type="text/css" media="screen" />{% endaddtoblock %}
-    {% if error_data %}
+    {% if error_data or error_obsolete %}
         <span class="error">{% trans "Weather data is temporarily unavailable." %}</span>
     {% else %}
         <div id="weather">

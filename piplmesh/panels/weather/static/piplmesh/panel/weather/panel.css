@@ -12,12 +12,10 @@
     padding: 0;
 }
 
-#weather ul li {
-    float: left;
-    border: 1px solid gray;
+#weather li {
     display: inline;
+    float: left;
     width: 100%;
-
 }
 
 #weather span {
@@ -25,19 +23,19 @@
 }
 
 #forecast ul {
-    width: auto;
+    border: 0;
+    display: table;
     list-style: none;
-    margin: 0;
-    
-    vertical-align: middle;
+    margin: 0 auto;
+    text-align: center;
+    width: 95%;
 }
 
-#forecast ul li {
+#forecast li {
     border: none;
-    padding: 0;
-    width: auto;
-    margin-left: 5px;
     display: table-cell;
-    
+    margin-left: 5px;
+    padding: 0;
     vertical-align: middle;
+    width: 31%;
 }
