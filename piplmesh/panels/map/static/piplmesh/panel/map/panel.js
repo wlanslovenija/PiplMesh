@@ -1,21 +1,23 @@
-$(document).ready(function (event) {
-    var nodeLocation;
-    var mapControls;
+$(document).ready(function () {
+    var node_location;
+    var map_controls;
     var map;
-    var nodeName = $('<p/>').text(node.name).append(' | ');
-    var nodeWebsite = $('<a/>').prop('href', node.url).text(gettext("more info"));
-    nodeName.append(nodeWebsite);
-    $('#map-info').append(nodeName);
+    var node_name = $('<p/>').text(node.name).append(' | ');
+    var node_website = $('<a/>').prop('href', node.url).text(gettext('more info'));
+
+    node_name.append(node_website);
+    $('#map-info').append(node_name);
     defineMap();
-    $('#basic-map-extend-img').click(function (event) {
+    $('#basic-map-extend-image').click(function (event) {
         configureAdvancedMap();
         openAdvancedMap();
     });
-    function defineMap(){
-        nodeLocation = new google.maps.LatLng(node.latitude, node.longitude);
-        mapControls = {
+
+    function defineMap() {
+        node_location = new google.maps.LatLng(node.latitude, node.longitude);
+        map_controls = {
             'zoom': 12,
-            'center': nodeLocation,
+            'center': node_location,
             'mapTypeControl': true,
             'mapTypeControlOptions': {
                 'style': google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
@@ -28,26 +30,28 @@ $(document).ready(function (event) {
             'mapTypeId': google.maps.MapTypeId.ROADMAP,
             'streetViewControl': false
         };
-        map = new google.maps.Map($("#map")[0], mapControls);
-        $('#basic-map-extend-img').css("background-image", imageExtendUrl);
+        map = new google.maps.Map($('#map')[0], map_controls);
         var marker = new google.maps.Marker({
-            'position': nodeLocation,
+            'position': node_location,
             'map': map,
             'title': node.name
         });
     }
-    function configureAdvancedMap(){
+
+    function configureAdvancedMap() {
         map.navigationControl = true;
         map.scaleControl = true;
         map.draggable = true;
         map.streetViewControl = true;
-        map.set('mapTypeControlOptions',google.maps.ControlPosition.TOP_RIGHT);
+        map.set('mapTypeControlOptions', google.maps.ControlPosition.TOP_RIGHT);
     }
-    function configureBasicMap(){
-        map.setOptions(mapControls);
+
+    function configureBasicMap() {
+        map.setOptions(map_controls);
     }
-    function closeAdvancedMap(){
-        $('#closeButton').remove();
+
+    function closeAdvancedMap() {
+        $('#close-button').remove();
         $('#overlay').fadeOut('slow', 0.0, function () {
             // Animation complete.
             $('#overlay').remove();
@@ -56,25 +60,26 @@ $(document).ready(function (event) {
             //callback
             $('#map').detach().prependTo('#basic-map').insertAfter('#map-info');
             $('#advanced-map').remove();
-            $('#basic-map-extend-img').show();
+            $('#basic-map-extend-image').show();
             configureBasicMap();
             refreshMapCenter();
         });
     }
-    function refreshMapCenter(){
+
+    function refreshMapCenter() {
         var center = map.getCenter();
         google.maps.event.trigger(map, 'resize');
         map.setCenter(center);
     }
-    // TODO basic map resize animation should resize from its given position. That means if map is on the left side of the screen, animation should resize from the same side. Looks much prettier than a simple fade in pop up.
-    function openAdvancedMap(){
-        $('#basic-map-extend-img').hide();
+
+    // TODO : Basic map resize animation should resize from its given position. That means if map is on the left side of the screen, animation should resize from the same side. Looks much prettier than a simple fade in pop up.
+    function openAdvancedMap() {
+        $('#basic-map-extend-image').hide();
         $('<div/>').attr('id', 'advanced-map').appendTo(document.body);
-        $('<div/>').attr('id', 'overlay').fadeTo("slow", 0.8, function (){
+        $('<div/>').attr('id', 'overlay').fadeTo('slow', 0.8, function (){
             //Animation complete
         }).appendTo(document.body).click(closeAdvancedMap);
-        $('<div/>').attr('id', 'closeButton').appendTo(document.body).click(closeAdvancedMap);
-        $('#closeButton').css("background-image", imageCloseUrl);
+        $('<div/>').attr('id', 'close-button').fadeTo('slow', 1.0).appendTo(document.body).click(closeAdvancedMap);
         $('#advanced-map').append($('<div/>').attr('id', 'advanced-map-container'));
         $('#advanced-map-container').hide();
         $('#map').detach().prependTo('#advanced-map-container');

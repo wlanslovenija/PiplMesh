@@ -6,23 +6,8 @@
 {% addtoblock "css" %}<link href="{% static "piplmesh/panel/map/panel.css" %}" rel="stylesheet" type="text/css" media="screen" />{% endaddtoblock %}
 {% addtoblock "js" %}<script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>{% endaddtoblock %}
 {% addtoblock "js" %}<script src="{% static "piplmesh/panel/map/panel.js" %}" type="text/javascript"></script>{% endaddtoblock %}
-{% addtoblock "js" %}
-<script type="text/javascript">
-/* <![CDATA[ */
-var imageCloseUrl = "url("+"{% static "piplmesh/panel/map/images/close.png" %}"+")";
-var imageExtendUrl = "url("+"{% static "piplmesh/panel/map/images/extend.png" %}"+")";
-var node = {
-    'name': '{{ request.node.name|escapejs }}',
-    'latitude': '{{ request.node.latitude|escapejs }}',
-    'longitude': '{{ request.node.longitude|escapejs }}',
-    'location': '{{ request.node.location|escapejs }}',
-    'url': '{{ request.node.url|escapejs }}'
-};
-/* ]]> */
-</script>
-{% endaddtoblock %}
 <div id="basic-map" class="small">
-    <div id="basic-map-extend-img"></div>
+    <div id="basic-map-extend-image"></div>
     <div id="map-info"></div>
     <div id="map"></div>
 </div>
