@@ -180,7 +180,8 @@ function Post(data) {
         var post = createDOM().hide().prependTo($('.posts'));
         if (!autoShowIncomingPosts()) {
             post.addClass('notShown');
-        } else {
+        }
+        else {
             // TODO: Animation has to be considered and maybe improved
             post.show('fast');
         }
@@ -278,7 +279,7 @@ function autoShowIncomingPosts() {
 
 function updateHiddenPostsCount() {
     var unreadCount = $('ul > li.notShown').length;
-    var format = ngettext("You have %(count)s new message", "You have %(count)s new messages", unreadCount);
+    var format = ngettext("You have %(count)s new post", "You have %(count)s new posts", unreadCount);
     var msg = interpolate(format, {'count': unreadCount}, true);
     $('#posts_in_queue').text(msg);
 }
