@@ -17,7 +17,7 @@ In addition to Python_ the following is required on the system to run PiplMesh:
 * Libxslt_
 
 .. _Python: http://python.org/
-.. _Django-supported: https://docs.djangoproject.com/en/1.4/ref/databases/
+.. _Django-supported: https://docs.djangoproject.com/en/dev/ref/databases/
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
 .. _pip: http://pypi.python.org/pypi/pip
 .. _MongoDB: http://www.mongodb.org/
@@ -66,7 +66,7 @@ Running
 PiplMesh consist of many components, so multiple daemons should be running. Run
 the following in separate terminals::
 
-    ./manage.py celeryd --loglevel=info --concurrency=1 --maxtasksperchild=10 --beat
+    ./manage.py celery worker --loglevel=info --concurrency=4 --maxtasksperchild=10 --beat
     ./manage.py runpushserver
     ./manage.py runserver
 
@@ -74,7 +74,7 @@ PiplMesh is now available at http://127.0.0.1:8000/.
 
 More about Django development server in its `documentation`_.
 
-.. _documentation: https://docs.djangoproject.com/en/1.4/intro/tutorial01/#the-development-server
+.. _documentation: https://docs.djangoproject.com/en/dev/intro/tutorial01/#the-development-server
 
 Platform Specific Instructions
 ------------------------------
@@ -130,8 +130,8 @@ requirements.txt``::
 
 Where ``X.Y`` is version of the package found in ``requirements.txt``.
 
-On Windows ``--beat`` argument to ``celeryd`` command is not supported. You
-have to run two daemons instead::
+On Windows ``--beat`` argument to ``celery worker`` command is not supported.
+You have to run two daemons instead::
 
-    ./manage.py celeryd --loglevel=info --concurrency=1 --maxtasksperchild=10
-    ./manage.py celerybeat
+    ./manage.py celery worker --loglevel=info --concurrency=4 --maxtasksperchild=10
+    ./manage.py celery beat
