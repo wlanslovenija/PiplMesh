@@ -810,8 +810,3 @@ button.browserid-signin:hover {
     padding: 0;
 }
 
-hr {
-    border-width: 0px 0px 1px 0px;
-    border-bottom: 1px solid #AAA;
-    clear: both;
-}
