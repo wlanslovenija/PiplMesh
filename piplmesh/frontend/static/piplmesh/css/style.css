@@ -203,7 +203,7 @@ input.gsc-search-button:hover,
     white-space: nowrap;
 }
 
-#posts_in_queue, #toggle_queue, #load_posts {
+#posts_in_queue, #toggle_queue, #show_posts {
     display: none;
 }
 
