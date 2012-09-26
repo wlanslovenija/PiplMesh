@@ -185,10 +185,10 @@ function Post(data) {
             post.show(100);
         }
         updateUnreadCount();
-
-        $('#toggle').show();
+        $('#toggle_queue').show();
         if (!isAutoShowIncoming()) {
-            $('#show').show();
+            $('#load_posts').show();t
+            $('#posts_in_queue').show();
         }
     };
 
@@ -278,14 +278,15 @@ function isAutoShowIncoming() {
 }
 
 function updateUnreadCount() {
-    var format = ngettext("You have %(count)s new message", "You have %(count)s new messages", $('.posts.notShown').length);
-    var msg = interpolate(format, {'count': $('.posts.notShown').length}, true);
+    var unreadCount = $('ul > li.notShown').length;
+    var format = ngettext("You have %(count)s new message", "You have %(count)s new messages", unreadCount);
+    var msg = interpolate(format, {'count': unreadCount}, true);
     $('#posts_in_queue').text(msg);
 }
 
 function showUnread() {
     // TODO: Animation has to be considered and maybe improved
-    $('.posts.notShown').show(100).removeClass('notShown');
+    $('ul > li.notShown').show(100).removeClass('notShown');
 }
 
 $(document).ready(function () {
