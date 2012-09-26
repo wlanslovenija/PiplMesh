@@ -178,17 +178,16 @@ function Post(data) {
         if (checkIfPostExists()) return;
 
         var post = createDOM(data).prependTo($('.posts')).hide();
-        if (!isAutoShowIncoming()) {
+        if (!autoShowIncomingPosts()) {
             post.addClass('notShown');
         } else {
             // TODO: Animation has to be considered and maybe improved
-            post.show(100);
+            post.show('fast');
         }
-        updateUnreadCount();
+        updateHiddenPostsCount();
         $('#toggle_queue').show();
-        if (!isAutoShowIncoming()) {
-            $('#load_posts').show();
-            $('#posts_in_queue').show();
+        if (!autoShowIncomingPosts()) {
+            $('#posts_in_queue, #show_posts').show();
         }
     };
 
@@ -273,28 +272,24 @@ function addComment(comment) {
     });
 }
 
-function isAutoShowIncoming() {
-    return $('#toggle_queue > input').is(':checked');
+function autoShowIncomingPosts() {
+    return $('#toggle_queue_checkbox').is(':checked');
 }
 
-function updateUnreadCount() {
+function updateHiddenPostsCount() {
     var unreadCount = $('ul > li.notShown').length;
     var format = ngettext("You have %(count)s new message", "You have %(count)s new messages", unreadCount);
     var msg = interpolate(format, {'count': unreadCount}, true);
     $('#posts_in_queue').text(msg);
 }
 
-function showUnread() {
+function showHiddenPosts() {
     // TODO: Animation has to be considered and maybe improved
-    $('ul > li.notShown').show(100).removeClass('notShown');
+    $('ul > li.notShown').show('fast').removeClass('notShown');
 }
 
 $(document).ready(function () {
     initializePanels();
-
-    $('#posts_in_queue').hide();
-    $('#toggle_queue').hide();
-    $('#load_posts').hide();
 
     $.updates.registerProcessor('home_channel', 'post_new', function (data) {
         new Post(data.post).addToTop();
@@ -365,22 +360,20 @@ $(document).ready(function () {
         }
     });
 
-    $('#load_posts > input').click(function (event) {
-        showUnread()
-        $('#posts_in_queue').hide();
-        $('#toggle_queue').hide();
-        $('#load_posts').hide();
+    $('#show_posts > input').click(function (event) {
+        showHiddenPosts();
+        $('#posts_in_queue, #show_posts, #toggle_queue').hide();
     });
 
     $('#toggle_queue > input').click(function (event) {
-        if (isAutoShowIncoming()) {
-            showUnread();
-            updateUnreadCount();
-        } else {
+        if (autoShowIncomingPosts()) {
+            showHiddenPosts();
+            updateHiddenPostsCount();
+        }
+        else {
             $('#toggle_queue').hide();
         }
-        $('#load_posts').hide();
-        $('#posts_in_queue').hide();
+        $('#posts_in_queue, #show_posts').hide();
     });
 
     $(window).scroll(function (event) {
