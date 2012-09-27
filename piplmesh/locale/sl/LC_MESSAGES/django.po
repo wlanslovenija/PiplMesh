@@ -297,6 +297,10 @@ msgstr ""
 msgid "Login"
 msgstr "Prijavi se"
 
+#: frontend/templates/header.html:29
+msgid "Don't mock location"
+msgstr "Brez simuliranja lokacije"
+
 #: account/templates/user/login.html:22
 msgid "Login with Facebook"
 msgstr "Facebook prijava"

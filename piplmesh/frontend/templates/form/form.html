@@ -39,5 +39,7 @@ where the form should redirect after submission.
                 {% endfor %}
             </ul>
         {% endif %}
-        <div class="buttons align_to_label_width"><input type="submit" value="{{ form_submit }}" /></div>
+        {% if form_submit %}
+                <div class="buttons align_to_label_width"><input type="submit" value="{{ form_submit }}" /></div>
+        {% endif %}
     </form>
