@@ -54,7 +54,7 @@ class NotificationResource(resources.MongoEngineResource):
 
     class Meta:
         queryset = api_models.Notification.objects.all()
-        allowed_methods = ('get', 'patch')
+        allowed_methods = ('get',)
         authorization = authorization.NotificationAuthorization()
         excludes = ('recipient',)
 
