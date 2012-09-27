@@ -41,7 +41,6 @@ $(document).ready(function () {
     map_layers_labels.panoramio = gettext('Panoramio');
     map_layers.panoramio = new google.maps.panoramio.PanoramioLayer();
 
-
     map.mapTypes.set('OpenStreetMap', new google.maps.ImageMapType({
         'getTileUrl': function(coordinates, zoom) {
             // TODO: Is there HTTPS version - it would be better to use that so we do not get mixed content errors if we run our portal over HTTPS
@@ -78,7 +77,7 @@ $(document).ready(function () {
             $('<input/>').prop({
                 'id': 'map-layer-' + layer,
                 'type': 'checkbox',
-                'name': 'map-layer--' + layer
+                'name': 'map-layer-' + layer
             }).appendTo('#map-layers');
             $('<label/>').prop('for', 'map-layer-' + layer).text(label).appendTo('#map-layers');
             $('<br/>').appendTo('#map-layers');
