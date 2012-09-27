@@ -8,7 +8,8 @@ $(document).ready(function () {
         'navigationControl': false,
         'scaleControl': false,
         'draggable': false,
-        'mapTypeId': 'OpenStreetMap',
+        // TODO: allow user to set default layer
+        'mapTypeId': google.maps.MapTypeId.ROADMAP,
         'mapTypeControlOptions': {
             'mapTypeIds': [
                 'OpenStreetMap',
