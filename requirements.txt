@@ -16,7 +16,7 @@ django-missing==0.1.4
 django-pushserver==0.1.10
 django-sekizai==0.5
 django-staticfiles==1.2.1
--e git+https://github.com/mitar/django-tastypie.git@c4fd1dc3cb7fc9f2e16ebd05bd120d10a9d09055#egg=django-tastypie
+-e git+https://github.com/mitar/django-tastypie.git@a1f2f95ece56aae7d265fb095dcefe3768a5a63c#egg=django-tastypie
 django-tastypie-mongoengine==0.2.3
 docutils==0.9.1
 kombu==2.4.7
