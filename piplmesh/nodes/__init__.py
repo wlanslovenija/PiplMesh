@@ -64,13 +64,12 @@ def get_node(request, allow_mocking=True):
 
     node = None
     try:
-        mocking = request.session[MOCKING_SESSION_KEY]
         node_id = request.session[SESSION_KEY]
         backend_path = request.session[BACKEND_SESSION_KEY]
         backend = load_backend(backend_path)
         node = backend.get_node(node_id)
 
-        if allow_mocking and mocking:
+        if allow_mocking and request.session[MOCKING_SESSION_KEY]:
             return node
 
     except KeyError:
