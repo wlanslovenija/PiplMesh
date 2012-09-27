@@ -148,16 +148,28 @@ function Post(data) {
         var delete_link = $('<li/>').append(
             $('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))
         );
+        var edit_link = $('<li/>').append(
+            $('<a/>').addClass('edit-post').addClass('hand').text(gettext("Edit"))
+        );
+        
+        var author_link = $('<a/>').attr('href','/user/'+self.author.username).addClass('author').addClass('hand').text(self.author.username);
 
-        var post_options = $('<ul />').addClass('options').append(delete_link);
-
+        var post_options = $('<ul />').addClass('options').append(edit_link, delete_link);
+        
+        var comments = $('<ul />').addClass('comments');
+        for (var comment in self.comments) {
+            commentDOM = getComment(comment);
+            comments.append(commentDOM);
+        }
+        
         var post = $('<li/>').addClass('post').data('post', self).append(post_options).append(
-            $('<span/>').addClass('author').text(self.author.username)
+            $('<span/>').append(author_link)
         ).append(
             $('<p/>').addClass('content').text(self.message)
         ).append(
            $('<span/>').addClass('date').text(formatDiffTime(self.created_time))
-        );
+        ).append(
+           $('<span/>').addClass('comments').append(comments));
 
         return post;
     }
@@ -195,6 +207,31 @@ function Post(data) {
     self.updateDate = function (dom_element) {
         $(dom_element).find('.date').text(formatDiffTime(self.created_time));
     }
+}
+
+function Comment(data) {
+    var self = this;
+    $.extend(self, data);
+    
+    function createDOM() {
+        var author_link = $('<a/>').attr('href','/user/'+self.author.username).addClass('author').addClass('hand').text(self.author.username);
+        var comment = $('<li/>').addClass('comment').append(
+            $('<span/>').append(author_link)).append($('<p/>').addClass('content').text(self.message)
+            ).append($('<span/>').addClass('date').text(formatDiffTime(self.created_time)));
+           
+        return comment;
+    }
+    
+}
+// TODO: Make this work. How do I return comment DOM object from this method?
+function getComment(url) {
+    $.getJSON(URLS.post + url, function (data, textStatus, jqXHR) {
+        return new Comment(data).createDOM();
+    } );
+}
+
+function createAddCommentsUrl(id) {
+    return URLS.post+id+'/comments/';
 }
 
 function loadPosts(offset) {
