@@ -22,6 +22,14 @@
             'post': '{% filter escapejs %}{% url "api_dispatch_list" api_name=API_NAME resource_name="post" %}{% endfilter %}',
             'notifications': '{% filter escapejs %}{% url "api_dispatch_list" api_name=API_NAME resource_name="notification" %}{% endfilter %}'
         };
+
+        var node = {
+            'name': '{{ request.node.name|escapejs }}',
+            'latitude': '{{ request.node.latitude|escapejs }}',
+            'longitude': '{{ request.node.longitude|escapejs }}',
+            'location': '{{ request.node.location|escapejs }}',
+            'url': '{{ request.node.url|escapejs }}'
+        };
         /* ]]> */
     </script>
 {% endblock %}
