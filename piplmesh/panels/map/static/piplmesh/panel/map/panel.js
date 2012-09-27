@@ -37,7 +37,7 @@ $(document).ready(function () {
     });
 
     var nodeName = $('<p/>').text(node.name).append(' | ');
-    var nodeWebsite = $('<a/>').prop('href', node.url).text(gettext('more info'));
+    var nodeWebsite = $('<a/>').prop('href', node.url).text(gettext("more info"));
     nodeName.append(nodeWebsite);
     $('#map_info').append(nodeName);
 });
