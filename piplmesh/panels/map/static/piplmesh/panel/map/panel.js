@@ -29,6 +29,19 @@ $(document).ready(function () {
 
     var map = new google.maps.Map($('#map').get(0), options);
 
+    // Necessary libraries are included with googleapis in piplmesh/panels/map/templates/panel/map/panel.html
+    var map_layers = new Object;
+    var map_layers_labels = new Object;
+    map_layers_labels.weather = gettext('Weather');
+    map_layers.weather = new google.maps.weather.WeatherLayer({
+        temperatureUnits: google.maps.weather.TemperatureUnit.CELSIUS
+    });
+    map_layers_labels.clouds = gettext('Clouds');
+    map_layers.clouds = new google.maps.weather.CloudLayer();
+    map_layers_labels.panoramio = gettext('Panoramio');
+    map_layers.panoramio = new google.maps.panoramio.PanoramioLayer();
+
+
     map.mapTypes.set('OpenStreetMap', new google.maps.ImageMapType({
         'getTileUrl': function(coordinates, zoom) {
             // TODO: Is there HTTPS version - it would be better to use that so we do not get mixed content errors if we run our portal over HTTPS
@@ -58,6 +71,30 @@ $(document).ready(function () {
         map.draggable = true;
         map.streetViewControl = true;
         map.mapTypeControlOptions.position = google.maps.ControlPosition.TOP_RIGHT;
+    }
+
+    function addMapLayerOption(layer, label) {
+        if($('#map-layers').lenght != 0) {
+            $('<input/>').prop({
+                'id': 'map-layer-' + layer,
+                'type': 'checkbox',
+                'name': 'map-layer--' + layer
+            }).appendTo('#map-layers');
+            $('<label/>').prop('for', 'map-layer-' + layer).text(label).appendTo('#map-layers');
+            $('<br/>').appendTo('#map-layers');
+            $('#map-layer-' + layer).click(function (event) {
+                setLayerVisibility(layer);
+            });
+        }
+    }
+
+    function setLayerVisibility(layer) {
+        if ($('#map-layer-' + layer).attr('checked')) {
+            map_layers[layer].setMap(map);
+        }
+        else {
+            map_layers[layer].setMap(null);
+        }
     }
 
     function closeAdvancedMap() {
@@ -93,6 +130,12 @@ $(document).ready(function () {
         $('#advanced-map-container').hide();
         $('#map').detach().prependTo('#advanced-map-container');
         $('#advanced-map-container').show();
+        $('<div/>').prop('id', 'map-layers').appendTo('#advanced-map');
+        // Map layer options should be added after #map-layers is created
+        for (var layer in map_layers) {
+            addMapLayerOption(layer, gettext(map_layers_labels[layer]));
+        }
+
         refreshMapCenter();
         $(document).keyup(function (event) {
             if (event.keyCode == 27) {

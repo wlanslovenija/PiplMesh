@@ -103,3 +103,24 @@
     display: block;
     background-color: black;
 }
+
+#map-layers {
+    position: absolute;
+    top: 37px;
+    right: 5px;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #717B87;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    color: #000000;
+    direction: ltr;
+    font-family: Arial,sans-serif;
+    font-size: 13px;
+    min-width: 29px;
+    overflow: hidden;
+    padding: 1px 6px;
+    text-align: left;
+}
+
+#map-layers input {
+    margin-left: 0;
+}
