@@ -168,13 +168,13 @@ function Post(data) {
         });
     }
 
-    function postByUser () {
-        return $.user_posts_URIs.some(function(user_post_URI) {
-            return user_post_URI.lastIndexOf(self.resource_uri) > -1;
-        });
+    function postByUser() {
+        var user_posts_URIs = $('.posts').data('user_posts_URIs');
+        var full_resource_uri = getLocation(self.resource_uri).href;
+        return $.inArray(full_resource_uri, user_posts_URIs) != -1;
     }
 
-    function showPost (post) {
+    function showPost(post) {
         // TODO: Animation has to be considered and maybe improved
         post.show('fast');
     };
@@ -306,11 +306,17 @@ function showHiddenPosts() {
     $('ul > li.notShown').show('fast').removeClass('notShown');
 }
 
+function getLocation(href) {
+    var l = document.createElement("a");
+    l.href = href;
+    return l;
+}
+
 $(document).ready(function () {
     initializePanels();
 
-    // list of URIs of posts by user
-    $.user_posts_URIs = new Array();
+    // List of URIs of posts by user
+    $($('.posts')).data('user_posts_URIs', []);
 
     $.updates.registerProcessor('home_channel', 'post_new', function (data) {
         new Post(data.post).addToTop();
@@ -353,7 +359,8 @@ $(document).ready(function () {
             'contentType': 'application/json',
             'dataType': 'json',
             'success': function (data, textStatus, jqXHR) {
-                $.user_posts_URIs.push(jqXHR.getResponseHeader('location'));
+                var full_location_uri = getLocation(jqXHR.getResponseHeader('location')).href;
+                $('.posts').data('user_posts_URIs').push(full_location_uri);
                 $('#post_text').val(input_box_text).css('min-height', 25);
             },
             'error': function (jqXHR, textStatus, errorThrown) {
