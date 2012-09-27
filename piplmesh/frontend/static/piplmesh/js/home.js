@@ -231,6 +231,19 @@ function Notification(data) {
         $('#notifications_list').prepend(createDOM());
     };
 
+    self.markAsRead = function () {
+        $.ajax({
+            type: 'PATCH',
+            url: self.resource_uri,
+            data: JSON.stringify({'read': true}),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (data, textStatus, jqXHR) {
+                alert("Notification marked as read.");
+            },
+        });
+    }
+
     self.updateDate = function (dom_element) {
         $(dom_element).find('.notification_created_time').text(formatDiffTime(self.created_time));
     }
@@ -346,6 +359,10 @@ $(document).ready(function () {
     // Notifications
     $('#notifications_count').add('.close_notifications_box').click(function (event) {
         $('#notifications_box').slideToggle('fast');
+    });
+
+    $('.notification').live('click', function (event) {
+        $(this).data('notification').markAsRead();
     });
     // TODO: Just for testing
     $('#add_comment').click(function (event) {
