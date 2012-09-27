@@ -67,16 +67,18 @@ class UserView(detail.DetailView):
 
 class LocationsView(generic_views.FormView):
     form_class = forms.LocationsForm
+
+    # TODO: redirect to initiator page
     success_url = urlresolvers.reverse_lazy('home')
 
     def form_valid(self, form):
         location = form.cleaned_data['locations']
 
-        if location == '-1':
+        if location == '':
             nodes.flush_session(self.request)
         else:
-            node_backend, node_id = location.rsplit('_')
-            self.request.session[nodes.SESSION_KEY] = int(node_id)
+            node_backend, node_id = location.split('-')
+            self.request.session[nodes.SESSION_KEY] = node_id
             self.request.session[nodes.BACKEND_SESSION_KEY] = node_backend
             self.request.session[nodes.MOCKING_SESSION_KEY] = True
 

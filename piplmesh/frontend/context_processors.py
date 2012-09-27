@@ -22,5 +22,4 @@ def global_vars(request):
         'request_get_next': request.REQUEST.get(auth.REDIRECT_FIELD_NAME),
 
         # Forms
-        'locations_form' : forms.LocationsForm() if request.user and request.user.is_staff else None
-    }
+        'locations_form' : forms.LocationsForm() if getattr(request, 'user', None) and request.user.is_authenticated() and request.user.is_staff else None,    }

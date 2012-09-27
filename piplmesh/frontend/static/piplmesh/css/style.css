@@ -203,6 +203,10 @@ input.gsc-search-button:hover,
     white-space: nowrap;
 }
 
+#posts_in_queue, #toggle_queue, #show_posts {
+    display: none;
+}
+
 #notifications_count {
     border: 1px solid #999;
     cursor: pointer;

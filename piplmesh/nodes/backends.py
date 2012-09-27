@@ -23,12 +23,12 @@ class RandomNodesBackend(object):
 
         node_id = random.randrange(len(data.nodes))
         node = copy.copy(data.nodes[node_id])
-        node.id = node_id
+        node.id = str(node_id)
         return node
 
     def get_node(self, node_id):
         try:
-            node = copy.copy(data.nodes[node_id])
+            node = copy.copy(data.nodes[int(node_id)])
             node.id = node_id
             return node
         except IndexError:
@@ -37,7 +37,7 @@ class RandomNodesBackend(object):
     def get_all_nodes(self):
         for i, node in enumerate(data.nodes):
             node = copy.copy(node)
-            node.id = i
+            node.id = str(i)
             yield node
 
     def get_full_name(self):

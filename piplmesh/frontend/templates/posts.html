@@ -13,4 +13,11 @@
     </form> 
 </div>
 
+{# Channel settings #}
+<div>
+    <p id="posts_in_queue"></p>
+    <div id="show_posts"><input type="button" value="{% trans "Display new posts" %}" /></div>
+    <div id="toggle_queue"><label for="toggle_queue_checkbox">{% trans "Display new posts automatically" %}</label><input id="toggle_queue_checkbox" type="checkbox" /></div>
+</div>
+
 <ul class="posts"></ul>

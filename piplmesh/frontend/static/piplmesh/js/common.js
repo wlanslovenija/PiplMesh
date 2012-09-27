@@ -22,11 +22,6 @@ $(document).ready(function () {
         }
     );
 
-    // Locations
-    $('#id_locations').change(function (event) {
-        $(this).closest('form').submit();
-    });
-
     var max_width = 0;
     $('.field label.main').each(function (index, label) {
         if ($(this).width() > max_width) {

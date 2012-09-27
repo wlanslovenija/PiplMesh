@@ -66,11 +66,15 @@ def get_node(request, allow_mocking=True):
     try:
         node_id = request.session[SESSION_KEY]
         backend_path = request.session[BACKEND_SESSION_KEY]
+        mocking = request.session.get(MOCKING_SESSION_KEY, False)
         backend = load_backend(backend_path)
         node = backend.get_node(node_id)
 
-        if allow_mocking and request.session[MOCKING_SESSION_KEY]:
+
+        if allow_mocking and mocking:
             return node
+        elif mocking:
+            node = None
 
     except KeyError:
         pass
@@ -93,7 +97,7 @@ def get_node(request, allow_mocking=True):
             continue
 
         request.session[SESSION_KEY] = node.id
-        request.session[BACKEND_SESSION_KEY] = '%s.%s' % (backend.__module__, backend.__class__.__name__)
+        request.session[BACKEND_SESSION_KEY] = backend.get_full_name()
 
         return node
 
