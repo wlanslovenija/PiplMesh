@@ -3,8 +3,7 @@ import traceback
 from django import dispatch, http, template
 from django.conf import settings
 from django.contrib import messages
-from django.core import mail, urlresolvers
-from django.core.exceptions import PermissionDenied
+from django.core import exceptions, mail, urlresolvers
 from django.core.files import storage
 from django.test import client
 from django.utils import simplejson
@@ -87,7 +86,7 @@ class LocationsView(generic_views.FormView):
     def dispatch(self, request, *args, **kwargs):
         if request.user and request.user.is_authenticated() and request.user.is_staff:
             return super(LocationsView, self).dispatch(request, *args, **kwargs)
-        raise PermissionDenied
+        raise exceptions.PermissionDenied
 
 def upload_view(request):
     if request.method != 'POST':

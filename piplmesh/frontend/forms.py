@@ -20,4 +20,3 @@ def location_choices():
 
 class LocationsForm(forms.Form):
     locations = forms.ChoiceField(choices=location_choices(), label='', required=False)
-
