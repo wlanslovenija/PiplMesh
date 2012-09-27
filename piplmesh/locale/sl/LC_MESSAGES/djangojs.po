@@ -64,6 +64,13 @@ msgstr "Izbriši"
 msgid "%(author)s commented on post."
 msgstr "%(author)s je komentiral objavo."
 
+msgid "You have %(count)s new post"
+msgid_plural "You have %(count)s new posts"
+msgstr[0] "Imaš %(count)s novo objavo"
+msgstr[1] "Imaš %(count)s novi objavi"
+msgstr[2] "Imaš %(count)s nove objeve"
+msgstr[3] "Imaš %(count)s novih objav"
+
 #: panels/map/static/piplmesh/panel/map/panel.js:15
 msgid "more info"
 msgstr "več informacij"
