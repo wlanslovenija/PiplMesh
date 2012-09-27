@@ -278,7 +278,7 @@ function autoShowIncomingPosts() {
 }
 
 function updateHiddenPostsCount() {
-    var unreadCount = $('ul > li.notShown').length;
+    var unread_count = $('ul > li.notShown').length;
     var format = ngettext("You have %(count)s new post", "You have %(count)s new posts", unreadCount);
     var msg = interpolate(format, {'count': unreadCount}, true);
     $('#posts_in_queue').text(msg);
