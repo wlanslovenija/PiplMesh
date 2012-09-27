@@ -168,6 +168,17 @@ function Post(data) {
         });
     }
 
+    function postByUser () {
+        return $.user_posts_URIs.some(function(user_post_URI) {
+            return user_post_URI.lastIndexOf(self.resource_uri) > -1;
+        });
+    }
+
+    function showPost (post) {
+        // TODO: Animation has to be considered and maybe improved
+        post.show('fast');
+    };
+
     self.addToBottom = function () {
         if (checkIfPostExists()) return;
 
@@ -178,12 +189,18 @@ function Post(data) {
         if (checkIfPostExists()) return;
 
         var post = createDOM().hide().prependTo($('.posts'));
+
+        if (postByUser()) {
+            // TODO: Maybe we should remove URI after showing user's post
+            showPost(post);
+            return;
+        }
+
         if (!autoShowIncomingPosts()) {
             post.addClass('notShown');
         }
         else {
-            // TODO: Animation has to be considered and maybe improved
-            post.show('fast');
+            showPost(post);
         }
         updateHiddenPostsCount();
         $('#toggle_queue').show();
@@ -292,6 +309,9 @@ function showHiddenPosts() {
 $(document).ready(function () {
     initializePanels();
 
+    // list of URIs of posts by user
+    $.user_posts_URIs = new Array();
+
     $.updates.registerProcessor('home_channel', 'post_new', function (data) {
         new Post(data.post).addToTop();
     });
@@ -333,6 +353,7 @@ $(document).ready(function () {
             'contentType': 'application/json',
             'dataType': 'json',
             'success': function (data, textStatus, jqXHR) {
+                $.user_posts_URIs.push(jqXHR.getResponseHeader('location'));
                 $('#post_text').val(input_box_text).css('min-height', 25);
             },
             'error': function (jqXHR, textStatus, errorThrown) {
