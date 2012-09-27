@@ -24,7 +24,7 @@
 
         {% with next|default:request_get_next|default:request.get_full_path as next_url %}
             <ul class="user">
-                {% if locations_form %}
+                {% if user.is_authenticated and user.is_staff and locations_form %}
                     {% with locations_form as form %}
                         <li>
                             {% url "mock_location" as form_action %}

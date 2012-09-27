@@ -66,15 +66,17 @@ def get_node(request, allow_mocking=True):
     try:
         node_id = request.session[SESSION_KEY]
         backend_path = request.session[BACKEND_SESSION_KEY]
-        mocking = request.session.get(MOCKING_SESSION_KEY, False)
         backend = load_backend(backend_path)
         node = backend.get_node(node_id)
+        mocking = request.session.get(MOCKING_SESSION_KEY, False)
 
-
-        if allow_mocking and mocking:
+        # Return node if mocking is in progress and user is authenticated
+        if allow_mocking and mocking and request.user and request.user.is_authenticated() and request.user.is_staff:
             return node
+        # If mocking was in progress and user isn't allowed to mock reset nodes value.
         elif mocking:
             node = None
+            mocking = False
 
     except KeyError:
         pass
