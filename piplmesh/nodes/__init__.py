@@ -12,6 +12,12 @@ CLOSEST_LATITUDE_SESSION_KEY = '_nodes_latitude'
 CLOSEST_LONGITUDE_SESSION_KEY = '_nodes_longitude'
 MOCKING_SESSION_KEY = '_nodes_mocking'
 
+def get_full_node_id(backend_name, node_id):
+    return '%s-%s' % (backend_name, node_id)
+
+def is_mocking(request):
+    return request.session.get(MOCKING_SESSION_KEY, False)
+
 def flush_session(request):
     for key in (SESSION_KEY, BACKEND_SESSION_KEY, CLOSEST_LATITUDE_SESSION_KEY, CLOSEST_LONGITUDE_SESSION_KEY, MOCKING_SESSION_KEY):
         try:
@@ -68,7 +74,7 @@ def get_node(request, allow_mocking=True):
         backend_path = request.session[BACKEND_SESSION_KEY]
         backend = load_backend(backend_path)
         node = backend.get_node(node_id)
-        mocking = request.session.get(MOCKING_SESSION_KEY, False)
+        mocking = is_mocking(request)
 
         # Return node if mocking is in progress and user is authenticated
         if allow_mocking and mocking and request.user and request.user.is_authenticated() and request.user.is_staff:

@@ -72,9 +72,10 @@ class LocationsView(generic_views.FormView):
     success_url = urlresolvers.reverse_lazy('home')
 
     def form_valid(self, form):
-        location = form.cleaned_data['locations']
-        if location == '':
+        location = form.cleaned_data['location']
+        if location == 'None':
             nodes.flush_session(self.request)
+            self.request.session[nodes.MOCKING_SESSION_KEY] = False
         else:
             node_backend, node_id = location.split('-', 1)
             self.request.session[nodes.SESSION_KEY] = node_id

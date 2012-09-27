@@ -7,16 +7,21 @@ from piplmesh import nodes
 class ContactForm(forms.Form):
     """
     Class with the contact form.
-    """  
-    
+    """
+
     subject = forms.CharField(label=_("Subject"))
     email = forms.EmailField(label=_("Your e-mail address"))
     message = forms.CharField(widget=widgets.Textarea())
 
 def location_choices():
-    yield ('', _("Don't mock location"))
+    yield ('None', _("Don't mock location"))
     for backend, node in nodes.get_all_nodes_with_backends():
-        yield ('%s-%s' % (backend.get_full_name(), node.id), node.name)
+        yield (nodes.get_full_node_id(backend.get_full_name(), node.id), node.name)
+
+def initial_location(request):
+    node_id = request.session.get(nodes.SESSION_KEY, None)
+    backend_name = request.session.get(nodes.BACKEND_SESSION_KEY, None)
+    return nodes.get_full_node_id(backend_name, node_id) if nodes.is_mocking(request) else 'None'
 
 class LocationsForm(forms.Form):
-    locations = forms.ChoiceField(choices=location_choices(), label='', required=False)
+    location = forms.ChoiceField(choices=location_choices(), label=_("Location"), required=True)

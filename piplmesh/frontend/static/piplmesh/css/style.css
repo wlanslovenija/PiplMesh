@@ -324,6 +324,11 @@ input.gsc-search-button {
     top: 2px;
 }
 
+label[for=id_location]
+{
+    display: none;
+}
+
 /* -------------------- MAIN ------------------------ */
 #content {;
     margin: 20px;
