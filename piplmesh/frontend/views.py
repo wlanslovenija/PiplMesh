@@ -88,11 +88,11 @@ class LocationsView(generic_views.FormView):
 
         return super(LocationsView, self).form_valid(form)
 
-    #def dispatch(self, request, *args, **kwargs):
-        #staff = request.user
-        #if not (staff and staff.is_authenticated() and staff.is_staff):
-            #return http.HttpResponseForbidden
-        #return super(LocationsView, self).dispatch(request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        staff = request.user
+        if not (staff and staff.is_authenticated() and staff.is_staff):
+            return http.HttpResponseForbidden
+        return super(LocationsView, self).dispatch(request, *args, **kwargs)
 
 def upload_view(request):
     if request.method != 'POST':
