@@ -1,5 +1,6 @@
-import mongoengine
 from django.utils.translation import ugettext_lazy as _
+
+import mongoengine
 
 SYMBOLS = (
     (1, _("Sun")),
@@ -27,7 +28,7 @@ SYMBOLS = (
     (23, _("Sleet thunder")),
 )
 
-#TODO unique fields  
+#TODO: Some fields have to be unique to make sure that there is only one entry for each time period for given location.
 class Weather(mongoengine.Document):
     created = mongoengine.DateTimeField(required=True)
     latitude = mongoengine.DecimalField(required=True)
