@@ -1,7 +1,7 @@
-
 from django import forms
 from django.forms import widgets
 from django.utils.translation import ugettext_lazy as _
+
 from piplmesh import nodes
 
 class ContactForm(forms.Form):
