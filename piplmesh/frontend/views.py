@@ -3,12 +3,11 @@ import traceback
 from django import dispatch, http, template
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.core import mail, urlresolvers
+from django.core.exceptions import PermissionDenied
 from django.core.files import storage
 from django.test import client
 from django.utils import simplejson
-from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views import generic as generic_views
 
@@ -74,9 +73,6 @@ class LocationsView(generic_views.FormView):
     success_url = urlresolvers.reverse_lazy('home')
 
     def form_valid(self, form):
-        user = self.request.user
-
-
         location = form.cleaned_data['locations']
         if location == '':
             nodes.flush_session(self.request)
@@ -89,10 +85,9 @@ class LocationsView(generic_views.FormView):
         return super(LocationsView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
-        staff = request.user
-        if not (staff and staff.is_authenticated() and staff.is_staff):
-            return http.HttpResponseForbidden
-        return super(LocationsView, self).dispatch(request, *args, **kwargs)
+        if request.user and request.user.is_authenticated() and request.user.is_staff:
+            return super(LocationsView, self).dispatch(request, *args, **kwargs)
+        raise PermissionDenied
 
 def upload_view(request):
     if request.method != 'POST':

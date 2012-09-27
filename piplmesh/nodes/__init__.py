@@ -73,7 +73,7 @@ def get_node(request, allow_mocking=True):
         # Return node if mocking is in progress and user is authenticated
         if allow_mocking and mocking and request.user and request.user.is_authenticated() and request.user.is_staff:
             return node
-        # If mocking was in progress and user isn't allowed to mock reset nodes value.
+        # If mocking was in progress and user isn't allowed to mock reset nodes value
         elif mocking:
             node = None
             mocking = False
