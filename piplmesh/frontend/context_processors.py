@@ -24,6 +24,8 @@ def global_vars(request):
 
     # Location
     if getattr(request, 'user', None) and request.user.is_authenticated() and request.user.is_staff:
-        context.update({'location_form': forms.LocationForm(initial={'location': forms.initial_location(request)})})
+        context.update({
+            'location_form': forms.LocationForm(initial={'location': forms.initial_location(request)}),
+        })
 
     return context

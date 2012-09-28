@@ -3,7 +3,6 @@ import math
 from django.core import exceptions
 from django.utils import importlib
 
-
 LATITUDE_SESSION_KEY = '_latitude'
 LONGITUDE_SESSION_KEY = '_longitude'
 
