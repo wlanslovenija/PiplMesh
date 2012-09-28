@@ -9,11 +9,7 @@ def global_vars(request):
     """
     Adds global context variables to the context.
     """
-    locations_form = None
-    if getattr(request, 'user', None) and request.user.is_authenticated() and request.user.is_staff:
-        locations_form = forms.LocationsForm(initial={'location': forms.initial_location(request)})
-
-    return {
+    context = {
         # Constants
         'HOME_CHANNEL_ID': tasks.HOME_CHANNEL_ID,
         'LOGIN_REDIRECT_URL': settings.LOGIN_REDIRECT_URL,
@@ -24,9 +20,10 @@ def global_vars(request):
         # Variables
         'logo_url': "piplmesh/images/logo-%s.png" % translation.get_language(),
         'request_get_next': request.REQUEST.get(auth.REDIRECT_FIELD_NAME),
-
-        # Forms
-        'locations_form' : locations_form,
     }
 
+    # Location
+    if getattr(request, 'user', None) and request.user.is_authenticated() and request.user.is_staff:
+        context.update({'location_form': forms.LocationForm(initial={'location': forms.initial_location(request)})})
 
+    return context

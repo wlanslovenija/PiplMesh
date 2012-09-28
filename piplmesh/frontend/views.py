@@ -19,7 +19,7 @@ from mongogeneric import detail
 from pushserver.utils import updates
 
 from piplmesh import nodes
-from piplmesh.nodes import models as node_models
+from piplmesh.nodes import models as nodes_models
 from piplmesh.account import models as account_models
 from piplmesh.api import models as api_models, resources, signals
 from piplmesh.frontend import forms, tasks
@@ -66,28 +66,28 @@ class UserView(detail.DetailView):
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
-class LocationsView(generic_views.FormView):
-    form_class = forms.LocationsForm
+class LocationView(generic_views.FormView):
+    form_class = forms.LocationForm
 
     # TODO: Redirect to initiator page
     success_url = urlresolvers.reverse_lazy('home')
 
     def form_valid(self, form):
         location = form.cleaned_data['location']
-        print 'Debug: %s' % location
+
         if location == forms.NO_MOCKING_ID:
             nodes.flush_session(self.request)
         else:
-            node_backend, node_id = node_models.parse_full_node_id(location)
+            node_backend, node_id = nodes_models.parse_full_node_id(location)
             self.request.session[nodes.SESSION_KEY] = node_id
             self.request.session[nodes.BACKEND_SESSION_KEY] = node_backend
             self.request.session[nodes.MOCKING_SESSION_KEY] = True
 
-        return super(LocationsView, self).form_valid(form)
+        return super(LocationView, self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
         if request.user and request.user.is_authenticated() and request.user.is_staff:
-            return super(LocationsView, self).dispatch(request, *args, **kwargs)
+            return super(LocationView, self).dispatch(request, *args, **kwargs)
         raise exceptions.PermissionDenied
 
 def upload_view(request):

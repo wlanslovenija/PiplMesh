@@ -6,7 +6,7 @@ from . import data
 
 class NodeBackend(object):
     def get_full_name(self):
-        return "%s.%s" % (self.__module__, self.__class__.__name__)
+        return '%s.%s' % (self.__module__, self.__class__.__name__)
 
 class RandomNodesBackend(NodeBackend):
     def get_source_node(self, request):

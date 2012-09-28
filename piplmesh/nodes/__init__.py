@@ -14,9 +14,6 @@ CLOSEST_LATITUDE_SESSION_KEY = '_nodes_latitude'
 CLOSEST_LONGITUDE_SESSION_KEY = '_nodes_longitude'
 MOCKING_SESSION_KEY = '_nodes_mocking'
 
-def get_full_node_id(backend_name, node_id):
-    return '%s-%s' % (backend_name, node_id)
-
 def is_mocking(request):
     return request.session.get(MOCKING_SESSION_KEY, False)
 

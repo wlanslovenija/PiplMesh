@@ -18,10 +18,13 @@ class ContactForm(forms.Form):
 def location_choices():
     yield (NO_MOCKING_ID, _("Don't mock location"))
     for backend, node in nodes.get_all_nodes_with_backends():
-        yield (nodes.get_full_node_id(backend.get_full_name(), node.id), node.name)
+        yield (node.get_full_node_id(), node.name)
 
 def initial_location(request):
-    return request.node.get_full_node_id() if nodes.is_mocking(request) else NO_MOCKING_ID
+    if nodes.is_mocking(request):
+        return request.node.get_full_node_id()
+    else:
+        return NO_MOCKING_ID
 
-class LocationsForm(forms.Form):
+class LocationForm(forms.Form):
     location = forms.ChoiceField(choices=location_choices(), label=_("Location"), required=False)
