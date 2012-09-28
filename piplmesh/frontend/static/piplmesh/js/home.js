@@ -153,14 +153,8 @@ function Post(data) {
         );
         
         var author_link = $('<a/>').attr('href','/user/'+self.author.username).addClass('author').addClass('hand').text(self.author.username);
-
-        var post_options = $('<ul />').addClass('options').append(edit_link, delete_link);
         
-        var comments = $('<ul />').addClass('comments');
-        for (var comment in self.comments) {
-            commentDOM = getComment(comment);
-            comments.append(commentDOM);
-        }
+        var post_options = $('<ul />').addClass('options').append(edit_link, delete_link);
         
         var post = $('<li/>').addClass('post').data('post', self).append(post_options).append(
             $('<span/>').append(author_link)
@@ -169,27 +163,57 @@ function Post(data) {
         ).append(
            $('<span/>').addClass('date').text(formatDiffTime(self.created_time))
         ).append(
-           $('<span/>').addClass('comments').append(comments));
-
+           $('<span/>').append($('<ul/>').addClass('comments').data('post', self))
+        ).append(
+           $('<span/>').append(generateCommentForm()));
+        
         return post;
     }
-
+    
+    function generateCommentForm() {
+        var input = $('<input/>').attr('type','button').attr('value','submit')
+        .attr('name','submit_comment').attr('id','submit_comment')
+        .click(function (event) {
+            // TODO: We need to choose the right textarea. Right now it takes first one.
+            // TODO: Disable enable submit button like with the Post.
+            // TODO: Display comment automaticly after submited. Idea: delete post and add it on top and comments will be refreshed.
+            var message = $('#comment_text').val();
+            addComment(message, createAddCommentsUrl(self.id));
+            });
+        var textarea = $('<textarea/>').addClass('comment_text').data('post', self).attr('id', 'comment_text');
+        var form = $('<form/>').attr('id','comment_form').append(textarea, input);
+        
+        return form;
+    }
+    
+    function generateComments() {
+        // TODO: We call comments in the right order but that doesn't mean we get them in the right order aswell. Should make some ordering down the road.'
+        for (var index in self.comments) {
+            getComment(self.comments[index], self.id);
+        };
+    }
+    
     function checkIfPostExists() {
         return $('.post').is(function (index) {
             return $(this).data('post').id == self.id;
         });
     }
-
+    
     self.addToBottom = function () {
+        
         if (checkIfPostExists()) return;
-
+        
         $('.posts').append(createDOM());
+        
+        generateComments();
+        
     };
 
     self.addToTop = function () {
         if (checkIfPostExists()) return;
 
         var post = createDOM().hide().prependTo($('.posts'));
+        generateComments();
         if (!autoShowIncomingPosts()) {
             post.addClass('notShown');
         }
@@ -206,12 +230,13 @@ function Post(data) {
 
     self.updateDate = function (dom_element) {
         $(dom_element).find('.date').text(formatDiffTime(self.created_time));
-    }
+    };
 }
 
-function Comment(data) {
+function Comment(data, post_id) {
     var self = this;
     $.extend(self, data);
+    self.post_id = post_id;
     
     function createDOM() {
         var author_link = $('<a/>').attr('href','/user/'+self.author.username).addClass('author').addClass('hand').text(self.author.username);
@@ -222,19 +247,24 @@ function Comment(data) {
         return comment;
     }
     
-}
-// TODO: Make this work. How do I return comment DOM object from this method?
-function getComment(url) {
-    $.getJSON(URLS.post + url, function (data, textStatus, jqXHR) {
-        return new Comment(data).createDOM();
+    self.appendToPost = function () {
+        $('.comments').is(function (index) {
+            if ($(this).data('post').id == self.post_id) {
+                $(this).append(createDOM());
+            }
+        });
+        
+    };
+ }
+
+function getComment(url, post_id) {
+    $.getJSON(url, function (data, textStatus, jqXHR) {
+        new Comment(data, post_id).appendToPost();
     } );
 }
 
-function createAddCommentsUrl(id) {
-    return URLS.post+id+'/comments/';
-}
-
 function loadPosts(offset) {
+    
     $.getJSON(URLS.post, {
         'limit': POSTS_LIMIT,
         'offset': offset
@@ -292,15 +322,16 @@ function loadNotifications() {
     });
 }
 
-// TODO: This is just for testing purposes. It can be base for future development.
-function addComment(comment) {
-    // TODO: Change this for any post
-    var post_url = $('.post').first().data('post').resource_uri;
+function createAddCommentsUrl(id) {
+    return URLS.post+id+'/comments/';
+}
 
+// TODO: This is just for testing purposes. It can be base for future development.
+function addComment(comment, post_url) {
+    
     $.ajax({
         'type': 'POST',
-        // TODO: Should probably not construct URL like that
-        'url': post_url + 'comments/',
+        'url': post_url,
         'data': JSON.stringify({'message': comment}),
         'contentType': 'application/json',
         'dataType': 'json',
@@ -328,7 +359,8 @@ function showHiddenPosts() {
 
 $(document).ready(function () {
     initializePanels();
-
+    
+    // TODO: Show new comments automaticaly when they are submitted. Much like Posts.
     $.updates.registerProcessor('home_channel', 'post_new', function (data) {
         new Post(data.post).addToTop();
     });
@@ -378,7 +410,7 @@ $(document).ready(function () {
             }
         });
     });
-
+    
     $('#post_text').expandingTextArea().focus(function (event) {
         if ($(this).val() == input_box_text) {
             $(this).val('');
@@ -429,7 +461,7 @@ $(document).ready(function () {
     });
     // TODO: Just for testing
     $('#add_comment').click(function (event) {
-        addComment("Test comment");
+        addComment("Test comment123", createAddCommentsUrl($('.post').first().data('post').id));
     });
 
     $.updates.registerProcessor('user_channel', 'notification', function (data) {
