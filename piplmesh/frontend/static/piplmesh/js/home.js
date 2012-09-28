@@ -306,17 +306,11 @@ function showHiddenPosts() {
     $('ul > li.notShown').show('fast').removeClass('notShown');
 }
 
-function getLocation(href) {
-    var l = document.createElement("a");
-    l.href = href;
-    return l;
-}
-
 $(document).ready(function () {
     initializePanels();
 
     // List of URIs of posts by user
-    $($('.posts')).data('user_posts_URIs', []);
+    $('.posts').data('user_posts_URIs', []);
 
     $.updates.registerProcessor('home_channel', 'post_new', function (data) {
         new Post(data.post).addToTop();
@@ -359,8 +353,8 @@ $(document).ready(function () {
             'contentType': 'application/json',
             'dataType': 'json',
             'success': function (data, textStatus, jqXHR) {
-                var full_location_uri = getLocation(jqXHR.getResponseHeader('location')).href;
-                $('.posts').data('user_posts_URIs').push(full_location_uri);
+                var full_post_uri = getLocation(jqXHR.getResponseHeader('location')).href;
+                $('.posts').data('user_posts_URIs').push(full_post_uri);
                 $('#post_text').val(input_box_text).css('min-height', 25);
             },
             'error': function (jqXHR, textStatus, errorThrown) {
