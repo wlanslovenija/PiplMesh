@@ -1,3 +1,7 @@
+function getLocation(href) {
+    return $('<a/>').prop('href', href).get(0);
+}
+
 $(document).ready(function () {
     $.ajaxSetup({
         'timeout': 5000,
