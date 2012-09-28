@@ -5,9 +5,10 @@ Making strings translatable
 ---------------------------
 
 To make your strings translatable edit them as follows:
- * in Django templates: ``{% trans "Some string" %}``
- * in Python files: ``_("some string")``
- * in JavaScript files: ``gettext("some string")``
+
+* in Django templates: ``{% trans "Some string" %}``
+* in Python files: ``_("some string")``
+* in JavaScript files: ``gettext("some string")``
    
 Creation of translation files
 -----------------------------
@@ -57,14 +58,15 @@ Translated strings should now be available in PiplMesh.
 Troubleshooting
 ---------------
 
-You should really read `documentation on translation in Django`_, but here are some
-troubleshooting notes:
- * you need ``gettext`` installed (see `instructions for Windows`_)
- * sometimes it is necessary to restart development HTTP server to get new
-   compiled translations to work
- * yes, you have to compile ``.po`` files into ``.mo`` files after you edit ``.po`` files
- * verify changes to ``.po`` files and make sure that not whole files are changed just
-   because your ``gettext`` changed ``/`` into ``\``, manually clean/revert such changes
+You should really read `documentation on translation in Django`_, but here are
+some troubleshooting notes:
+
+* you need ``gettext`` installed (see `instructions for Windows`_)
+* sometimes it is necessary to restart development HTTP server to get new
+  compiled translations to work
+* yes, you have to compile ``.po`` files into ``.mo`` files after you edit ``.po`` files
+* verify changes to ``.po`` files and make sure that not whole files are changed just
+  because your ``gettext`` changed ``/`` into ``\``, manually clean/revert such changes
 
 .. _documentation on translation in Django: https://docs.djangoproject.com/en/dev/topics/i18n/
 .. _instructions for Windows: https://docs.djangoproject.com/en/dev/topics/i18n/translation/#gettext-on-windows

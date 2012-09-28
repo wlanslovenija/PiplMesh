@@ -3,7 +3,7 @@ from django.contrib import auth
 from django.utils import translation
 
 from piplmesh import urls
-from piplmesh.frontend import tasks
+from piplmesh.frontend import forms, tasks
 
 def global_vars(request):
     """
@@ -21,4 +21,7 @@ def global_vars(request):
         # Variables
         'logo_url': "piplmesh/images/logo-%s.png" % translation.get_language(),
         'request_get_next': request.REQUEST.get(auth.REDIRECT_FIELD_NAME),
+
+        # Forms
+        'locations_form' : forms.LocationsForm() if getattr(request, 'user', None) and request.user.is_authenticated() and request.user.is_staff else None,
     }

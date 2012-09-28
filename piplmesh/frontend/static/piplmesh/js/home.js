@@ -177,8 +177,19 @@ function Post(data) {
     self.addToTop = function () {
         if (checkIfPostExists()) return;
 
-        // TODO: Animation has to be considered and maybe improved
-        createDOM(data).prependTo($('.posts')).hide().slideToggle('slow');
+        var post = createDOM().hide().prependTo($('.posts'));
+        if (!autoShowIncomingPosts()) {
+            post.addClass('notShown');
+        }
+        else {
+            // TODO: Animation has to be considered and maybe improved
+            post.show('fast');
+        }
+        updateHiddenPostsCount();
+        $('#toggle_queue').show();
+        if (!autoShowIncomingPosts()) {
+            $('#posts_in_queue, #show_posts').show();
+        }
     };
 
     self.updateDate = function (dom_element) {
@@ -250,16 +261,32 @@ function addComment(comment) {
     var post_url = $('.post').first().data('post').resource_uri;
 
     $.ajax({
-        type: 'POST',
+        'type': 'POST',
         // TODO: Should probably not construct URL like that
-        url: post_url + 'comments/',
-        data: JSON.stringify({'message': comment}),
-        contentType: 'application/json',
-        dataType: 'json',
-        success: function (data, textStatus, jqXHR) {
+        'url': post_url + 'comments/',
+        'data': JSON.stringify({'message': comment}),
+        'contentType': 'application/json',
+        'dataType': 'json',
+        'success': function (data, textStatus, jqXHR) {
             alert("Comment posted.");
         }
     });
+}
+
+function autoShowIncomingPosts() {
+    return $('#toggle_queue_checkbox').is(':checked');
+}
+
+function updateHiddenPostsCount() {
+    var unread_count = $('ul > li.notShown').length;
+    var format = ngettext("There is %(count)s new post", "There are %(count)s new posts", unread_count);
+    var msg = interpolate(format, {'count': unread_count}, true);
+    $('#posts_in_queue').text(msg);
+}
+
+function showHiddenPosts() {
+    // TODO: Animation has to be considered and maybe improved
+    $('ul > li.notShown').show('fast').removeClass('notShown');
 }
 
 $(document).ready(function () {
@@ -332,6 +359,22 @@ $(document).ready(function () {
         else {
             $('#submit_post').prop('disabled', false);
         }
+    });
+
+    $('#show_posts > input').click(function (event) {
+        showHiddenPosts();
+        $('#posts_in_queue, #show_posts, #toggle_queue').hide();
+    });
+
+    $('#toggle_queue > input').click(function (event) {
+        if (autoShowIncomingPosts()) {
+            showHiddenPosts();
+            updateHiddenPostsCount();
+        }
+        else {
+            $('#toggle_queue').hide();
+        }
+        $('#posts_in_queue, #show_posts').hide();
     });
 
     $(window).scroll(function (event) {

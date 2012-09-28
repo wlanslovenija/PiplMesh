@@ -3,7 +3,7 @@ import traceback
 from django import dispatch, http, template
 from django.conf import settings
 from django.contrib import messages
-from django.core import mail, urlresolvers
+from django.core import exceptions, mail, urlresolvers
 from django.core.files import storage
 from django.test import client
 from django.utils import simplejson
@@ -18,6 +18,7 @@ from mongogeneric import detail
 
 from pushserver.utils import updates
 
+from piplmesh import nodes
 from piplmesh.account import models as account_models
 from piplmesh.api import models as api_models, resources, signals
 from piplmesh.frontend import forms, tasks
@@ -63,6 +64,29 @@ class UserView(detail.DetailView):
     document = account_models.User
     slug_field = 'username'
     slug_url_kwarg = 'username'
+
+class LocationsView(generic_views.FormView):
+    form_class = forms.LocationsForm
+
+    # TODO: Redirect to initiator page
+    success_url = urlresolvers.reverse_lazy('home')
+
+    def form_valid(self, form):
+        location = form.cleaned_data['locations']
+        if location == '':
+            nodes.flush_session(self.request)
+        else:
+            node_backend, node_id = location.split('-', 1)
+            self.request.session[nodes.SESSION_KEY] = node_id
+            self.request.session[nodes.BACKEND_SESSION_KEY] = node_backend
+            self.request.session[nodes.MOCKING_SESSION_KEY] = True
+
+        return super(LocationsView, self).form_valid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated() and request.user.is_staff:
+            return super(LocationsView, self).dispatch(request, *args, **kwargs)
+        raise exceptions.PermissionDenied
 
 def upload_view(request):
     if request.method != 'POST':

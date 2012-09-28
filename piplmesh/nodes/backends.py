@@ -28,7 +28,7 @@ class RandomNodesBackend(object):
 
     def get_node(self, node_id):
         try:
-            node = copy.copy(data.nodes[node_id])
+            node = copy.copy(data.nodes[int(node_id)])
             node.id = node_id
             return node
         except IndexError:
@@ -39,3 +39,6 @@ class RandomNodesBackend(object):
             node = copy.copy(node)
             node.id = i
             yield node
+
+    def get_full_name(self):
+        return "%s.%s" % (self.__module__, self.__class__.__name__)
