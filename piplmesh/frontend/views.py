@@ -78,7 +78,7 @@ class LocationView(generic_views.FormView):
         if location == forms.NO_MOCKING_ID:
             nodes.flush_session(self.request)
         else:
-            node_backend, node_id = nodes_models.parse_full_node_id(location)
+            node_backend, node_id = nodes_models.Node.parse_full_node_id(location)
             self.request.session[nodes.SESSION_KEY] = node_id
             self.request.session[nodes.BACKEND_SESSION_KEY] = node_backend
             self.request.session[nodes.MOCKING_SESSION_KEY] = True

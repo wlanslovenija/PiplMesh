@@ -1,5 +1,7 @@
 from piplmesh import nodes
 
+NODE_ID_SEPARATOR = '-'
+
 class Node(object):
     def __init__(self, id, name, location, latitude, longitude, url):
         self.id = id
@@ -18,7 +20,8 @@ class Node(object):
         return not self._outside_request
 
     def get_full_node_id(self):
-        return '%s%s%s' % (self.backend.get_full_name(), nodes.NODE_ID_SEPARATOR, self.id)
+        return '%s%s%s' % (self.backend.get_full_name(), NODE_ID_SEPARATOR, self.id)
 
-def parse_full_node_id(full_node_id):
-    return full_node_id.split(nodes.NODE_ID_SEPARATOR, 1)
+    @classmethod
+    def parse_full_node_id(cls, full_node_id):
+        return full_node_id.split(NODE_ID_SEPARATOR, 1)
