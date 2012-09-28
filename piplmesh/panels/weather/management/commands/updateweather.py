@@ -13,9 +13,9 @@ class Command(base.BaseCommand):
         verbosity = int(options['verbosity'])
 
         if verbosity > 1:
-            self.stdout.write('Updating weather...\n')
+            self.stdout.write("Updating weather...\n")
 
-        tasks.update_weather.delay().wait()
+        tasks.generate_weather_tasks.delay().wait()
 
         if verbosity > 1:
-            self.stdout.write('Successfully updated weather.\n')
+            self.stdout.write("Successfully updated weather.\n")

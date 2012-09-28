@@ -257,7 +257,7 @@ CELERYBEAT_SCHEDULE = {
         'args': (),
     },
     'update_weather': {
-        'task': 'piplmesh.panels.weather.tasks.update_weather',
+        'task': 'piplmesh.panels.weather.tasks.generate_weather_tasks',
         'schedule': datetime.timedelta(minutes=CHECK_FOR_NEW_WEATHER),
         'args': (),
     },

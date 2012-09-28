@@ -18,27 +18,29 @@ class WeatherPanel(panels.BasePanel):
             'header': _("Weather"),
         })
         
-        latitude = nodes.get_node(self.request).latitude
-        longitude = nodes.get_node(self.request).longitude
+        latitude = self.request.node.latitude
+        longitude = self.request.node.longitude
+        #TODO: Check and possibly optimize
         state = models.State.objects(latitude=latitude, longitude=longitude, at__lte=datetime.datetime.now(), at__gte=(datetime.datetime.now() - datetime.timedelta(hours=WEATHER_OBSOLETE))).order_by('+created').first()
         if state is None:
             context.update({
                 'error_data': True,
             })
             return context
-        
+        '''
         if timezone.now() > state.created + datetime.timedelta(hours=WEATHER_OBSOLETE):
             context.update({
                 'error_obsolete': True,
             })
             return context   
-            
+        '''    
         context.update({
             'weather_objects': get_weather_content(latitude, longitude),
             'created': state.created,
         })
         return context
 
+#TODO: Check and possibly optimize
 def get_weather_content(latitude, longitude):
     date = datetime.datetime.now()
     for interval in range(0, 3):
@@ -46,11 +48,11 @@ def get_weather_content(latitude, longitude):
         precipitation = models.Precipitation.objects(latitude=latitude, longitude=longitude, date_from__lte=date, date_to__gte=date).order_by('-date_from').first()
         weather_object = {
             'at': state.at,
-            'temperature':  state.temperature,
+            'temperature': state.temperature,
             'symbol':  precipitation.symbol,
         }
         date += datetime.timedelta(days=1)
         date = date.replace(hour=FORECAST_HOUR, minute=0)
         yield weather_object
-          
+
 panels.panels_pool.register(WeatherPanel)
