@@ -111,7 +111,7 @@ form input[type="submit"], form input[type="reset"] {
 }
 
 .errorlist {
-    color: #FF0000;
+    color: #6b0700;
     padding: 0.3em 0 0.3em 1em;
 }
 
@@ -589,15 +589,22 @@ button.browserid-signin:hover {
 }
 
 /* ------------------- MESSAGES ------------------- */
-.messages {
-    border: solid 1px #DEDEDE; 
+.success {
     background: #00CC00;
     color: #006600;
+}
+
+.success, .error {
+    border: solid 1px #DEDEDE;
     padding: 4px;
     text-align: center;
     list-style-type: none;
     margin-left: 20px;
     margin-right: 20px;
+}
+
+.error {
+    background: #e38b85;
 }
 
 /* --------------------- PROFILE ------------------------ */
