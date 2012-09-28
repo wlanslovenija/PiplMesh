@@ -30,16 +30,20 @@ $(document).ready(function () {
     var map = new google.maps.Map($('#map').get(0), options);
 
     // Necessary libraries are included with googleapis in piplmesh/panels/map/templates/panel/map/panel.html
-    var map_layers = new Object;
-    var map_layers_labels = new Object;
-    map_layers_labels.weather = gettext('Weather');
-    map_layers.weather = new google.maps.weather.WeatherLayer({
-        temperatureUnits: google.maps.weather.TemperatureUnit.CELSIUS
-    });
-    map_layers_labels.clouds = gettext('Clouds');
-    map_layers.clouds = new google.maps.weather.CloudLayer();
-    map_layers_labels.panoramio = gettext('Panoramio');
-    map_layers.panoramio = new google.maps.panoramio.PanoramioLayer();
+    var map_layers = [
+        {
+            'id': 'weather',
+            'label': gettext("Weather"),
+            'layer': new google.maps.weather.WeatherLayer({
+                'temperatureUnits': google.maps.weather.TemperatureUnit.CELSIUS
+            })
+        },
+        {
+            'id': 'panoramio',
+            'label': gettext("Panoramio"),
+            'layer': new google.maps.panoramio.PanoramioLayer()
+        }
+    ];
 
     map.mapTypes.set('OpenStreetMap', new google.maps.ImageMapType({
         'getTileUrl': function(coordinates, zoom) {
@@ -72,27 +76,27 @@ $(document).ready(function () {
         map.mapTypeControlOptions.position = google.maps.ControlPosition.TOP_RIGHT;
     }
 
-    function addMapLayerOption(layer, label) {
+    function addMapLayerOption(id, label, layer) {
         if($('#map-layers').lenght != 0) {
+            $('<div/>').prop('id','map-option-' + id).appendTo('#map-layers');
             $('<input/>').prop({
-                'id': 'map-layer-' + layer,
+                'id': 'map-layer-' + id,
                 'type': 'checkbox',
-                'name': 'map-layer-' + layer
-            }).appendTo('#map-layers');
-            $('<label/>').prop('for', 'map-layer-' + layer).text(label).appendTo('#map-layers');
-            $('<br/>').appendTo('#map-layers');
-            $('#map-layer-' + layer).click(function (event) {
-                setLayerVisibility(layer);
+                'name': 'map-layer-' + id
+            }).appendTo('#map-option-' + id);
+            $('<label/>').prop('for', 'map-layer-' + id).text(label).appendTo('#map-option-' + id);
+            $('#map-layer-' + id).click(function (event) {
+                setLayerVisibility(id, layer);
             });
         }
     }
 
-    function setLayerVisibility(layer) {
-        if ($('#map-layer-' + layer).attr('checked')) {
-            map_layers[layer].setMap(map);
+    function setLayerVisibility(id, layer) {
+        if ($('#map-layer-' + id).attr('checked')) {
+            layer.setMap(map);
         }
         else {
-            map_layers[layer].setMap(null);
+            layer.setMap(null);
         }
     }
 
@@ -131,9 +135,9 @@ $(document).ready(function () {
         $('#advanced-map-container').show();
         $('<div/>').prop('id', 'map-layers').appendTo('#advanced-map');
         // Map layer options should be added after #map-layers is created
-        for (var layer in map_layers) {
-            addMapLayerOption(layer, gettext(map_layers_labels[layer]));
-        }
+        $.each(map_layers, function(key, option) {
+            addMapLayerOption(option.id, option.label, option.layer);
+        });
 
         refreshMapCenter();
         $(document).keyup(function (event) {
