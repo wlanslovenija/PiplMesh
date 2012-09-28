@@ -151,10 +151,10 @@ function Post(data) {
         var edit_link = $('<li/>').append(
             $('<a/>').addClass('edit-post').addClass('hand').text(gettext("Edit"))
         );
-        
-        var author_link = $('<a/>').attr('href','/user/'+self.author.username).addClass('author').addClass('hand').text(self.author.username);
-        
         var post_options = $('<ul />').addClass('options').append(edit_link, delete_link);
+        
+        // TODO: Author link shouldn't be hardcoded.
+        var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author').addClass('hand').text(self.author.username);
         
         var post = $('<li/>').addClass('post').data('post', self).append(post_options).append(
             $('<span/>').append(author_link)
@@ -163,33 +163,41 @@ function Post(data) {
         ).append(
            $('<span/>').addClass('date').text(formatDiffTime(self.created_time))
         ).append(
-           $('<span/>').append($('<ul/>').addClass('comments').data('post', self))
+           $('<span/>').append($('<ul/>').addClass('comments'))
         ).append(
-           $('<span/>').append(generateCommentForm()));
+           $('<span/>').append(createCommentForm()
+        ));
         
         return post;
     }
     
-    function generateCommentForm() {
+    function createCommentForm() {
+        // TODO: Instead of creating forms use a static form from template, clone it and append event handlers.
         var textarea = $('<textarea/>').addClass('comment_text').data('post', self).attr('id', 'comment_text');
-        var input = $('<input/>').attr('type','button').attr('value','submit')
-        .attr('name','submit_comment').attr('id','submit_comment')
+        var input = $('<input/>').attr('type', 'button').attr('value', 'submit')
+        .attr('name','submit_comment').attr('id', 'submit_comment')
         .click(function (event) {
-            // TODO: Disable enable submit button like with the Post.
-            // TODO: Display comment automaticly after submited. Idea: delete post and add it on top and comments will be refreshed.
+            // TODO: Disable enable submit button like with the Post. After submitting clear the textarea of text.
+            // TODO: Push new comments to all clients and display them automatically.
             var message = textarea.val();
-            addComment(message, createAddCommentsUri(self.id));
-            });
-        var form = $('<form/>').attr('id','comment_form').append(textarea, input);
+            addComment(message, buildCommentURL(self.id));
+        });
+        var form = $('<form/>').attr('id', 'comment_form').append(textarea, input);
         
         return form;
     }
     
-    function generateComments() {
-        // TODO: We call comments in the right order but that doesn't mean we get them in the right order aswell. Should make some ordering down the road.'
-        for (var index in self.comments) {
-            getComment(self.comments[index], self);
-        };
+    function getComment(url) {
+        $.getJSON(url, function (data, textStatus, jqXHR) {
+            new Comment(data, self).appendToPost();
+        });
+    }
+    
+    function displayComments() {
+        // TODO: We call comments in the right order but that doesn't mean we get them in the right order aswell. Should make some ordering down the road.
+        $.each(self.comments, function (index, value) {
+            getComment(value);
+        });
     }
     
     function checkIfPostExists() {
@@ -210,21 +218,18 @@ function Post(data) {
     };
 
     self.addToBottom = function () {
-        
         if (checkIfPostExists()) return;
         
         $('.posts').append(createDOM());
-        
-        generateComments();
-        
+        displayComments();
     };
 
     self.addToTop = function () {
         if (checkIfPostExists()) return;
 
         var post = createDOM().hide().prependTo($('.posts'));
-        generateComments();
-
+        displayComments();
+        
         if (postByUser()) {
             // TODO: Maybe we should remove URI after showing user's post
             showPost(post);
@@ -255,28 +260,23 @@ function Comment(data, post) {
     self.post = post;
     
     function createDOM() {
-        var author_link = $('<a/>').attr('href','/user/'+self.author.username).addClass('author').addClass('hand').text(self.author.username);
+        // TODO: Author link shouldn't be hardcoded.
+        var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author').addClass('hand').text(self.author.username);
         var comment = $('<li/>').addClass('comment').append(
             $('<span/>').append(author_link)).append($('<p/>').addClass('content').text(self.message)
-            ).append($('<span/>').addClass('date').text(formatDiffTime(self.created_time)));
-           
+        ).append($('<span/>').addClass('date').text(formatDiffTime(self.created_time)));
+           // TODO: There is a bug when DiffTime is updated it takes time from the post and not the comment.
         return comment;
     }
     
     self.appendToPost = function () {
-        $('.comments').is(function (index) {
+        $('.post').is(function (index) {
             if ($(this).data('post').id == self.post.id) {
-                $(this).append(createDOM());
+                $(this).find('.comments').append(createDOM());
             }
         });
     };
  }
-
-function getComment(url, post) {
-    $.getJSON(url, function (data, textStatus, jqXHR) {
-        new Comment(data, post).appendToPost();
-    });
-}
 
 function loadPosts(offset) {
     $.getJSON(URLS.post, {
@@ -336,14 +336,15 @@ function loadNotifications() {
     });
 }
 
-function createAddCommentsUri(post_id) {
-    return URLS.post+post_id+'/comments/';
+// TODO: We should import url from Django not hardcode it.
+function buildCommentURL(post_id) {
+    return URLS.post + post_id + '/comments/';
 }
 
-function addComment(comment, comment_uri) {
+function addComment(comment, comment_url) {
     $.ajax({
         'type': 'POST',
-        'url': comment_uri,
+        'url': comment_url,
         'data': JSON.stringify({'message': comment}),
         'contentType': 'application/json',
         'dataType': 'json',
