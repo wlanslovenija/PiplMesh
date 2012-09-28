@@ -589,7 +589,6 @@ button.browserid-signin:hover {
 }
 
 /* ------------------- MESSAGES ------------------- */
-
 .success {
     background: #00CC00;
     color: #006600;
@@ -607,7 +606,6 @@ button.browserid-signin:hover {
 .error {
     background: #e38b85;
 }
-
 
 /* --------------------- PROFILE ------------------------ */
 .account,
