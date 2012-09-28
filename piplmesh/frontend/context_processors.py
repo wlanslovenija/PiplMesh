@@ -9,6 +9,9 @@ def global_vars(request):
     """
     Adds global context variables to the context.
     """
+    locations_form = None
+    if getattr(request, 'user', None) and request.user.is_authenticated() and request.user.is_staff:
+        locations_form = forms.LocationsForm(initial={'location': forms.initial_location(request)})
 
     return {
         # Constants
@@ -23,5 +26,7 @@ def global_vars(request):
         'request_get_next': request.REQUEST.get(auth.REDIRECT_FIELD_NAME),
 
         # Forms
-        'locations_form' : forms.LocationsForm(initial={'location': forms.initial_location(request)}) if getattr(request, 'user', None) and request.user.is_authenticated() and request.user.is_staff else None,
+        'locations_form' : locations_form,
     }
+
+

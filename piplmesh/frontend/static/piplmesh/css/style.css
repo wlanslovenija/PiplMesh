@@ -324,8 +324,7 @@ input.gsc-search-button {
     top: 2px;
 }
 
-label[for=id_location]
-{
+#mock_location label {
     display: none;
 }
 

@@ -19,6 +19,7 @@ from mongogeneric import detail
 from pushserver.utils import updates
 
 from piplmesh import nodes
+from piplmesh.nodes import models as node_models
 from piplmesh.account import models as account_models
 from piplmesh.api import models as api_models, resources, signals
 from piplmesh.frontend import forms, tasks
@@ -73,11 +74,11 @@ class LocationsView(generic_views.FormView):
 
     def form_valid(self, form):
         location = form.cleaned_data['location']
-        if location == 'None':
+        print 'Debug: %s' % location
+        if location == forms.NO_MOCKING_ID:
             nodes.flush_session(self.request)
-            self.request.session[nodes.MOCKING_SESSION_KEY] = False
         else:
-            node_backend, node_id = location.split('-', 1)
+            node_backend, node_id = node_models.parse_full_node_id(location)
             self.request.session[nodes.SESSION_KEY] = node_id
             self.request.session[nodes.BACKEND_SESSION_KEY] = node_backend
             self.request.session[nodes.MOCKING_SESSION_KEY] = True

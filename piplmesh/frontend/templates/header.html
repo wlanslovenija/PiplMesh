@@ -26,7 +26,7 @@
             <ul class="user">
                 {% if user.is_authenticated and user.is_staff and locations_form %}
                     {% with locations_form as form %}
-                        <li>
+                        <li id="mock_location">
                             {% url "mock_location" as form_action %}
                             {% include "form/form.html" %}
                         </li>
