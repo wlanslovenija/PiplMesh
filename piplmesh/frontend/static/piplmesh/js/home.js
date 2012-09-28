@@ -171,16 +171,15 @@ function Post(data) {
     }
     
     function generateCommentForm() {
+        var textarea = $('<textarea/>').addClass('comment_text').data('post', self).attr('id', 'comment_text');
         var input = $('<input/>').attr('type','button').attr('value','submit')
         .attr('name','submit_comment').attr('id','submit_comment')
         .click(function (event) {
-            // TODO: We need to choose the right textarea. Right now it takes first one.
             // TODO: Disable enable submit button like with the Post.
             // TODO: Display comment automaticly after submited. Idea: delete post and add it on top and comments will be refreshed.
-            var message = $('#comment_text').val();
+            var message = textarea.val();
             addComment(message, createAddCommentsUrl(self.id));
             });
-        var textarea = $('<textarea/>').addClass('comment_text').data('post', self).attr('id', 'comment_text');
         var form = $('<form/>').attr('id','comment_form').append(textarea, input);
         
         return form;
