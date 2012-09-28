@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core import exceptions, mail, urlresolvers
 from django.core.files import storage
-from django.http import HttpResponseRedirect
+from django import http
 from django.test import client
 from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
@@ -87,7 +87,8 @@ class LocationView(generic_views.FormView):
         return super(LocationView, self).form_valid(form)
 
     def form_invalid(self, form):
-        return HttpResponseRedirect(self.get_success_url())
+        messages.error(self.request, form.errors)
+        return http.HttpResponseRedirect(self.get_success_url())
 
     def dispatch(self, request, *args, **kwargs):
         if request.user and request.user.is_authenticated() and request.user.is_staff:

@@ -27,4 +27,4 @@ def initial_location(request):
         return NO_MOCKING_ID
 
 class LocationForm(forms.Form):
-    location = forms.ChoiceField(choices=location_choices(), label=_("Location"), required=False)
+    location = forms.ChoiceField(choices=location_choices(), label=_("Location"), required=True)
