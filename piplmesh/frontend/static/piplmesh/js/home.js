@@ -178,7 +178,7 @@ function Post(data) {
             // TODO: Disable enable submit button like with the Post.
             // TODO: Display comment automaticly after submited. Idea: delete post and add it on top and comments will be refreshed.
             var message = textarea.val();
-            addComment(message, createAddCommentsUrl(self.id));
+            addComment(message, createAddCommentsUri(self.id));
             });
         var form = $('<form/>').attr('id','comment_form').append(textarea, input);
         
@@ -188,7 +188,7 @@ function Post(data) {
     function generateComments() {
         // TODO: We call comments in the right order but that doesn't mean we get them in the right order aswell. Should make some ordering down the road.'
         for (var index in self.comments) {
-            getComment(self.comments[index], self.id);
+            getComment(self.comments[index], self);
         };
     }
     
@@ -249,10 +249,10 @@ function Post(data) {
     };
 }
 
-function Comment(data, post_id) {
+function Comment(data, post) {
     var self = this;
     $.extend(self, data);
-    self.post_id = post_id;
+    self.post = post;
     
     function createDOM() {
         var author_link = $('<a/>').attr('href','/user/'+self.author.username).addClass('author').addClass('hand').text(self.author.username);
@@ -265,22 +265,20 @@ function Comment(data, post_id) {
     
     self.appendToPost = function () {
         $('.comments').is(function (index) {
-            if ($(this).data('post').id == self.post_id) {
+            if ($(this).data('post').id == self.post.id) {
                 $(this).append(createDOM());
             }
         });
-        
     };
  }
 
-function getComment(url, post_id) {
+function getComment(url, post) {
     $.getJSON(url, function (data, textStatus, jqXHR) {
-        new Comment(data, post_id).appendToPost();
-    } );
+        new Comment(data, post).appendToPost();
+    });
 }
 
 function loadPosts(offset) {
-    
     $.getJSON(URLS.post, {
         'limit': POSTS_LIMIT,
         'offset': offset
@@ -338,16 +336,14 @@ function loadNotifications() {
     });
 }
 
-function createAddCommentsUrl(id) {
-    return URLS.post+id+'/comments/';
+function createAddCommentsUri(post_id) {
+    return URLS.post+post_id+'/comments/';
 }
 
-// TODO: This is just for testing purposes. It can be base for future development.
-function addComment(comment, post_url) {
-    
+function addComment(comment, comment_uri) {
     $.ajax({
         'type': 'POST',
-        'url': post_url,
+        'url': comment_uri,
         'data': JSON.stringify({'message': comment}),
         'contentType': 'application/json',
         'dataType': 'json',
@@ -478,10 +474,6 @@ $(document).ready(function () {
     // Notifications
     $('#notifications_count').add('.close_notifications_box').click(function (event) {
         $('#notifications_box').slideToggle('fast');
-    });
-    // TODO: Just for testing
-    $('#add_comment').click(function (event) {
-        addComment("Test comment123", createAddCommentsUrl($('.post').first().data('post').id));
     });
 
     $.updates.registerProcessor('user_channel', 'notification', function (data) {
