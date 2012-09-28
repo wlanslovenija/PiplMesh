@@ -27,13 +27,13 @@ class WeatherPanel(panels.BasePanel):
                 'error_data': True,
             })
             return context
-        '''
+
         if timezone.now() > state.created + datetime.timedelta(hours=WEATHER_OBSOLETE):
             context.update({
                 'error_obsolete': True,
             })
             return context   
-        '''    
+   
         context.update({
             'weather_objects': get_weather_content(latitude, longitude),
             'created': state.created,
