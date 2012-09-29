@@ -28,7 +28,7 @@
     list-style: none;
     margin: 0 auto;
     text-align: center;
-    width: 95%;
+    width: 250px;
 }
 
 #forecast li {
@@ -37,5 +37,5 @@
     margin-left: 5px;
     padding: 0;
     vertical-align: middle;
-    width: 31%;
+    width: 77px;
 }

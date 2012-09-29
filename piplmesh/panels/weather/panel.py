@@ -28,7 +28,7 @@ class WeatherPanel(panels.BasePanel):
             })
             return context
 
-        if timezone.now() > state.created + datetime.timedelta(hours=WEATHER_OBSOLETE):
+        if timezone.now() >= state.created + datetime.timedelta(hours=WEATHER_OBSOLETE):
             context.update({
                 'error_obsolete': True,
             })
