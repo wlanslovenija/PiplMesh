@@ -1,10 +1,8 @@
-from __future__ import absolute_import
+import os
 
 from django.utils import unittest
 
-from . import test_basic
-
 def suite():
     return unittest.TestSuite((
-        unittest.TestLoader().loadTestsFromTestCase(test_basic.BasicTest),
+        unittest.TestLoader().discover(os.path.dirname(__file__)),
     ))
