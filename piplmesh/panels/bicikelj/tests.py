@@ -15,12 +15,12 @@ class BasicTest(test_runner.MongoEngineTestCase):
     def setUp(self):
         self.factory = client.RequestFactory()
 
+        tasks.update_station_info()
+
     def test_horoscope(self):
         node = next(itertools.islice(nodes.get_all_nodes(), 12, 13))
 
         self.assertEqual(node.name, 'fri')
-
-        tasks.update_station_info()
 
         request = self.factory.get('/')
         request.session = {
