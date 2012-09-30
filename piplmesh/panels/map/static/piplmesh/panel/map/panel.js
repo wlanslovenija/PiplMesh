@@ -23,7 +23,7 @@ $(document).ready(function () {
     };
 
     var node_name = $('<p/>').text(node.name).append(' | ');
-    var node_website = $('<a/>').prop('href', node.url).text(gettext("more info"));
+    var node_website = $('<a/>').attr('href', node.url).text(gettext("more info"));
     node_name.append(node_website);
     $('#map-info').append(node_name);
 
@@ -84,12 +84,12 @@ $(document).ready(function () {
     // TODO: Basic map resize animation should resize from its given position on the page, like it is popping out. That means if map is on the left side of the screen, animation should resize from the same side. Looks much prettier than a simple fade in pop up.
     function openAdvancedMap() {
         $('#basic-map-extend-image').hide();
-        $('<div/>').prop('id', 'advanced-map').appendTo('body');
+        $('<div/>').attr('id', 'advanced-map').appendTo('body');
         // TODO: Should be "fast" here?
-        $('<div/>').prop('id', 'overlay').fadeTo('slow', 0.8).appendTo('body').click(closeAdvancedMap);
+        $('<div/>').attr('id', 'overlay').fadeTo('slow', 0.8).appendTo('body').click(closeAdvancedMap);
         // TODO: Should be "fast" here?
-        $('<div/>').prop('id', 'close-button').fadeTo('slow', 1.0).appendTo('body').click(closeAdvancedMap);
-        $('#advanced-map').append($('<div/>').prop('id', 'advanced-map-container'));
+        $('<div/>').attr('id', 'close-button').fadeTo('slow', 1.0).appendTo('body').click(closeAdvancedMap);
+        $('#advanced-map').append($('<div/>').attr('id', 'advanced-map-container'));
         $('#advanced-map-container').hide();
         $('#map').detach().prependTo('#advanced-map-container');
         $('#advanced-map-container').show();
