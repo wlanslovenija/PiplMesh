@@ -3,13 +3,13 @@ from __future__ import absolute_import
 import celery
 import datetime
 
-from celery import task
-from datetime import datetime as date_time
 from lxml import etree, objectify
 
-from piplmesh import nodes, settings
+from celery import task
 
-from . import models
+from piplmesh import nodes
+
+from . import models, panel
 
 source_url = 'http://api.met.no/'
 
@@ -46,14 +46,14 @@ def update_weather(latitude, longitude):
     
     weather_object = fetch_data(latitude, longitude)
     for product in weather_object.product.iterchildren():
-        if date_time.strptime(product.attrib['to'], '%Y-%m-%dT%H:%M:%SZ') < date_time.now() + datetime.timedelta(days=settings.WEATHER_FORECAST):
+        if datetime.datetime.strptime(product.attrib['to'], '%Y-%m-%dT%H:%M:%SZ') < datetime.datetime.strptime(weather_object.attrib['created'], '%Y-%m-%dT%H:%M:%SZ') + datetime.timedelta(days=panel.WEATHER_FORECAST_RANGE):
             if product.attrib['from'] == product.attrib['to']:
                 models.State.objects(
-                    created=date_time.strptime(weather_object.attrib['created'], '%Y-%m-%dT%H:%M:%SZ'),
+                    created=datetime.datetime.strptime(weather_object.attrib['created'], '%Y-%m-%dT%H:%M:%SZ'),
                     latitude=latitude, 
                     longitude=longitude,
                     model_name=weather_object.meta.model.attrib['name'],  
-                    at=date_time.strptime(product.attrib['from'], '%Y-%m-%dT%H:%M:%SZ')
+                    at=datetime.datetime.strptime(product.attrib['from'], '%Y-%m-%dT%H:%M:%SZ')
                 ).update(
                     set__temperature=product.location.temperature.attrib['value'],
                     set__wind_direction=product.location.windDirection.attrib['name'],
@@ -70,12 +70,12 @@ def update_weather(latitude, longitude):
                 )
             else:
                 models.Precipitation.objects(
-                    created=date_time.strptime(weather_object.attrib['created'], '%Y-%m-%dT%H:%M:%SZ'),
+                    created=datetime.datetime.strptime(weather_object.attrib['created'], '%Y-%m-%dT%H:%M:%SZ'),
                     latitude=latitude, 
                     longitude=longitude,
                     model_name=weather_object.meta.model.attrib['name'],
-                    date_from=date_time.strptime(product.attrib['from'], '%Y-%m-%dT%H:%M:%SZ'),
-                    date_to=date_time.strptime(product.attrib['to'], '%Y-%m-%dT%H:%M:%SZ')
+                    date_from=datetime.datetime.strptime(product.attrib['from'], '%Y-%m-%dT%H:%M:%SZ'),
+                    date_to=datetime.datetime.strptime(product.attrib['to'], '%Y-%m-%dT%H:%M:%SZ')
                 ).update(
                     set__precipitation=product.location.precipitation.attrib['value'],
                     set__symbol=product.location.symbol.attrib['number'],
