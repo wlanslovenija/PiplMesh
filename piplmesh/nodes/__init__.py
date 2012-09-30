@@ -142,12 +142,3 @@ def get_all_nodes():
     for backend in get_backends():
         for node in backend.get_all_nodes():
             yield node
-
-def get_all_nodes_with_backends():
-    """
-    Returns an iterator over all known nodes with backend.
-    """
-
-    for backend in get_backends():
-        for node in backend.get_all_nodes():
-            yield (backend, node)

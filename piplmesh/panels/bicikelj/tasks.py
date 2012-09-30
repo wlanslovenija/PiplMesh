@@ -1,8 +1,5 @@
 from celery import task
 
-from pushserver.utils import updates
-
-from piplmesh.frontend import views
 from . import models, stations
 
 def equal(station_dict, station_object):

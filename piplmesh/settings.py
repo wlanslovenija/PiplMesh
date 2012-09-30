@@ -5,9 +5,12 @@
 import datetime, os
 
 MONGO_DATABASE_NAME = 'PiplMesh'
+MONGO_DATABASE_OPTIONS = {
+    'tz_aware': True,
+}
 
 import mongoengine
-mongoengine.connect(MONGO_DATABASE_NAME, tz_aware=True)
+mongoengine.connect(MONGO_DATABASE_NAME, **MONGO_DATABASE_OPTIONS)
 
 settings_dir = os.path.abspath(os.path.dirname(__file__))
 
