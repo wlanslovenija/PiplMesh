@@ -1,6 +1,6 @@
 {% extends "plain.html" %}
 
-{% load future i18n staticfiles pushserver panels %}
+{% load i18n staticfiles pushserver url_tags panels %}
 
 {% block fulltitle %}wlan slovenija{% endblock %}
 
@@ -17,10 +17,10 @@
         });
 
         var URLS = {
-            'panels_collapse': '{% filter escapejs %}{% url "panels_collapse" %}{% endfilter %}',
-            'panels_order': '{% filter escapejs %}{% url "panels_order" %}{% endfilter %}',
-            'post': '{% filter escapejs %}{% url "api_dispatch_list" api_name=API_NAME resource_name="post" %}{% endfilter %}',
-            'notifications': '{% filter escapejs %}{% url "api_dispatch_list" api_name=API_NAME resource_name="notification" %}{% endfilter %}'
+            'panels_collapse': '{% filter escapejs %}{% urltemplate "panels_collapse" %}{% endfilter %}',
+            'panels_order': '{% filter escapejs %}{% urltemplate "panels_order" %}{% endfilter %}',
+            'post': '{% filter escapejs %}{% urltemplate "api_dispatch_list" api_name=API_NAME resource_name="post" %}{% endfilter %}',
+            'notifications': '{% filter escapejs %}{% urltemplate "api_dispatch_list" api_name=API_NAME resource_name="notification" %}{% endfilter %}'
         };
 
         var node = {
