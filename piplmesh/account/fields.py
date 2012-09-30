@@ -74,7 +74,7 @@ class GenderField(mongoengine.StringField):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('max_length', 6)
         kwargs.setdefault('choices', GENDER_CHOICES)
-        kwargs.setdefault('default', GENDER_CHOICES[1][0])
+        kwargs.setdefault('default', None)
 
         super(GenderField, self).__init__(*args, **kwargs)
 
