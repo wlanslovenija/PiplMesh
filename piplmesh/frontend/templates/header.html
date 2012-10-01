@@ -21,8 +21,17 @@
                 {% trans "See your query results on " %}<a id="google_results_link">Google</a>.
             {% endif %}
         </div>
+
         {% with next|default:request_get_next|default:request.get_full_path as next_url %}
             <ul class="user">
+                {% if user.is_authenticated and user.is_staff and location_form %}
+                    {% with location_form as form %}
+                        <li id="mock_location">
+                            {% url "mock_location" as form_action %}
+                            {% include "form/form.html" %}
+                        </li>
+                    {% endwith %}
+                {% endif %}
                 {% comment %}
                     This list is used for registration and login link.
                     If user is already logged in, logout link is shown instead.

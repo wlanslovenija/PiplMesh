@@ -23,16 +23,16 @@ function redrawUserList() {
         if (searchUsers === '' || key.indexOf(searchUsers) !== -1) {
             var user = onlineUsers[key];
             var li = $('<li/>');
-            var image = $('<img/>').prop({
+            var image = $('<img/>').attr({
                 'src': user.image_url,
                 'alt': gettext("User image")
             });
             li.append(image);
             li.append(user.username);
-            var div = $('<div/>').prop({
+            var div = $('<div/>').attr({
                 'class': 'info'
             });
-            div.append($('<a/>').prop('href', user.profile_url).text(gettext("User profile")));
+            div.append($('<a/>').attr('href', user.profile_url).text(gettext("User profile")));
             li.append(div);
             $('#userlist').append(li);
         }

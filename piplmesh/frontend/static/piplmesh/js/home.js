@@ -168,6 +168,17 @@ function Post(data) {
         });
     }
 
+    function postByUser() {
+        var user_posts_URIs = $('.posts').data('user_posts_URIs');
+        var full_resource_uri = getLocation(self.resource_uri).href;
+        return $.inArray(full_resource_uri, user_posts_URIs) != -1;
+    }
+
+    function showPost(post) {
+        // TODO: Animation has to be considered and maybe improved
+        post.show('fast');
+    };
+
     self.addToBottom = function () {
         if (checkIfPostExists()) return;
 
@@ -177,8 +188,25 @@ function Post(data) {
     self.addToTop = function () {
         if (checkIfPostExists()) return;
 
-        // TODO: Animation has to be considered and maybe improved
-        createDOM(data).prependTo($('.posts')).hide().slideToggle('slow');
+        var post = createDOM().hide().prependTo($('.posts'));
+
+        if (postByUser()) {
+            // TODO: Maybe we should remove URI after showing user's post
+            showPost(post);
+            return;
+        }
+
+        if (!autoShowIncomingPosts()) {
+            post.addClass('notShown');
+        }
+        else {
+            showPost(post);
+        }
+        updateHiddenPostsCount();
+        $('#toggle_queue').show();
+        if (!autoShowIncomingPosts()) {
+            $('#posts_in_queue, #show_posts').show();
+        }
     };
 
     self.updateDate = function (dom_element) {
@@ -267,20 +295,39 @@ function addComment(comment) {
     var post_url = $('.post').first().data('post').resource_uri;
 
     $.ajax({
-        type: 'POST',
+        'type': 'POST',
         // TODO: Should probably not construct URL like that
-        url: post_url + 'comments/',
-        data: JSON.stringify({'message': comment}),
-        contentType: 'application/json',
-        dataType: 'json',
-        success: function (data, textStatus, jqXHR) {
+        'url': post_url + 'comments/',
+        'data': JSON.stringify({'message': comment}),
+        'contentType': 'application/json',
+        'dataType': 'json',
+        'success': function (data, textStatus, jqXHR) {
             alert("Comment posted.");
         }
     });
 }
 
+function autoShowIncomingPosts() {
+    return $('#toggle_queue_checkbox').is(':checked');
+}
+
+function updateHiddenPostsCount() {
+    var unread_count = $('ul > li.notShown').length;
+    var format = ngettext("There is %(count)s new post", "There are %(count)s new posts", unread_count);
+    var msg = interpolate(format, {'count': unread_count}, true);
+    $('#posts_in_queue').text(msg);
+}
+
+function showHiddenPosts() {
+    // TODO: Animation has to be considered and maybe improved
+    $('ul > li.notShown').show('fast').removeClass('notShown');
+}
+
 $(document).ready(function () {
     initializePanels();
+
+    // List of URIs of posts by user
+    $('.posts').data('user_posts_URIs', []);
 
     $.updates.registerProcessor('home_channel', 'post_new', function (data) {
         new Post(data.post).addToTop();
@@ -323,6 +370,8 @@ $(document).ready(function () {
             'contentType': 'application/json',
             'dataType': 'json',
             'success': function (data, textStatus, jqXHR) {
+                var full_post_uri = getLocation(jqXHR.getResponseHeader('location')).href;
+                $('.posts').data('user_posts_URIs').push(full_post_uri);
                 $('#post_text').val(input_box_text).css('min-height', 25);
             },
             'error': function (jqXHR, textStatus, errorThrown) {
@@ -349,6 +398,22 @@ $(document).ready(function () {
         else {
             $('#submit_post').prop('disabled', false);
         }
+    });
+
+    $('#show_posts > input').click(function (event) {
+        showHiddenPosts();
+        $('#posts_in_queue, #show_posts, #toggle_queue').hide();
+    });
+
+    $('#toggle_queue > input').click(function (event) {
+        if (autoShowIncomingPosts()) {
+            showHiddenPosts();
+            updateHiddenPostsCount();
+        }
+        else {
+            $('#toggle_queue').hide();
+        }
+        $('#posts_in_queue, #show_posts').hide();
     });
 
     $(window).scroll(function (event) {

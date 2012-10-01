@@ -297,6 +297,13 @@ msgstr ""
 msgid "Login"
 msgstr "Prijavi se"
 
+#: frontend/templates/header.html:29
+msgid "Don't mock location"
+msgstr "Brez simuliranja lokacije"
+
+msgid "Location"
+msgstr "Lokacija"
+
 #: account/templates/user/login.html:22
 msgid "Login with Facebook"
 msgstr "Facebook prijava"
@@ -459,6 +466,12 @@ msgstr "pošlji"
 #: frontend/templates/posts.html:8
 msgid "Write a post..."
 msgstr "Napiši sporočilo ..."
+
+msgid "Display new posts"
+msgstr "Prikaži nove objave"
+
+msgid "Display new posts automatically"
+msgstr "Samodejno prikaži nove objave"
 
 #: frontend/templates/search.html:5
 msgid "Search"

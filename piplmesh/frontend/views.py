@@ -3,8 +3,9 @@ import traceback
 from django import dispatch, http, template
 from django.conf import settings
 from django.contrib import messages
-from django.core import mail, urlresolvers
+from django.core import exceptions, mail, urlresolvers
 from django.core.files import storage
+from django import http
 from django.test import client
 from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
@@ -18,6 +19,8 @@ from mongogeneric import detail
 
 from pushserver.utils import updates
 
+from piplmesh import nodes
+from piplmesh.nodes import models as nodes_models
 from piplmesh.account import models as account_models
 from piplmesh.api import models as api_models, resources, signals
 from piplmesh.frontend import forms, tasks
@@ -63,6 +66,34 @@ class UserView(detail.DetailView):
     document = account_models.User
     slug_field = 'username'
     slug_url_kwarg = 'username'
+
+class LocationView(generic_views.FormView):
+    form_class = forms.LocationForm
+
+    # TODO: Redirect to initiator page
+    success_url = urlresolvers.reverse_lazy('home')
+
+    def form_valid(self, form):
+        location = form.cleaned_data['location']
+
+        if location == forms.NO_MOCKING_ID:
+            nodes.flush_session(self.request)
+        else:
+            node_backend, node_id = nodes_models.Node.parse_full_node_id(location)
+            self.request.session[nodes.SESSION_KEY] = node_id
+            self.request.session[nodes.BACKEND_SESSION_KEY] = node_backend
+            self.request.session[nodes.MOCKING_SESSION_KEY] = True
+
+        return super(LocationView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors)
+        return http.HttpResponseRedirect(self.get_success_url())
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated() and request.user.is_staff:
+            return super(LocationView, self).dispatch(request, *args, **kwargs)
+        raise exceptions.PermissionDenied
 
 def upload_view(request):
     if request.method != 'POST':
