@@ -205,7 +205,7 @@ function Notification(data) {
         var format = gettext("%(author)s commented on post.");
         var author = interpolate(format, {'author': self.comment.author.username}, true);
 
-        var notification = $('<li/>').addClass('notification').data('notification', self).append(
+        var notification = $('<li/>').addClass('notification').addClass('unread_notification').data('notification', self).append(
             $('<span/>').addClass('notification_element').text(author)
         ).append(
             $('<span/>').addClass('notification_message').addClass('notification_element').text(self.comment.message)
@@ -231,17 +231,21 @@ function Notification(data) {
         $('#notifications_list').prepend(createDOM());
     };
 
-    self.markAsRead = function () {
-        $.ajax({
-            type: 'PATCH',
-            url: self.resource_uri,
-            data: JSON.stringify({'read': true}),
-            contentType: 'application/json',
-            dataType: 'json',
-            success: function (data, textStatus, jqXHR) {
-                alert("Notification marked as read.");
-            },
-        });
+    self.markAsRead = function (dom_element) {
+        if (!self.read) {
+            $.ajax({
+                type: 'PATCH',
+                url: self.resource_uri,
+                data: JSON.stringify({'read': true}),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data, textStatus, jqXHR) {
+                    $('#notifications_count').text(parseInt($('#notifications_count').text()) -1 );
+                    $(dom_element).removeClass('unread_notification');
+                    alert("Notification marked as read.");
+                },
+            });
+        }
     }
 
     self.updateDate = function (dom_element) {
@@ -362,7 +366,7 @@ $(document).ready(function () {
     });
 
     $('.notification').live('click', function (event) {
-        $(this).data('notification').markAsRead();
+        $(this).data('notification').markAsRead(this);
     });
 
     // TODO: Just for testing

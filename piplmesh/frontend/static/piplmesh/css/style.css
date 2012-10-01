@@ -240,14 +240,14 @@ input.gsc-search-button:hover,
 
 li.notification {
     border-bottom: 1px solid #68AE2C;
-    text-align: left;
     padding: 0 4px 0 4px;
     margin-left: -40px;
+    text-align: left;
     cursor: pointer;
     width: 262px;
 }
 
-li.notification:hover {
+li.unread_notification {
     background-color: #e5f5d5;
 }
 
