@@ -29,6 +29,7 @@ $(document).ready(function () {
 
     var map = new google.maps.Map($('#map').get(0), options);
 
+    // TODO: This should be user-configurable
     // Necessary libraries are included with googleapis in piplmesh/panels/map/templates/panel/map/panel.html
     var map_layers = [
         {
@@ -37,6 +38,11 @@ $(document).ready(function () {
             'layer': new google.maps.weather.WeatherLayer({
                 'temperatureUnits': google.maps.weather.TemperatureUnit.CELSIUS
             })
+        },
+        {
+            'id': 'clouds',
+            'label': gettext("Clouds"),
+            'layer': new google.maps.weather.CloudLayer()
         },
         {
             'id': 'panoramio',
@@ -76,27 +82,24 @@ $(document).ready(function () {
         map.mapTypeControlOptions.position = google.maps.ControlPosition.TOP_RIGHT;
     }
 
-    function addMapLayerOption(id, label, layer) {
-        if($('#map-layers').lenght != 0) {
-            $('<div/>').prop('id','map-option-' + id).appendTo('#map-layers');
-            $('<input/>').prop({
-                'id': 'map-layer-' + id,
-                'type': 'checkbox',
-                'name': 'map-layer-' + id
-            }).appendTo('#map-option-' + id);
-            $('<label/>').prop('for', 'map-layer-' + id).text(label).appendTo('#map-option-' + id);
-            $('#map-layer-' + id).click(function (event) {
-                setLayerVisibility(id, layer);
-            });
-        }
+    function addMapLayerOption(map_layer) {
+        var checkbox_container = $('<div/>').appendTo('#map-layers');
+        var checkbox = $('<input/>').prop({
+            'id': 'map-layer-' + map_layer.id,
+            'type': 'checkbox',
+            'name': 'map-layer-' + map_layer.id
+        }).change(function (event) {
+            setLayerVisibility(checkbox, map_layer);
+        }).appendTo(checkbox_container);
+        $('<label/>').prop('for', 'map-layer-' + map_layer.id).text(map_layer.label).appendTo(checkbox_container);
     }
 
-    function setLayerVisibility(id, layer) {
-        if ($('#map-layer-' + id).attr('checked')) {
-            layer.setMap(map);
+    function setLayerVisibility(checkbox, map_layer) {
+        if ((checkbox).prop('checked')) {
+            map_layer.layer.setMap(map);
         }
         else {
-            layer.setMap(null);
+            map_layer.layer.setMap(null);
         }
     }
 
@@ -135,8 +138,8 @@ $(document).ready(function () {
         $('#advanced-map-container').show();
         $('<div/>').prop('id', 'map-layers').appendTo('#advanced-map');
         // Map layer options should be added after #map-layers is created
-        $.each(map_layers, function(key, option) {
-            addMapLayerOption(option.id, option.label, option.layer);
+        $.each(map_layers, function(key, map_layer) {
+            addMapLayerOption(map_layer);
         });
 
         refreshMapCenter();
