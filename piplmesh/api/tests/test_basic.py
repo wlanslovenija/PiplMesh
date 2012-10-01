@@ -143,6 +143,85 @@ class BasicTest(test_runner.MongoEngineTestCase):
         self.assertEqual(response['created_time'], post_created_time)
         self.assertNotEqual(response['updated_time'], post_updated_time)
 
+    def test_notification(self):
+        # Creating a post
+
+        response = self.client.post(self.resourceListURI('post'), '{"message": "Test post for notifications."}', content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+
+        post_uri = response['location']
+
+        response = self.client.get(post_uri)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+
+        self.assertEqual(response['message'], 'Test post for notifications.')
+        self.assertEqual(response['author']['username'], self.user_username)
+        self.assertNotEqual(response['created_time'], None)
+        self.assertNotEqual(response['updated_time'], None)
+        self.assertEqual(response['comments'], [])
+        self.assertEqual(response['attachments'], [])
+        self.assertEqual(response['is_published'], True)
+
+        post_created_time = response['created_time']
+        post_updated_time = response['updated_time']
+
+        # Delay so next update will be for sure different
+        time.sleep(1)
+
+        # Test authorization
+        response = self.client2.get(post_uri, content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+
+        # Adding a comment
+
+        comments_resource_uri = self.fullURItoAbsoluteURI(post_uri) + 'comments/'
+
+        response = self.client2.post(comments_resource_uri, '{"message": "Test comment 1."}', content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+
+        comment_uri = response['location']
+
+        response = self.client2.get(comment_uri)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+
+        self.assertEqual(response['message'], 'Test comment 1.')
+        self.assertEqual(response['author']['username'], self.user_username)
+        self.assertEqual(response['read'], True)
+
+        response = self.client2.get(post_uri)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+
+        self.assertEqual(response['comments'][0], self.fullURItoAbsoluteURI(comment_uri))
+        self.assertEqual(response['created_time'], post_created_time)
+        self.assertNotEqual(response['updated_time'], post_updated_time)
+
+        # Checking notification
+
+        response = self.client.get(self.resourceListURI('notification'))
+        print response
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+        print response['location']
+        notification_uri = response['location']
+
+        self.assertEqual(response['comment']['message'], 'Test comment 1.')
+        self.assertEqual(response['comment']['author']['username'], self.user_username)
+        self.assertEqual(response['post'], self.fullURItoAbsoluteURI(post_uri))
+        self.assertEqual(response['read'], False)
+
+        response = self.client.patch(notification_uri, '{"read": true}', content_type='application/json')
+        self.assertEqual(response.status_code, 202)
+        print response
+
+        response = self.client.get(notification_uri)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+
+        self.assertEqual(response['read'], True)
+
     def test_newline_post(self):
         # Creating a post with a message containing newlines
 
