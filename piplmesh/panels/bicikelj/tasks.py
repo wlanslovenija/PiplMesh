@@ -1,6 +1,12 @@
+from __future__ import absolute_import
+
+import datetime
+
 from celery import task
 
 from . import models, stations
+
+POLL_BICIKELJ_INTERVAL = 60 # seconds
 
 def equal(station_dict, station_object):
     for key in station_dict.keys():
@@ -12,7 +18,7 @@ def equal(station_dict, station_object):
             return False
     return True
 
-@task.task
+@task.periodic_task(run_every=datetime.timedelta(seconds=POLL_BICIKELJ_INTERVAL))
 def update_station_info():
     for station, timestamp, fetch_time in stations.fetch_data():
         try:

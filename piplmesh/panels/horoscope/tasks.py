@@ -1,10 +1,13 @@
 from __future__ import absolute_import
 
 from celery import task
+from celery.task import schedules
 
 from . import models, providers
 
-@task.task
+CHECK_FOR_NEW_HOROSCOPE = 6 # am every day
+
+@task.periodic_task(run_every=schedules.crontab(hour=CHECK_FOR_NEW_HOROSCOPE))
 def update_horoscope():
     """
     Task which updates horoscopes for all supported languages.

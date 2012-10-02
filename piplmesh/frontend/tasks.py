@@ -1,6 +1,5 @@
 import datetime
 
-from django.conf import settings
 from django.utils import timezone
 
 from celery import task
@@ -10,9 +9,10 @@ from pushserver.utils import updates
 from piplmesh.account import models
 
 HOME_CHANNEL_ID = 'home'
-CHECK_ONLINE_USERS_RECONNECT_TIMEOUT = 2 * settings.CHECK_ONLINE_USERS_INTERVAL
+CHECK_ONLINE_USERS_INTERVAL = 10 # seconds
+CHECK_ONLINE_USERS_RECONNECT_TIMEOUT = 2 * CHECK_ONLINE_USERS_INTERVAL
 
-@task.task
+@task.periodic_task(run_every=datetime.timedelta(seconds=CHECK_ONLINE_USERS_INTERVAL))
 def check_online_users():
     for user in models.User.objects(
         is_online=False,
