@@ -182,6 +182,7 @@ class EnglishHoroscope(HoroscopeProviderBase):
         date_string = PATTERN_DATE_EN.search(horoscope_tree.findtext('.//item/title'))
 
         return {
+            # TODO: date should be stored in correct timezone (currently it is in UTC which probably is not correct)
             'date': datetime.date(int(date_string.group(3)), self.provider_month_names[date_string.group(1)], int(date_string.group(2))),
             'forecast': horoscope_tree.findtext('.//item/description'),
         }
@@ -233,6 +234,8 @@ class SlovenianHoroscope(HoroscopeProviderBase):
         date_parsed = PATTERN_DATE_SI.search(horoscope_tree.findtext('.//div[@id="horoscope-sign-right"]//div[@class="view-content"]//span'))
 
         return {
+            # TODO: .year could be the wrong value around new year
+            # TODO: date should be stored in correct timezone (currently it is in UTC which probably is not correct)
             'date': datetime.date(datetime.datetime.now().year, self.provider_month_names[date_parsed.group(2)], int(date_parsed.group(1))),
             'forecast': horoscope_tree.findtext('.//div[@id="horoscope-sign-right"]//div[@class="view-content"]//strong'),
         }
