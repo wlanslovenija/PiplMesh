@@ -9,7 +9,8 @@ from . import models
 
 BICIKELJ_STATIONS_URL = 'http://www.bicikelj.si/service/carto'
 BICIKELJ_INFO_URL = 'http://www.bicikelj.si/service/stationdetails/ljubljana/%d'
-STALE_DATA_TIME = 10 # units of POLL_BICIKELJ_INTERVAL
+POLL_BICIKELJ_INTERVAL = 60 # seconds
+STALE_DATA_TIME = 10 * POLL_BICIKELJ_INTERVAL
 
 # Formula to calculate map bounds so that we can query only stations visible on the map
 #
@@ -26,14 +27,14 @@ def get_stations_nearby(latitude, longitude):
     stations_nearby_all = models.BicikeljStation.objects(
         location__near=(latitude, longitude),
         location__within_box=((latitude - BICIKELJ_BOUNDS_LATITUDE, longitude - BICIKELJ_BOUNDS_LONGITUDE), (latitude + BICIKELJ_BOUNDS_LATITUDE, longitude + BICIKELJ_BOUNDS_LONGITUDE)),
-        fetch_time__gt=timezone.now() - datetime.timedelta(seconds=STALE_DATA_TIME * settings.POLL_BICIKELJ_INTERVAL),
+        fetch_time__gt=timezone.now() - datetime.timedelta(seconds=STALE_DATA_TIME),
     )
     if not stations_nearby_all:
         return
     newest_station = stations_nearby_all[0]
     for station in stations_nearby_all[1:]:
         if station.station_id != newest_station.station_id:
-            newest_station.old_data = newest_station.fetch_time < timezone.now() - datetime.timedelta(seconds=2 * settings.POLL_BICIKELJ_INTERVAL)
+            newest_station.old_data = newest_station.fetch_time < timezone.now() - datetime.timedelta(seconds=2 * POLL_BICIKELJ_INTERVAL)
             yield newest_station
             newest_station = station
         # timestamp changes even if there is no change in stands availability and even if there is a change
@@ -42,7 +43,7 @@ def get_stations_nearby(latitude, longitude):
             newest_station = station
         elif station.timestamp == newest_station.timestamp and station.fetch_time > newest_station.fetch_time:
             newest_station = station
-    newest_station.old_data = newest_station.fetch_time < timezone.now() - datetime.timedelta(seconds=2 * settings.POLL_BICIKELJ_INTERVAL)
+    newest_station.old_data = newest_station.fetch_time < timezone.now() - datetime.timedelta(seconds=2 * POLL_BICIKELJ_INTERVAL)
     yield newest_station
 
 def fetch_data():

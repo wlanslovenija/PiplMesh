@@ -2,7 +2,7 @@
 #
 # Development Django settings for PiplMesh project.
 
-import datetime, os
+import os
 
 MONGO_DATABASE_NAME = 'PiplMesh'
 MONGO_DATABASE_OPTIONS = {
@@ -16,8 +16,6 @@ settings_dir = os.path.abspath(os.path.dirname(__file__))
 
 import djcelery
 djcelery.setup_loader()
-
-from celery.task.schedules import crontab
 
 # Dummy function, so that "makemessages" can find strings which should be translated.
 _ = lambda s: s
@@ -229,10 +227,6 @@ PUSH_SERVER = {
     ),
 }
 
-CHECK_ONLINE_USERS_INTERVAL = 10 # seconds
-CHECK_FOR_NEW_HOROSCOPE = 6 # am every day
-POLL_BICIKELJ_INTERVAL = 60 # seconds
-
 CELERY_RESULT_BACKEND = 'mongodb'
 CELERY_MONGODB_BACKEND_SETTINGS = {
     'host': '127.0.0.1',
@@ -243,26 +237,14 @@ CELERY_MONGODB_BACKEND_SETTINGS = {
 
 BROKER_URL = 'mongodb://127.0.0.1:27017/celery'
 
+CACHES = {
+    'default': {
+        'BACKEND': 'piplmesh.utils.cache.MongoEngineCache',
+    }
+}
+
 CELERY_ENABLE_UTC = USE_TZ
 CELERY_TIMEZONE = TIME_ZONE
-
-CELERYBEAT_SCHEDULE = {
-    'check_online_users': {
-        'task': 'piplmesh.frontend.tasks.check_online_users',
-        'schedule': datetime.timedelta(seconds=CHECK_ONLINE_USERS_INTERVAL),
-        'args': (),
-    },
-    'update_horoscope': {
-        'task': 'piplmesh.panels.horoscope.tasks.update_horoscope',
-        'schedule': crontab(hour=CHECK_FOR_NEW_HOROSCOPE),
-        'args': (),
-    },
-    'update_station_info': {
-        'task': 'piplmesh.panels.bicikelj.tasks.update_station_info',
-        'schedule': datetime.timedelta(seconds=POLL_BICIKELJ_INTERVAL),
-        'args': (),
-    },
-}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
