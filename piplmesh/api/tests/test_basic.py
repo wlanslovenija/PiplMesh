@@ -127,7 +127,7 @@ class BasicTest(test_runner.MongoEngineTestCase):
         self.assertEqual(response.status_code, 201)
 
         comment_uri = response['location']
-        print comment_uri
+
         response = self.client.get(comment_uri)
         self.assertEqual(response.status_code, 200)
         response = json.loads(response.content)
@@ -146,7 +146,7 @@ class BasicTest(test_runner.MongoEngineTestCase):
     def test_notification(self):
         # Creating a post
 
-        response = self.client.post(self.resourceListURI('post'), '{"message": "Test post for notifications."}', content_type='application/json')
+        response = self.client.post(self.resourceListURI('post'), '{"message": "Test post for notifications.", "is_published": true}', content_type='application/json')
         self.assertEqual(response.status_code, 201)
 
         post_uri = response['location']
@@ -187,8 +187,7 @@ class BasicTest(test_runner.MongoEngineTestCase):
         response = json.loads(response.content)
 
         self.assertEqual(response['message'], 'Test comment 1.')
-        self.assertEqual(response['author']['username'], self.user_username)
-        self.assertEqual(response['read'], True)
+        self.assertEqual(response['author']['username'], self.user_username2)
 
         response = self.client2.get(post_uri)
         self.assertEqual(response.status_code, 200)
@@ -204,7 +203,6 @@ class BasicTest(test_runner.MongoEngineTestCase):
         print response
         self.assertEqual(response.status_code, 200)
         response = json.loads(response.content)
-        print response['location']
         notification_uri = response['location']
 
         self.assertEqual(response['comment']['message'], 'Test comment 1.')

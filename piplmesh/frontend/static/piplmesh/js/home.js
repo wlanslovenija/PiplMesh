@@ -233,7 +233,7 @@ function Notification(data) {
         var format = gettext("%(author)s commented on post.");
         var author = interpolate(format, {'author': self.comment.author.username}, true);
 
-        var notification = $('<li/>').addClass('notification').bind('click', function () {
+        var notification = $('<li/>').addClass('notification').bind('click', function (event) {
             if (!self.read) {
                 $.ajax({
                     type: 'PATCH',
@@ -243,12 +243,10 @@ function Notification(data) {
                     dataType: 'json',
                     success: function (data, textStatus, jqXHR) {
                         var unread_notifications_counter = 0;
-                        $.getJSON(URLS.notifications, function (data, textStatus, jqXHR) {
-                            $.each(data.objects, function (i, notification) {
-                                if (!notification.read) {
-                                    unread_notifications_counter++;
-                                }
-                            });
+                        $('.notification').each(function (i, notification) {
+                            if (!$(notification).data('notification').read) {
+                                unread_notifications_counter++;
+                            }
                         });
                         $('#notifications_count').text(unread_notifications_counter);
                         notification.addClass('read_notification');
