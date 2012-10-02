@@ -5,6 +5,7 @@ import datetime
 from celery import task
 
 from . import models, stations
+from piplmesh.utils import decorators
 
 POLL_BICIKELJ_INTERVAL = 60 # seconds
 
@@ -19,6 +20,7 @@ def equal(station_dict, station_object):
     return True
 
 @task.periodic_task(run_every=datetime.timedelta(seconds=POLL_BICIKELJ_INTERVAL))
+@decorators.single_instance_task(timeout=10 * POLL_BICIKELJ_INTERVAL) # Maximum time for one task to finish is 10x the interval
 def update_station_info():
     for station, timestamp, fetch_time in stations.fetch_data():
         try:

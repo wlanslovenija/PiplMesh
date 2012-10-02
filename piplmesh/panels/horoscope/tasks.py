@@ -4,10 +4,12 @@ from celery import task
 from celery.task import schedules
 
 from . import models, providers
+from piplmesh.utils import decorators
 
 CHECK_FOR_NEW_HOROSCOPE = 6 # am every day
 
 @task.periodic_task(run_every=schedules.crontab(hour=CHECK_FOR_NEW_HOROSCOPE))
+@decorators.single_instance_task()
 def update_horoscope():
     """
     Task which updates horoscopes for all supported languages.

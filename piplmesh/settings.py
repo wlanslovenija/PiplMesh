@@ -2,7 +2,7 @@
 #
 # Development Django settings for PiplMesh project.
 
-import datetime, os
+import os
 
 MONGO_DATABASE_NAME = 'PiplMesh'
 MONGO_DATABASE_OPTIONS = {
@@ -236,6 +236,12 @@ CELERY_MONGODB_BACKEND_SETTINGS = {
 }
 
 BROKER_URL = 'mongodb://127.0.0.1:27017/celery'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'piplmesh.utils.cache.MongoEngineCache',
+    }
+}
 
 CELERY_ENABLE_UTC = USE_TZ
 CELERY_TIMEZONE = TIME_ZONE
