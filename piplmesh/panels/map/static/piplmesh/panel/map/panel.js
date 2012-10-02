@@ -29,6 +29,31 @@ $(document).ready(function () {
 
     var map = new google.maps.Map($('#map').get(0), options);
 
+    // Necessary libraries are included with googleapis in piplmesh/panels/map/templates/panel/map/panel.html
+    var map_layers = [
+        {
+            'id': 'weather',
+            'label': gettext("Weather"),
+            'title': gettext("Visible only on zoom level 12 or lower."),
+            'layer': new google.maps.weather.WeatherLayer({
+                // TODO: This should be user-configurable
+                'temperatureUnits': google.maps.weather.TemperatureUnit.CELSIUS
+            })
+        },
+        {
+            'id': 'clouds',
+            'label': gettext("Clouds"),
+            'title': gettext("Visible only on zoom level 6 or lower."),
+            'layer': new google.maps.weather.CloudLayer()
+        },
+        {
+            'id': 'panoramio',
+            'label': gettext("Panoramio"),
+            'title': gettext("Shows geotagged photos from Panoramio."),
+            'layer': new google.maps.panoramio.PanoramioLayer()
+        }
+    ];
+
     map.mapTypes.set('OpenStreetMap', new google.maps.ImageMapType({
         'getTileUrl': function(coordinates, zoom) {
             // TODO: Is there HTTPS version - it would be better to use that so we do not get mixed content errors if we run our portal over HTTPS
@@ -58,6 +83,27 @@ $(document).ready(function () {
         map.draggable = true;
         map.streetViewControl = true;
         map.mapTypeControlOptions.position = google.maps.ControlPosition.TOP_RIGHT;
+    }
+
+    function addMapLayerOption(map_layer) {
+        var checkbox_container = $('<div/>').attr('title', map_layer.title).appendTo('#map-layers');
+        var checkbox = $('<input/>').attr({
+            'id': 'map-layer-' + map_layer.id,
+            'type': 'checkbox',
+            'name': 'map-layer-' + map_layer.id
+        }).change(function (event) {
+            setLayerVisibility(checkbox, map_layer);
+        }).appendTo(checkbox_container);
+        $('<label/>').attr('for', 'map-layer-' + map_layer.id).text(map_layer.label).appendTo(checkbox_container);
+    }
+
+    function setLayerVisibility(checkbox, map_layer) {
+        if (checkbox.prop('checked')) {
+            map_layer.layer.setMap(map);
+        }
+        else {
+            map_layer.layer.setMap(null);
+        }
     }
 
     function closeAdvancedMap() {
@@ -93,6 +139,12 @@ $(document).ready(function () {
         $('#advanced-map-container').hide();
         $('#map').detach().prependTo('#advanced-map-container');
         $('#advanced-map-container').show();
+        $('<div/>').prop('id', 'map-layers').appendTo('#advanced-map');
+        // Map layer options should be added after #map-layers is created
+        $.each(map_layers, function(index, map_layer) {
+            addMapLayerOption(map_layer);
+        });
+
         refreshMapCenter();
         $(document).keyup(function (event) {
             if (event.keyCode == 27) {
