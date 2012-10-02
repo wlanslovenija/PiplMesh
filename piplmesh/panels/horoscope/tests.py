@@ -65,15 +65,23 @@ class BasicTest(test_runner.MongoEngineTestCase):
         request = self._request()
         data = self._render(request)
 
-        self.assertEqual(data['context']['error_birthdate'], True)
+        try:
+            self.assertEqual(data['context']['error_birthdate'], True)
+        except KeyError:
+            print data
+            raise
 
         request.user.birthdate = datetime.date(1990, 1, 1)
         request.user.save()
 
         data = self._render(request)
 
-        self.assertEqual(translation.force_unicode(data['context']['horoscope_source_url']), providers.get_provider('sl').get_source_url())
-        self.assertEqual(translation.force_unicode(data['context']['horoscope_sign']), translation.force_unicode(models.HOROSCOPE_SIGNS_DICT['aquarius']))
+        try:
+            self.assertEqual(translation.force_unicode(data['context']['horoscope_source_url']), providers.get_provider('sl').get_source_url())
+            self.assertEqual(translation.force_unicode(data['context']['horoscope_sign']), translation.force_unicode(models.HOROSCOPE_SIGNS_DICT['aquarius']))
+        except KeyError:
+            print data
+            raise
 
     def test_horoscope_english(self):
         translation.activate('en')
@@ -81,12 +89,20 @@ class BasicTest(test_runner.MongoEngineTestCase):
         request = self._request()
         data = self._render(request)
 
-        self.assertEqual(data['context']['error_birthdate'], True)
+        try:
+            self.assertEqual(data['context']['error_birthdate'], True)
+        except KeyError:
+            print data
+            raise
 
         request.user.birthdate = datetime.date(1990, 1, 1)
         request.user.save()
 
         data = self._render(request)
 
-        self.assertEqual(translation.force_unicode(data['context']['horoscope_source_url']), providers.get_provider('en').get_source_url())
-        self.assertEqual(translation.force_unicode(data['context']['horoscope_sign']), translation.force_unicode(models.HOROSCOPE_SIGNS_DICT['aquarius']))
+        try:
+            self.assertEqual(translation.force_unicode(data['context']['horoscope_source_url']), providers.get_provider('en').get_source_url())
+            self.assertEqual(translation.force_unicode(data['context']['horoscope_sign']), translation.force_unicode(models.HOROSCOPE_SIGNS_DICT['aquarius']))
+        except KeyError:
+            print data
+            raise
