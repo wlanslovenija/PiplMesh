@@ -244,6 +244,7 @@ input.gsc-search-button:hover,
 
 li.notification {
     border-bottom: 1px solid #68AE2C;
+    background-color: #e5f5d5;
     padding: 0 4px 0 4px;
     margin-left: -40px;
     text-align: left;
@@ -251,8 +252,8 @@ li.notification {
     width: 262px;
 }
 
-li.unread_notification {
-    background-color: #e5f5d5;
+li.read_notification {
+    background-color: #ffffff;
 }
 
 .close_notification_box {

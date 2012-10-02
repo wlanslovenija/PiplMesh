@@ -233,7 +233,38 @@ function Notification(data) {
         var format = gettext("%(author)s commented on post.");
         var author = interpolate(format, {'author': self.comment.author.username}, true);
 
-        var notification = $('<li/>').addClass('notification').addClass('unread_notification').data('notification', self).append(
+        var notification = $('<li/>').addClass('notification').bind('click', function () {
+            if (!self.read) {
+                $.ajax({
+                    type: 'PATCH',
+                    url: self.resource_uri,
+                    data: JSON.stringify({'read': true}),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (data, textStatus, jqXHR) {
+                        var unread_notifications_counter = 0;
+                        $.getJSON(URLS.notifications, function (data, textStatus, jqXHR) {
+                            $.each(data.objects, function (i, notification) {
+                                if (!notification.read) {
+                                    unread_notifications_counter++;
+                                }
+                            });
+                        });
+                        $('#notifications_count').text(unread_notifications_counter);
+                        notification.addClass('read_notification');
+
+                        // TODO: This has to be removed
+                        window.console.log("Notification marked as read.");
+                    },
+                });
+            }
+        });
+
+        if (self.read) {
+            notification.addClass('read_notification');
+        }
+
+        notification.data('notification', self).append(
             $('<span/>').addClass('notification_element').text(author)
         ).append(
             $('<span/>').addClass('notification_message').addClass('notification_element').text(self.comment.message)
@@ -258,23 +289,6 @@ function Notification(data) {
         }
         $('#notifications_list').prepend(createDOM());
     };
-
-    self.markAsRead = function (dom_element) {
-        if (!self.read) {
-            $.ajax({
-                type: 'PATCH',
-                url: self.resource_uri,
-                data: JSON.stringify({'read': true}),
-                contentType: 'application/json',
-                dataType: 'json',
-                success: function (data, textStatus, jqXHR) {
-                    $('#notifications_count').text(parseInt($('#notifications_count').text()) -1 );
-                    $(dom_element).removeClass('unread_notification');
-                    alert("Notification marked as read.");
-                },
-            });
-        }
-    }
 
     self.updateDate = function (dom_element) {
         $(dom_element).find('.notification_created_time').text(formatDiffTime(self.created_time));
@@ -302,7 +316,8 @@ function addComment(comment) {
         'contentType': 'application/json',
         'dataType': 'json',
         'success': function (data, textStatus, jqXHR) {
-            alert("Comment posted.");
+            // TODO: This has to be removed when comments will be done
+            window.console.log("Comment posted.");
         }
     });
 }
@@ -428,10 +443,6 @@ $(document).ready(function () {
     // Notifications
     $('#notifications_count').add('.close_notifications_box').click(function (event) {
         $('#notifications_box').slideToggle('fast');
-    });
-
-    $('.notification').live('click', function (event) {
-        $(this).data('notification').markAsRead(this);
     });
 
     // TODO: Just for testing

@@ -127,7 +127,7 @@ class BasicTest(test_runner.MongoEngineTestCase):
         self.assertEqual(response.status_code, 201)
 
         comment_uri = response['location']
-
+        print comment_uri
         response = self.client.get(comment_uri)
         self.assertEqual(response.status_code, 200)
         response = json.loads(response.content)
