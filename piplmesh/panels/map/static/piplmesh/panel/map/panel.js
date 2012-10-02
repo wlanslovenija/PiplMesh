@@ -34,6 +34,7 @@ $(document).ready(function () {
         {
             'id': 'weather',
             'label': gettext("Weather"),
+            'title': gettext("Visible only on zoom level 12 or lower."),
             'layer': new google.maps.weather.WeatherLayer({
                 // TODO: This should be user-configurable
                 'temperatureUnits': google.maps.weather.TemperatureUnit.CELSIUS
@@ -42,11 +43,13 @@ $(document).ready(function () {
         {
             'id': 'clouds',
             'label': gettext("Clouds"),
+            'title': gettext("Visible only on zoom level 6 or lower."),
             'layer': new google.maps.weather.CloudLayer()
         },
         {
             'id': 'panoramio',
             'label': gettext("Panoramio"),
+            'title': gettext("Shows geotagged photos from Panoramio."),
             'layer': new google.maps.panoramio.PanoramioLayer()
         }
     ];
@@ -83,7 +86,7 @@ $(document).ready(function () {
     }
 
     function addMapLayerOption(map_layer) {
-        var checkbox_container = $('<div/>').appendTo('#map-layers');
+        var checkbox_container = $('<div/>').attr('title', map_layer.title).appendTo('#map-layers');
         var checkbox = $('<input/>').attr({
             'id': 'map-layer-' + map_layer.id,
             'type': 'checkbox',
