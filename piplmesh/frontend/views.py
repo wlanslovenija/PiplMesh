@@ -180,7 +180,7 @@ def send_update_on_new_notification(sender, document, created, **kwargs):
                 return True
         return False
 
-    # assert test_if_running_as_celery_worker()
+    assert test_if_running_as_celery_worker()
 
     # Dummy request object, it is used in serialization to get JSONP callback name, but we
     # want always just JSON, so we can create dummy object and hopefuly get away with it
