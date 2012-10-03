@@ -190,7 +190,6 @@ class BasicTest(test_runner.MongoEngineTestCase):
         # Mark notification as read
         response = self.client.patch(notification_uri, '{"read": true}', content_type='application/json')
         # TODO: after solving the problem remove this print
-        print response
         self.assertEqual(response.status_code, 202)
 
         response = self.client.get(notification_uri)
