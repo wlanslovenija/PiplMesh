@@ -165,6 +165,9 @@ def send_update_on_new_notification(sender, document, created, **kwargs):
     only in background tasks.
     """
 
+    if not created:
+        return
+
     notification = document
 
     def test_if_running_as_celery_worker():
