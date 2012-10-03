@@ -50,7 +50,7 @@ class CommentResource(AuthoredResource):
 
 class NotificationResource(resources.MongoEngineResource):
     post = tastypie_mongoengine_fields.ReferenceField(to='piplmesh.api.resources.PostResource', attribute='post', null=False, full=False)
-    comment = fields.CustomReferenceField(to='piplmesh.api.resources.CommentResource', attribute_getter=lambda obj: obj.post.comments[obj.comment], target_attribute='_comment_proxy', null=False, full=True)
+    comment = fields.CustomReferenceField(to='piplmesh.api.resources.CommentResource', getter=lambda obj: obj.post.comments[obj.comment], setter=lambda obj: obj.pk, null=False, full=True)
 
     class Meta:
         queryset = api_models.Notification.objects.all()
