@@ -168,6 +168,10 @@ def send_update_on_new_notification(sender, document, created, **kwargs):
     notification = document
 
     def test_if_running_as_celery_worker():
+        # Used in tests
+        if getattr(settings, 'CELERY_ALWAYS_EAGER', False):
+            return True
+
         for filename, line_number, function_name, text in traceback.extract_stack():
             if 'celery' in filename:
                 return True
