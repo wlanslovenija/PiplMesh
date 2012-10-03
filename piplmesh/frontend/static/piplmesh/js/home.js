@@ -242,8 +242,8 @@ function Notification(data) {
                     contentType: 'application/json',
                     dataType: 'json',
                     success: function (data, textStatus, jqXHR) {
-                        var unread_notifications_counter = 0;
                         self.read = true;
+                        var unread_notifications_counter = 0;
                         $('.notification').each(function (i, notification) {
                             if (!$(notification).data('notification').read) {
                                 unread_notifications_counter++;
