@@ -21,7 +21,7 @@ class WeatherPanel(panels.BasePanel):
         
         latitude = self.request.node.latitude
         longitude = self.request.node.longitude
-        #TODO: Check and possibly optimize
+        # TODO: Check and possibly optimize
         state = models.State.objects(latitude=latitude, longitude=longitude, at__lte=datetime.datetime.now(), at__gte=(datetime.datetime.now() - datetime.timedelta(hours=WEATHER_OBSOLETE))).order_by('+created').first()
         if state is None:
             context.update({
@@ -41,7 +41,7 @@ class WeatherPanel(panels.BasePanel):
         })
         return context
 
-#TODO: Check and possibly optimize
+# TODO: Check and possibly optimize
 def get_weather_content(latitude, longitude):
     date = datetime.datetime.now()
     for interval in range(0, WEATHER_FORECAST_RANGE):

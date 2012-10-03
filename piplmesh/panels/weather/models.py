@@ -28,7 +28,7 @@ SYMBOLS = (
     (23, _("Sleet thunder")),
 )
 
-#TODO: Some fields have to be unique to make sure that there is only one entry for each time period for given location. 
+# TODO: Some fields have to be unique to make sure that there is only one entry for each time period for given location. 
 # https://github.com/wlanslovenija/PiplMesh/issues/210
 class Weather(mongoengine.Document):
     created = mongoengine.DateTimeField(required=True)

@@ -37,8 +37,9 @@ def generate_weather_tasks():
 
     Obsolete data is currently left in the database.
     """ 
-
+    
     weather_tasks = []
+    # Fetching data only once per possible duplicate locations
     for latitude, longitude in {(node.latitude, node.longitude) for node in nodes.get_all_nodes()}:
         weather_tasks.append(update_weather.s(latitude, longitude))
     return celery.group(weather_tasks)()@task.task(rate_limit=20) # 20 tasks per second. Limitation by the api http://api.yr.no/conditions_service.html
