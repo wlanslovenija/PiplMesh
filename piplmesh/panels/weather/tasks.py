@@ -6,10 +6,14 @@ import datetime
 from lxml import etree, objectify
 
 from celery import task
+from celery.task import schedules
 
 from piplmesh import nodes
+from piplmesh.utils import decorators
 
 from . import models, panel
+
+CHECK_FOR_NEW_WEATHER = 30 # minutes
 
 source_url = 'http://api.met.no/'
 
@@ -25,7 +29,8 @@ def fetch_data(latitude, longitude):
     weather = objectify.parse(weather_url, parser).getroot()
     return weather
 
-@task.task
+@task.periodic_task(run_every=schedules.crontab(hour=CHECK_FOR_NEW_HOROSCOPE))
+@decorators.single_instance_task()
 def generate_weather_tasks():
     """
     Task which updates weather for all nodes.
@@ -36,7 +41,7 @@ def generate_weather_tasks():
     weather_tasks = []
     for latitude, longitude in {(node.latitude, node.longitude) for node in nodes.get_all_nodes()}:
         weather_tasks.append(update_weather.s(latitude, longitude))
-    return celery.group(weather_tasks)()
+    return celery.group(weather_tasks)()@task.task(rate_limit=20) # 20 tasks per second. Limitation by the api http://api.yr.no/conditions_service.html
 
 @task.task(rate_limit=20) # 20 tasks per second. Limitation by the api http://api.yr.no/conditions_service.html
 def update_weather(latitude, longitude):

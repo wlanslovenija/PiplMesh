@@ -14,7 +14,7 @@ function checkPassword() {
             $('#password_info').remove();
         }
         else {
-            var message_info = $('<span/>').prop({
+            var message_info = $('<span/>').attr({
                 'id': 'password_info',
                 'class': 'input_invalid_text'
             }).text(gettext("Passwords do not match."));
@@ -48,7 +48,7 @@ function checkEmail() {
             $('#email_info').remove();
         }
         else {
-            var message_info = $('<span/>').prop({
+            var message_info = $('<span/>').attr({
                 'id': 'email_info',
                 'class': 'input_invalid_text'
             }).text(gettext("Invalid e-mail."));

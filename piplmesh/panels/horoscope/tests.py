@@ -1,0 +1,108 @@
+from __future__ import absolute_import
+
+import datetime
+
+from django import template
+from django.contrib import auth
+from django.test import client, signals
+from django.utils import functional, translation
+
+from tastypie_mongoengine import test_runner
+
+from . import models, panel, providers, tasks
+
+class BasicTest(test_runner.MongoEngineTestCase):
+    def setUp(self):
+        self.factory = client.RequestFactory()
+        self.language = translation.get_language()
+
+        tasks.update_horoscope()
+
+        # So that django_browserid logging does not complain when doing auth.authenticate
+        import logging
+        logging.disable(logging.CRITICAL)
+
+    def tearDown(self):
+        translation.activate(self.language)
+
+    def _request(self):
+        request = self.factory.get('/')
+        request.session = {}
+        request.user = auth.authenticate(request=request)
+        return request
+
+    def _render(self, request):
+        context = template.RequestContext(request)
+
+        data = {}
+        on_template_render = functional.curry(client.store_rendered_templates, data)
+        signals.template_rendered.connect(on_template_render, dispatch_uid="template-render")
+
+        try:
+            panel.HoroscopePanel().render(request, context)
+        finally:
+            signals.template_rendered.disconnect(dispatch_uid="template-render")
+
+        return data
+
+    def test_horoscope_esperanto(self):
+        # We assume here that we do not have horoscope in Esperanto
+
+        translation.activate('eo')
+
+        request = self._request()
+
+        request.user.birthdate = datetime.date(1990, 1, 1)
+        request.user.save()
+
+        data = self._render(request)
+
+        self.assertEqual(data['context']['error_language'], True)
+
+    def test_horoscope_slovenian(self):
+        translation.activate('sl')
+
+        request = self._request()
+        data = self._render(request)
+
+        try:
+            self.assertEqual(data['context']['error_birthdate'], True)
+        except KeyError:
+            print data
+            raise
+
+        request.user.birthdate = datetime.date(1990, 1, 1)
+        request.user.save()
+
+        data = self._render(request)
+
+        try:
+            self.assertEqual(translation.force_unicode(data['context']['horoscope_source_url']), providers.get_provider('sl').get_source_url())
+            self.assertEqual(translation.force_unicode(data['context']['horoscope_sign']), translation.force_unicode(models.HOROSCOPE_SIGNS_DICT['aquarius']))
+        except KeyError:
+            print data
+            raise
+
+    def test_horoscope_english(self):
+        translation.activate('en')
+
+        request = self._request()
+        data = self._render(request)
+
+        try:
+            self.assertEqual(data['context']['error_birthdate'], True)
+        except KeyError:
+            print data
+            raise
+
+        request.user.birthdate = datetime.date(1990, 1, 1)
+        request.user.save()
+
+        data = self._render(request)
+
+        try:
+            self.assertEqual(translation.force_unicode(data['context']['horoscope_source_url']), providers.get_provider('en').get_source_url())
+            self.assertEqual(translation.force_unicode(data['context']['horoscope_sign']), translation.force_unicode(models.HOROSCOPE_SIGNS_DICT['aquarius']))
+        except KeyError:
+            print data
+            raise

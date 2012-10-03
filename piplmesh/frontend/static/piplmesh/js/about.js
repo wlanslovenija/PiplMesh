@@ -4,12 +4,12 @@ $(document).ready(function () {
         $.each(data, function (i, contributor) {
             contributors.append( 
                 $('<li/>').append(
-                    $('<img/>').prop({
+                    $('<img/>').attr({
                         'src': contributor.avatar_url,
                         'alt': gettext("contributor github picture")
                     })
                 ).append(
-                    $('<a/>').prop({
+                    $('<a/>').attr({
                         'href': 'https://github.com/' + contributor.login                    
                     }).append(contributor.login)
                 )
