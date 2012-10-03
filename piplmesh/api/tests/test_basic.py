@@ -142,7 +142,7 @@ class BasicTest(test_runner.MongoEngineTestCase):
         self.assertEqual(response['comments'][0], self.fullURItoAbsoluteURI(comment_uri))
         self.assertEqual(response['created_time'], post_created_time)
         self.assertNotEqual(response['updated_time'], post_updated_time)
-
+    @utils.override_settings(CELERY_ALWAYS_EAGER=True)
     def test_notification(self):
         # Creating a post
 
@@ -157,17 +157,8 @@ class BasicTest(test_runner.MongoEngineTestCase):
 
         self.assertEqual(response['message'], 'Test post for notifications.')
         self.assertEqual(response['author']['username'], self.user_username)
-        self.assertNotEqual(response['created_time'], None)
-        self.assertNotEqual(response['updated_time'], None)
         self.assertEqual(response['comments'], [])
-        self.assertEqual(response['attachments'], [])
         self.assertEqual(response['is_published'], True)
-
-        post_created_time = response['created_time']
-        post_updated_time = response['updated_time']
-
-        # Delay so next update will be for sure different
-        time.sleep(1)
 
         # Test authorization
         response = self.client2.get(post_uri, content_type='application/json')
@@ -194,25 +185,27 @@ class BasicTest(test_runner.MongoEngineTestCase):
         response = json.loads(response.content)
 
         self.assertEqual(response['comments'][0], self.fullURItoAbsoluteURI(comment_uri))
-        self.assertEqual(response['created_time'], post_created_time)
-        self.assertNotEqual(response['updated_time'], post_updated_time)
 
         # Checking notification
 
         response = self.client.get(self.resourceListURI('notification'))
-        print response
         self.assertEqual(response.status_code, 200)
         response = json.loads(response.content)
-        notification_uri = response['location']
 
-        self.assertEqual(response['comment']['message'], 'Test comment 1.')
-        self.assertEqual(response['comment']['author']['username'], self.user_username)
-        self.assertEqual(response['post'], self.fullURItoAbsoluteURI(post_uri))
-        self.assertEqual(response['read'], False)
+        self.assertEqual(len(response['objects']), 1)
+
+        notification_uri = response['objects'][0]['resource_uri']
+
+        self.assertEqual(response['objects'][0]['comment']['message'], 'Test comment 1.')
+        self.assertEqual(response['objects'][0]['comment']['author']['username'], self.user_username2)
+        self.assertEqual(response['objects'][0]['post'], self.fullURItoAbsoluteURI(post_uri))
+        self.assertEqual(response['objects'][0]['read'], False)
 
         response = self.client.patch(notification_uri, '{"read": true}', content_type='application/json')
-        self.assertEqual(response.status_code, 202)
+        # TODO: after solving the problem remove this print
         print response
+        self.assertEqual(response.status_code, 202)
+        
 
         response = self.client.get(notification_uri)
         self.assertEqual(response.status_code, 200)
