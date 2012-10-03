@@ -49,7 +49,7 @@ class CommentResource(AuthoredResource):
         authorization = tastypie_authorization.Authorization()
 
 class NotificationResource(resources.MongoEngineResource):
-    post = tastypie_mongoengine_fields.ReferenceField(to='piplmesh.api.resources.PostResource', attribute='post', null=False, full=False)
+    post = tastypie_mongoengine_fields.ReferenceField(to='piplmesh.api.resources.PostResource', attribute='post', null=False, full=False, readonly=True)
     comment = fields.CustomReferenceField(to='piplmesh.api.resources.CommentResource', attribute_getter=lambda obj: obj.post.comments[obj.comment], target_attribute='_comment_proxy', null=False, full=True)
 
     class Meta:

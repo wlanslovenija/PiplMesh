@@ -159,10 +159,6 @@ class BasicTest(test_runner.MongoEngineTestCase):
         self.assertEqual(response['comments'], [])
         self.assertEqual(response['is_published'], True)
 
-        # Test authorization
-        response = self.client2.get(post_uri, content_type='application/json')
-        self.assertEqual(response.status_code, 200)
-
         # Adding a comment
 
         comments_resource_uri = self.fullURItoAbsoluteURI(post_uri) + 'comments/'
@@ -171,12 +167,12 @@ class BasicTest(test_runner.MongoEngineTestCase):
         self.assertEqual(response.status_code, 201)
 
         comment_uri = response['location']
-
+        
         response = self.client2.get(comment_uri)
         self.assertEqual(response.status_code, 200)
         response = json.loads(response.content)
 
-        self.assertEqual(len(response['objects']), 1)
+        self.assertEqual(response['message'], 'Test comment 1.')
 
         # Checking notification
 
@@ -189,13 +185,13 @@ class BasicTest(test_runner.MongoEngineTestCase):
         notification_uri = response['objects'][0]['resource_uri']
 
         self.assertEqual(response['objects'][0]['read'], False)
+        self.assertEqual(response['objects'][0]['post'], self.fullURItoAbsoluteURI(post_uri))
 
         # Mark notification as read
         response = self.client.patch(notification_uri, '{"read": true}', content_type='application/json')
         # TODO: after solving the problem remove this print
         print response
         self.assertEqual(response.status_code, 202)
-        
 
         response = self.client.get(notification_uri)
         self.assertEqual(response.status_code, 200)
