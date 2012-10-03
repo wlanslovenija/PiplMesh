@@ -146,15 +146,15 @@ function Post(data) {
     function createDOM() {
         // TODO: Improve and add other post options
         var delete_link = $('<li/>').append(
-            $('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))
+            $('<a/>').addClass('delete-post hand').text(gettext("Delete"))
         );
         var edit_link = $('<li/>').append(
-            $('<a/>').addClass('edit-post').addClass('hand').text(gettext("Edit"))
+            $('<a/>').addClass('edit-post hand').text(gettext("Edit"))
         );
         var post_options = $('<ul />').addClass('options').append(edit_link, delete_link);
         
         // TODO: Author link shouldn't be hardcoded.
-        var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author').addClass('hand').text(self.author.username);
+        var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
         
         var post = $('<li/>').addClass('post').data('post', self).append(post_options).append(
             $('<span/>').append(author_link)
@@ -173,30 +173,28 @@ function Post(data) {
     
     function createCommentForm() {
         // TODO: Instead of creating forms use a static form from template, clone it and append event handlers.
-        var textarea = $('<textarea/>').addClass('comment_text').data('post', self).attr('id', 'comment_text');
-        var input = $('<input/>').attr('type', 'button').attr('value', 'submit')
-        .attr('name','submit_comment').attr('id', 'submit_comment')
-        .click(function (event) {
-            // TODO: Disable enable submit button like with the Post. After submitting clear the textarea of text.
-            // TODO: Push new comments to all clients and display them automatically.
-            var message = textarea.val();
-            addComment(message, buildCommentURL(self.id));
-        });
+        var textarea = $('<textarea/>').addClass('comment_text').attr('id', 'comment_text');
+        var input = $('<input/>').attr({'type': 'button', 'value': 'submit', 'name': 'submit_comment', 'id': 'submit_comment'})
+            .click(function (event) {
+                // TODO: Disable enable submit button like with the Post. After submitting clear the textarea of text.
+                // TODO: Push new comments to all clients and display them automatically.
+                addComment(textarea.val(), buildCommentURL(self.id));
+            });
         var form = $('<form/>').attr('id', 'comment_form').append(textarea, input);
         
         return form;
     }
     
-    function getComment(url) {
-        $.getJSON(url, function (data, textStatus, jqXHR) {
+    function getComment(comment_url) {
+        $.getJSON(comment_url, function (data, textStatus, jqXHR) {
             new Comment(data, self).appendToPost();
         });
     }
     
     function displayComments() {
         // TODO: We call comments in the right order but that doesn't mean we get them in the right order aswell. Should make some ordering down the road.
-        $.each(self.comments, function (index, value) {
-            getComment(value);
+        $.each(self.comments, function (index, comment_url) {
+            getComment(comment_url);
         });
     }
     
@@ -261,11 +259,12 @@ function Comment(data, post) {
     
     function createDOM() {
         // TODO: Author link shouldn't be hardcoded.
-        var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author').addClass('hand').text(self.author.username);
+        var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
         var comment = $('<li/>').addClass('comment').append(
-            $('<span/>').append(author_link)).append($('<p/>').addClass('content').text(self.message)
-        ).append($('<span/>').addClass('date').text(formatDiffTime(self.created_time)));
-           // TODO: There is a bug when DiffTime is updated it takes time from the post and not the comment.
+            $('<span/>').append(author_link)
+            ).append($('<p/>').addClass('content').text(self.message)
+            ).append($('<span/>').addClass('date').text(formatDiffTime(self.created_time)));
+        
         return comment;
     }
     
@@ -275,6 +274,10 @@ function Comment(data, post) {
                 $(this).find('.comments').append(createDOM());
             }
         });
+    };
+    
+    self.updateDate = function (dom_element) {
+        $(dom_element).find('.date').text(formatDiffTime(self.created_time));
     };
  }
 
@@ -350,6 +353,7 @@ function addComment(comment, comment_url) {
         'dataType': 'json',
         'success': function (data, textStatus, jqXHR) {
             alert("Comment posted.");
+            // TODO: Remove alert once comments are automatically pushed.
         }
     });
 }
@@ -487,6 +491,7 @@ $(document).ready(function () {
     setInterval(function () {
         $('.post').each(function (i, post) {
             $(post).data('post').updateDate(this);
+            
         });
         $('.notification').each(function (i, notification) {
             $(notification).data('notification').updateDate(this);
