@@ -251,9 +251,6 @@ function Notification(data) {
                         });
                         $('#notifications_count').text(unread_notifications_counter);
                         notification.addClass('read_notification');
-
-                        // TODO: This has to be removed
-                        window.console.log("Notification marked as read.");
                     },
                 });
             }

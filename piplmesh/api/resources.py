@@ -49,15 +49,14 @@ class CommentResource(AuthoredResource):
         authorization = tastypie_authorization.Authorization()
 
 class NotificationResource(resources.MongoEngineResource):
-    post = tastypie_mongoengine_fields.ReferenceField(to='piplmesh.api.resources.PostResource', attribute='post', null=False, full=False)
-    comment = fields.CustomReferenceField(to='piplmesh.api.resources.CommentResource', getter=lambda obj: obj.post.comments[obj.comment], setter=lambda obj: obj.pk, null=False, full=True)
+    post = tastypie_mongoengine_fields.ReferenceField(to='piplmesh.api.resources.PostResource', attribute='post', null=False, full=False, readonly=True)
+    comment = fields.CustomReferenceField(to='piplmesh.api.resources.CommentResource', getter=lambda obj: obj.post.comments[obj.comment], setter=lambda obj: obj.pk, null=False, full=True, readonly=True)
 
-    def __init__(self, *args, **kwargs):
-        super(resources.MongoEngineResource, self).__init__()
-
-        for name, field in self.fields.iteritems():
-            if name != 'read':
-                field.readonly = True
+    @classmethod
+    def api_field_options(cls, name, field, options):
+        if name != 'read':
+            options['readonly'] = True
+        return options
 
     class Meta:
         queryset = api_models.Notification.objects.all()
