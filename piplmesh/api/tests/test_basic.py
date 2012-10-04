@@ -1,3 +1,4 @@
+from datetime import datetime
 import time, urlparse
 
 from django.core import urlresolvers
@@ -196,6 +197,10 @@ class BasicTest(test_runner.MongoEngineTestCase):
         response = json.loads(response.content)
 
         self.assertEqual(response['read'], True)
+
+        # Testing readonly parameter
+        response = self.client.patch(notification_uri, '{"created_time": "%s"}' % datetime.now().isoformat(), content_type='application/json')
+        self.assertEqual(response.status_code, 500)
 
     def test_newline_post(self):
         # Creating a post with a message containing newlines

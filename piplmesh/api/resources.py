@@ -54,6 +54,11 @@ class NotificationResource(resources.MongoEngineResource):
 
     @classmethod
     def api_field_options(cls, name, field, options):
+        # TODO: call super - python Meta and super problem
+        # options = super(NotificationResource, cls).api_field_options(name, field, options)
+
+        # We are setting readonly flag to all fields except "read", because we do not want clients
+        # to change other values of notifications
         if name != 'read':
             options['readonly'] = True
         return options
