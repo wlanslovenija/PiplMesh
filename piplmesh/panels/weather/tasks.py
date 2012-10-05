@@ -44,7 +44,8 @@ def generate_weather_tasks():
         weather_tasks.append(update_weather.s(latitude, longitude))
     return celery.group(weather_tasks)()@task.task(rate_limit=20) # 20 tasks per second. Limitation by the api http://api.yr.no/conditions_service.html
 
-@task.task(rate_limit=20) # 20 tasks per second. Limitation by the api http://api.yr.no/conditions_service.html
+# 20 tasks per second. Limitation by the api http://api.yr.no/conditions_service.html
+@task.task(rate_limit=20) 
 def update_weather(latitude, longitude):
     """
     Task which updates weather for one location.
