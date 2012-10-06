@@ -4,9 +4,11 @@
 
 import os
 
+USE_TZ = True
+
 MONGO_DATABASE_NAME = 'PiplMesh'
 MONGO_DATABASE_OPTIONS = {
-    'tz_aware': True,
+    'tz_aware': USE_TZ,
 }
 
 import mongoengine
@@ -39,7 +41,6 @@ MANAGERS = ADMINS
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = 'Europe/Ljubljana'
-USE_TZ = True
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
