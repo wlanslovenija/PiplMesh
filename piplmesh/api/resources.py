@@ -49,12 +49,23 @@ class CommentResource(AuthoredResource):
         authorization = tastypie_authorization.Authorization()
 
 class NotificationResource(resources.MongoEngineResource):
-    post = tastypie_mongoengine_fields.ReferenceField(to='piplmesh.api.resources.PostResource', attribute='post', null=False, full=False)
-    comment = fields.CustomReferenceField(to='piplmesh.api.resources.CommentResource', getter=lambda obj: obj.post.comments[obj.comment], setter=lambda obj: obj.pk, null=False, full=True)
+    post = tastypie_mongoengine_fields.ReferenceField(to='piplmesh.api.resources.PostResource', attribute='post', null=False, full=False, readonly=True)
+    comment = fields.CustomReferenceField(to='piplmesh.api.resources.CommentResource', getter=lambda obj: obj.post.comments[obj.comment], setter=lambda obj: obj.pk, null=False, full=True, readonly=True)
+
+    @classmethod
+    def api_field_options(cls, name, field, options):
+        # TODO: call super - python Meta and super problem
+        # options = super(NotificationResource, cls).api_field_options(name, field, options)
+
+        # We are setting readonly flag to all fields except "read", because we do not want clients
+        # to change other values of notifications
+        if name != 'read':
+            options['readonly'] = True
+        return options
 
     class Meta:
         queryset = api_models.Notification.objects.all()
-        allowed_methods = ('get',)
+        allowed_methods = ('get', 'patch',)
         authorization = authorization.NotificationAuthorization()
         excludes = ('recipient',)
 
