@@ -187,7 +187,8 @@ INSTALLED_APPS = (
     'piplmesh.utils',
     'piplmesh.panels',
     'piplmesh.panels.horoscope', # To load manage.py command
-
+    'piplmesh.panels.weather', # To load manage.py command
+    
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
