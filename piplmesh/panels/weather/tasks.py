@@ -1,10 +1,10 @@
 from __future__ import absolute_import
 
-import celery
 import datetime
 
 from lxml import etree, objectify
 
+import celery
 from celery import task
 from celery.task import schedules
 
@@ -15,14 +15,14 @@ from . import models, panel
 
 CHECK_FOR_NEW_WEATHER = 30 # minutes
 
-source_url = 'http://api.met.no/'
+SOURCE_URL = 'http://api.met.no/'
 
 def fetch_data(latitude, longitude):
     """
     Get weather data for specific location
     """
     
-    weather_url = '%sweatherapi/locationforecast/1.8/?lat=%s;lon=%s' % (source_url, latitude, longitude)
+    weather_url = '%sweatherapi/locationforecast/1.8/?lat=%s;lon=%s' % (SOURCE_URL, latitude, longitude)
     parser = etree.XMLParser(remove_blank_text=True)
     lookup = objectify.ObjectifyElementClassLookup()
     parser.setElementClassLookup(lookup)
@@ -42,7 +42,7 @@ def generate_weather_tasks():
     # Fetching data only once per possible duplicate locations
     for latitude, longitude in {(node.latitude, node.longitude) for node in nodes.get_all_nodes()}:
         weather_tasks.append(update_weather.s(latitude, longitude))
-    return celery.group(weather_tasks)()@task.task(rate_limit=20) # 20 tasks per second. Limitation by the api http://api.yr.no/conditions_service.html
+    return celery.group(weather_tasks)()
 
 # 20 tasks per second. Limitation by the api http://api.yr.no/conditions_service.html
 @task.task(rate_limit=20) 
