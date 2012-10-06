@@ -29,6 +29,8 @@ def fetch_data(latitude, longitude):
     return weather
 
 @task.periodic_task(run_every=datetime.timedelta(minutes=CHECK_FOR_NEW_WEATHER))
+# TODO: This does not really help here as this task is short-lived (it just spawns new tasks), we should instead assure that no new subtasks are created before old ones finish
+# We could lock before we create subtasks and at the end create new task which unlocks, and because of FIFO nature of the queue, unlock will happen after all subtasks
 @decorators.single_instance_task()
 def generate_weather_tasks():
     """
