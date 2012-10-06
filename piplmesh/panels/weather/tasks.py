@@ -6,7 +6,6 @@ from lxml import etree, objectify
 
 import celery
 from celery import task
-from celery.task import schedules
 
 from piplmesh import nodes
 from piplmesh.utils import decorators
@@ -29,7 +28,7 @@ def fetch_data(latitude, longitude):
     weather = objectify.parse(weather_url, parser).getroot()
     return weather
 
-@task.periodic_task(run_every=schedules.crontab(minutes=CHECK_FOR_NEW_WEATHER))
+@task.periodic_task(run_every=datetime.timedelta(minutes=CHECK_FOR_NEW_WEATHER))
 @decorators.single_instance_task()
 def generate_weather_tasks():
     """
