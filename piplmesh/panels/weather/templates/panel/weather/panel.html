@@ -14,7 +14,7 @@
                         <ul>
                             <li>{{ weather.at|date:"DATE_FORMAT" }}</li>
                             <li><img src="http://api.yr.no/weatherapi/weathericon/1.0/?symbol={{ weather.symbol }};content_type=image/png" alt="{% trans "weather icon" %}" /></li>
-                            {% comment %}TODO temperature unit user-configurable{% endcomment %}
+                            {% comment %}TODO: Temperature unit should be user-configurable{% endcomment %}
                             <li>{{ weather.temperature }}°C</li>
                         </ul>
                     </li> 
