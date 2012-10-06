@@ -340,7 +340,7 @@ $(document).ready(function () {
     // List of URIs of posts by user
     $('.posts').data('user_posts_URIs', []);
 
-    $.updates.registerProcessor('home_channel', 'post_new', function (data) {
+    $.updates.registerProcessor('home_channel', 'post_published', function (data) {
         new Post(data.post).addToTop();
     });
 

@@ -69,5 +69,5 @@ def check_online_users():
             )
 
 @task.task
-def send_update_on_new_post(serialized_update):
+def send_update_on_published_post(serialized_update):
     updates.send_update(HOME_CHANNEL_ID, serialized_update, True)

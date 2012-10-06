@@ -241,6 +241,7 @@ BROKER_URL = 'mongodb://127.0.0.1:27017/celery'
 
 CELERY_ENABLE_UTC = USE_TZ
 CELERY_TIMEZONE = TIME_ZONE
+CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 
 CELERY_IMPORTS = (
     'piplmesh.frontend.views', # To connect send_update_on_new_notification signal

@@ -36,12 +36,12 @@ class BasicTest(test_runner.MongoEngineTestCase):
 
         data = {}
         on_template_render = functional.curry(client.store_rendered_templates, data)
-        signals.template_rendered.connect(on_template_render, dispatch_uid="template-render")
+        signals.template_rendered.connect(on_template_render, dispatch_uid='template-render')
 
         try:
             rendered = panel.HoroscopePanel().render(request, context)
         finally:
-            signals.template_rendered.disconnect(dispatch_uid="template-render")
+            signals.template_rendered.disconnect(dispatch_uid='template-render')
 
         return data, rendered
 

@@ -138,22 +138,25 @@ def forbidden_view(request, reason=''):
     })))
 
 @dispatch.receiver(signals.post_created)
-def send_update_on_new_post(sender, post, request, bundle, **kwargs):
+@dispatch.receiver(signals.post_updated)
+def send_update_on_published_post(sender, post, request, bundle, **kwargs):
     """
-    Sends update through push server when a new post is created.
+    Sends update through push server when a post is published.
     """
+
+    # TODO: Send this only the first time the post is published or every time? When are other cases when "post_updated" is triggered?
     if post.is_published:
         output_bundle = sender.full_dehydrate(bundle)
         output_bundle = sender.alter_detail_data_to_serialize(request, output_bundle)
 
         serialized_update = sender.serialize(request, {
-            'type': 'post_new',
+            'type': 'post_published',
             'post': output_bundle.data,
         }, 'application/json')
 
         # We send update asynchronously as it could block and we
         # want REST request to finish quick
-        tasks.send_update_on_new_post.delay(serialized_update)
+        tasks.send_update_on_published_post.delay(serialized_update)
 
 @mongoengine_signals.post_save.connect_via(sender=api_models.Notification)
 def send_update_on_new_notification(sender, document, created, **kwargs):

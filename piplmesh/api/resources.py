@@ -133,6 +133,13 @@ class PostResource(AuthoredResource):
 
         return bundle
 
+    def obj_update(self, bundle, request=None, **kwargs):
+        bundle = super(PostResource, self).obj_update(bundle, request=request, **kwargs)
+
+        signals.post_updated.send(sender=self, post=bundle.obj, request=request or bundle.request, bundle=bundle)
+
+        return bundle
+
     class Meta:
         queryset = api_models.Post.objects.all().order_by('-updated_time')
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
