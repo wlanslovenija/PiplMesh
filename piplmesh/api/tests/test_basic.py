@@ -1,9 +1,8 @@
-from datetime import datetime
-import time, urlparse
+import datetime, time, urlparse
 
 from django.core import urlresolvers
 from django.test import client, utils
-from django.utils import simplejson as json
+from django.utils import simplejson as json, timezone
 
 from tastypie_mongoengine import test_runner
 
@@ -175,7 +174,7 @@ class BasicTest(test_runner.MongoEngineTestCase):
 
         self.assertEqual(response['message'], 'Test comment 1.')
 
-        # Checking notification
+        # Verifying notification
 
         response = self.client.get(self.resourceListURI('notification'))
         self.assertEqual(response.status_code, 200)
@@ -187,8 +186,10 @@ class BasicTest(test_runner.MongoEngineTestCase):
 
         self.assertEqual(response['objects'][0]['read'], False)
         self.assertEqual(response['objects'][0]['post'], self.fullURItoAbsoluteURI(post_uri))
+        self.assertEqual(response['objects'][0]['comment']['message'], 'Test comment 1.')
 
-        # Mark notification as read
+        # Marking notification as read
+
         response = self.client.patch(notification_uri, '{"read": true}', content_type='application/json')
         self.assertEqual(response.status_code, 202)
 
@@ -198,9 +199,19 @@ class BasicTest(test_runner.MongoEngineTestCase):
 
         self.assertEqual(response['read'], True)
 
-        # Testing readonly parameter
-        response = self.client.patch(notification_uri, '{"created_time": "%s"}' % datetime.now().isoformat(), content_type='application/json')
-        self.assertEqual(response.status_code, 500)
+        # Testing readonly field
+
+        created_time = response['created_time']
+
+        response = self.client.patch(notification_uri, '{"created_time": "%s"}' % (timezone.now() + datetime.timedelta(seconds=30)).isoformat(), content_type='application/json')
+        self.assertEqual(response.status_code, 202)
+
+        response = self.client.get(notification_uri)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+
+        # Field has not changed
+        self.assertEqual(response['created_time'], created_time)
 
     def test_newline_post(self):
         # Creating a post with a message containing newlines

@@ -54,11 +54,14 @@ class NotificationResource(resources.MongoEngineResource):
 
     @classmethod
     def api_field_options(cls, name, field, options):
-        # TODO: call super - python Meta and super problem
-        # options = super(NotificationResource, cls).api_field_options(name, field, options)
+        # We cannot call super(NotificationResource, cls).api_field_options(name, field, options)
+        # because this class method is called in metaclass class constructor before the class has
+        # been created, so NotificationResource does not yet exist
+        # It is in fact probably wrong to call class methods on the class which does not really yet
+        # exist, but this is how Tastypie has it, so we are mostly stuck with it
 
-        # We are setting readonly flag to all fields except "read", because we do not want clients
-        # to change other values of notifications
+        # We are setting readonly flag to all fields except "read" flag, because
+        # we do not want clients to change other values of notifications
         if name != 'read':
             options['readonly'] = True
         return options
