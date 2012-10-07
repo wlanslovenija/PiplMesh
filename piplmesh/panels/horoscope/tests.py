@@ -12,15 +12,28 @@ from tastypie_mongoengine import test_runner
 from . import models, panel, providers, tasks
 
 class BasicTest(test_runner.MongoEngineTestCase):
-    def setUp(self):
-        self.factory = client.RequestFactory()
-        self.language = translation.get_language()
+    @classmethod
+    def setUpClass(cls):
+        super(BasicTest, cls).setUpClass()
 
+        # We fetch data, store it away, and delete
         tasks.update_horoscope()
+        cls._horoscope_data = list(models.Horoscope.objects())
+        models.Horoscope.drop_collection()
+
+        for d in cls._horoscope_data:
+            # So that data can be reinserted
+            d.pk = None
 
         # So that django_browserid logging does not complain when doing auth.authenticate
         import logging
         logging.disable(logging.CRITICAL)
+
+    def setUp(self):
+        self.factory = client.RequestFactory()
+        self.language = translation.get_language()
+
+        models.Horoscope.objects.insert(self._horoscope_data, load_bulk=False, safe=True)
 
     def tearDown(self):
         translation.activate(self.language)
