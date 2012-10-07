@@ -3,7 +3,7 @@ var POSTS_DATE_UPDATE_INTERVAL = 60000; // ms
 
 function howManyColumns() {
     var panelsWidth = $('#panels').innerWidth();
-    var columnPanelsWidth = $('.panels_column').outerWidth();
+    var columnPanelsWidth = $('.panels_column').outerWidth(true);
 
     return parseInt(panelsWidth / columnPanelsWidth);
 }

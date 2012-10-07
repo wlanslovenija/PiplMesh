@@ -699,6 +699,7 @@ button.browserid-signin:hover {
     float: left;
     padding-left: 10px;
     height: 100%;
+    min-height: 50px;
 }
 
 .placeholder {
