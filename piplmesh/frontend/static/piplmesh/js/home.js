@@ -174,13 +174,12 @@ function Post(data) {
     function createCommentForm() {
         // TODO: Instead of creating forms use a static form from template, clone it and append event handlers.
         var textarea = $('<textarea/>').addClass('comment_text').attr('id', 'comment_text');
-        var input = $('<input/>').attr(
-            {'type': 'button', 
+        var input = $('<input/>').attr({
+            'type': 'button', 
             'value': 'submit', 
             'name': 'submit_comment', 
-            'id': 'submit_comment'}
-            )
-            .click(function (event) {
+            'id': 'submit_comment'
+            }).click(function (event) {
                 // TODO: Disable enable submit button like with the Post. After submitting clear the textarea of text.
                 // TODO: Push new comments to all clients and display them automatically.
                 addComment(textarea.val(), buildCommentURL(self.id));
@@ -277,9 +276,15 @@ function Comment(data, post) {
     }
     
     self.appendToPost = function () {
-        $('.post').is(function (index) {
-            if ($(this).data('post').id == self.post.id) {
+        $('.post').each(function (index, post) {
+            if ($(post).data('post').id == self.post.id) {
+                if ($(post).find('.comment').is(function (index) {
+                    window.console.debug($(this).data('comment').id);
+                    return $(this).data('comment').id == self.id;
+                    })) return;
+                
                 $(this).find('.comments').append(createDOM());
+                return;
             }
         });
     };
@@ -387,8 +392,7 @@ function addComment(comment, comment_url) {
         'contentType': 'application/json',
         'dataType': 'json',
         'success': function (data, textStatus, jqXHR) {
-            alert("Comment posted.");
-            // TODO: Remove alert once comments are automatically pushed.
+            window.console.debug("Comment posted.");
         }
     });
 }
@@ -415,7 +419,7 @@ $(document).ready(function () {
     // List of URIs of posts by user
     $('.posts').data('user_posts_URIs', []);
 
-    $.updates.registerProcessor('home_channel', 'post_new', function (data) {
+    $.updates.registerProcessor('home_channel', 'post_published', function (data) {
         new Post(data.post).addToTop();
     });
 
