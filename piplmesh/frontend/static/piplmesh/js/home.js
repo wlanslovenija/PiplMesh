@@ -165,8 +165,8 @@ function Post(data) {
         ).append(
            $('<span/>').append($('<ul/>').addClass('comments'))
         ).append(
-           $('<span/>').append(createCommentForm()
-        ));
+           $('<span/>').append(createCommentForm())
+        );
         
         return post;
     }
@@ -174,7 +174,12 @@ function Post(data) {
     function createCommentForm() {
         // TODO: Instead of creating forms use a static form from template, clone it and append event handlers.
         var textarea = $('<textarea/>').addClass('comment_text').attr('id', 'comment_text');
-        var input = $('<input/>').attr({'type': 'button', 'value': 'submit', 'name': 'submit_comment', 'id': 'submit_comment'})
+        var input = $('<input/>').attr(
+            {'type': 'button', 
+            'value': 'submit', 
+            'name': 'submit_comment', 
+            'id': 'submit_comment'}
+            )
             .click(function (event) {
                 // TODO: Disable enable submit button like with the Post. After submitting clear the textarea of text.
                 // TODO: Push new comments to all clients and display them automatically.
@@ -262,8 +267,11 @@ function Comment(data, post) {
         var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
         var comment = $('<li/>').addClass('comment').data('comment', self).append(
             $('<span/>').append(author_link)
-            ).append($('<p/>').addClass('content').text(self.message)
-            ).append($('<span/>').addClass('date').text(formatDiffTime(self.created_time)));
+        ).append(
+            $('<p/>').addClass('content').text(self.message)
+        ).append(
+            $('<span/>').addClass('date').text(formatDiffTime(self.created_time))
+        );
         
         return comment;
     }
@@ -498,7 +506,6 @@ $(document).ready(function () {
         });
         $('.comment').each(function (i, comment) {
             $(comment).data('comment').updateDate(this);
-            
         });
     }, POSTS_DATE_UPDATE_INTERVAL);
 });
