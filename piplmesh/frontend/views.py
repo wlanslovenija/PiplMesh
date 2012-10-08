@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core import exceptions, mail, urlresolvers
 from django.core.files import storage
+from django import http
 from django.test import client
 from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
@@ -85,6 +86,10 @@ class LocationView(generic_views.FormView):
 
         return super(LocationView, self).form_valid(form)
 
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors)
+        return http.HttpResponseRedirect(self.get_success_url())
+
     def dispatch(self, request, *args, **kwargs):
         if request.user and request.user.is_authenticated() and request.user.is_staff:
             return super(LocationView, self).dispatch(request, *args, **kwargs)
@@ -133,22 +138,25 @@ def forbidden_view(request, reason=''):
     })))
 
 @dispatch.receiver(signals.post_created)
-def send_update_on_new_post(sender, post, request, bundle, **kwargs):
+@dispatch.receiver(signals.post_updated)
+def send_update_on_published_post(sender, post, request, bundle, **kwargs):
     """
-    Sends update through push server when a new post is created.
+    Sends update through push server when a post is published.
     """
+
+    # TODO: Send this only the first time the post is published or every time? When are other cases when "post_updated" is triggered?
     if post.is_published:
         output_bundle = sender.full_dehydrate(bundle)
         output_bundle = sender.alter_detail_data_to_serialize(request, output_bundle)
 
         serialized_update = sender.serialize(request, {
-            'type': 'post_new',
+            'type': 'post_published',
             'post': output_bundle.data,
         }, 'application/json')
 
         # We send update asynchronously as it could block and we
         # want REST request to finish quick
-        tasks.send_update_on_new_post.delay(serialized_update)
+        tasks.send_update_on_published_post.delay(serialized_update)
 
 @mongoengine_signals.post_save.connect_via(sender=api_models.Notification)
 def send_update_on_new_notification(sender, document, created, **kwargs):
@@ -160,9 +168,16 @@ def send_update_on_new_notification(sender, document, created, **kwargs):
     only in background tasks.
     """
 
+    if not created:
+        return
+
     notification = document
 
     def test_if_running_as_celery_worker():
+        # Used in tests
+        if getattr(settings, 'CELERY_ALWAYS_EAGER', False):
+            return True
+
         for filename, line_number, function_name, text in traceback.extract_stack():
             if 'celery' in filename:
                 return True

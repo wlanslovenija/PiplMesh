@@ -1,5 +1,5 @@
 function getLocation(href) {
-    return $('<a/>').prop('href', href).get(0);
+    return $('<a/>').attr('href', href).get(0);
 }
 
 $(document).ready(function () {
@@ -9,6 +9,12 @@ $(document).ready(function () {
     });
 
     $(document).ajaxError(function (event, jqXHR, ajaxSettings, thrownError) {
+        if (thrownError === 'abort') {
+            // We ignore (programatically) aborted requests, for example
+            // aborted open pushserver requests on page close
+            return;
+        }
+
         window.console.error(event, jqXHR, ajaxSettings, thrownError);
         alert(gettext("Oops, something went wrong..."));
     });

@@ -49,12 +49,28 @@ class CommentResource(AuthoredResource):
         authorization = tastypie_authorization.Authorization()
 
 class NotificationResource(resources.MongoEngineResource):
-    post = tastypie_mongoengine_fields.ReferenceField(to='piplmesh.api.resources.PostResource', attribute='post', null=False, full=False)
-    comment = fields.CustomReferenceField(to='piplmesh.api.resources.CommentResource', attribute_getter=lambda obj: obj.post.comments[obj.comment], target_attribute='_comment_proxy', null=False, full=True)
+    post = tastypie_mongoengine_fields.ReferenceField(to='piplmesh.api.resources.PostResource', attribute='post', null=False, full=False, readonly=True)
+    comment = fields.CustomReferenceField(to='piplmesh.api.resources.CommentResource', getter=lambda obj: obj.post.comments[obj.comment], setter=lambda obj: obj.pk, null=False, full=True, readonly=True)
+
+    @classmethod
+    def api_field_options(cls, name, field, options):
+        # We cannot simply call super(NotificationResource, cls).api_field_options(name, field, options)
+        # because api_field_options is called in metaclass class constructor before the class has
+        # been created, so NotificationResource does not yet exist
+        # It is in fact probably wrong to call class methods on the class which does not really yet
+        # exist, but this is how Tastypie has it, so we are mostly stuck with it
+        me = next(c for c in cls.__mro__ if c.__module__ == __name__ and c.__name__ == 'NotificationResource')
+        options = super(me, cls).api_field_options(name, field, options)
+
+        # We are setting readonly flag to all fields except "read" flag, because
+        # we do not want clients to change other values of notifications
+        if name != 'read':
+            options['readonly'] = True
+        return options
 
     class Meta:
         queryset = api_models.Notification.objects.all()
-        allowed_methods = ('get',)
+        allowed_methods = ('get', 'patch',)
         authorization = authorization.NotificationAuthorization()
         excludes = ('recipient',)
 
@@ -107,6 +123,13 @@ class PostResource(AuthoredResource):
         bundle.obj.save()
 
         signals.post_created.send(sender=self, post=bundle.obj, request=request or bundle.request, bundle=bundle)
+
+        return bundle
+
+    def obj_update(self, bundle, request=None, **kwargs):
+        bundle = super(PostResource, self).obj_update(bundle, request=request, **kwargs)
+
+        signals.post_updated.send(sender=self, post=bundle.obj, request=request or bundle.request, bundle=bundle)
 
         return bundle
 

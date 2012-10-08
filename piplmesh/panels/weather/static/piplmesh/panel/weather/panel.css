@@ -1,0 +1,41 @@
+.error {
+    font-size: x-small;
+}
+
+#weather {
+    font-size: 10px;
+    text-align: left;
+}
+
+#weather ul {
+    float: center;
+    padding: 0;
+}
+
+#weather li {
+    display: inline;
+    float: left;
+    width: 100%;
+}
+
+#weather span {
+    font-size: 7px;
+}
+
+#forecast ul {
+    border: 0;
+    display: table;
+    list-style: none;
+    margin: 0 auto;
+    text-align: center;
+    width: 250px;
+}
+
+#forecast li {
+    border: none;
+    display: table-cell;
+    margin-left: 5px;
+    padding: 0;
+    vertical-align: middle;
+    width: 77px;
+}

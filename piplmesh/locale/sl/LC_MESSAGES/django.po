@@ -314,7 +314,7 @@ msgstr "Twitter prijava"
 
 #: account/templates/user/login.html:34
 msgid "Login with Foursquare"
-msgstr "Facebook prijava"
+msgstr "Foursquare prijava"
 
 #: account/templates/user/login.html:40
 msgid "Login with Google"

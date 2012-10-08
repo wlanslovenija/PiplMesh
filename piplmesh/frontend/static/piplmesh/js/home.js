@@ -3,7 +3,7 @@ var POSTS_DATE_UPDATE_INTERVAL = 60000; // ms
 
 function howManyColumns() {
     var panelsWidth = $('#panels').innerWidth();
-    var columnPanelsWidth = $('.panels_column').outerWidth();
+    var columnPanelsWidth = $('.panels_column').outerWidth(true);
 
     return parseInt(panelsWidth / columnPanelsWidth);
 }
@@ -308,7 +308,34 @@ function Notification(data) {
         var format = gettext("%(author)s commented on post.");
         var author = interpolate(format, {'author': self.comment.author.username}, true);
 
-        var notification = $('<li/>').addClass('notification').data('notification', self).append(
+        var notification = $('<li/>').addClass('notification').bind('click', function (event) {
+            if (!self.read) {
+                $.ajax({
+                    type: 'PATCH',
+                    url: self.resource_uri,
+                    data: JSON.stringify({'read': true}),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (data, textStatus, jqXHR) {
+                        self.read = true;
+                        var unread_notifications_counter = 0;
+                        $('.notification').each(function (i, notification) {
+                            if (!$(notification).data('notification').read) {
+                                unread_notifications_counter++;
+                            }
+                        });
+                        $('#notifications_count').text(unread_notifications_counter);
+                        notification.addClass('read_notification');
+                    },
+                });
+            }
+        });
+
+        if (self.read) {
+            notification.addClass('read_notification');
+        }
+
+        notification.data('notification', self).append(
             $('<span/>').addClass('notification_element').text(author)
         ).append(
             $('<span/>').addClass('notification_message').addClass('notification_element').text(self.comment.message)
@@ -499,7 +526,6 @@ $(document).ready(function () {
     setInterval(function () {
         $('.post').each(function (i, post) {
             $(post).data('post').updateDate(this);
-            
         });
         $('.notification').each(function (i, notification) {
             $(notification).data('notification').updateDate(this);

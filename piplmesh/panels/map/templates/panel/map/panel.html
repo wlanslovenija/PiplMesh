@@ -4,7 +4,7 @@
 
 {% block content %}
 {% addtoblock "css" %}<link href="{% static "piplmesh/panel/map/panel.css" %}" rel="stylesheet" type="text/css" media="screen" />{% endaddtoblock %}
-{% addtoblock "js" %}<script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>{% endaddtoblock %}
+{% addtoblock "js" %}<script src="https://maps.googleapis.com/maps/api/js?libraries=weather,panoramio&sensor=false" type="text/javascript"></script>{% endaddtoblock %}
 {% addtoblock "js" %}<script src="{% static "piplmesh/panel/map/panel.js" %}" type="text/javascript"></script>{% endaddtoblock %}
 <div id="basic-map" class="small">
     <div id="basic-map-extend-image"></div>

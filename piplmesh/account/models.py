@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-import datetime, hashlib, urllib
+import datetime, hashlib, urllib, uuid
 
 from django.conf import settings
 from django.contrib.auth import hashers, models as auth_models
@@ -14,20 +14,20 @@ from django.utils.translation import ugettext_lazy as _
 import mongoengine
 from mongoengine.django import auth
 
-import uuid
+from missing import timezone as timezone_missing
 
 from . import fields, utils
 from .. import panels
 
-LOWER_DATE_LIMIT = 366 * 120
+LOWER_DATE_LIMIT = 366 * 120 # days
 USERNAME_REGEX = r'[\w.@+-]+'
 CONFIRMATION_TOKEN_VALIDITY = 5 # days
 
 def upper_birthdate_limit():
-    return timezone.now().date()
+    return timezone_missing.to_date(timezone.now())
 
 def lower_birthdate_limit():
-    return timezone.now().date() - datetime.timedelta(LOWER_DATE_LIMIT)
+    return timezone_missing.to_date(timezone.now() - datetime.timedelta(days=LOWER_DATE_LIMIT))
 
 def generate_channel_id():
     return uuid.uuid4()

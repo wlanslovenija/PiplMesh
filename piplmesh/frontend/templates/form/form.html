@@ -1,45 +1,77 @@
 {% comment %}
 This is a standard template for rendering forms.
-It uses `form` (form object), `form_submit` (submit button label) and `form_action` (form action URL) from
-the context.
-We use `next` from the context or use `request_get_next`, which is set to request's GET `next` argument, to set
-where the form should redirect after submission.
+It uses `form` (form object), `form_submit` (submit button label) and
+`form_action` (form action URL) from the context.
+We use `next` from the context or use `request_get_next`, which is set
+to request's GET `next` argument, to set where the form should redirect
+after submission.
 {% endcomment %}
 
 {% load i18n %}
 
-{% if form.is_multipart %}
-    <form action="{{ form_action }}" method="post" enctype="multipart/form-data">
-{% else %}
-    <form action="{{ form_action }}" method="post">
-{% endif %}
-        {{ form.non_field_errors }}
-        {% csrf_token %}
-        {% with next|default:request_get_next|default:"" as next_url %}
-            <div style="display: none;"><input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" /></div>
-        {% endwith %}
-        {% if form.fields %}
-            <ul class="form_fields">
-                {% for field in form %}
+{% block before_form %}
+    {% if form.is_multipart %}
+        <form action="{{ form_action }}" method="post" enctype="multipart/form-data" class="form">
+    {% else %}
+        <form action="{{ form_action }}" method="post" class="form">
+    {% endif %}
+{% endblock %}
+
+{% block form_errors %}
+    {{ form.non_field_errors }}
+{% endblock %}
+
+{% block form_hidden_fields %}
+    {% csrf_token %}
+
+    {% with next|default:request_get_next|default:"" as next_url %}
+        <div style="display: none;"><input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ next_url }}" /></div>
+    {% endwith %}
+    {% for field in form.hidden_fields %}
+        <div style="display: none;">{{ field }}</div>
+    {% endfor %}
+{% endblock %}
+
+{% if form.visible_fields %}
+    <ul class="form_fields">
+        {% for field in form.visible_fields %}
+            {% block form_field %}
+                {% block field_errors %}
                     {% if field.errors %}
                         <li class="field_error align_to_label_width">
                             {{ field.errors }}
                         </li>
                     {% endif %}
+                {% endblock %}
+                {% block form_before_field %}
                     <li class="field">
-                        <label for="{{ field.id_for_label }}" class="main">
-                            {% if field.field.required %}
-                                <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
-                            {% else %}
-                                {{ field.label }}
-                            {% endif %}
-                        </label>
-                        {{ field }}
+                {% endblock %}
+                {% block form_field_label %}
+                    <label for="{{ field.id_for_label }}" class="main">
+                        {% if field.field.required %}
+                            <span class="required">{{ field.label }}<sup title="{% trans "Required" %}">*</sup></span>
+                        {% else %}
+                            {{ field.label }}
+                        {% endif %}
+                    </label>
+                {% endblock %}
+                {% block form_field_element %}
+                    {{ field }}
+                {% endblock %}
+                {% block form_after_field %}
                     </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        {% if form_submit %}
-                <div class="buttons align_to_label_width"><input type="submit" value="{{ form_submit }}" /></div>
-        {% endif %}
+                {% endblock %}
+            {% endblock %}
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% block form_buttons %}
+    {% if form_submit %}
+        <div class="buttons align_to_label_width"><input type="submit" value="{{ form_submit }}" /></div>
+    {% endif %}
+{% endblock %}
+
+{% block after_form %}
     </form>
+{% endblock %}

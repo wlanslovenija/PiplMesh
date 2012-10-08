@@ -1,0 +1,27 @@
+{% extends "panel/panel.html" %}
+
+{% load i18n static sekizai_tags %}
+
+{% block content %}
+    {% addtoblock "css" %}<link href="{% static "piplmesh/panel/weather/panel.css" %}" rel="stylesheet" type="text/css" media="screen" />{% endaddtoblock %}
+    {% if error_data or error_obsolete %}
+        <span class="error">{% trans "Weather data is temporarily unavailable." %}</span>
+    {% else %}
+        <div id="weather">
+            <ul>
+                {% for weather in weather_objects %}
+                    <li id="forecast">
+                        <ul>
+                            <li>{{ weather.at|date:"DATE_FORMAT" }}</li>
+                            <li><img src="http://api.yr.no/weatherapi/weathericon/1.0/?symbol={{ weather.symbol }};content_type=image/png" alt="{% trans "weather icon" %}" /></li>
+                            {% comment %}TODO: Temperature unit should be user-configurable{% endcomment %}
+                            <li>{{ weather.temperature }}°C</li>
+                        </ul>
+                    </li> 
+                {% endfor %}
+            </ul>
+            <p>{% blocktrans with date=created %}Forecast created on: {{ date }}{% endblocktrans %}</p>
+            <span>{% blocktrans %}Based on data from <a href="http://met.no">met.no</a>.{% endblocktrans %}</span>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,9 +1,11 @@
+from __future__ import absolute_import
+
+import datetime
+
 from celery import task
 
-from pushserver.utils import updates
-
-from piplmesh.frontend import views
 from . import models, stations
+from piplmesh.utils import decorators
 
 def equal(station_dict, station_object):
     for key in station_dict.keys():
@@ -15,7 +17,8 @@ def equal(station_dict, station_object):
             return False
     return True
 
-@task.task
+@task.periodic_task(run_every=datetime.timedelta(seconds=stations.POLL_BICIKELJ_INTERVAL))
+@decorators.single_instance_task(timeout=10 * stations.POLL_BICIKELJ_INTERVAL) # Maximum time for one task to finish is 10x the interval
 def update_station_info():
     for station, timestamp, fetch_time in stations.fetch_data():
         try:

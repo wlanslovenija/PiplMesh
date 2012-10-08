@@ -42,6 +42,8 @@ class MongoEngineBackend(auth.MongoEngineBackend):
 class FacebookBackend(MongoEngineBackend):
     """
     Facebook authentication.
+    
+    Facebook uses strings 'male' and 'female' for respresenting user gender.
     """
 
     # TODO: List all profile data fields we (can) get
@@ -76,7 +78,6 @@ class FacebookBackend(MongoEngineBackend):
             # TODO: Does not Facebook support multiple e-mail addresses? Which one is given here?
             user.email = facebook_profile_data.get('email') or None
         if user.gender is None:
-            # TODO: Does it really map so cleanly?
             user.gender = facebook_profile_data.get('gender') or None
 
         user.save()
@@ -203,7 +204,7 @@ class GoogleBackend(MongoEngineBackend):
             user.email = google_profile_data.get('email') or None
             if google_profile_data.get('verified_email'):
                 user.email_confirmed = True
-        if user.gender is None:
+        if user.gender is None and google_profile_data.get('gender') != 'other':
             # TODO: Does it really map so cleanly?
             user.gender = google_profile_data.get('gender') or None
 
