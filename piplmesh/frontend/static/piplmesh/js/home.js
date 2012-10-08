@@ -260,7 +260,7 @@ function Comment(data, post) {
     function createDOM() {
         // TODO: Author link shouldn't be hardcoded.
         var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
-        var comment = $('<li/>').addClass('comment').append(
+        var comment = $('<li/>').addClass('comment').data('comment', self).append(
             $('<span/>').append(author_link)
             ).append($('<p/>').addClass('content').text(self.message)
             ).append($('<span/>').addClass('date').text(formatDiffTime(self.created_time)));
@@ -495,6 +495,10 @@ $(document).ready(function () {
         });
         $('.notification').each(function (i, notification) {
             $(notification).data('notification').updateDate(this);
+        });
+        $('.comment').each(function (i, comment) {
+            $(comment).data('comment').updateDate(this);
+            
         });
     }, POSTS_DATE_UPDATE_INTERVAL);
 });
