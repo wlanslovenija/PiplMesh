@@ -146,22 +146,62 @@ function Post(data) {
     function createDOM() {
         // TODO: Improve and add other post options
         var delete_link = $('<li/>').append(
-            $('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))
+            $('<a/>').addClass('delete-post hand').text(gettext("Delete"))
         );
-
-        var post_options = $('<ul />').addClass('options').append(delete_link);
-
+        var edit_link = $('<li/>').append(
+            $('<a/>').addClass('edit-post hand').text(gettext("Edit"))
+        );
+        var post_options = $('<ul />').addClass('options').append(edit_link, delete_link);
+        
+        // TODO: Author link shouldn't be hardcoded
+        var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
+        
         var post = $('<li/>').addClass('post').data('post', self).append(post_options).append(
-            $('<span/>').addClass('author').text(self.author.username)
+            $('<span/>').append(author_link)
         ).append(
             $('<p/>').addClass('content').text(self.message)
         ).append(
            $('<span/>').addClass('date').text(formatDiffTime(self.created_time))
+        ).append(
+           $('<span/>').append($('<ul/>').addClass('comments'))
+        ).append(
+           $('<span/>').append(createCommentForm())
         );
-
+        
         return post;
     }
-
+    
+    function createCommentForm() {
+        // TODO: Instead of creating forms use a static form from template, clone it and append event handlers
+        var textarea = $('<textarea/>').addClass('comment_text');
+        var input = $('<input/>').attr({
+            'type': 'button', 
+            'value': 'submit', 
+            'name': 'submit_comment', 
+            'id': 'submit_comment'
+        }).click(function (event) {
+            // TODO: Disable enable submit button like with the Post. After submitting clear the textarea of text
+            // TODO: Push new comments to all clients and display them automatically and do not use textarea content but use data from the server (it might be processed)
+            addComment(textarea.val(), buildCommentURL(self.id));
+        });
+        var form = $('<form/>').append(textarea, input);
+        
+        return form;
+    }
+    
+    function getComment(comment_url) {
+        $.getJSON(comment_url, function (data, textStatus, jqXHR) {
+            new Comment(data, self).appendToPost();
+        });
+    }
+    
+    function displayComments() {
+        // TODO: We call comments in the right order but that doesn't mean we get them in the right order aswell. Should make some ordering down the road
+        $.each(self.comments, function (index, comment_url) {
+            getComment(comment_url);
+        });
+    }
+    
     function checkIfPostExists() {
         return $('.post').is(function (index) {
             return $(this).data('post').id == self.id;
@@ -181,15 +221,17 @@ function Post(data) {
 
     self.addToBottom = function () {
         if (checkIfPostExists()) return;
-
+        
         $('.posts').append(createDOM());
+        displayComments();
     };
 
     self.addToTop = function () {
         if (checkIfPostExists()) return;
 
         var post = createDOM().hide().prependTo($('.posts'));
-
+        displayComments();
+        
         if (postByUser()) {
             // TODO: Maybe we should remove URI after showing user's post
             showPost(post);
@@ -211,8 +253,44 @@ function Post(data) {
 
     self.updateDate = function (dom_element) {
         $(dom_element).find('.date').text(formatDiffTime(self.created_time));
-    }
+    };
 }
+
+function Comment(data, post) {
+    var self = this;
+    $.extend(self, data);
+    self.post = post;
+    
+    function createDOM() {
+        // TODO: Author link shouldn't be hardcoded
+        var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
+        var comment = $('<li/>').addClass('comment').data('comment', self).append(
+            $('<span/>').append(author_link)
+        ).append(
+            $('<p/>').addClass('content').text(self.message)
+        ).append(
+            $('<span/>').addClass('date').text(formatDiffTime(self.created_time))
+        );
+        
+        return comment;
+    }
+    
+    self.appendToPost = function () {
+        $('.post').each(function (index, post) {
+            if ($(post).data('post').id == self.post.id) {
+                if ($(post).find('.comment').is(function (index) {
+                    return $(this).data('comment').id == self.id;
+                })) return;
+                $(this).find('.comments').append(createDOM());
+                return false;
+            }
+        });
+    };
+    
+    self.updateDate = function (dom_element) {
+        $(dom_element).find('.date').text(formatDiffTime(self.created_time));
+    };
+ }
 
 function loadPosts(offset) {
     $.getJSON(URLS.post, {
@@ -299,21 +377,19 @@ function loadNotifications() {
     });
 }
 
-// TODO: This is just for testing purposes. It can be base for future development.
-function addComment(comment) {
-    // TODO: Change this for any post
-    var post_url = $('.post').first().data('post').resource_uri;
+// TODO: We should import url from Django not hardcode it
+function buildCommentURL(post_id) {
+    return URLS.post + post_id + '/comments/';
+}
 
+function addComment(comment, comment_url) {
     $.ajax({
         'type': 'POST',
-        // TODO: Should probably not construct URL like that
-        'url': post_url + 'comments/',
+        'url': comment_url,
         'data': JSON.stringify({'message': comment}),
         'contentType': 'application/json',
         'dataType': 'json',
         'success': function (data, textStatus, jqXHR) {
-            // TODO: This has to be removed when comments will be done
-            window.console.log("Comment posted.");
         }
     });
 }
@@ -441,11 +517,6 @@ $(document).ready(function () {
         $('#notifications_box').slideToggle('fast');
     });
 
-    // TODO: Just for testing
-    $('#add_comment').click(function (event) {
-        addComment("Test comment");
-    });
-
     $.updates.registerProcessor('user_channel', 'notification', function (data) {
         new Notification(data.notification).add();
     });
@@ -459,6 +530,9 @@ $(document).ready(function () {
         });
         $('.notification').each(function (i, notification) {
             $(notification).data('notification').updateDate(this);
+        });
+        $('.comment').each(function (i, comment) {
+            $(comment).data('comment').updateDate(this);
         });
     }, POSTS_DATE_UPDATE_INTERVAL);
 });

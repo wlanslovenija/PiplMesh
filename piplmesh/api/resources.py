@@ -26,6 +26,9 @@ class AuthoredResource(resources.MongoEngineResource):
         return bundle
 
 class CommentResource(AuthoredResource):
+    # TODO: We should add static and nonconsecutive IDs to comments in the database
+    id = tastypie_fields.CharField(attribute='pk', null=False, readonly=True, unique=True, help_text="ID field")
+    
     def obj_create(self, bundle, request=None, **kwargs):
         bundle = super(CommentResource, self).obj_create(bundle, request=request, **kwargs)
 
