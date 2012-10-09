@@ -153,7 +153,7 @@ function Post(data) {
         );
         var post_options = $('<ul />').addClass('options').append(edit_link, delete_link);
         
-        // TODO: Author link shouldn't be hardcoded.
+        // TODO: Author link shouldn't be hardcoded
         var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
         
         var post = $('<li/>').addClass('post').data('post', self).append(post_options).append(
@@ -172,19 +172,21 @@ function Post(data) {
     }
     
     function createCommentForm() {
-        // TODO: Instead of creating forms use a static form from template, clone it and append event handlers.
-        var textarea = $('<textarea/>').addClass('comment_text').attr('id', 'comment_text');
+        // TODO: Instead of creating forms use a static form from template, clone it and append event handlers
+        // TODO: Multiple textareas have the same id which is not good. It should be changed by different approach
+        var textarea = $('<textarea/>').addClass('comment_text');
         var input = $('<input/>').attr({
             'type': 'button', 
             'value': 'submit', 
             'name': 'submit_comment', 
             'id': 'submit_comment'
-            }).click(function (event) {
-                // TODO: Disable enable submit button like with the Post. After submitting clear the textarea of text.
-                // TODO: Push new comments to all clients and display them automatically.
-                addComment(textarea.val(), buildCommentURL(self.id));
-            });
-        var form = $('<form/>').attr('id', 'comment_form').append(textarea, input);
+        }).click(function (event) {
+            // TODO: Disable enable submit button like with the Post. After submitting clear the textarea of text
+            // TODO: Push new comments to all clients and display them automatically and do not use textarea content but use data from the server (it might be processed)
+            addComment(textarea.val(), buildCommentURL(self.id));
+        });
+        // TODO: Multiple forms have the same id which is not good. It should be changed by different approach
+        var form = $('<form/>').append(textarea, input);
         
         return form;
     }
@@ -196,7 +198,7 @@ function Post(data) {
     }
     
     function displayComments() {
-        // TODO: We call comments in the right order but that doesn't mean we get them in the right order aswell. Should make some ordering down the road.
+        // TODO: We call comments in the right order but that doesn't mean we get them in the right order aswell. Should make some ordering down the road
         $.each(self.comments, function (index, comment_url) {
             getComment(comment_url);
         });
@@ -262,7 +264,7 @@ function Comment(data, post) {
     self.post = post;
     
     function createDOM() {
-        // TODO: Author link shouldn't be hardcoded.
+        // TODO: Author link shouldn't be hardcoded
         var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
         var comment = $('<li/>').addClass('comment').data('comment', self).append(
             $('<span/>').append(author_link)
@@ -279,12 +281,10 @@ function Comment(data, post) {
         $('.post').each(function (index, post) {
             if ($(post).data('post').id == self.post.id) {
                 if ($(post).find('.comment').is(function (index) {
-                    window.console.debug($(this).data('comment').id);
                     return $(this).data('comment').id == self.id;
-                    })) return;
-                
+                })) return;
                 $(this).find('.comments').append(createDOM());
-                return;
+                return false;
             }
         });
     };
@@ -379,7 +379,7 @@ function loadNotifications() {
     });
 }
 
-// TODO: We should import url from Django not hardcode it.
+// TODO: We should import url from Django not hardcode it
 function buildCommentURL(post_id) {
     return URLS.post + post_id + '/comments/';
 }
@@ -392,7 +392,6 @@ function addComment(comment, comment_url) {
         'contentType': 'application/json',
         'dataType': 'json',
         'success': function (data, textStatus, jqXHR) {
-            window.console.debug("Comment posted.");
         }
     });
 }
