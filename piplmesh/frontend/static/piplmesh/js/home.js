@@ -173,7 +173,6 @@ function Post(data) {
     
     function createCommentForm() {
         // TODO: Instead of creating forms use a static form from template, clone it and append event handlers
-        // TODO: Multiple textareas have the same id which is not good. It should be changed by different approach
         var textarea = $('<textarea/>').addClass('comment_text');
         var input = $('<input/>').attr({
             'type': 'button', 
@@ -185,7 +184,6 @@ function Post(data) {
             // TODO: Push new comments to all clients and display them automatically and do not use textarea content but use data from the server (it might be processed)
             addComment(textarea.val(), buildCommentURL(self.id));
         });
-        // TODO: Multiple forms have the same id which is not good. It should be changed by different approach
         var form = $('<form/>').append(textarea, input);
         
         return form;
