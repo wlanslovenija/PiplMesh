@@ -175,10 +175,9 @@ function Post(data) {
         // TODO: Instead of creating forms use a static form from template, clone it and append event handlers
         var textarea = $('<textarea/>').addClass('comment_text');
         var input = $('<input/>').attr({
-            'type': 'button', 
-            'value': 'submit', 
-            'name': 'submit_comment', 
-            'id': 'submit_comment'
+            'type': 'button',
+            'value': 'submit',
+            'name': 'submit_comment'
         }).click(function (event) {
             // TODO: Disable enable submit button like with the Post. After submitting clear the textarea of text
             // TODO: Push new comments to all clients and display them automatically and do not use textarea content but use data from the server (it might be processed)
