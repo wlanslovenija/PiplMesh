@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from django.test import client, utils
 
 from tastypie_mongoengine import test_runner

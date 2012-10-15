@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import datetime, hashlib, urllib, uuid
 
 from django.conf import settings
