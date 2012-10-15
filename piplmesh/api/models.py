@@ -1,6 +1,9 @@
 from django.utils import timezone
 
+import bson
 import mongoengine
+
+from tastypie_mongoengine import fields
 
 from . import base
 from piplmesh.account import models as account_models
@@ -13,7 +16,11 @@ class Comment(base.AuthoredEmbeddedDocument):
     This class defines document type for comments on posts.
     """
 
+    id = mongoengine.ObjectIdField(primary_key=True, default=lambda: bson.ObjectId())
     message = mongoengine.StringField(max_length=COMMENT_MESSAGE_MAX_LENGTH, required=True)
+
+    # So that we can access both pk and id
+    pk = fields.link_property('id')
 
 class Attachment(base.AuthoredEmbeddedDocument):
     """
@@ -43,6 +50,15 @@ class Post(base.AuthoredDocument):
         self.updated_time = timezone.now()
         return super(Post, self).save(*args, **kwargs)
 
+    def get_comment(self, comment_pk):
+        # TODO: Would it be faster to traverse in reversed direction? Because probably last comments are fetched more often in practice?
+        # TODO: Should we cache information about mappings between IDs and comments?
+        for comment in self.comments:
+            if comment.pk == comment_pk:
+                return comment
+
+        raise IndexError("Comment with primary key '%s' not found in post '%s'." % (comment_pk, self.pk))
+
 class Notification(mongoengine.Document):
     """
     This class defines document type for notifications.
@@ -52,9 +68,7 @@ class Notification(mongoengine.Document):
     recipient = mongoengine.ReferenceField(account_models.User, required=True)
     read = mongoengine.BooleanField(default=False)
     post = mongoengine.ReferenceField(Post)
-
-    # TODO: This is probably not the best approach, https://github.com/wlanslovenija/PiplMesh/issues/299
-    comment = mongoengine.IntField()
+    comment = mongoengine.ObjectIdField()
 
 class UploadedFile(base.AuthoredDocument):
     """

@@ -26,10 +26,6 @@ class AuthoredResource(resources.MongoEngineResource):
         return bundle
 
 class CommentResource(AuthoredResource):
-    # TODO: We should add static and nonconsecutive IDs to comments in the database
-    # Should be null=False, but as this is fake field, sometimes there is no value
-    id = tastypie_fields.CharField(attribute='pk', null=True, readonly=True, unique=True, help_text="ID field")
-    
     def obj_create(self, bundle, request=None, **kwargs):
         bundle = super(CommentResource, self).obj_create(bundle, request=request, **kwargs)
 
@@ -51,10 +47,11 @@ class CommentResource(AuthoredResource):
         allowed_methods = ('get', 'post', 'put', 'patch', 'delete')
         # TODO: Make proper authorization, current implementation is for development use only
         authorization = tastypie_authorization.Authorization()
+        paginator_class = paginator.Paginator
 
 class NotificationResource(resources.MongoEngineResource):
     post = tastypie_mongoengine_fields.ReferenceField(to='piplmesh.api.resources.PostResource', attribute='post', null=False, full=False, readonly=True)
-    comment = fields.CustomReferenceField(to='piplmesh.api.resources.CommentResource', getter=lambda obj: obj.post.comments[obj.comment], setter=lambda obj: obj.pk, null=False, full=True, readonly=True)
+    comment = fields.CustomReferenceField(to='piplmesh.api.resources.CommentResource', getter=lambda obj: obj.post.get_comment(obj.comment), setter=lambda obj: obj.pk, null=False, full=True, readonly=True)
 
     @classmethod
     def api_field_options(cls, name, field, options):
