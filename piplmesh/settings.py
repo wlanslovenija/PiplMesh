@@ -55,7 +55,7 @@ LOCALE_PATHS = (
     os.path.join(settings_dir, 'locale'),
 )
 
-URL_VALIDATOR_USER_AGENT = 'Django'
+URL_VALIDATOR_USER_AGENT = 'PiplMesh'
 
 SITE_NAME = 'PiplMesh'
 
@@ -204,6 +204,9 @@ INSTALLED_APPS = (
 PUSH_SERVER = {
     'port': 8001,
     'address': '127.0.0.1',
+    'publisher_host': '127.0.0.1:8001',
+    'subscriber_host': '127.0.0.1:8001',
+    'servername': URL_VALIDATOR_USER_AGENT,
     'store': {
         'type': 'memory',
         'min_messages': 0,
