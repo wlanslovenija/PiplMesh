@@ -12,7 +12,7 @@ django-appconf==0.5
 django-browserid==0.6
 django-celery==3.0.10
 django-classy-tags==0.3.4.1
-django-missing==0.1.8
+django-missing==0.1.10
 django-pushserver==0.2.3
 django-sekizai==0.5
 django-staticfiles==1.2.1

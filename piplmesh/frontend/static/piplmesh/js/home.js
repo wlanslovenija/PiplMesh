@@ -1,5 +1,4 @@
 var POSTS_LIMIT = 20;
-var POSTS_DATE_UPDATE_INTERVAL = 60000; // ms
 
 function howManyColumns() {
     var panelsWidth = $('#panels').innerWidth();
@@ -114,31 +113,6 @@ function makePanelsOrderUpdatable() {
     });
 }
 
-// Calculates difference between current time and the time when the post was created and generates a message
-function formatDiffTime(time) {
-    // TODO: Check for cross browser compatibility, currently works in Chrome and Firefox on Ubuntu
-    var created_time_diff = (new Date().getTime() - Date.parse(time)) / (60 * 1000); // Converting time from milliseconds to minutes
-    if (created_time_diff < 2) { // minutes
-        var msg = gettext("just now");
-    }
-    else if (created_time_diff >= 60 * 24) { // 24 hours, 1 day
-        var days = Math.round(created_time_diff / (60 * 24));
-        var format = ngettext("%(days)s day ago", "%(days)s days ago", days);
-        var msg = interpolate(format, {'days': days}, true);
-    }
-    else if (created_time_diff >= 60) { // 60 minutes, 1 hour
-        var hours = Math.round(created_time_diff / 60);
-        var format = ngettext("%(hours)s hour ago", "%(hours)s hours ago", hours);
-        var msg = interpolate(format, {'hours': hours}, true);
-    }
-    else {
-        var minutes = Math.round(created_time_diff);
-        var format = ngettext("%(minutes)s minute ago", "%(minutes)s minutes ago", minutes);
-        var msg = interpolate(format, {'minutes': minutes}, true);
-    }
-    return msg;
-}
-
 function Post(data) {
     var self = this;
     $.extend(self, data);
@@ -155,13 +129,16 @@ function Post(data) {
         
         // TODO: Author link shouldn't be hardcoded
         var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
-        
+
+        var date = $('<span/>').addClass('date');
+        new Date(self.created_time).updatingNaturaltime(date);
+
         var post = $('<li/>').addClass('post').data('post', self).append(post_options).append(
             $('<span/>').append(author_link)
         ).append(
             $('<p/>').addClass('content').text(self.message)
         ).append(
-           $('<span/>').addClass('date').text(formatDiffTime(self.created_time))
+            date
         ).append(
            $('<span/>').append($('<ul/>').addClass('comments'))
         ).append(
@@ -249,10 +226,6 @@ function Post(data) {
             $('#posts_in_queue, #show_posts').show();
         }
     };
-
-    self.updateDate = function (dom_element) {
-        $(dom_element).find('.date').text(formatDiffTime(self.created_time));
-    };
 }
 
 function Comment(data, post) {
@@ -263,12 +236,14 @@ function Comment(data, post) {
     function createDOM() {
         // TODO: Author link shouldn't be hardcoded
         var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
+        var date = $('<span/>').addClass('date');
+        new Date(self.created_time).updatingNaturaltime(date);
         var comment = $('<li/>').addClass('comment').data('comment', self).append(
             $('<span/>').append(author_link)
         ).append(
             $('<p/>').addClass('content').text(self.message)
         ).append(
-            $('<span/>').addClass('date').text(formatDiffTime(self.created_time))
+            date
         );
         
         return comment;
@@ -284,10 +259,6 @@ function Comment(data, post) {
                 return false;
             }
         });
-    };
-    
-    self.updateDate = function (dom_element) {
-        $(dom_element).find('.date').text(formatDiffTime(self.created_time));
     };
  }
 
@@ -337,12 +308,15 @@ function Notification(data) {
             notification.addClass('read_notification');
         }
 
+        var date = $('<span/>').addClass('notification_element').addClass('notification_created_time');
+        new Date(self.created_time).updatingNaturaltime(date);
+
         notification.data('notification', self).append(
             $('<span/>').addClass('notification_element').text(author)
         ).append(
             $('<span/>').addClass('notification_message').addClass('notification_element').text(self.comment.message)
         ).append(
-            $('<span/>').addClass('notification_element').addClass('notification_created_time').text(formatDiffTime(self.created_time))
+            date
         );
 
         return notification;
@@ -362,10 +336,6 @@ function Notification(data) {
         }
         $('#notifications_list').prepend(createDOM());
     };
-
-    self.updateDate = function (dom_element) {
-        $(dom_element).find('.notification_created_time').text(formatDiffTime(self.created_time));
-    }
 }
 
 function loadNotifications() {
@@ -521,17 +491,4 @@ $(document).ready(function () {
     });
 
     loadNotifications();
-
-    // TODO: Improve date updating so that interval is set on each date individually
-    setInterval(function () {
-        $('.post').each(function (i, post) {
-            $(post).data('post').updateDate(this);
-        });
-        $('.notification').each(function (i, notification) {
-            $(notification).data('notification').updateDate(this);
-        });
-        $('.comment').each(function (i, comment) {
-            $(comment).data('comment').updateDate(this);
-        });
-    }, POSTS_DATE_UPDATE_INTERVAL);
 });
