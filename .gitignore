@@ -28,3 +28,6 @@ celerybeat-schedule
 
 # Celerybeat
 *.pid
+
+# Static files
+/piplmesh/static/
