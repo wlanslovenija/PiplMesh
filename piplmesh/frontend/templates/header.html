@@ -1,4 +1,4 @@
-{% load future i18n staticfiles mongo_auth %}
+{% load future i18n staticfiles string_tags mongo_auth %}
 
 <div id="container">
     <div id="header">
@@ -63,10 +63,14 @@
                     </li>
                 {% else %}
                     <li class="drop_down_login_container">
-                        <a href="{% url "login" %}?{{ REDIRECT_FIELD_NAME }}={{ next_url }}">{% trans "Login" %}</a>
-                        <ul class="drop_down_login_options">
-                            {% include "mongo_auth/other_login_options.html" %}
-                        </ul>
+                        {% url "login" as url_path %}
+                        <a href="{{ url_path }}?{{ REDIRECT_FIELD_NAME }}={{ next_url }}">{% trans "Login" %}</a>
+                        {% if not request.path|startswith:url_path %}
+                            {# We display drop-down menu only on non-login pages because otherwise there are duplicate DOM IDs #}
+                            <ul class="drop_down_login_options">
+                                {% include "mongo_auth/other_login_options.html" %}
+                            </ul>
+                        {% endif %}
                     </li>
                     <li class="last"><a href="{% url "registration" %}">{% trans "Register" %}</a></li>
                 {% endif %}
