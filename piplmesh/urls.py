@@ -4,7 +4,8 @@ from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
 
 from tastypie import api
 
-from piplmesh.account import models, views as account_views
+from mongo_auth import models
+
 from piplmesh.api import resources
 from piplmesh.frontend import debug as debug_views, views as frontend_views
 from piplmesh import panels
@@ -48,37 +49,9 @@ urlpatterns = patterns('',
     # Mock location
     url(r'^location/$', frontend_views.LocationView.as_view(), name='mock_location'),
 
-    # Registration, login, logout
-    url(r'^register/$', account_views.RegistrationView.as_view(), name='registration'),
-    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'user/login.html'}, name='login'),
-    url(r'^logout/$', account_views.logout, name='logout'),
-
-    # Facebook
-    url(r'^facebook/login/$', account_views.FacebookLoginView.as_view(), name='facebook_login'),
-    url(r'^facebook/callback/$', account_views.FacebookCallbackView.as_view(), name='facebook_callback'),
-
-    # Twitter
-    url(r'^twitter/login/$', account_views.TwitterLoginView.as_view(), name='twitter_login'),
-    url(r'^twitter/callback/$', account_views.TwitterCallbackView.as_view(), name='twitter_callback'),
-
-    # Foursquare
-    url(r'^foursquare/login/$', account_views.FoursquareLoginView.as_view(), name='foursquare_login'),
-    url(r'^foursquare/callback/$', account_views.FoursquareCallbackView.as_view(), name='foursquare_callback'),
-
-    # Google
-    url(r'^google/login/$', account_views.GoogleLoginView.as_view(), name='google_login'),
-    url(r'^google/callback/$', account_views.GoogleCallbackView.as_view(), name='google_callback'),
-    
-    # BrowserID
-    url(r'^browserid/', account_views.BrowserIDVerifyView.as_view(), name='browserid_verify'),
-
-    # Profile, account
+    # Authentication
+    url(r'^', include('mongo_auth.contrib.urls')),
     url(r'^user/(?P<username>' + models.USERNAME_REGEX + ')/$', frontend_views.UserView.as_view(), name='profile'),
-    url(r'^account/$', account_views.AccountChangeView.as_view(), name='account'),
-    url(r'^account/password/change/$', account_views.PasswordChangeView.as_view(), name='password_change'),
-    url(r'^account/confirmation/$', account_views.EmailConfirmationSendToken.as_view(), name='email_confirmation_send_token'),
-    url(r'^account/confirmation/token/(?:(?P<confirmation_token>\w+)/)?$', account_views.EmailConfirmationProcessToken.as_view(), name='email_confirmaton_process_token'),
-    url(r'^account/setlanguage/$', account_views.set_language, name='set_language'),
 
     # RESTful API
     url(r'^api/', include(v1_api.urls)),

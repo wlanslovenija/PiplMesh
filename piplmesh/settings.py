@@ -107,12 +107,6 @@ STATICFILES_FINDERS = (
 #   'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-# Used to reconstruct absolute/full URLs where request is not available
-DEFAULT_REQUEST = {
-    'SERVER_NAME': '127.0.0.1',
-    'SERVER_PORT': '8000',
-}
-
 DEFAULT_FILE_STORAGE = 'piplmesh.utils.storage.GridFSStorage'
 
 # URL prefix for internationalization URLs
@@ -163,8 +157,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'piplmesh.account.middleware.LazyUserMiddleware',
-    'piplmesh.account.middleware.UserBasedLocaleMiddleware',
+    'mongo_auth.middleware.LazyUserMiddleware',
+    'mongo_auth.contrib.middleware.UserBasedLocaleMiddleware',
     'piplmesh.frontend.middleware.NodesMiddleware',
 )
 
@@ -199,6 +193,8 @@ INSTALLED_APPS = (
     'sekizai',
     'missing',
     'django_browserid',
+    'mongo_auth',
+    'mongo_auth.contrib',
 )
 
 PUSH_SERVER = {
@@ -278,17 +274,18 @@ LOGGING = {
 }
 
 LOGIN_REDIRECT_URL = '/'
+USER_CLASS = 'piplmesh.account.models.User'
 
 SESSION_ENGINE = 'mongoengine.django.sessions'
 
 AUTHENTICATION_BACKENDS = (
-    'piplmesh.account.backends.MongoEngineBackend',
-    'piplmesh.account.backends.FacebookBackend',
-    'piplmesh.account.backends.TwitterBackend',
-    'piplmesh.account.backends.FoursquareBackend',
-    'piplmesh.account.backends.GoogleBackend',
-    'piplmesh.account.backends.BrowserIDBackend',
-    'piplmesh.account.backends.LazyUserBackend',
+    'mongo_auth.backends.MongoEngineBackend',
+    'mongo_auth.backends.FacebookBackend',
+    'mongo_auth.backends.TwitterBackend',
+    'mongo_auth.backends.FoursquareBackend',
+    'mongo_auth.backends.GoogleBackend',
+    'mongo_auth.backends.BrowserIDBackend',
+    'mongo_auth.backends.LazyUserBackend',
 )
 
 TEST_RUNNER = 'tastypie_mongoengine.test_runner.MongoEngineTestSuiteRunner'
@@ -313,23 +310,18 @@ NODES_MIDDLEWARE_EXCEPTIONS = (
 # and access your site by local ip 127.0.0.1:8000 in your browser
 FACEBOOK_APP_ID = '268978083181801' # Add your app ID/API key
 FACEBOOK_APP_SECRET = '0d86323405308915be0564e8c00bf6e0' # Add your app secret key
-FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
-FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
 
 # Twitter settings
 TWITTER_CONSUMER_KEY = 'yeZOtec5ol5I9BGCCKpcw'
 TWITTER_CONSUMER_SECRET = 'Dv80Q51jx8FWDInmZCGZs8AKDnRwAdrS0lxgZA4NWs'
-TWITTER_LOGIN_REDIRECT = '/'
 
 # Foursquare settings
 FOURSQUARE_CLIENT_ID = 'IU4LBMWT2DOCQ2JOIN3A04450HBB4GY2D5QX0WYPQ2DLP1DK'
 FOURSQUARE_CLIENT_SECRET = 'UDFGDOKUSOOV0GGGI0JDHR5OOJ1KBVV3OJ50SOGFVFJ3YPKO'
-FOURSQUARE_LOGIN_REDIRECT = '/'
 
 # Google settings
 GOOGLE_CLIENT_ID = '961599639127.apps.googleusercontent.com'
 GOOGLE_CLIENT_SECRET = 'XjLBcVysDl6g0qEx_bnGUPDb'
-GOOGLE_LOGIN_REDIRECT = '/'
 
 # You can set up your own custom search engine on: http://www.google.com/cse/
 # just register with you google account and crate new search engine.
@@ -338,8 +330,6 @@ GOOGLE_LOGIN_REDIRECT = '/'
 # you will be explicitly warned that you have to change the code to take effect, before you will make the change.
 # Current settings are autocomplete, searching whole web.
 SEARCH_ENGINE_UNIQUE_ID = '003912915932446183218:zeq20qye9oa'
-
-DEFAULT_USER_IMAGE = 'piplmesh/images/unknown.png'
 
 CSRF_FAILURE_VIEW = 'piplmesh.frontend.views.forbidden_view'
 
