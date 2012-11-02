@@ -4,6 +4,8 @@ from django.utils import timezone
 
 from celery import task
 
+from mongo_auth import backends
+
 from pushserver.utils import updates
 
 from piplmesh.account import models
@@ -16,11 +18,11 @@ CHECK_ONLINE_USERS_RECONNECT_TIMEOUT = 2 * CHECK_ONLINE_USERS_INTERVAL
 @task.periodic_task(run_every=datetime.timedelta(seconds=CHECK_ONLINE_USERS_INTERVAL))
 @decorators.single_instance_task(timeout=10 * CHECK_ONLINE_USERS_INTERVAL) # Maximum time for one task to finish is 10x the interval
 def check_online_users():
-    for user in models.User.objects(
+    for user in backends.User.objects(
         is_online=False,
         connections__not__in=([], None), # None if field is missing altogether, not__in seems not to be equal to nin
     ):
-        if models.User.objects(
+        if backends.User.objects(
             pk=user.pk,
             is_online=False,
             connections__not__in=([], None), # None if field is missing altogether, not__in seems not to be equal to nin
@@ -37,12 +39,12 @@ def check_online_users():
                 }
             )
 
-    for user in models.User.objects(
+    for user in backends.User.objects(
         is_online=True,
         connections__in=([], None), # None if field is missing altogether
         connection_last_unsubscribe__lt=timezone.now() - datetime.timedelta(seconds=CHECK_ONLINE_USERS_RECONNECT_TIMEOUT),
     ):
-        if models.User.objects(
+        if backends.User.objects(
             pk=user.pk,
             is_online=True,
             connections__in=([], None), # None if field is missing altogether

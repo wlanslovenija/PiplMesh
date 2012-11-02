@@ -1,13 +1,13 @@
 import uuid
 
 from django import dispatch
+from django.db import models as django_models
 from django.utils import timezone
 
 import mongoengine
 
 from pushserver import signals
 
-from mongo_auth import backends
 from mongo_auth.contrib import models
 
 from .. import panels
@@ -31,7 +31,7 @@ class User(models.User):
     panels_collapsed = mongoengine.DictField()
     panels_order = mongoengine.DictField()
 
-    @models.permalink
+    @django_models.permalink
     def get_absolute_url(self):
         return ('profile', (), {'username': self.username})
 
@@ -62,6 +62,9 @@ def process_channel_subscribe(sender, request, channel_id, **kwargs):
 
 @dispatch.receiver(signals.channel_unsubscribe)
 def process_channel_unsubscribe(sender, request, channel_id, **kwargs):
+    # Importing here to prevent circular imports
+    from mongo_auth import backends
+
     backends.User.objects(
         id=request.user.id,
         connections__http_if_none_match=request.META['HTTP_IF_NONE_MATCH'],

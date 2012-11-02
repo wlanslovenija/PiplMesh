@@ -5,8 +5,9 @@ import mongoengine
 
 from tastypie_mongoengine import fields
 
+from mongo_auth import backends
+
 from . import base
-from piplmesh.account import models as account_models
 
 POST_MESSAGE_MAX_LENGTH = 500
 COMMENT_MESSAGE_MAX_LENGTH = 300
@@ -39,7 +40,7 @@ class Post(base.AuthoredDocument):
     comments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Comment), default=lambda: [], required=False)
     attachments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Attachment), default=lambda: [], required=False)
 
-    subscribers = mongoengine.ListField(mongoengine.ReferenceField(account_models.User), default=lambda: [], required=False)
+    subscribers = mongoengine.ListField(mongoengine.ReferenceField(backends.User), default=lambda: [], required=False)
 
     # TODO: Prevent posting comments if post is not published
     # TODO: Prevent adding attachments if post is published
@@ -65,7 +66,7 @@ class Notification(mongoengine.Document):
     """
 
     created_time = mongoengine.DateTimeField(required=True)
-    recipient = mongoengine.ReferenceField(account_models.User, required=True)
+    recipient = mongoengine.ReferenceField(backends.User, required=True)
     read = mongoengine.BooleanField(default=False)
     post = mongoengine.ReferenceField(Post)
     comment = mongoengine.ObjectIdField()

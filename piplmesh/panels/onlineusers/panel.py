@@ -1,7 +1,8 @@
 from django.utils.translation import ugettext_lazy as _
 
+from mongo_auth import backends
+
 from piplmesh import panels
-from piplmesh.account import models
 
 class OnlineUsersPanel(panels.BasePanel):
     def get_context(self, context):
@@ -9,7 +10,7 @@ class OnlineUsersPanel(panels.BasePanel):
 
         context.update({
             'header': _("Online users"),
-            'online_users': models.User.objects(is_online=True),
+            'online_users': backends.User.objects(is_online=True),
         })
         return context
 

@@ -5,7 +5,6 @@ from django.conf import settings
 from django.contrib import messages
 from django.core import exceptions, mail, urlresolvers
 from django.core.files import storage
-from django import http
 from django.test import client
 from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
@@ -17,11 +16,12 @@ from tastypie import http as tastypie_http
 
 from mongogeneric import detail
 
+from mongo_auth import backends
+
 from pushserver.utils import updates
 
 from piplmesh import nodes
 from piplmesh.nodes import models as nodes_models
-from piplmesh.account import models as account_models
 from piplmesh.api import models as api_models, resources, signals
 from piplmesh.frontend import forms, tasks
 
@@ -63,7 +63,7 @@ class UserView(detail.DetailView):
     """
 
     template_name = 'user/user.html'
-    document = account_models.User
+    document = backends.User
     slug_field = 'username'
     slug_url_kwarg = 'username'
 

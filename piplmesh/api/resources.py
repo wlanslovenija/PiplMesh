@@ -2,12 +2,13 @@ from tastypie import authorization as tastypie_authorization, fields as tastypie
 
 from tastypie_mongoengine import fields as tastypie_mongoengine_fields, paginator, resources
 
-from piplmesh.account import models as account_models
+from mongo_auth import backends
+
 from piplmesh.api import authorization, fields, models as api_models, signals, tasks
 
 class UserResource(resources.MongoEngineResource):
     class Meta:
-        queryset = account_models.User.objects.all()
+        queryset = backends.User.objects.all()
         fields = ('username', 'is_online')
         allowed_methods = ()
 

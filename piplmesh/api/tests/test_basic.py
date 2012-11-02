@@ -6,9 +6,10 @@ from django.utils import simplejson as json, timezone
 
 from tastypie_mongoengine import test_runner
 
+from mongo_auth import backends
+
 from pushserver import signals
 
-from piplmesh.account import models as account_models
 from piplmesh.frontend import tasks
 
 @utils.override_settings(DEBUG=True, CELERY_ALWAYS_EAGER=True, CELERY_EAGER_PROPAGATES_EXCEPTIONS=True, PUSH_SERVER_IGNORE_ERRORS=True)
@@ -21,8 +22,8 @@ class BasicTest(test_runner.MongoEngineTestCase):
     user_password2 = 'foobar2'
 
     def setUp(self):
-        self.user = account_models.User.create_user(username=self.user_username, password=self.user_password)
-        self.user2 = account_models.User.create_user(username=self.user_username2, password=self.user_password2)
+        self.user = backends.User.create_user(username=self.user_username, password=self.user_password)
+        self.user2 = backends.User.create_user(username=self.user_username2, password=self.user_password2)
 
         self.client = client.Client()
         self.assertTrue(self.client.login(username=self.user_username, password=self.user_password))
