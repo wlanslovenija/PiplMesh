@@ -62,7 +62,7 @@ class UserView(detail.DetailView):
     This view checks if user exist in database and returns his user page (profile).
     """
 
-    template_name = 'user/user.html'
+    template_name = 'user.html'
     document = backends.User
     slug_field = 'username'
     slug_url_kwarg = 'username'

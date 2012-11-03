@@ -4,6 +4,5 @@
 
 {% block content %}
     {% addtoblock "js" %}<script src="{% static "piplmesh/js/registration.js" %}" type="text/javascript"></script>{% endaddtoblock %}
-    {% include "user/menu.html" %}
     {{ block.super }}
 {% endblock %}
