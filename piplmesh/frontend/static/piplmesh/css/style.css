@@ -611,7 +611,7 @@ button.browserid-signin:hover {
 /* --------------------- PROFILE ------------------------ */
 .account,
 #menu_list,
-#picture,
+.user_picture,
 .profile {
     display: inline-block;
     vertical-align: top;
@@ -657,7 +657,7 @@ button.browserid-signin:hover {
     text-decoration: underline;
 }
 
-#picture,
+.user_picture,
 #menu_list {
     margin-right: 20px;
 }

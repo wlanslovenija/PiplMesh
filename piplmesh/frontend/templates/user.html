@@ -8,7 +8,7 @@
     {% include "mongo_auth/menu.html" %}
     <div class="profile">
         <h1>{% trans "Profile" %}</h1>
-        <div id="picture">        
+        <div class="user_picture">
             {% user_image object %}
         </div>
         <p>{% trans "Username:" %} {{ object.username }}</p>
