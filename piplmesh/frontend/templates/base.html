@@ -1,4 +1,4 @@
-{% load future i18n staticfiles sekizai_tags %}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{% load future staticfiles sekizai_tags %}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>{% block fulltitle %}{% block title %}{% endblock %} – wlan slovenija{% endblock %}</title>
@@ -11,6 +11,9 @@
             <link href="{% static "piplmesh/css/style.css" %}" rel="stylesheet" type="text/css" media="screen" />
         {% endblock %}
         {% render_block "css" %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
         {% block js %}
             <script src="{% static "piplmesh/jquery/jquery.js" %}" type="text/javascript"></script>
             <script src="{% static "piplmesh/jquery/jquery-ui.js" %}" type="text/javascript"></script>
@@ -22,8 +25,5 @@
             {% endif %}
         {% endblock %}
         {% render_block "js" %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
     </body>
 </html>
