@@ -148,6 +148,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'sekizai.context_processors.sekizai',
     'django_browserid.context_processors.browserid_form',
+    'mongo_auth.contrib.context_processors.mongo_auth',
     'piplmesh.frontend.context_processors.global_vars',
 )
 
