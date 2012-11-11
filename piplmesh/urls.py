@@ -72,7 +72,7 @@ if getattr(settings, 'DEBUG', False):
         url(r'^uploadform/$', debug_views.UploadFormView.as_view()),
     )
 
-handler403 = frontend_views.forbidden_view
+handler403 = 'missing.views.forbidden_view'
 handler404 = 'django.views.defaults.page_not_found'
 handler500 = 'django.views.defaults.server_error'
 

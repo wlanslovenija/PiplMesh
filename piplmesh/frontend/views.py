@@ -1,6 +1,6 @@
 import traceback
 
-from django import dispatch, http, template
+from django import dispatch, http
 from django.conf import settings
 from django.contrib import messages
 from django.core import exceptions, mail, urlresolvers
@@ -123,19 +123,6 @@ def upload_view(request):
     # TODO: Create background task to process uploaded file (check content type (both in GridFS file and UploadedFile document), resize images)
 
     return resource.create_response(request, uploaded_files, response_class=tastypie_http.HttpAccepted)
-
-def forbidden_view(request, reason=''):
-    """
-    Displays 403 forbidden page. For example, when request fails CSRF protection.
-    """
-
-    from django.middleware import csrf
-    t = template.loader.get_template('403.html')
-    return http.HttpResponseForbidden(t.render(template.RequestContext(request, {
-        'DEBUG': settings.DEBUG,
-        'reason': reason,
-        'no_referer': reason == csrf.REASON_NO_REFERER,
-    })))
 
 @dispatch.receiver(signals.post_created)
 @dispatch.receiver(signals.post_updated)
