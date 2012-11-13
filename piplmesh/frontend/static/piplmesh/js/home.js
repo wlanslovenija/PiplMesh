@@ -284,12 +284,12 @@ function Notification(data) {
         var notification = $('<li/>').addClass('notification').bind('click', function (event) {
             if (!self.read) {
                 $.ajax({
-                    type: 'PATCH',
-                    url: self.resource_uri,
-                    data: JSON.stringify({'read': true}),
-                    contentType: 'application/json',
-                    dataType: 'json',
-                    success: function (data, textStatus, jqXHR) {
+                    'type': 'PATCH',
+                    'url': self.resource_uri,
+                    'data': JSON.stringify({'read': true}),
+                    'contentType': 'application/json',
+                    'dataType': 'json',
+                    'success': function (data, textStatus, jqXHR) {
                         self.read = true;
                         var unread_notifications_counter = 0;
                         $('.notification').each(function (i, notification) {
@@ -299,7 +299,7 @@ function Notification(data) {
                         });
                         $('#notifications_count').text(unread_notifications_counter);
                         notification.addClass('read_notification');
-                    },
+                    }
                 });
             }
         });
