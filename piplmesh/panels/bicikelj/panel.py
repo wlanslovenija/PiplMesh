@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from django.utils.translation import ugettext_lazy as _
 
 from piplmesh import panels
@@ -10,7 +8,8 @@ class BicikeljPanel(panels.BasePanel):
     def get_context(self, context):
         context.update({
             'header': _("Bicikelj stations"),
-            'stations': stations.get_stations_nearby(self.request.node.latitude, self.request.node.longitude),
+            # We convert iterator to list so that content is available when testing
+            'stations': list(stations.get_stations_nearby(self.request.node.latitude, self.request.node.longitude)),
         })
         return context
 

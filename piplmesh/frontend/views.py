@@ -1,9 +1,9 @@
 import traceback
 
-from django import dispatch, http, template
+from django import dispatch, http
 from django.conf import settings
 from django.contrib import messages
-from django.core import mail, urlresolvers
+from django.core import exceptions, mail, urlresolvers
 from django.core.files import storage
 from django.test import client
 from django.utils import simplejson
@@ -16,10 +16,13 @@ from tastypie import http as tastypie_http
 
 from mongogeneric import detail
 
+from mongo_auth import backends
+
 from pushserver.utils import updates
 from tastypie.utils import formatting
 
-from piplmesh.account import models as account_models
+from piplmesh import nodes
+from piplmesh.nodes import models as nodes_models
 from piplmesh.api import models as api_models, resources, signals
 from piplmesh.frontend import forms, tasks
 
@@ -60,10 +63,38 @@ class UserView(detail.DetailView):
     This view checks if user exist in database and returns his user page (profile).
     """
 
-    template_name = 'user/user.html'
-    document = account_models.User
+    template_name = 'user.html'
+    document = backends.User
     slug_field = 'username'
     slug_url_kwarg = 'username'
+
+class LocationView(generic_views.FormView):
+    form_class = forms.LocationForm
+
+    # TODO: Redirect to initiator page
+    success_url = urlresolvers.reverse_lazy('home')
+
+    def form_valid(self, form):
+        location = form.cleaned_data['location']
+
+        if location == forms.NO_MOCKING_ID:
+            nodes.flush_session(self.request)
+        else:
+            node_backend, node_id = nodes_models.Node.parse_full_node_id(location)
+            self.request.session[nodes.SESSION_KEY] = node_id
+            self.request.session[nodes.BACKEND_SESSION_KEY] = node_backend
+            self.request.session[nodes.MOCKING_SESSION_KEY] = True
+
+        return super(LocationView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors)
+        return http.HttpResponseRedirect(self.get_success_url())
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated() and request.user.is_staff:
+            return super(LocationView, self).dispatch(request, *args, **kwargs)
+        raise exceptions.PermissionDenied
 
 def upload_view(request):
     if request.method != 'POST':
@@ -94,36 +125,26 @@ def upload_view(request):
 
     return resource.create_response(request, uploaded_files, response_class=tastypie_http.HttpAccepted)
 
-def forbidden_view(request, reason=''):
-    """
-    Displays 403 forbidden page. For example, when request fails CSRF protection.
-    """
-
-    from django.middleware import csrf
-    t = template.loader.get_template('403.html')
-    return http.HttpResponseForbidden(t.render(template.RequestContext(request, {
-        'DEBUG': settings.DEBUG,
-        'reason': reason,
-        'no_referer': reason == csrf.REASON_NO_REFERER,
-    })))
-
 @dispatch.receiver(signals.post_created)
-def send_update_on_new_post(sender, post, request, bundle, **kwargs):
+@dispatch.receiver(signals.post_updated)
+def send_update_on_published_post(sender, post, request, bundle, **kwargs):
     """
-    Sends update through push server when a new post is created.
+    Sends update through push server when a post is published.
     """
+
+    # TODO: Send this only the first time the post is published or every time? When are other cases when "post_updated" is triggered?
     if post.is_published:
         output_bundle = sender.full_dehydrate(bundle)
         output_bundle = sender.alter_detail_data_to_serialize(request, output_bundle)
 
         serialized_update = sender.serialize(request, {
-            'type': 'post_new',
+            'type': 'post_published',
             'post': output_bundle.data,
         }, 'application/json')
 
         # We send update asynchronously as it could block and we
         # want REST request to finish quick
-        tasks.send_update_on_new_post.delay(serialized_update)
+        tasks.send_update_on_published_post.delay(serialized_update)
 
 @mongoengine_signals.post_save.connect_via(sender=api_models.Notification)
 def send_update_on_new_notification(sender, document, created, **kwargs):
@@ -135,9 +156,16 @@ def send_update_on_new_notification(sender, document, created, **kwargs):
     only in background tasks.
     """
 
+    if not created:
+        return
+
     notification = document
 
     def test_if_running_as_celery_worker():
+        # Used in tests
+        if getattr(settings, 'CELERY_ALWAYS_EAGER', False):
+            return True
+
         for filename, line_number, function_name, text in traceback.extract_stack():
             if 'celery' in filename:
                 return True

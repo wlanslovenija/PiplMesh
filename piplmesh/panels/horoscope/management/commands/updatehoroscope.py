@@ -13,9 +13,9 @@ class Command(base.BaseCommand):
         verbosity = int(options['verbosity'])
 
         if verbosity > 1:
-            self.stdout.write('Updating horoscopes...\n')
+            self.stdout.write("Updating horoscopes...\n")
 
         tasks.update_horoscope.delay().wait()
 
         if verbosity > 1:
-            self.stdout.write('Successfully updated all horoscopes.\n')
+            self.stdout.write("Successfully updated all horoscopes.\n")

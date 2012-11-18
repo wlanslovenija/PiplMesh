@@ -1,8 +1,0 @@
-{% load future i18n frontend %}
-
-<ul id="menu_list">
-    {% url "profile" username=user.username as url_path %}
-    <li{% if request.path|is_active:url_path %} class="current_item"{% endif %}><a href="{{ url_path }}">{% trans "Profile" %}</a></li>
-    {% url "account" as url_path %}
-    <li{% if request.path|is_active:url_path %} class="current_item"{% endif %}><a href="{{ url_path }}">{% trans "Account" %}</a></li>
-</ul>

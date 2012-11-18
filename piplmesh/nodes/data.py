@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
-
 # Temporary hard-coded data about active wlan slovenija wireless nodes
 
 from . import models

@@ -1,9 +1,8 @@
 var POSTS_LIMIT = 20;
-var POSTS_DATE_UPDATE_INTERVAL = 60000; // ms
 
 function howManyColumns() {
     var panelsWidth = $('#panels').innerWidth();
-    var columnPanelsWidth = $('.panels_column').outerWidth();
+    var columnPanelsWidth = $('.panels_column').outerWidth(true);
 
     return parseInt(panelsWidth / columnPanelsWidth);
 }
@@ -114,31 +113,6 @@ function makePanelsOrderUpdatable() {
     });
 }
 
-// Calculates difference between current time and the time when the post was created and generates a message
-function formatDiffTime(time) {
-    // TODO: Check for cross browser compatibility, currently works in Chrome and Firefox on Ubuntu
-    var created_time_diff = (new Date().getTime() - Date.parse(time)) / (60 * 1000); // Converting time from milliseconds to minutes
-    if (created_time_diff < 2) { // minutes
-        var msg = gettext("just now");
-    }
-    else if (created_time_diff >= 60 * 24) { // 24 hours, 1 day
-        var days = Math.round(created_time_diff / (60 * 24));
-        var format = ngettext("%(days)s day ago", "%(days)s days ago", days);
-        var msg = interpolate(format, {'days': days}, true);
-    }
-    else if (created_time_diff >= 60) { // 60 minutes, 1 hour
-        var hours = Math.round(created_time_diff / 60);
-        var format = ngettext("%(hours)s hour ago", "%(hours)s hours ago", hours);
-        var msg = interpolate(format, {'hours': hours}, true);
-    }
-    else {
-        var minutes = Math.round(created_time_diff);
-        var format = ngettext("%(minutes)s minute ago", "%(minutes)s minutes ago", minutes);
-        var msg = interpolate(format, {'minutes': minutes}, true);
-    }
-    return msg;
-}
-
 function Post(data) {
     var self = this;
     $.extend(self, data);
@@ -149,13 +123,15 @@ function Post(data) {
         var post = $('<li/>').addClass('post').data('post', self);
 
         var delete_link = $('<li/>').append(
-            $('<a/>').addClass('delete-post').addClass('hand').text(gettext("Delete"))
+            $('<a/>').addClass('delete-post hand').text(gettext("Delete"))
+        );
+        var edit_link = $('<li/>').append(
+            $('<a/>').addClass('edit-post hand').text(gettext("Edit"))
         );
 
+
         var hug_link = $('<a/>').addClass('hand').text(gettext("Hug"));
-        var hug = $('<li/>').addClass('hug').append(hug_link);
         var run_link = $('<a/>').addClass('hand').append(gettext("Run"));
-        var run = $('<li/>').addClass('run').append(run_link);
 
         $.each(self.hugs, function (index, value){
             if(user.username == value){
@@ -202,7 +178,18 @@ function Post(data) {
         hug_run_link_click(hug_link, run_link, 'hug', gettext("Hug"), gettext("Unhug"), gettext("Run"));
         hug_run_link_click(run_link, hug_link, 'run', gettext("Run"), gettext("Unrun"), gettext("Hug"));
 
-        var post_options = $('<ul />').addClass('options').append(delete_link).append(hug).append(run);
+        var hug = $('<li/>').addClass('hug').append(hug_link);
+        var run = $('<li/>').addClass('run').append(run_link);
+
+
+        var post_options = $('<ul />').addClass('options').append(edit_link, delete_link, hug, run);
+        
+        // TODO: Author link shouldn't be hardcoded
+        var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
+
+        var date = $('<span/>').addClass('date');
+        new Date(self.created_time).updatingNaturaltime(date);
+
 
         var huggers = $('<ul/>');
         if (!self.hugs) {
@@ -245,45 +232,107 @@ function Post(data) {
             },
             function (event) {
                 $('.hugs_runs_display', this).hide();
-            });
+            }
+        );
+        
 
-        post.append(post_options).append(
-            $('<span/>').addClass('author').text(self.author.username)
+        var post = $('<li/>').addClass('post').data('post', self).append(post_options).append(
+            $('<span/>').append(author_link)
         ).append(
             $('<p/>').addClass('content').text(self.message)
         ).append(
             $('<div/>').addClass('footer').append(
-                $('<span/>').addClass('date').text(formatDiffTime(self.created_time))
+                date
             ).append(
                 hugs_runs
             )
+        ).append(
+           $('<span/>').append($('<ul/>').addClass('comments'))
+        ).append(
+           $('<span/>').append(createCommentForm())
         );
-
+        
         return post;
     }
-
+    
+    function createCommentForm() {
+        // TODO: Instead of creating forms use a static form from template, clone it and append event handlers
+        var textarea = $('<textarea/>').addClass('comment_text');
+        var input = $('<input/>').attr({
+            'type': 'button',
+            'value': 'submit',
+            'name': 'submit_comment'
+        }).click(function (event) {
+            // TODO: Disable enable submit button like with the Post. After submitting clear the textarea of text
+            // TODO: Push new comments to all clients and display them automatically and do not use textarea content but use data from the server (it might be processed)
+            addComment(textarea.val(), buildCommentURL(self.id));
+        });
+        var form = $('<form/>').append(textarea, input);
+        
+        return form;
+    }
+    
+    function getComment(comment_url) {
+        $.getJSON(comment_url, function (data, textStatus, jqXHR) {
+            new Comment(data, self).appendToPost();
+        });
+    }
+    
+    function displayComments() {
+        // TODO: We call comments in the right order but that doesn't mean we get them in the right order aswell. Should make some ordering down the road
+        $.each(self.comments, function (index, comment_url) {
+            getComment(comment_url);
+        });
+    }
+    
     function checkIfPostExists() {
         return $('.post').is(function (index) {
             return $(this).data('post').id == self.id;
         });
     }
 
+    function postByUser() {
+        var user_posts_URIs = $('.posts').data('user_posts_URIs');
+        var full_resource_uri = getLocation(self.resource_uri).href;
+        return $.inArray(full_resource_uri, user_posts_URIs) != -1;
+    }
+
+    function showPost(post) {
+        // TODO: Animation has to be considered and maybe improved
+        post.show('fast');
+    };
+
     self.addToBottom = function () {
         if (checkIfPostExists()) return;
-
+        
         $('.posts').append(createDOM());
+        displayComments();
     };
 
     self.addToTop = function () {
         if (checkIfPostExists()) return;
 
-        // TODO: Animation has to be considered and maybe improved
-        createDOM(data).prependTo($('.posts')).hide().slideToggle('slow');
-    };
+        var post = createDOM().hide().prependTo($('.posts'));
+        displayComments();
+        
+        if (postByUser()) {
+            // TODO: Maybe we should remove URI after showing user's post
+            showPost(post);
+            return;
+        }
 
-    self.updateDate = function (dom_element) {
-        $(dom_element).find('.date').text(formatDiffTime(self.created_time));
-    }
+        if (!autoShowIncomingPosts()) {
+            post.addClass('notShown');
+        }
+        else {
+            showPost(post);
+        }
+        updateHiddenPostsCount();
+        $('#toggle_queue').show();
+        if (!autoShowIncomingPosts()) {
+            $('#posts_in_queue, #show_posts').show();
+        }
+    };
 
     self.updatePost = function () {
         if (checkIfPostExists()){
@@ -297,6 +346,40 @@ function Post(data) {
         }
     }
 }
+
+function Comment(data, post) {
+    var self = this;
+    $.extend(self, data);
+    self.post = post;
+    
+    function createDOM() {
+        // TODO: Author link shouldn't be hardcoded
+        var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
+        var date = $('<span/>').addClass('date');
+        new Date(self.created_time).updatingNaturaltime(date);
+        var comment = $('<li/>').addClass('comment').data('comment', self).append(
+            $('<span/>').append(author_link)
+        ).append(
+            $('<p/>').addClass('content').text(self.message)
+        ).append(
+            date
+        );
+        
+        return comment;
+    }
+    
+    self.appendToPost = function () {
+        $('.post').each(function (index, post) {
+            if ($(post).data('post').id == self.post.id) {
+                if ($(post).find('.comment').is(function (index) {
+                    return $(this).data('comment').id == self.id;
+                })) return;
+                $(this).find('.comments').append(createDOM());
+                return false;
+            }
+        });
+    };
+ }
 
 function loadPosts(offset) {
     $.getJSON(URLS.post, {
@@ -317,12 +400,42 @@ function Notification(data) {
         var format = gettext("%(author)s commented on post.");
         var author = interpolate(format, {'author': self.comment.author.username}, true);
 
-        var notification = $('<li/>').addClass('notification').data('notification', self).append(
+        var notification = $('<li/>').addClass('notification').bind('click', function (event) {
+            if (!self.read) {
+                $.ajax({
+                    'type': 'PATCH',
+                    'url': self.resource_uri,
+                    'data': JSON.stringify({'read': true}),
+                    'contentType': 'application/json',
+                    'dataType': 'json',
+                    'success': function (data, textStatus, jqXHR) {
+                        self.read = true;
+                        var unread_notifications_counter = 0;
+                        $('.notification').each(function (i, notification) {
+                            if (!$(notification).data('notification').read) {
+                                unread_notifications_counter++;
+                            }
+                        });
+                        $('#notifications_count').text(unread_notifications_counter);
+                        notification.addClass('read_notification');
+                    }
+                });
+            }
+        });
+
+        if (self.read) {
+            notification.addClass('read_notification');
+        }
+
+        var date = $('<span/>').addClass('notification_element').addClass('notification_created_time');
+        new Date(self.created_time).updatingNaturaltime(date);
+
+        notification.data('notification', self).append(
             $('<span/>').addClass('notification_element').text(author)
         ).append(
             $('<span/>').addClass('notification_message').addClass('notification_element').text(self.comment.message)
         ).append(
-            $('<span/>').addClass('notification_element').addClass('notification_created_time').text(formatDiffTime(self.created_time))
+            date
         );
 
         return notification;
@@ -342,10 +455,6 @@ function Notification(data) {
         }
         $('#notifications_list').prepend(createDOM());
     };
-
-    self.updateDate = function (dom_element) {
-        $(dom_element).find('.notification_created_time').text(formatDiffTime(self.created_time));
-    }
 }
 
 function loadNotifications() {
@@ -356,28 +465,46 @@ function loadNotifications() {
     });
 }
 
-// TODO: This is just for testing purposes. It can be base for future development.
-function addComment(comment) {
-    // TODO: Change this for any post
-    var post_url = $('.post').first().data('post').resource_uri;
+// TODO: We should import url from Django not hardcode it
+function buildCommentURL(post_id) {
+    return URLS.post + post_id + '/comments/';
+}
 
+function addComment(comment, comment_url) {
     $.ajax({
-        type: 'POST',
-        // TODO: Should probably not construct URL like that
-        url: post_url + 'comments/',
-        data: JSON.stringify({'message': comment}),
-        contentType: 'application/json',
-        dataType: 'json',
-        success: function (data, textStatus, jqXHR) {
-            alert("Comment posted.");
+        'type': 'POST',
+        'url': comment_url,
+        'data': JSON.stringify({'message': comment}),
+        'contentType': 'application/json',
+        'dataType': 'json',
+        'success': function (data, textStatus, jqXHR) {
         }
     });
+}
+
+function autoShowIncomingPosts() {
+    return $('#toggle_queue_checkbox').is(':checked');
+}
+
+function updateHiddenPostsCount() {
+    var unread_count = $('ul > li.notShown').length;
+    var format = ngettext("There is %(count)s new post", "There are %(count)s new posts", unread_count);
+    var msg = interpolate(format, {'count': unread_count}, true);
+    $('#posts_in_queue').text(msg);
+}
+
+function showHiddenPosts() {
+    // TODO: Animation has to be considered and maybe improved
+    $('ul > li.notShown').show('fast').removeClass('notShown');
 }
 
 $(document).ready(function () {
     initializePanels();
 
-    $.updates.registerProcessor('home_channel', 'post_new', function (data) {
+    // List of URIs of posts by user
+    $('.posts').data('user_posts_URIs', []);
+
+    $.updates.registerProcessor('home_channel', 'post_published', function (data) {
         new Post(data.post).addToTop();
     });
     $.updates.registerProcessor('home_channel', 'post_update', function (data) {
@@ -422,6 +549,8 @@ $(document).ready(function () {
             'contentType': 'application/json',
             'dataType': 'json',
             'success': function (data, textStatus, jqXHR) {
+                var full_post_uri = getLocation(jqXHR.getResponseHeader('location')).href;
+                $('.posts').data('user_posts_URIs').push(full_post_uri);
                 $('#post_text').val(input_box_text).css('min-height', 25);
             },
             'error': function (jqXHR, textStatus, errorThrown) {
@@ -450,6 +579,22 @@ $(document).ready(function () {
         }
     });
 
+    $('#show_posts > input').click(function (event) {
+        showHiddenPosts();
+        $('#posts_in_queue, #show_posts, #toggle_queue').hide();
+    });
+
+    $('#toggle_queue > input').click(function (event) {
+        if (autoShowIncomingPosts()) {
+            showHiddenPosts();
+            updateHiddenPostsCount();
+        }
+        else {
+            $('#toggle_queue').hide();
+        }
+        $('#posts_in_queue, #show_posts').hide();
+    });
+
     $(window).scroll(function (event) {
         if (document.body.scrollHeight - $(this).scrollTop() <= $(this).height()) {
             var last_post = $('.post:last').data('post');
@@ -463,24 +608,10 @@ $(document).ready(function () {
     $('#notifications_count').add('.close_notifications_box').click(function (event) {
         $('#notifications_box').slideToggle('fast');
     });
-    // TODO: Just for testing
-    $('#add_comment').click(function (event) {
-        addComment("Test comment");
-    });
 
     $.updates.registerProcessor('user_channel', 'notification', function (data) {
         new Notification(data.notification).add();
     });
 
     loadNotifications();
-
-    // TODO: Improve date updating so that interval is set on each date individually
-    setInterval(function () {
-        $('.post').each(function (i, post) {
-            $(post).data('post').updateDate(this);
-        });
-        $('.notification').each(function (i, notification) {
-            $(notification).data('notification').updateDate(this);
-        });
-    }, POSTS_DATE_UPDATE_INTERVAL);
 });

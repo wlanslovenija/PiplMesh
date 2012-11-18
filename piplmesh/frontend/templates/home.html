@@ -1,12 +1,13 @@
 {% extends "plain.html" %}
 
-{% load future i18n staticfiles pushserver panels %}
+{% load i18n staticfiles pushserver url_tags panels %}
 
 {% block fulltitle %}wlan slovenija{% endblock %}
 
 {% block js %}
     {{ block.super }}
     <script src="{% static "piplmesh/jquery/jquery.exptextarea.js" %}" type="text/javascript"></script>
+    <script src="{% static "missing/humanize.js" %}" type="text/javascript"></script>
     <script src="{% static "pushserver/updates.js" %}" type="text/javascript"></script>
     <script src="{% static "piplmesh/js/home.js" %}" type="text/javascript"></script>
     <script type="text/javascript">
@@ -17,15 +18,24 @@
         });
 
         var URLS = {
-            'panels_collapse': '{% filter escapejs %}{% url "panels_collapse" %}{% endfilter %}',
-            'panels_order': '{% filter escapejs %}{% url "panels_order" %}{% endfilter %}',
-            'post': '{% filter escapejs %}{% url "api_dispatch_list" api_name=API_NAME resource_name="post" %}{% endfilter %}',
-            'notifications': '{% filter escapejs %}{% url "api_dispatch_list" api_name=API_NAME resource_name="notification" %}{% endfilter %}',
+            'panels_collapse': '{% filter escapejs %}{% urltemplate "panels_collapse" %}{% endfilter %}',
+            'panels_order': '{% filter escapejs %}{% urltemplate "panels_order" %}{% endfilter %}',
+            'post': '{% filter escapejs %}{% urltemplate "api_dispatch_list" api_name=API_NAME resource_name="post" %}{% endfilter %}',
+            'notifications': '{% filter escapejs %}{% urltemplate "api_dispatch_list" api_name=API_NAME resource_name="notification" %}{% endfilter %}',
             'hug_run': '{% filter escapejs %}{% url "hug_run" %}{% endfilter %}'
+        };
+
+        var node = {
+            'name': '{{ request.node.name|escapejs }}',
+            'latitude': '{{ request.node.latitude|escapejs }}',
+            'longitude': '{{ request.node.longitude|escapejs }}',
+            'location': '{{ request.node.location|escapejs }}',
+            'url': '{{ request.node.url|escapejs }}'
         };
 
         var user = new Object();
         user.username = '{% filter escapejs %}{{ request.user.username }}{% endfilter %}';
+        
         /* ]]> */
     </script>
 {% endblock %}

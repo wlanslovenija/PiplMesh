@@ -1,0 +1,8 @@
+{% extends "mongo_auth/base/registration.html" %}
+
+{% load staticfiles sekizai_tags %}
+
+{% block content %}
+    {% addtoblock "js" %}<script src="{% static "piplmesh/js/registration.js" %}" type="text/javascript"></script>{% endaddtoblock %}
+    {{ block.super }}
+{% endblock %}

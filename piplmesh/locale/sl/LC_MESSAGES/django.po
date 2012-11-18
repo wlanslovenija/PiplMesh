@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: piplmesh\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-25 09:50-0700\n"
+"POT-Creation-Date: 2012-11-02 11:07+0100\n"
 "PO-Revision-Date: 2012-05-18 12:29+0100\n"
 "Last-Translator: Martin Jakomin <martin.jakomin@gmail.com>\n"
 "Language-Team: \n"
@@ -17,333 +17,43 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
 "%100==4 ? 2 : 3)\n"
 
-#: settings.py:47
+#: settings.py:50
 msgid "Slovenian"
 msgstr "Slovenščina"
 
-#: settings.py:48
+#: settings.py:51
 msgid "English"
 msgstr "Angleščina"
 
-#: account/fields.py:9
-msgid "male"
-msgstr "moški"
-
-#: account/fields.py:10
-msgid "female"
-msgstr "ženska"
-
-#: account/fields.py:14
-msgid "Value is out of bounds."
-msgstr "Vrednost je izven meja."
-
-#: account/fields.py:15
-msgid "Callable did not return datetime.date or datetime.datetime object."
-msgstr ""
-
-#: account/forms.py:13
-msgid "Username"
-msgstr "Uporabniško ime"
-
-#: account/forms.py:17 account/models.py:58
-msgid ""
-"Minimal of 4 characters and maximum of 30. Letters, digits and @/./+/-/_ "
-"only."
-msgstr "Najmanj 4 in največ 30 znakov. Samo črke, številke in @/./+/-/_ ."
-
-#: account/forms.py:19
-msgid "This value may contain only letters, numbers and @/./+/-/_ characters."
-msgstr "To polje lahko vsebuje le črke, številke in znake @/./+/-/_ ."
-
-#: account/forms.py:30
-msgid "A user with that username already exists."
-msgstr "Uporabnik s tem uporabniškim imenom že obstaja."
-
-#: account/forms.py:39
-msgid "Password"
-msgstr "Geslo"
-
-#: account/forms.py:44
-msgid "Password (repeat)"
-msgstr "Geslo (ponovi)"
-
-#: account/forms.py:46
-msgid "Enter the same password as above, for verification."
-msgstr "V izogib napakam ponovno vnesi isto geslo kot zgoraj."
-
-#: account/forms.py:57
-msgid "The two password fields did not match."
-msgstr "Gesli se ne ujemata."
-
-#: account/forms.py:66
-msgid "Current password"
-msgstr "Trenutno geslo"
-
-#: account/forms.py:68
-msgid "Enter your current password, for verification."
-msgstr "Za potrditev vnesi trenutno geslo."
-
-#: account/forms.py:82
-msgid "Your current password was incorrect."
-msgstr "Vnešeno geslo je bilo nepravilno."
-
-#: account/forms.py:92
-msgid "First name"
-msgstr "Ime"
-
-#: account/forms.py:93
-msgid "Last name"
-msgstr "Priimek"
-
-#: account/forms.py:94
-msgid "E-mail"
-msgstr "E-mail"
-
-#: account/forms.py:96
-msgid "Gender"
-msgstr "Spol"
-
-#: account/forms.py:103
-msgid "Birth date"
-msgstr "Datum rojstva"
-
-#: account/forms.py:147
-msgid "Confirmation token"
-msgstr "Potrditvena koda"
-
-#: account/forms.py:151
-msgid ""
-"Please enter the confirmation token you received to your e-mail address."
-msgstr "Prosimo vnesi potrditveno kodo, ki si jo prejel na svoj e-mail naslov."
-
-#: account/forms.py:165
-msgid "The confirmation token is invalid or has expired. Please retry."
-msgstr "Potrditvena koda je napačna ali pa je potekla. Prosimo, poskusi znova."
-
-#: account/models.py:57
-msgid "username"
-msgstr "uporabniško ime"
-
-#: account/signals.py:11
-msgid "You have been successfully logged in."
-msgstr "Prijava uspešna."
-
-#: account/signals.py:20
-msgid "You have been successfully logged out."
-msgstr "Odjava uspešna."
-
-#: account/views.py:250
-msgid "Registration has been successful."
-msgstr "Registracija je bila uspešna."
-
-#: account/views.py:278
-msgid "Your account has been successfully updated."
-msgstr "Tvoj račun je bil uspešno posodobljen."
-
-#: account/views.py:310
-msgid "Your password has been successfully changed."
-msgstr "Tvoje geslo je bilo uspešno posodobljeno."
-
-#: account/views.py:350
-msgid "Confirmation e-mail has been sent to your e-mail address."
-msgstr "Potrditveni e-mail je bil poslan na tvoj e-mail naslov."
-
-#: account/views.py:366
-msgid "You have successfully confirmed your e-mail address."
-msgstr "Uspešno si potrdil svoj e-mail naslov."
-
-#: account/templates/user/account.html:5
-#: account/templates/user/account.html:10
-#: account/templates/user/email_confirmation_process_token.html:10
-#: account/templates/user/email_confirmation_send_token.html:10
-#: account/templates/user/password_change.html:10
-#: frontend/templates/user/user.html:11
-msgid "Account"
-msgstr "Račun"
-
-#: account/templates/user/account.html:9
-#: account/templates/user/email_confirmation_process_token.html:9
-#: account/templates/user/email_confirmation_send_token.html:9
-#: account/templates/user/password_change.html:9
-#: frontend/templates/user/user.html:10
+#: account/templates/user/menu.html:5 frontend/templates/user/user.html:10
 msgid "Profile"
 msgstr "Profil"
 
-#: account/templates/user/account.html:13
-#: account/templates/user/password_change.html:13
-msgid "Submit"
-msgstr "Pošlji"
-
-#: account/templates/user/account.html:18
-msgid "Change your password"
-msgstr "Spremeni svoje geslo"
-
-#: account/templates/user/account.html:20
-msgid "Please confirm your e-mail address"
-msgstr "Prosimo, potrdi svoj e-mail naslov"
-
-#: account/templates/user/confirmation_email.txt:1
-#, python-format
-msgid "Hello %(username)s!"
-msgstr "Pozdravljen/a %(username)s!"
-
-#: account/templates/user/confirmation_email.txt:3
-#, python-format
-msgid ""
-"This message was sent to you to confirm this e-mail address (%(email)s) as "
-"yours for your account on %(SITE_NAME)s with username \"%(username)s\". If "
-"you have already done so or don't want to, you can safely ignore this e-mail."
-msgstr ""
-"To sporočilo ti je bilo poslano, da potrdiš ta e-mail naslov (%(email)s) kot "
-"svojega za %(SITE_NAME)s račun z uporabniškim imenom \"%(username)s\". Če si "
-"to že storil/a ali pa tega nočeš, lahko brez skrbi ignoriraš ta e-mail."
-
-#: account/templates/user/confirmation_email.txt:5
-msgid "Please click the link below to confirm your e-mail address:"
-msgstr "Klikni spodnjo povezavo za potrditev svojega e-mail naslova:"
-
-#: account/templates/user/confirmation_email.txt:9
-msgid "Or, open the following link:"
-msgstr "Ali pa odpri naslednjo povezavo:"
-
-#: account/templates/user/confirmation_email.txt:13
-msgid ""
-"and copy-paste the following confirmation token into the input box there:"
-msgstr "in prilepi sledečo podtrditveno kodo v vnosno polje tam:"
-
-#: account/templates/user/confirmation_email.txt:17
-#, python-format
-msgid ""
-"Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s day."
-msgid_plural ""
-"Confirmation token will be active for %(CONFIRMATION_TOKEN_VALIDITY)s days."
-msgstr[0] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dan."
-msgstr[1] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dneva."
-msgstr[2] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
-msgstr[3] "Potrditvena koda bo veljavna %(CONFIRMATION_TOKEN_VALIDITY)s dni."
-
-#: account/templates/user/confirmation_email.txt:17
-msgid ""
-" If it expires you will have to redo the process of confirming your e-mail "
-"address."
-msgstr ""
-"Če bo potekla, boš moral/a ponovno čez postopek potrditve svojega e-mail "
-"naslova."
-
-#: account/templates/user/confirmation_email.txt:19
-msgid ""
-"Please also be careful to open complete link. Your e-mail client might have "
-"broken it into several lines."
-msgstr ""
-"Prosimo bodi previden/a, da odpreš celotno povezavo. Tvoj e-mail odjemalec "
-"jo je morda razdelil v več vrstic."
-
-#: account/templates/user/confirmation_email.txt:21
-msgid ""
-"If you have any problems confirming your e-mail address or have any other "
-"questions just reply to this e-mail."
-msgstr ""
-"Če imaš karšnekoli težave pri potrjevanju svojega e-mail naslova ali kakšna "
-"druga vprašanja, lahko odgovoriš kar na ta e-mail."
-
-#: account/templates/user/confirmation_email.txt:23
-msgid "Yours,"
-msgstr "Tvoj,"
-
-#: account/templates/user/confirmation_email_subject.txt:1
-#: account/templates/user/email_confirmation_process_token.html:5
-#: account/templates/user/email_confirmation_process_token.html:16
-msgid "Confirm your e-mail address"
-msgstr "Potrdi svoj e-mail naslov"
-
-#: account/templates/user/email_confirmation_process_token.html:13
-msgid ""
-"You are just one step away from confirming your e-mail address. If for some "
-"reason the input box below is empty, paste the token in manually from the "
-"confirmation e-mail you have received."
-msgstr ""
-"Si samo še korak od potrditve svojega e-mail naslova. Če je spodnje vnosno "
-"polje slučajno prazno, ročno prilepi kodo, ki si jo prejel/a."
-
-#: account/templates/user/email_confirmation_send_token.html:5
-msgid "E-mail address confirmation"
-msgstr "Potrditev e-mail naslova"
-
-#: account/templates/user/email_confirmation_send_token.html:13
-#, python-format
-msgid "Clicking the button below will send a confirmation mail to %(email)s."
-msgstr "Klik na spodnji gumb bo poslal potrditveno povezavo na %(email)s."
-
-#: account/templates/user/email_confirmation_send_token.html:16
-msgid "Click here to confirm your e-mail address"
-msgstr "Klikni tukaj za potrditev svojega e-mail naslova"
-
-#: account/templates/user/email_confirmation_send_token.html:21
-msgid "Why should I confirm my e-mail address?"
-msgstr "Zakaj bi potrdil svoj e-mail naslov?"
-
-#: account/templates/user/email_confirmation_send_token.html:23
-msgid ""
-"Confirming your e-mail address improves the security of your account. Once "
-"you've confirmed your e-mail address, you will be able to reset your "
-"password in the case you lost it or forget it."
-msgstr ""
-"Potrditev svojega e-mail naslova poveča varnost tvojega računa. Ko boš "
-"potrdil svoj e-mail naslov, boš lahko resetiral/a svoje geslo v primeru, da "
-"si ga pozabil/a ali izgubil/a."
-
-#: account/templates/user/login.html:5 account/templates/user/login.html:12
-#: frontend/templates/header.html:46
-msgid "Login"
-msgstr "Prijavi se"
-
-#: account/templates/user/login.html:22
-msgid "Login with Facebook"
-msgstr "Facebook prijava"
-
-#: account/templates/user/login.html:28
-msgid "Login with Twitter"
-msgstr "Twitter prijava"
-
-#: account/templates/user/login.html:34
-msgid "Login with Foursquare"
-msgstr "Facebook prijava"
-
-#: account/templates/user/login.html:40
-msgid "Login with Google"
-msgstr "Google prijava"
-
-#: account/templates/user/login.html:45
-#: account/templates/user/registration.html:14
-#: frontend/templates/header.html:47
-msgid "Register"
-msgstr "Registriraj se"
-
-#: account/templates/user/password_change.html:5
-msgid "Change Password"
-msgstr "Spremeni geslo"
-
-#: account/templates/user/registration.html:10
-msgid "Registration"
-msgstr "Registracija"
-
-#: account/templates/user/user_image.html:3
-msgid "User image"
-msgstr "Slika uporabnika"
+#: account/templates/user/menu.html:7
+msgid "Account"
+msgstr "Račun"
 
 #: frontend/debug.py:6
 msgid "File"
 msgstr "Datoteka"
 
-#: frontend/forms.py:10
+#: frontend/forms.py:14
 msgid "Subject"
-msgstr ""
+msgstr "Zadeva"
 
-#: frontend/forms.py:11
+#: frontend/forms.py:15
 msgid "Your e-mail address"
 msgstr "Tvoj e-mail naslov"
 
-#: frontend/views.py:49
+#: frontend/forms.py:19
+msgid "Don't mock location"
+msgstr "Brez simuliranja lokacije"
+
+#: frontend/forms.py:30
+msgid "Location"
+msgstr "Lokacija"
+
+#: frontend/views.py:57
 msgid "Thank you. Your message has been successfully sent."
 msgstr "Hvala. Tvoje sporočilo je bilo uspešno poslano."
 
@@ -384,8 +94,47 @@ msgstr "404 Ne obstaja"
 msgid "The page you requested cannot be found."
 msgstr "Željena stran ne obstaja."
 
-#: frontend/templates/about.html:5 frontend/templates/about.html.py:8
+#: frontend/templates/about.html:5 frontend/templates/about.html.py:13
 msgid "About"
+msgstr ""
+
+#: frontend/templates/about.html:14
+msgid ""
+"PiplMesh is the project of students at <a class=\"ext-link\" href=\"http://"
+"www.fri.uni-lj.si/\">Faculty of Computer and Information Science</a> of "
+"University of Ljubljana and <em><a class=\"ext-link\" href=\"http://wlan-si."
+"net/\">wlan slovenija</a></em> open wireless network. Its main goal is the "
+"development of an open source social networking and info portal for wireless "
+"networks used as a welcome page when users connect to the network."
+msgstr ""
+
+#: frontend/templates/about.html:15
+msgid ""
+"You can read more about the project on <a class=\"ext-link\" href=\"http://"
+"dev.wlan-si.net/wiki/PiplMesh/\">development pages</a> at <em>wlan "
+"slovenija</em> website."
+msgstr ""
+
+#: frontend/templates/about.html:16
+msgid ""
+"For development <a class=\"ext-link\" href=\"https://github.com/"
+"wlanslovenija/PiplMesh\">GitHub</a> is used. If you have found a bug or have "
+"any other technical issue with the site, please use GitHub to <a class=\"ext-"
+"link\" href=\"https://github.com/wlanslovenija/PiplMesh/issues/new\">report "
+"it</a>. Source code and <a href=\"https://github.com/wlanslovenija/PiplMesh/"
+"issues?state=open\">known issues</a> are found there. A <a class=\"ext-link"
+"\" href=\"https://github.com/wlanslovenija/PiplMesh/stargazers/\">list of "
+"contributors</a> is also avaible as GitHub profiles list."
+msgstr ""
+
+#: frontend/templates/about.html:17
+msgid ""
+"All work is done voluntarily, so you are very welcome to help us make it "
+"even better."
+msgstr ""
+
+#: frontend/templates/about.html:18
+msgid "Contributors"
 msgstr ""
 
 #: frontend/templates/contact.html:5 frontend/templates/contact.html.py:9
@@ -420,11 +169,15 @@ msgid "growing"
 msgstr "rast"
 
 #: frontend/templates/footer.html:9
-msgid "contact"
+msgid "about"
 msgstr ""
 
 #: frontend/templates/footer.html:9
-msgid "about"
+msgid "privacy policy"
+msgstr ""
+
+#: frontend/templates/footer.html:9
+msgid "contact"
 msgstr ""
 
 #: frontend/templates/gravatar.html:3
@@ -435,9 +188,17 @@ msgstr "Slika uporabnika"
 msgid "See your query results on "
 msgstr "Poglej zadetke na "
 
-#: frontend/templates/header.html:41
+#: frontend/templates/header.html:61
 msgid "Logout"
 msgstr "Odjava"
+
+#: frontend/templates/header.html:68
+msgid "Login"
+msgstr "Prijavi se"
+
+#: frontend/templates/header.html:76
+msgid "Register"
+msgstr "Registriraj se"
 
 #: frontend/templates/outside.html:8
 msgid ""
@@ -452,13 +213,237 @@ msgstr ""
 msgid "Send my current location"
 msgstr "Pošlji mojo trenutno lokacijo"
 
-#: frontend/templates/posts.html:3
+#: frontend/templates/posts.html:7
+msgid "Write a post..."
+msgstr "Napiši sporočilo ..."
+
+#: frontend/templates/posts.html:11
 msgid "submit"
 msgstr "pošlji"
 
-#: frontend/templates/posts.html:8
-msgid "Write a post..."
-msgstr "Napiši sporočilo ..."
+#: frontend/templates/posts.html:19
+msgid "Display new posts"
+msgstr "Prikaži nove objave"
+
+#: frontend/templates/posts.html:20
+msgid "Display new posts automatically"
+msgstr "Samodejno prikaži nove objave"
+
+#: frontend/templates/privacy.html:5 frontend/templates/privacy.html.py:8
+msgid "Privacy policy"
+msgstr ""
+
+#: frontend/templates/privacy.html:10
+msgid "Last modified: Septembr 16, 2012"
+msgstr ""
+
+#: frontend/templates/privacy.html:11
+msgid "Personally identifiable information"
+msgstr ""
+
+#: frontend/templates/privacy.html:12
+msgid ""
+"We collect personally identifiable information from you only if you "
+"voluntarily submit such information to us, including, but not limited to, "
+"when you register with our site or as content you publish on the site. You "
+"can always refuse to supply personally identifiable information and use our "
+"site anonymously."
+msgstr ""
+
+#: frontend/templates/privacy.html:14
+#, python-format
+msgid ""
+"We will never ask you for your password or any other personal information "
+"via e-mail. Never reply to such an e-mail. If you have any questions "
+"regarding the validity of an e-mail sent to you, contact us via our <a href="
+"\"%(contact_url)s\">contact page</a>."
+msgstr ""
+
+#: frontend/templates/privacy.html:15
+msgid "Non-personally identifiable data"
+msgstr ""
+
+#: frontend/templates/privacy.html:16
+msgid ""
+"We may collect non-personally identifiable data as content you publish on "
+"our site."
+msgstr ""
+
+#: frontend/templates/privacy.html:17
+msgid ""
+"We may collect non-personally identifiable data about your hardware, "
+"operating system, the browser, browser's requests (such as the date and time "
+"of your request and referral URL) and other similar technical data. This "
+"includes your geographical location as provided by you or your location in "
+"the network."
+msgstr ""
+
+#: frontend/templates/privacy.html:18
+msgid "Web browser cookies"
+msgstr ""
+
+#: frontend/templates/privacy.html:19
+msgid ""
+"Our site uses <a class=\"ext-link\" href=\"https://en.wikipedia.org/wiki/"
+"HTTP_cookie\">cookies</a> to identify which browser requests belong to which "
+"user to allow or disallow access to data stored on the site and provide "
+"personalized user experience. Make sure to keep these cookies private as "
+"failure to do so might compromise your privacy or privacy of data you stored "
+"on the site."
+msgstr ""
+
+#: frontend/templates/privacy.html:20
+msgid ""
+"You may choose to set your web browser to refuse cookies. If you do so, you "
+"may not be allowed to access some parts of the site or they may not function "
+"properly."
+msgstr ""
+
+#: frontend/templates/privacy.html:21
+msgid "How we use data we collected"
+msgstr ""
+
+#: frontend/templates/privacy.html:22
+msgid "We may collect and use your personal data to:"
+msgstr ""
+
+#: frontend/templates/privacy.html:24
+msgid "provide you with features, services, and resources you use on the site"
+msgstr ""
+
+#: frontend/templates/privacy.html:25
+msgid "help solve any issues you might be facing with our site"
+msgstr ""
+
+#: frontend/templates/privacy.html:26
+msgid ""
+"improve customer service (helps us better respond to your customer service "
+"requests and support)"
+msgstr ""
+
+#: frontend/templates/privacy.html:27
+msgid ""
+"personalize and improve features and user experience (helps us understand "
+"how our users as a group use features, services, and resources provided on "
+"our site)"
+msgstr ""
+
+#: frontend/templates/privacy.html:28
+msgid ""
+"send occasional e-mails (as response to your inquiries, questions, and/or "
+"other requests)"
+msgstr ""
+
+#: frontend/templates/privacy.html:29
+msgid "send periodic e-mails (if you choose to receive them)"
+msgstr ""
+
+#: frontend/templates/privacy.html:30
+msgid ""
+"conduct or help others conduct research with publicly, openly and freely "
+"available results using aggregated and/or non-personally identifiable data"
+msgstr ""
+
+#: frontend/templates/privacy.html:32
+msgid "Your personal data may be processed outside the country where you live."
+msgstr ""
+
+#: frontend/templates/privacy.html:33
+msgid "What can you do with collected data"
+msgstr ""
+
+#: frontend/templates/privacy.html:35
+msgid "review and control your data"
+msgstr ""
+
+#: frontend/templates/privacy.html:36
+msgid "update data or delete it, unless we have to keep it for legal purposes"
+msgstr ""
+
+#: frontend/templates/privacy.html:37
+msgid "export your account and all data linked with your account"
+msgstr ""
+
+#: frontend/templates/privacy.html:38
+msgid ""
+"disable your account so the account and all data linked with your account "
+"become hidden"
+msgstr ""
+
+#: frontend/templates/privacy.html:39
+msgid "delete your account and all data linked with your account"
+msgstr ""
+
+#: frontend/templates/privacy.html:41
+#, fuzzy
+msgid "Sharing your personal data"
+msgstr "Spremeni svoje geslo"
+
+#: frontend/templates/privacy.html:42
+msgid ""
+"We do not share, sell or trade users personally identifiable information to "
+"others unless one of the following circumstances apply:"
+msgstr ""
+
+#: frontend/templates/privacy.html:44
+msgid "with your consent"
+msgstr ""
+
+#: frontend/templates/privacy.html:45
+msgid ""
+"for legal reasons (to meet any applicable law, regulation, legal process or "
+"enforceable governmental request, to investigate potential violations and to "
+"detect, prevent, or otherwise address fraud, security or technical issues)"
+msgstr ""
+
+#: frontend/templates/privacy.html:47
+msgid ""
+"We may share generic aggregated demographic data not linked to any "
+"personally identifiable information regarding visitors and users. We may "
+"share aggregated, non-personally identifiable data publicly and with our "
+"partners."
+msgstr ""
+
+#: frontend/templates/privacy.html:48
+msgid "Third party websites"
+msgstr ""
+
+#: frontend/templates/privacy.html:49
+msgid ""
+"You may find advertising or other content on our site that link to the sites "
+"and services of our partners, advertisers, sponsors and other third parties. "
+"We do not control the content or links that appear on these sites and are "
+"not responsible for the practices employed by websites linked to or from our "
+"site. These sites or services, including their content and links, may be "
+"constantly changing. In addition, these sites and services may have their "
+"own privacy policies. Browsing and interaction on any other website, "
+"including websites which have a link to our site, is subject to that "
+"website's own terms and policies."
+msgstr ""
+
+#: frontend/templates/privacy.html:50
+msgid "Changes to this privacy policy"
+msgstr ""
+
+#: frontend/templates/privacy.html:51
+msgid ""
+"We have the discretion to update this privacy policy at any time. When we "
+"do, we will inform you through a notification on our site. You acknowledge "
+"and agree that it is your responsibility to review this privacy policy "
+"periodically and become aware of modifications."
+msgstr ""
+
+#: frontend/templates/privacy.html:52
+msgid "Your acceptance of this privacy policy"
+msgstr ""
+
+#: frontend/templates/privacy.html:53
+msgid ""
+"By using this site, you signify your acceptance of this policy. If you do "
+"not agree to this policy, please do not use our site. Your continued use of "
+"the site following the posting of changes to this policy will be deemed your "
+"acceptance of those changes."
+msgstr ""
 
 #: frontend/templates/search.html:5
 msgid "Search"
@@ -476,39 +461,69 @@ msgstr "Obrazec za nalaganje"
 msgid "Upload"
 msgstr "Naloži"
 
-#: frontend/templates/form/form.html:30
+#: frontend/templates/form/form.html:52
 msgid "Required"
 msgstr "Obvezno"
 
-#: frontend/templates/user/user.html:18
+#: frontend/templates/user/user.html:14
 msgid "Username:"
 msgstr "Uporabniško ime:"
 
-#: frontend/templates/user/user.html:19
+#: frontend/templates/user/user.html:15
 msgid "Name:"
 msgstr "Ime in priimek:"
 
-#: frontend/templates/user/user.html:20
+#: frontend/templates/user/user.html:16
 msgid "Gender:"
 msgstr "Spol:"
 
-#: frontend/templates/user/user.html:21
+#: frontend/templates/user/user.html:17
 msgid "Birthdate:"
 msgstr "Datum rojstva:"
 
-#: frontend/templates/user/user.html:22
+#: frontend/templates/user/user.html:18
 msgid "E-mail:"
 msgstr "E-mail:"
 
-#: frontend/templates/user/user.html:23
+#: frontend/templates/user/user.html:19
 msgid "Last login:"
 msgstr "Zadnja prijava:"
 
-#: frontend/templates/user/user.html:25
+#: frontend/templates/user/user.html:21
 msgid "Facebook link"
 msgstr "Facebook povezava"
 
-#: panels/dummy/panel.py:11
+#: panels/bicikelj/panel.py:10
+msgid "Bicikelj stations"
+msgstr "Postaje Bicikelj"
+
+#: panels/bicikelj/templates/panel/bicikelj/panel.html:14
+msgid "WARNING: Stale data"
+msgstr "POZOR: Stari podatki"
+
+#: panels/bicikelj/templates/panel/bicikelj/panel.html:16
+#, python-format
+msgid "<b>%(available)s</b> available bike"
+msgid_plural "<b>%(available)s</b> available bikes"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: panels/bicikelj/templates/panel/bicikelj/panel.html:17
+#, python-format
+msgid "<b>%(free)s</b> free place"
+msgid_plural "<b>%(free)s</b> free places"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: panels/bicikelj/templates/panel/bicikelj/panel.html:22
+msgid "No Bicikelj stations nearby."
+msgstr "V bližini ni postaj Bicikelj."
+
+#: panels/dummy/panel.py:14
 msgid "Dummy panel"
 msgstr ""
 
@@ -560,7 +575,7 @@ msgstr ""
 msgid "Aquarius"
 msgstr ""
 
-#: panels/horoscope/panel.py:19
+#: panels/horoscope/panel.py:18
 msgid "Today's horoscope"
 msgstr ""
 
@@ -586,14 +601,123 @@ msgstr ""
 msgid "Source: <a href=\"%(url)s\">%(url_name)s</a>"
 msgstr ""
 
-#: panels/map/panel.py:8
+#: panels/map/panel.py:10
 msgid "Map"
-msgstr ""
+msgstr "Zemljevid"
 
-#: panels/onlineusers/panel.py:9
+#: panels/onlineusers/panel.py:12
 msgid "Online users"
 msgstr "Povezani uporabniki"
 
-#: panels/onlineusers/templates/panel/onlineusers/panel.html:26
+#: panels/onlineusers/templates/panel/onlineusers/panel.html:27
 msgid "Search users"
 msgstr "Išči uporabnike"
+
+#: panels/weather/models.py:6
+msgid "Sun"
+msgstr ""
+
+#: panels/weather/models.py:7
+msgid "Light cloud"
+msgstr ""
+
+#: panels/weather/models.py:8
+msgid "Partly cloud"
+msgstr ""
+
+#: panels/weather/models.py:9
+msgid "Cloud"
+msgstr ""
+
+#: panels/weather/models.py:10 panels/weather/models.py:23
+msgid "Light rain and sun"
+msgstr ""
+
+#: panels/weather/models.py:11
+msgid "Light rain, thunder and sun"
+msgstr ""
+
+#: panels/weather/models.py:12
+msgid "Sleet and sun"
+msgstr ""
+
+#: panels/weather/models.py:13
+msgid "Snow and sun"
+msgstr ""
+
+#: panels/weather/models.py:14
+msgid "Light rain"
+msgstr ""
+
+#: panels/weather/models.py:15
+msgid "Rain"
+msgstr ""
+
+#: panels/weather/models.py:16
+msgid "Rain and thunder"
+msgstr ""
+
+#: panels/weather/models.py:17
+msgid "Sleet"
+msgstr ""
+
+#: panels/weather/models.py:18
+msgid "Snow"
+msgstr ""
+
+#: panels/weather/models.py:19
+msgid "Snow and thunder"
+msgstr ""
+
+#: panels/weather/models.py:20
+msgid "Fog"
+msgstr ""
+
+#: panels/weather/models.py:21
+msgid "Sun (used for winter darkness)"
+msgstr ""
+
+#: panels/weather/models.py:22
+msgid "Light cloud ( winter darkness )"
+msgstr ""
+
+#: panels/weather/models.py:24
+msgid "Snow and sun ( used for winter darkness )"
+msgstr ""
+
+#: panels/weather/models.py:25
+msgid "Sleet, sun and thunder"
+msgstr ""
+
+#: panels/weather/models.py:26
+msgid "Snow, sun and thunder"
+msgstr ""
+
+#: panels/weather/models.py:27
+msgid "Light rain and thunder"
+msgstr ""
+
+#: panels/weather/models.py:28
+msgid "Sleet thunder"
+msgstr ""
+
+#: panels/weather/panel.py:17
+msgid "Weather"
+msgstr ""
+
+#: panels/weather/templates/panel/weather/panel.html:8
+msgid "Weather data is temporarily unavailable."
+msgstr ""
+
+#: panels/weather/templates/panel/weather/panel.html:16
+msgid "weather icon"
+msgstr ""
+
+#: panels/weather/templates/panel/weather/panel.html:24
+#, python-format
+msgid "Forecast created on: %(date)s"
+msgstr ""
+
+#: panels/weather/templates/panel/weather/panel.html:25
+msgid "Based on data from <a href=\"http://met.no\">met.no</a>."
+msgstr ""

@@ -2,19 +2,22 @@
 #
 # Development Django settings for PiplMesh project.
 
-import datetime, os
+import os
+
+USE_TZ = True
 
 MONGO_DATABASE_NAME = 'PiplMesh'
+MONGO_DATABASE_OPTIONS = {
+    'tz_aware': USE_TZ,
+}
 
 import mongoengine
-mongoengine.connect(MONGO_DATABASE_NAME, tz_aware=True)
+mongoengine.connect(MONGO_DATABASE_NAME, **MONGO_DATABASE_OPTIONS)
 
 settings_dir = os.path.abspath(os.path.dirname(__file__))
 
 import djcelery
 djcelery.setup_loader()
-
-from celery.task.schedules import crontab
 
 # Dummy function, so that "makemessages" can find strings which should be translated.
 _ = lambda s: s
@@ -38,7 +41,6 @@ MANAGERS = ADMINS
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = 'Europe/Ljubljana'
-USE_TZ = True
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -53,7 +55,7 @@ LOCALE_PATHS = (
     os.path.join(settings_dir, 'locale'),
 )
 
-URL_VALIDATOR_USER_AGENT = 'Django'
+URL_VALIDATOR_USER_AGENT = 'PiplMesh'
 
 SITE_NAME = 'PiplMesh'
 
@@ -105,12 +107,6 @@ STATICFILES_FINDERS = (
 #   'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-# Used to reconstruct absolute/full URLs where request is not available
-DEFAULT_REQUEST = {
-    'SERVER_NAME': '127.0.0.1',
-    'SERVER_PORT': '8000',
-}
-
 DEFAULT_FILE_STORAGE = 'piplmesh.utils.storage.GridFSStorage'
 
 # URL prefix for internationalization URLs
@@ -152,6 +148,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'sekizai.context_processors.sekizai',
     'django_browserid.context_processors.browserid_form',
+    'mongo_auth.contrib.context_processors.mongo_auth',
     'piplmesh.frontend.context_processors.global_vars',
 )
 
@@ -161,8 +158,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'piplmesh.account.middleware.LazyUserMiddleware',
-    'piplmesh.account.middleware.UserBasedLocaleMiddleware',
+    'mongo_auth.middleware.LazyUserMiddleware',
+    'mongo_auth.contrib.middleware.UserBasedLocaleMiddleware',
     'piplmesh.frontend.middleware.NodesMiddleware',
 )
 
@@ -185,7 +182,6 @@ INSTALLED_APPS = (
     'piplmesh.nodes',
     'piplmesh.utils',
     'piplmesh.panels',
-    'piplmesh.panels.horoscope', # To load manage.py command
 
     'django.contrib.messages',
     'django.contrib.sessions',
@@ -198,11 +194,16 @@ INSTALLED_APPS = (
     'sekizai',
     'missing',
     'django_browserid',
+    'mongo_auth',
+    'mongo_auth.contrib',
 )
 
 PUSH_SERVER = {
     'port': 8001,
     'address': '127.0.0.1',
+    'publisher_host': '127.0.0.1:8001',
+    'subscriber_host': '127.0.0.1:8001',
+    'servername': URL_VALIDATOR_USER_AGENT,
     'store': {
         'type': 'memory',
         'min_messages': 0,
@@ -226,10 +227,6 @@ PUSH_SERVER = {
     ),
 }
 
-CHECK_ONLINE_USERS_INTERVAL = 10 # seconds
-CHECK_FOR_NEW_HOROSCOPE = 6 # am every day
-POLL_BICIKELJ_INTERVAL = 60 # seconds
-
 CELERY_RESULT_BACKEND = 'mongodb'
 CELERY_MONGODB_BACKEND_SETTINGS = {
     'host': '127.0.0.1',
@@ -242,23 +239,16 @@ BROKER_URL = 'mongodb://127.0.0.1:27017/celery'
 
 CELERY_ENABLE_UTC = USE_TZ
 CELERY_TIMEZONE = TIME_ZONE
+CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 
-CELERYBEAT_SCHEDULE = {
-    'check_online_users': {
-        'task': 'piplmesh.frontend.tasks.check_online_users',
-        'schedule': datetime.timedelta(seconds=CHECK_ONLINE_USERS_INTERVAL),
-        'args': (),
-    },
-    'update_horoscope': {
-        'task': 'piplmesh.panels.horoscope.tasks.update_horoscope',
-        'schedule': crontab(hour=CHECK_FOR_NEW_HOROSCOPE),
-        'args': (),
-    },
-    'update_station_info': {
-        'task': 'piplmesh.panels.bicikelj.tasks.update_station_info',
-        'schedule': datetime.timedelta(seconds=POLL_BICIKELJ_INTERVAL),
-        'args': (),
-    },
+CELERY_IMPORTS = (
+    'piplmesh.frontend.views', # To connect send_update_on_new_notification signal
+)
+
+CACHES = {
+    'default': {
+        'BACKEND': 'piplmesh.utils.cache.MongoEngineCache',
+    }
 }
 
 # A sample logging configuration. The only tangible logging
@@ -285,17 +275,18 @@ LOGGING = {
 }
 
 LOGIN_REDIRECT_URL = '/'
+USER_CLASS = 'piplmesh.account.models.User'
 
 SESSION_ENGINE = 'mongoengine.django.sessions'
 
 AUTHENTICATION_BACKENDS = (
-    'piplmesh.account.backends.MongoEngineBackend',
-    'piplmesh.account.backends.FacebookBackend',
-    'piplmesh.account.backends.TwitterBackend',
-    'piplmesh.account.backends.FoursquareBackend',
-    'piplmesh.account.backends.GoogleBackend',
-    'piplmesh.account.backends.BrowserIDBackend',
-    'piplmesh.account.backends.LazyUserBackend',
+    'mongo_auth.backends.MongoEngineBackend',
+    'mongo_auth.backends.FacebookBackend',
+    'mongo_auth.backends.TwitterBackend',
+    'mongo_auth.backends.FoursquareBackend',
+    'mongo_auth.backends.GoogleBackend',
+    'mongo_auth.backends.BrowserIDBackend',
+    'mongo_auth.backends.LazyUserBackend',
 )
 
 TEST_RUNNER = 'tastypie_mongoengine.test_runner.MongoEngineTestSuiteRunner'
@@ -320,23 +311,18 @@ NODES_MIDDLEWARE_EXCEPTIONS = (
 # and access your site by local ip 127.0.0.1:8000 in your browser
 FACEBOOK_APP_ID = '268978083181801' # Add your app ID/API key
 FACEBOOK_APP_SECRET = '0d86323405308915be0564e8c00bf6e0' # Add your app secret key
-FACEBOOK_LOGIN_REDIRECT = '/' # Redirects here after login
-FACEBOOK_ERROR_REDIRECT = '/' # Redirects here if user is not connected with Facebook
 
 # Twitter settings
 TWITTER_CONSUMER_KEY = 'yeZOtec5ol5I9BGCCKpcw'
 TWITTER_CONSUMER_SECRET = 'Dv80Q51jx8FWDInmZCGZs8AKDnRwAdrS0lxgZA4NWs'
-TWITTER_LOGIN_REDIRECT = '/'
 
 # Foursquare settings
 FOURSQUARE_CLIENT_ID = 'IU4LBMWT2DOCQ2JOIN3A04450HBB4GY2D5QX0WYPQ2DLP1DK'
 FOURSQUARE_CLIENT_SECRET = 'UDFGDOKUSOOV0GGGI0JDHR5OOJ1KBVV3OJ50SOGFVFJ3YPKO'
-FOURSQUARE_LOGIN_REDIRECT = '/'
 
 # Google settings
 GOOGLE_CLIENT_ID = '961599639127.apps.googleusercontent.com'
 GOOGLE_CLIENT_SECRET = 'XjLBcVysDl6g0qEx_bnGUPDb'
-GOOGLE_LOGIN_REDIRECT = '/'
 
 # You can set up your own custom search engine on: http://www.google.com/cse/
 # just register with you google account and crate new search engine.
@@ -345,8 +331,6 @@ GOOGLE_LOGIN_REDIRECT = '/'
 # you will be explicitly warned that you have to change the code to take effect, before you will make the change.
 # Current settings are autocomplete, searching whole web.
 SEARCH_ENGINE_UNIQUE_ID = '003912915932446183218:zeq20qye9oa'
-
-DEFAULT_USER_IMAGE = 'piplmesh/images/unknown.png'
 
 CSRF_FAILURE_VIEW = 'piplmesh.frontend.views.forbidden_view'
 
