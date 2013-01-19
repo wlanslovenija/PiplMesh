@@ -65,9 +65,6 @@ urlpatterns = patterns('',
     # Panels
     url(r'^panels/collapse/$', frontend_views.panels_collapse, name='panels_collapse'),
     url(r'^panels/order/$', frontend_views.panels_order, name='panels_order'),
-
-    # Hugs and runs
-    url(r'^hug_run/$', frontend_views.hug_run, name='hug_run'),
 )
 
 if getattr(settings, 'DEBUG', False):

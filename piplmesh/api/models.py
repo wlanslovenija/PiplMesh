@@ -118,4 +118,3 @@ class LinkAttachment(Attachment):
     link_url = mongoengine.URLField(required=True)
     link_caption = mongoengine.StringField(default='', required=True)
     link_description = mongoengine.StringField(default='', required=True)
-    
