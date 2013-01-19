@@ -153,53 +153,30 @@ function Post(data) {
                 var url;
                 if (!selected) {
                     if (type == "hug") {
-                        $.ajax({
-                            'type': 'POST',
-                            'url': URLS.post + self.id + '/hugs/',
-                            'data': JSON.stringify({}),
-                            'contentType': 'application/json',
-                            'dataType': 'json',
-                            'success': function (data, textStatus, jqXHR) {
-                                link1.data('selected', true);
-                                link1.css('font-weight', 'bold').text(text1b);
-                                link2.data('selected', false);
-                                link2.css('font-weight', 'normal').text(text2);
-                            }
-                        });
+                        url = URLS.post + self.id + '/hugs/';
                     }
                     else {
-                        $.ajax({
-                            'type': 'POST',
-                            'url': URLS.post + self.id + '/runs/',
-                            'data': JSON.stringify({}),
-                            'contentType': 'application/json',
-                            'dataType': 'json',
-                            'success': function (data, textStatus, jqXHR) {
-                                link1.data('selected', true);
-                                link1.css('font-weight', 'bold').text(text1b);
-                                link2.data('selected', false);
-                                link2.css('font-weight', 'normal').text(text2);
-                            }
-                        });
+                        url = URLS.post + self.id + '/runs/';
                     }
+                    $.ajax({
+                        'type': 'POST',
+                        'url': url,
+                        'data': JSON.stringify({}),
+                        'contentType': 'application/json',
+                        'dataType': 'json',
+                        'success': function (data, textStatus, jqXHR) {
+                            link1.data('selected', true);
+                            link1.css('font-weight', 'bold').text(text1b);
+                            link2.data('selected', false);
+                            link2.css('font-weight', 'normal').text(text2);
+                        }
+                    });
                 }
                 else {
                     if (type == "hug") {
                         $.each(self.hugs, function (index, value){
                             if (value.author.username == user.username) {
                                 url = value.resource_uri;
-                            }
-                        });
-                        $.ajax({
-                            'type': 'DELETE',
-                            'url': url,
-                            'contentType': 'application/json',
-                            'dataType': 'json',
-                            'success': function (data, textStatus, jqXHR) {
-                                link1.data('selected', false);
-                                link1.css('font-weight', 'normal').text(text1);
-                                link2.data('selected', false);
-                                link2.css('font-weight', 'normal').text(text2);
                             }
                         });
                     }
@@ -209,19 +186,19 @@ function Post(data) {
                                 url = value.resource_uri;
                             }
                         });
-                        $.ajax({
-                            'type': 'DELETE',
-                            'url': url,
-                            'contentType': 'application/json',
-                            'dataType': 'json',
-                            'success': function (data, textStatus, jqXHR) {
-                                link1.data('selected', false);
-                                link1.css('font-weight', 'normal').text(text1);
-                                link2.data('selected', false);
-                                link2.css('font-weight', 'normal').text(text2);
-                            }
-                        });
                     }
+                    $.ajax({
+                        'type': 'DELETE',
+                        'url': url,
+                        'contentType': 'application/json',
+                        'dataType': 'json',
+                        'success': function (data, textStatus, jqXHR) {
+                            link1.data('selected', false);
+                            link1.css('font-weight', 'normal').text(text1);
+                            link2.data('selected', false);
+                            link2.css('font-weight', 'normal').text(text2);
+                        }
+                    });
                 }
             });
         }
