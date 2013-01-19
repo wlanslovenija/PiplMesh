@@ -189,35 +189,6 @@ def send_update_on_new_notification(sender, document, created, **kwargs):
     }, 'application/json')
     updates.send_update(notification.recipient.get_user_channel(), serialized, True)
 
-@dispatch.receiver(signals.post_updated)
-def send_update_on_updated_post(sender, post, request, bundle, **kwargs):
-    """
-    Sends update to push server when a post is updated.
-    """
-    if post.is_published:
-        hugs = []
-        for hug in post.hugs:
-            hugs.append(hug.username)
-        runs = []
-        for run in post.runs:
-            runs.append(run.username)
-        update = {
-            'type': 'post_update',
-            'post': {
-                'id': post.id.__str__(),
-                'author': {
-                    'username': post.author.username,
-                },
-                'message': post.message,
-                'hugs': hugs,
-                'runs': runs,
-                'updated_time': formatting.rfc2822_date(post.updated_time),
-                'created_time': formatting.rfc2822_date(post.created_time),
-            }
-        }
-
-        updates.send_update(HOME_CHANNEL_ID, update, False)
-
 def panels_collapse(request):
     if request.method == 'POST':
         request.user.panels_collapsed[request.POST['name']] = True if request.POST['collapsed'] == 'true' else False
@@ -244,4 +215,3 @@ def panels_order(request):
         number_of_columns = request.GET['number_of_columns']
         panels = request.user.panels_order.get(number_of_columns, [])
         return http.HttpResponse(simplejson.dumps(panels), mimetype='application/json')
-
