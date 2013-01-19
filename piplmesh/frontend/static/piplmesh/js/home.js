@@ -134,14 +134,14 @@ function Post(data) {
         var run_link = $('<a/>').addClass('hand').append(gettext("Run"));
 
         $.each(self.hugs, function (index, value){
-            if(user.username == value){
+            if(user.username == value.author.username){
                 hug_link.data('selected', true);
                 hug_link.css('font-weight', 'bold').text(gettext("Unhug"));
             }
         });
 
         $.each(self.runs, function (index, value){
-            if(user.username == value){
+            if(user.username == value.author.username){
                 run_link.data('selected', true);
                 run_link.css('font-weight', 'bold').text(gettext("Unrun"));
             }
@@ -150,27 +150,78 @@ function Post(data) {
         function hug_run_link_click (link1, link2, type, text1, text1b, text2) {
             link1.click(function (event) {
                 var selected = link1.data('selected');
+                var url;
                 if (!selected) {
-                    $.post(URLS.hug_run, {
-                        'type': type,
-                        'id': post.data('post').id
-                    }, function () {
-                        link1.data('selected', true);
-                        link1.css('font-weight', 'bold').text(text1b);
-                        link2.data('selected', false);
-                        link2.css('font-weight', 'normal').text(text2);
-                    });
+                    if (type == "hug") {
+                        $.ajax({
+                            'type': 'POST',
+                            'url': URLS.post + self.id + '/hugs/',
+                            'data': JSON.stringify({}),
+                            'contentType': 'application/json',
+                            'dataType': 'json',
+                            'success': function (data, textStatus, jqXHR) {
+                                link1.data('selected', true);
+                                link1.css('font-weight', 'bold').text(text1b);
+                                link2.data('selected', false);
+                                link2.css('font-weight', 'normal').text(text2);
+                            }
+                        });
+                    }
+                    else {
+                        $.ajax({
+                            'type': 'POST',
+                            'url': URLS.post + self.id + '/runs/',
+                            'data': JSON.stringify({}),
+                            'contentType': 'application/json',
+                            'dataType': 'json',
+                            'success': function (data, textStatus, jqXHR) {
+                                link1.data('selected', true);
+                                link1.css('font-weight', 'bold').text(text1b);
+                                link2.data('selected', false);
+                                link2.css('font-weight', 'normal').text(text2);
+                            }
+                        });
+                    }
                 }
                 else {
-                    $.post(URLS.hug_run, {
-                        'type': 'un'+type,
-                        'id': post.data('post').id
-                    }, function () {
-                        link1.data('selected', false);
-                        link1.css('font-weight', 'normal').text(text1);
-                        link2.data('selected', false);
-                        link2.css('font-weight', 'normal').text(text2);
-                    });
+                    if (type == "hug") {
+                        $.each(self.hugs, function (index, value){
+                            if (value.author.username == user.username) {
+                                url = value.resource_uri;
+                            }
+                        });
+                        $.ajax({
+                            'type': 'DELETE',
+                            'url': url,
+                            'contentType': 'application/json',
+                            'dataType': 'json',
+                            'success': function (data, textStatus, jqXHR) {
+                                link1.data('selected', false);
+                                link1.css('font-weight', 'normal').text(text1);
+                                link2.data('selected', false);
+                                link2.css('font-weight', 'normal').text(text2);
+                            }
+                        });
+                    }
+                    else {
+                        $.each(self.runs, function (index, value){
+                            if (value.author.username == user.username) {
+                                url = value.resource_uri;
+                            }
+                        });
+                        $.ajax({
+                            'type': 'DELETE',
+                            'url': url,
+                            'contentType': 'application/json',
+                            'dataType': 'json',
+                            'success': function (data, textStatus, jqXHR) {
+                                link1.data('selected', false);
+                                link1.css('font-weight', 'normal').text(text1);
+                                link2.data('selected', false);
+                                link2.css('font-weight', 'normal').text(text2);
+                            }
+                        });
+                    }
                 }
             });
         }
@@ -192,7 +243,7 @@ function Post(data) {
 
 
         var huggers = $('<ul/>');
-        if (!self.hugs) {
+        if (self.hugs.length < 1) {
             huggers.append(
                 $('<li/>').addClass('first').text(gettext("No huggers"))
             );
@@ -201,12 +252,12 @@ function Post(data) {
                 $('<li/>').addClass('first').text(gettext("Huggers:"))
             );
             $.each(self.hugs, function (index, value){
-                huggers.append($('<li/>').text(value));
+                huggers.append($('<li/>').text(value.author.username));
             });
         }
 
         var runners = $('<ul/>');
-        if (!self.runs) {
+        if (self.runs.length < 1) {
             runners.append(
                 $('<li/>').addClass('first').text(gettext("No runners"))
             );
@@ -215,7 +266,7 @@ function Post(data) {
                 $('<li/>').addClass('first').text(gettext("Runners:"))
             );
             $.each(self.runs, function (index, value){
-                runners.append($('<li/>').text(value));
+                runners.append($('<li/>').text(value.author.username));
             });
         }
 

@@ -109,12 +109,36 @@ class RunResource(AuthoredResource):
         # TODO: Make proper authorization, current implementation is for development use only
         authorization = tastypie_authorization.Authorization()
 
+    def obj_create(self, bundle, request=None, **kwargs):
+        bundle = super(RunResource, self).obj_create(bundle, request=request, **kwargs)
+
+        # By default, run author is subscribed to the post
+        if bundle.obj.author not in self.instance.subscribers:
+            self.instance.subscribers.append(bundle.obj.author)
+            self.instance.save()
+
+        return bundle
+
+
 class HugResource(AuthoredResource):
     class Meta:
         object_class = api_models.Hug
         allowed_methods = ('get', 'post', 'delete')
         # TODO: Make proper authorization, current implementation is for development use only
         authorization = tastypie_authorization.Authorization()
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        bundle = super(HugResource, self).obj_create(bundle, request=request, **kwargs)
+
+        # By default, hug author is subscribed to the post
+        if bundle.obj.author not in self.instance.subscribers:
+            self.instance.subscribers.append(bundle.obj.author)
+            self.instance.save()
+
+        #signals.post_created.send(sender=self, post=bundle.obj, request=request or bundle.request, bundle=bundle)
+
+        return bundle
+
 
 class PostResource(AuthoredResource):
     """

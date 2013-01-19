@@ -33,10 +33,20 @@ class Hug(base.AuthoredEmbeddedDocument):
     This class defines document type for hugs.
     """
 
+#    id = mongoengine.ObjectIdField(primary_key=True, default=lambda: bson.ObjectId())
+#
+#    # So that we can access both pk and id
+#    pk = fields.link_property('id')
+
 class Run(base.AuthoredEmbeddedDocument):
     """
     This class defines document type for runs.
     """
+
+#    id = mongoengine.ObjectIdField(primary_key=True, default=lambda: bson.ObjectId())
+#
+#    # So that we can access both pk and id
+#    pk = fields.link_property('id')
 
 class Post(base.AuthoredDocument):
     """
