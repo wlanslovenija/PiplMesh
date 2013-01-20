@@ -338,7 +338,10 @@ function Post(data) {
     };
 
     self.addToTop = function () {
-        if (checkIfPostExists()) return;
+        if (checkIfPostExists()) {
+            self.updatePost();
+            return;
+        }
 
         var post = createDOM().hide().prependTo($('.posts'));
         displayComments();
@@ -363,15 +366,10 @@ function Post(data) {
     };
 
     self.updatePost = function () {
-        if (checkIfPostExists()){
-            $('.post').filter(function () {
-                return $(this).data('post') && $(this).data('post').id == self.id
-                    && $(this).data('post').updated_time < self.updated_time;
-            }).replaceWith(generateHtml());
-        }
-        else {
-            generateHtml(data).prependTo($('.posts')).hide().slideToggle('slow');
-        }
+        $('.post').filter(function () {
+            return $(this).data('post') && $(this).data('post').id == self.id
+                && $(this).data('post').updated_time < self.updated_time;
+        }).replaceWith(generateHtml());
     }
 }
 
@@ -534,10 +532,6 @@ $(document).ready(function () {
 
     $.updates.registerProcessor('home_channel', 'post_published', function (data) {
         new Post(data.post).addToTop();
-    });
-    $.updates.registerProcessor('home_channel', 'post_update', function (data) {
-        var post = new Post(data.post);
-        post.updatePost();
     });
 
     $('.panel .header').click(function (event) {
