@@ -180,6 +180,60 @@ class BasicTest(test_runner.MongoEngineTestCase):
         self.assertEqual(response['created_time'], post_created_time)
         self.assertNotEqual(response['updated_time'], post_updated_time)
 
+        post_updated_time = response['updated_time']
+
+        # Delay so next update will be for sure different
+        time.sleep(1)
+
+        # Adding hug on post
+
+        hugs_resource_uri = self.fullURItoAbsoluteURI(post_uri) + 'hugs/'
+
+        response = self.client.post(hugs_resource_uri, content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+
+        hug_uri = response['location']
+
+        response = self.client.get(hug_uri)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+
+        self.assertEqual(response['author']['username'], self.user_username)
+
+        response = self.client.get(post_uri)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+
+        self.assertEqual(response['hugs'][0]['resource_uri'], self.fullURItoAbsoluteURI(hug_uri))
+        self.assertEqual(response['created_time'], post_created_time)
+        self.assertNotEqual(response['updated_time'], post_updated_time)
+
+        # Delay so next update will be for sure different
+        time.sleep(1)
+
+        # Adding run on post
+
+        runs_resource_uri = self.fullURItoAbsoluteURI(post_uri) + 'runs/'
+
+        response = self.client.post(runs_resource_uri, content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+
+        run_uri = response['location']
+
+        response = self.client.get(run_uri)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+
+        self.assertEqual(response['author']['username'], self.user_username)
+
+        response = self.client.get(post_uri)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+
+        self.assertEqual(response['runs'][0]['resource_uri'], self.fullURItoAbsoluteURI(run_uri))
+        self.assertEqual(response['created_time'], post_created_time)
+        self.assertNotEqual(response['updated_time'], post_updated_time)
+
     def test_notification(self):
         # Creating a post
 
