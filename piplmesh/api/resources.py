@@ -117,6 +117,17 @@ class RunResource(AuthoredResource):
             self.instance.subscribers.append(bundle.obj.author)
             self.instance.save()
 
+        for run in self.instance.runs:
+            if bundle.obj.author == run.author:
+                if bundle.obj != run:
+                    self.instance.runs.remove(run)
+                    self.instance.save()
+
+        for hug in self.instance.hugs:
+            if bundle.obj.author == hug.author:
+                self.instance.hugs.remove(hug)
+                self.instance.save()
+
         return bundle
 
 
@@ -134,6 +145,17 @@ class HugResource(AuthoredResource):
         if bundle.obj.author not in self.instance.subscribers:
             self.instance.subscribers.append(bundle.obj.author)
             self.instance.save()
+
+        for hug in self.instance.hugs:
+            if bundle.obj.author == hug.author:
+                if bundle.obj != hug:
+                    self.instance.hugs.remove(hug)
+                    self.instance.save()
+
+        for run in self.instance.runs:
+            if bundle.obj.author == run.author:
+                self.instance.runs.remove(run)
+                self.instance.save()
 
         #signals.post_created.send(sender=self, post=bundle.obj, request=request or bundle.request, bundle=bundle)
 
