@@ -208,6 +208,8 @@ class BasicTest(test_runner.MongoEngineTestCase):
         self.assertEqual(response['created_time'], post_created_time)
         self.assertNotEqual(response['updated_time'], post_updated_time)
 
+        post_updated_time = response['updated_time']
+
         # Delay so next update will be for sure different
         time.sleep(1)
 
@@ -233,6 +235,46 @@ class BasicTest(test_runner.MongoEngineTestCase):
         self.assertEqual(response['runs'][0]['resource_uri'], self.fullURItoAbsoluteURI(run_uri))
         self.assertEqual(response['created_time'], post_created_time)
         self.assertNotEqual(response['updated_time'], post_updated_time)
+
+        self.assertEqual(response['hugs'], [])
+
+        previous_runs = response['runs']
+
+        post_updated_time = response['updated_time']
+
+        # Delay so next update will be for sure different
+        time.sleep(1)
+
+
+        # Adding another hug on post by client 2
+
+        hugs_resource_uri = self.fullURItoAbsoluteURI(post_uri) + 'hugs/'
+
+        response = self.client2.post(hugs_resource_uri, content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+
+        hug_uri = response['location']
+
+        response = self.client2.get(hug_uri)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+
+        self.assertEqual(response['author']['username'], self.user_username2)
+
+        response = self.client2.get(post_uri)
+        self.assertEqual(response.status_code, 200)
+        response = json.loads(response.content)
+
+        self.assertEqual(response['runs'], previous_runs)
+
+        self.assertEqual(response['hugs'][0]['resource_uri'], self.fullURItoAbsoluteURI(hug_uri))
+        self.assertEqual(response['created_time'], post_created_time)
+        self.assertNotEqual(response['updated_time'], post_updated_time)
+
+        post_updated_time = response['updated_time']
+
+        # Delay so next update will be for sure different
+        time.sleep(1)
 
     def test_notification(self):
         # Creating a post
