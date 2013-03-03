@@ -19,7 +19,7 @@
                         <form action="{% url "set_language" %}" method="post">
                             {% csrf_token %}
                             <div>
-                                <input type="hidden" value="{{ request.get_full_path }}" />
+                                <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ request.get_full_path }}" />
                                 <input type="hidden" name="language" value="{{ lang.0 }}" />
                                 <button type="submit" class="text_button">{{ lang_info.name_local }}</button>
                             </div>
