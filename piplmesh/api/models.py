@@ -12,6 +12,26 @@ from . import base
 POST_MESSAGE_MAX_LENGTH = 500
 COMMENT_MESSAGE_MAX_LENGTH = 300
 
+class Hug(base.AuthoredEmbeddedDocument):
+    """
+    This class defines document type for hugs.
+    """
+
+    id = mongoengine.ObjectIdField(primary_key=True, default=lambda: bson.ObjectId())
+
+    # So that we can access both pk and id
+    pk = fields.link_property('id')
+
+class Run(base.AuthoredEmbeddedDocument):
+    """
+    This class defines document type for runs.
+    """
+
+    id = mongoengine.ObjectIdField(primary_key=True, default=lambda: bson.ObjectId())
+
+    # So that we can access both pk and id
+    pk = fields.link_property('id')
+
 class Comment(base.AuthoredEmbeddedDocument):
     """
     This class defines document type for comments on posts.
@@ -20,6 +40,9 @@ class Comment(base.AuthoredEmbeddedDocument):
     id = mongoengine.ObjectIdField(primary_key=True, default=lambda: bson.ObjectId())
     message = mongoengine.StringField(max_length=COMMENT_MESSAGE_MAX_LENGTH, required=True)
 
+    hugs = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Hug), default=lambda: [], required=False)
+    runs = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Run), default=lambda: [], required=False)
+
     # So that we can access both pk and id
     pk = fields.link_property('id')
 
@@ -27,26 +50,6 @@ class Attachment(base.AuthoredEmbeddedDocument):
     """
     This class defines document type for attachments on posts.
     """
-
-class Hug(base.AuthoredEmbeddedDocument):
-    """
-    This class defines document type for hugs.
-    """
-
-#    id = mongoengine.ObjectIdField(primary_key=True, default=lambda: bson.ObjectId())
-#
-#    # So that we can access both pk and id
-#    pk = fields.link_property('id')
-
-class Run(base.AuthoredEmbeddedDocument):
-    """
-    This class defines document type for runs.
-    """
-
-#    id = mongoengine.ObjectIdField(primary_key=True, default=lambda: bson.ObjectId())
-#
-#    # So that we can access both pk and id
-#    pk = fields.link_property('id')
 
 class Post(base.AuthoredDocument):
     """

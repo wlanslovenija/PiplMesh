@@ -19,7 +19,6 @@ from mongogeneric import detail
 from mongo_auth import backends
 
 from pushserver.utils import updates
-from tastypie.utils import formatting
 
 from piplmesh import nodes
 from piplmesh.nodes import models as nodes_models

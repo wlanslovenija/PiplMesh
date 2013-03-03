@@ -26,6 +26,66 @@ class AuthoredResource(resources.MongoEngineResource):
         bundle.obj.author = bundle.request.user
         return bundle
 
+class RunResource(AuthoredResource):
+    class Meta:
+        object_class = api_models.Run
+        allowed_methods = ('get', 'post', 'delete')
+        # TODO: Make proper authorization, current implementation is for development use only
+        authorization = tastypie_authorization.Authorization()
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        bundle = super(RunResource, self).obj_create(bundle, request=request, **kwargs)
+
+        # By default, run author is subscribed to the post
+        if bundle.obj.author not in self.instance.subscribers:
+            self.instance.subscribers.append(bundle.obj.author)
+            self.instance.save()
+
+        for run in self.instance.runs:
+            if bundle.obj.author == run.author:
+                if bundle.obj != run:
+                    self.instance.runs.remove(run)
+                    self.instance.save()
+
+        for hug in self.instance.hugs:
+            if bundle.obj.author == hug.author:
+                self.instance.hugs.remove(hug)
+                self.instance.save()
+
+        return bundle
+
+
+class HugResource(AuthoredResource):
+    class Meta:
+        object_class = api_models.Hug
+        allowed_methods = ('get', 'post', 'delete')
+        # TODO: Make proper authorization, current implementation is for development use only
+        authorization = tastypie_authorization.Authorization()
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        bundle = super(HugResource, self).obj_create(bundle, request=request, **kwargs)
+
+        # By default, hug author is subscribed to the post
+        if bundle.obj.author not in self.instance.subscribers:
+            self.instance.subscribers.append(bundle.obj.author)
+            self.instance.save()
+
+        for hug in self.instance.hugs:
+            if bundle.obj.author == hug.author:
+                if bundle.obj != hug:
+                    self.instance.hugs.remove(hug)
+                    self.instance.save()
+
+        for run in self.instance.runs:
+            if bundle.obj.author == run.author:
+                self.instance.runs.remove(run)
+                self.instance.save()
+
+        #signals.post_created.send(sender=self, post=bundle.obj, request=request or bundle.request, bundle=bundle)
+
+        return bundle
+
+
 class CommentResource(AuthoredResource):
     def obj_create(self, bundle, request=None, **kwargs):
         bundle = super(CommentResource, self).obj_create(bundle, request=request, **kwargs)
@@ -101,66 +161,6 @@ class AttachmentResource(AuthoredResource):
             'image': ImageAttachmentResource,
             'link': LinkAttachmentResource,
         }
-
-class RunResource(AuthoredResource):
-    class Meta:
-        object_class = api_models.Run
-        allowed_methods = ('get', 'post', 'delete')
-        # TODO: Make proper authorization, current implementation is for development use only
-        authorization = tastypie_authorization.Authorization()
-
-    def obj_create(self, bundle, request=None, **kwargs):
-        bundle = super(RunResource, self).obj_create(bundle, request=request, **kwargs)
-
-        # By default, run author is subscribed to the post
-        if bundle.obj.author not in self.instance.subscribers:
-            self.instance.subscribers.append(bundle.obj.author)
-            self.instance.save()
-
-        for run in self.instance.runs:
-            if bundle.obj.author == run.author:
-                if bundle.obj != run:
-                    self.instance.runs.remove(run)
-                    self.instance.save()
-
-        for hug in self.instance.hugs:
-            if bundle.obj.author == hug.author:
-                self.instance.hugs.remove(hug)
-                self.instance.save()
-
-        return bundle
-
-
-class HugResource(AuthoredResource):
-    class Meta:
-        object_class = api_models.Hug
-        allowed_methods = ('get', 'post', 'delete')
-        # TODO: Make proper authorization, current implementation is for development use only
-        authorization = tastypie_authorization.Authorization()
-
-    def obj_create(self, bundle, request=None, **kwargs):
-        bundle = super(HugResource, self).obj_create(bundle, request=request, **kwargs)
-
-        # By default, hug author is subscribed to the post
-        if bundle.obj.author not in self.instance.subscribers:
-            self.instance.subscribers.append(bundle.obj.author)
-            self.instance.save()
-
-        for hug in self.instance.hugs:
-            if bundle.obj.author == hug.author:
-                if bundle.obj != hug:
-                    self.instance.hugs.remove(hug)
-                    self.instance.save()
-
-        for run in self.instance.runs:
-            if bundle.obj.author == run.author:
-                self.instance.runs.remove(run)
-                self.instance.save()
-
-        #signals.post_created.send(sender=self, post=bundle.obj, request=request or bundle.request, bundle=bundle)
-
-        return bundle
-
 
 class PostResource(AuthoredResource):
     """
