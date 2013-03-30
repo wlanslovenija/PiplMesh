@@ -228,12 +228,12 @@ class BasicTest(test_runner.MongoEngineTestCase):
 
         # Checking updates
 
-        self.assertEqual(len(self.updates_data), 2)
+        self.assertEqual(len(self.updates_data), 3)
         self.assertEqual(self.updates_data[0]['channel_id'], tasks.HOME_CHANNEL_ID)
-        self.assertEqual(self.updates_data[1]['channel_id'], self.user.get_user_channel())
-        self.assertTrue(self.updates_data[1]['already_serialized'])
+        self.assertEqual(self.updates_data[2]['channel_id'], self.user.get_user_channel())
+        self.assertTrue(self.updates_data[2]['already_serialized'])
 
-        notification = json.loads(self.updates_data[1]['data'])
+        notification = json.loads(self.updates_data[2]['data'])
 
         self.assertEqual(notification['type'], 'notification')
         self.assertEqual(notification['notification']['comment']['message'], 'Test comment 1.')
