@@ -1,6 +1,6 @@
 {% extends "plain.html" %}
 
-{% load i18n staticfiles %}
+{% load i18n staticfiles sekizai_tags %}
 
 {% block title %}{% trans "Search" %}{% endblock %}
 
@@ -9,10 +9,12 @@
         <div id="google_query">{% trans "Results for:" %} <span class="google_query_text">{{ request.GET.q }}</span></div>
     {% endif %}
     <div id="cse" class="result"></div>
-    <script src="https://www.google.com/jsapi" type="text/javascript"></script>
-    <script type="text/javascript">
-        var language_code = '{{ LANGUAGE_CODE|escapejs }}';
-        var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID|escapejs }}';
-    </script>
-    <script type="text/javascript" src="{% static "piplmesh/js/search_page.js" %}"></script>
+    {% addtoblock "js" %}<script src="https://www.google.com/jsapi" type="text/javascript"></script>{% endaddtoblock %}
+    {% addtoblock "js" %}
+        <script type="text/javascript">
+            var language_code = '{{ LANGUAGE_CODE|escapejs }}';
+            var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID|escapejs }}';
+        </script>
+    {% endaddtoblock %}
+    {% addtoblock "js" %}<script type="text/javascript" src="{% static "piplmesh/js/search_page.js" %}"></script>{% endaddtoblock %}
 {% endblock %}
