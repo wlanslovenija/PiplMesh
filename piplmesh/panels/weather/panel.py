@@ -13,6 +13,8 @@ WEATHER_FORECAST_RANGE = 3 # days from being created
 
 class WeatherPanel(panels.BasePanel): 
     def get_context(self, context):
+        context = super(WeatherPanel, self).get_context(context)
+
         context.update({
             'header': _("Weather"),
         })
