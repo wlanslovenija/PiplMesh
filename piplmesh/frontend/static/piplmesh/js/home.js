@@ -64,7 +64,7 @@ function orderPanels() {
     $.getJSON(URLS.panels_order, {
         'number_of_columns': howManyColumns()
     }, function (data, textStatus, jqXHR) {
-        if (data.length == 0) {
+        if (data.length === 0) {
             orderPanelsDefault();
         }
         else {
@@ -150,15 +150,38 @@ function Post(data) {
     
     function createCommentForm() {
         // TODO: Instead of creating forms use a static form from template, clone it and append event handlers
-        var textarea = $('<textarea/>').addClass('comment_text');
+        var textarea = $('<textarea/>').addClass('comment_text').keyup(function (event) {
+            if (!$(this).val().trim()) {
+                input.prop('disabled', true);
+            }
+            else {
+                input.prop('disabled', false);
+            }
+        });
         var input = $('<input/>').attr({
             'type': 'button',
             'value': 'submit',
-            'name': 'submit_comment'
+            'name': 'submit_comment',
+            'disabled': 'disabled'
         }).click(function (event) {
-            // TODO: Disable enable submit button like with the Post. After submitting clear the textarea of text
-            // TODO: Push new comments to all clients and display them automatically and do not use textarea content but use data from the server (it might be processed)
-            addComment(textarea.val(), buildCommentURL(self.id));
+            var comment = textarea.val();
+            var button = $(this).prop('disabled', true);
+            $.ajax({
+                'type': 'POST',
+                'url': buildCommentURL(self.id),
+                'data': JSON.stringify({
+                    'message': comment
+                }),
+                'contentType': 'application/json',
+                'dataType': 'json',
+                'success': function (data, textStatus, jqXHR) {
+                    textarea.val('');
+                },
+                'error': function (jqXHR, textStatus, errorThrown) {
+                    // There was an error, we enable form back
+                    button.prop('disabled', false);
+                }
+            });
         });
         var form = $('<form/>').append(textarea, input);
         
@@ -180,7 +203,7 @@ function Post(data) {
     
     function checkIfPostExists() {
         return $('.post').is(function (index) {
-            return $(this).data('post').id == self.id;
+            return $(this).data('post').id === self.id;
         });
     }
 
@@ -193,7 +216,7 @@ function Post(data) {
     function showPost(post) {
         // TODO: Animation has to be considered and maybe improved
         post.show('fast');
-    };
+    }
 
     self.addToBottom = function () {
         if (checkIfPostExists()) return;
@@ -228,6 +251,13 @@ function Post(data) {
     };
 }
 
+Post.getById = function (post_id) {
+    return $('.post').map(function (index, el) {
+        var post = $(this).data('post');
+        if (post.id === post_id) return post;
+    }).get(0);
+};
+
 function Comment(data, post) {
     var self = this;
     $.extend(self, data);
@@ -251,9 +281,9 @@ function Comment(data, post) {
     
     self.appendToPost = function () {
         $('.post').each(function (index, post) {
-            if ($(post).data('post').id == self.post.id) {
+            if ($(post).data('post').id === self.post.id) {
                 if ($(post).find('.comment').is(function (index) {
-                    return $(this).data('comment').id == self.id;
+                    return $(this).data('comment').id === self.id;
                 })) return;
                 $(this).find('.comments').append(createDOM());
                 return false;
@@ -324,7 +354,7 @@ function Notification(data) {
 
     function checkIfNotificationExists() {
         return $('.notification').is(function (index) {
-            return $(this).data('notification').id == self.id;
+            return $(this).data('notification').id === self.id;
         });
     }
 
@@ -351,18 +381,6 @@ function buildCommentURL(post_id) {
     return URLS.post + post_id + '/comments/';
 }
 
-function addComment(comment, comment_url) {
-    $.ajax({
-        'type': 'POST',
-        'url': comment_url,
-        'data': JSON.stringify({'message': comment}),
-        'contentType': 'application/json',
-        'dataType': 'json',
-        'success': function (data, textStatus, jqXHR) {
-        }
-    });
-}
-
 function autoShowIncomingPosts() {
     return $('#toggle_queue_checkbox').is(':checked');
 }
@@ -387,6 +405,10 @@ $(document).ready(function () {
 
     $.updates.registerProcessor('home_channel', 'post_published', function (data) {
         new Post(data.post).addToTop();
+    });
+
+    $.updates.registerProcessor('home_channel', 'comment_made', function (data) {
+        new Comment(data.comment, Post.getById(data.post_id)).appendToPost();
     });
 
     $('.panel .header').click(function (event) {
@@ -438,7 +460,7 @@ $(document).ready(function () {
     });
 
     $('#post_text').expandingTextArea().focus(function (event) {
-        if ($(this).val() == input_box_text) {
+        if ($(this).val() === input_box_text) {
             $(this).val('');
         }
         $(this).css('min-height', 50);
