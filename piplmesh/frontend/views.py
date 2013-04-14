@@ -143,7 +143,26 @@ def send_update_on_published_post(sender, post, request, bundle, **kwargs):
 
         # We send update asynchronously as it could block and we
         # want REST request to finish quick
-        tasks.send_update_on_published_post.delay(serialized_update)
+        tasks.send_update.delay(serialized_update)
+
+@dispatch.receiver(signals.comment_created)
+def send_update_on_comment(sender, comment, post, request, bundle, **kwargs):
+    """
+    Sends update through push server when a comment is made.
+    """
+
+    output_bundle = sender.full_dehydrate(bundle)
+    output_bundle = sender.alter_detail_data_to_serialize(request, output_bundle)
+
+    serialized_update = sender.serialize(request, {
+        'type': 'comment_made',
+        'comment': output_bundle.data,
+        'post_id': post.id,
+    }, 'application/json')
+
+    # We send update asynchronously as it could block and we
+    # want REST request to finish quick
+    tasks.send_update.delay(serialized_update)
 
 @mongoengine_signals.post_save.connect_via(sender=api_models.Notification)
 def send_update_on_new_notification(sender, document, created, **kwargs):

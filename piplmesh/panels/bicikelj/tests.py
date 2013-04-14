@@ -45,12 +45,17 @@ class BasicTest(test_runner.MongoEngineTestCase):
         context = template.RequestContext(request)
 
         data = {}
-        on_template_render = functional.curry(client.store_rendered_templates, data)
-        signals.template_rendered.connect(on_template_render, dispatch_uid="template-render")
+
+        def store_rendered_templates(signal, sender, template, context, **kwargs):
+            for d in context.dicts:
+                for e in d.dicts:
+                    data.update(e)
+
+        signals.template_rendered.connect(store_rendered_templates, dispatch_uid="template-render")
 
         try:
             panel.BicikeljPanel().render(request, context)
         finally:
             signals.template_rendered.disconnect(dispatch_uid="template-render")
 
-        self.assertEqual(len(data['context']['stations']), 1)
+        self.assertEqual(len(data['stations']), 1)

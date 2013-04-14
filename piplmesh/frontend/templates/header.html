@@ -1,4 +1,4 @@
-{% load future i18n staticfiles string_tags mongo_auth %}
+{% load future i18n staticfiles sekizai_tags string_tags mongo_auth %}
 
 <div id="container">
     <div id="header">
@@ -10,13 +10,15 @@
         <div id="search">
             <img id="search_logo" src="{% static "piplmesh/images/google.png" %}" alt="Google" />
             <div id="cse_search_form"></div>
-            <script src="https://www.google.com/jsapi" type="text/javascript"></script>
-            <script type="text/javascript">
-                var language_code = '{{ LANGUAGE_CODE|escapejs }}';
-                var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID|escapejs }}';
-                var search_page_url = '{% filter escapejs %}{% url "search" %}{% endfilter %}';
-            </script>
-            <script type="text/javascript" src="{% static "piplmesh/js/search_bar.js" %}"></script>
+            {% addtoblock "js" %}<script src="https://www.google.com/jsapi" type="text/javascript"></script>{% endaddtoblock %}
+            {% addtoblock "js" %}
+                <script type="text/javascript">
+                    var language_code = '{{ LANGUAGE_CODE|escapejs }}';
+                    var search_engine_unique_id = '{{ SEARCH_ENGINE_UNIQUE_ID|escapejs }}';
+                    var search_page_url = '{% filter escapejs %}{% url "search" %}{% endfilter %}';
+                </script>
+            {% endaddtoblock %}
+            {% addtoblock "js" %}<script type="text/javascript" src="{% static "piplmesh/js/search_page.js" %}"></script>{% endaddtoblock %}
             {% if "q" in request.GET %}
                 {% trans "See your query results on " %}<a id="google_results_link">Google</a>.
             {% endif %}

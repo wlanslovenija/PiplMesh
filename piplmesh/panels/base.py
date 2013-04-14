@@ -53,8 +53,11 @@ class BasePanel(object):
     def render(self, request, context):
         try:
             self.request = request
-            context = self.get_context(context)
             template = self.get_template()
-            return loader.render_to_string(template, context)
+            context.update(self.get_context({}))
+            try:
+                return loader.render_to_string(template, context)
+            finally:
+                context.pop()
         finally:
             self.request = None
