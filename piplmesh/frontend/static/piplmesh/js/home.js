@@ -123,12 +123,16 @@ function Post(data) {
         var post = $('<li/>').addClass('post').data('post', self);
 
         var delete_link = $('<li/>').append(
-            $('<a/>').addClass('delete-post hand').text(gettext("Delete"))
+            $('<a/>').addClass('delete-post hand').text(gettext("Delete")).click(function (event) {
+                $.ajax({
+                    'type': 'DELETE',
+                    'url': data.resource_uri
+                });
+            })
         );
         var edit_link = $('<li/>').append(
             $('<a/>').addClass('edit-post hand').text(gettext("Edit"))
         );
-
 
         var hug_link = $('<a/>').addClass('hand').text(gettext("Hug"));
         var run_link = $('<a/>').addClass('hand').append(gettext("Run"));
@@ -147,7 +151,7 @@ function Post(data) {
             }
         });
 
-        function hug_run_link_click (link1, link2, type, text1, text1b, text2) {
+        function hug_run_link_click(link1, link2, type, text1, text1b, text2) {
             link1.click(function (event) {
                 var selected = link1.data('selected');
                 var url;
@@ -174,14 +178,14 @@ function Post(data) {
                 }
                 else {
                     if (type == "hug") {
-                        $.each(self.hugs, function (index, value){
+                        $.each(self.hugs, function (index, value) {
                             if (value.author.username == user.username) {
                                 url = value.resource_uri;
                             }
                         });
                     }
                     else {
-                        $.each(self.runs, function (index, value){
+                        $.each(self.runs, function (index, value) {
                             if (value.author.username == user.username) {
                                 url = value.resource_uri;
                             }
@@ -190,8 +194,6 @@ function Post(data) {
                     $.ajax({
                         'type': 'DELETE',
                         'url': url,
-                        'contentType': 'application/json',
-                        'dataType': 'json',
                         'success': function (data, textStatus, jqXHR) {
                             link1.data('selected', false);
                             link1.css('font-weight', 'normal').text(text1);
@@ -262,7 +264,6 @@ function Post(data) {
                 $('.hugs_runs_display', this).hide();
             }
         );
-        
 
         var post = $('<li/>').addClass('post').data('post', self).append(post_options).append(
             $('<span/>').append(author_link)
