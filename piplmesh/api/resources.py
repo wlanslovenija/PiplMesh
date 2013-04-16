@@ -26,7 +26,29 @@ class AuthoredResource(resources.MongoEngineResource):
         bundle.obj.author = bundle.request.user
         return bundle
 
-class RunResource(AuthoredResource):
+class HugRunResourceParent(AuthoredResource):
+    def obj_create(self, bundle, request=None, **kwargs):
+        bundle = super(HugRunResourceParent, self).obj_create(bundle, request=request, **kwargs)
+
+        # By default,hug or run author is subscribed to the post
+        if bundle.obj.author not in self.instance.subscribers:
+            self.instance.subscribers.append(bundle.obj.author)
+            self.instance.save()
+
+        return bundle
+
+    def only_one_hug_or_run(self, list1, list2, object):
+        for item in list1:
+            if object.author == item.author and object != item:
+                list1.remove(object)
+                return
+
+        for item in list2:
+            if object.author == item.author:
+                list2.remove(item)
+                return
+
+class RunResource(HugRunResourceParent):
     class Meta:
         object_class = api_models.Run
         allowed_methods = ('get', 'post', 'delete')
@@ -36,26 +58,13 @@ class RunResource(AuthoredResource):
     def obj_create(self, bundle, request=None, **kwargs):
         bundle = super(RunResource, self).obj_create(bundle, request=request, **kwargs)
 
-        # By default, run author is subscribed to the post
-        if bundle.obj.author not in self.instance.subscribers:
-            self.instance.subscribers.append(bundle.obj.author)
-            self.instance.save()
+        self.only_one_hug_or_run(self.instance.runs, self.instance.hugs, bundle.obj)
 
-        for run in self.instance.runs:
-            if bundle.obj.author == run.author:
-                if bundle.obj != run:
-                    self.instance.runs.remove(run)
-                    self.instance.save()
-
-        for hug in self.instance.hugs:
-            if bundle.obj.author == hug.author:
-                self.instance.hugs.remove(hug)
-                self.instance.save()
+        self.instance.save()
 
         return bundle
 
-
-class HugResource(AuthoredResource):
+class HugResource(HugRunResourceParent):
     class Meta:
         object_class = api_models.Hug
         allowed_methods = ('get', 'post', 'delete')
@@ -65,26 +74,13 @@ class HugResource(AuthoredResource):
     def obj_create(self, bundle, request=None, **kwargs):
         bundle = super(HugResource, self).obj_create(bundle, request=request, **kwargs)
 
-        # By default, hug author is subscribed to the post
-        if bundle.obj.author not in self.instance.subscribers:
-            self.instance.subscribers.append(bundle.obj.author)
-            self.instance.save()
+        self.only_one_hug_or_run(self.instance.hugs, self.instance.runs, bundle.obj)
 
-        for hug in self.instance.hugs:
-            if bundle.obj.author == hug.author:
-                if bundle.obj != hug:
-                    self.instance.hugs.remove(hug)
-                    self.instance.save()
-
-        for run in self.instance.runs:
-            if bundle.obj.author == run.author:
-                self.instance.runs.remove(run)
-                self.instance.save()
+        self.instance.save()
 
         #signals.post_created.send(sender=self, post=bundle.obj, request=request or bundle.request, bundle=bundle)
 
         return bundle
-
 
 class CommentResource(AuthoredResource):
     def obj_create(self, bundle, request=None, **kwargs):

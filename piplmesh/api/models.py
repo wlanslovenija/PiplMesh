@@ -12,25 +12,25 @@ from . import base
 POST_MESSAGE_MAX_LENGTH = 500
 COMMENT_MESSAGE_MAX_LENGTH = 300
 
-class Hug(base.AuthoredEmbeddedDocument):
+class HugRunParent(base.AuthoredEmbeddedDocument):
+    """
+    This class defines intermediate document type for both hugs and runs.
+    """
+
+    id = mongoengine.ObjectIdField(primary_key=True, default=lambda: bson.ObjectId())
+
+    # So that we can access both pk and id
+    pk = fields.link_property('id')
+
+class Hug(HugRunParent):
     """
     This class defines document type for hugs.
     """
 
-    id = mongoengine.ObjectIdField(primary_key=True, default=lambda: bson.ObjectId())
-
-    # So that we can access both pk and id
-    pk = fields.link_property('id')
-
-class Run(base.AuthoredEmbeddedDocument):
+class Run(HugRunParent):
     """
     This class defines document type for runs.
     """
-
-    id = mongoengine.ObjectIdField(primary_key=True, default=lambda: bson.ObjectId())
-
-    # So that we can access both pk and id
-    pk = fields.link_property('id')
 
 class Comment(base.AuthoredEmbeddedDocument):
     """
@@ -41,7 +41,9 @@ class Comment(base.AuthoredEmbeddedDocument):
     message = mongoengine.StringField(max_length=COMMENT_MESSAGE_MAX_LENGTH, required=True)
 
     hugs = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Hug), default=lambda: [], required=False)
+    hugs_count = mongoengine.IntField()
     runs = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Run), default=lambda: [], required=False)
+    runs_count = mongoengine.IntField()
 
     # So that we can access both pk and id
     pk = fields.link_property('id')
@@ -64,7 +66,9 @@ class Post(base.AuthoredDocument):
     attachments = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Attachment), default=lambda: [], required=False)
 
     hugs = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Hug), default=lambda: [], required=False)
+    hugs_count = mongoengine.IntField()
     runs = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Run), default=lambda: [], required=False)
+    runs_count = mongoengine.IntField()
 
     subscribers = mongoengine.ListField(mongoengine.ReferenceField(backends.User), default=lambda: [], required=False)
 
@@ -75,6 +79,14 @@ class Post(base.AuthoredDocument):
 
     def save(self, *args, **kwargs):
         self.updated_time = timezone.now()
+
+        self.hugs_count = len(self.hugs)
+        self.runs_count = len(self.runs)
+
+        for comment in self.comments:
+            comment.hugs_count = len(comment.hugs)
+            comment.runs_count = len(comment.runs)
+
         return super(Post, self).save(*args, **kwargs)
 
     def get_comment(self, comment_pk):
