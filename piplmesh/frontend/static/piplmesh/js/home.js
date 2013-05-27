@@ -120,8 +120,6 @@ function Post(data) {
     function createDOM() {
         // TODO: Improve and add other post options
 
-        var post = $('<li/>').addClass('post').data('post', self);
-
         var delete_link = $('<li/>').append(
             $('<a/>').addClass('delete-post hand').text(gettext("Delete")).click(function (event) {
                 $.ajax({
