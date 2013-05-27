@@ -135,15 +135,15 @@ function Post(data) {
         var hug_link = $('<a/>').addClass('hand').text(gettext("Hug"));
         var run_link = $('<a/>').addClass('hand').append(gettext("Run"));
 
-        $.each(self.hugs, function (index, value){
-            if(user.username == value.author.username){
+        $.each(self.hugs, function (index, value) {
+            if(user.username == value.author.username) {
                 hug_link.data('selected', true);
                 hug_link.css('font-weight', 'bold').text(gettext("Unhug"));
             }
         });
 
-        $.each(self.runs, function (index, value){
-            if(user.username == value.author.username){
+        $.each(self.runs, function (index, value) {
+            if(user.username == value.author.username) {
                 run_link.data('selected', true);
                 run_link.css('font-weight', 'bold').text(gettext("Unrun"));
             }
@@ -225,7 +225,7 @@ function Post(data) {
             huggers.append(
                 $('<li/>').addClass('first').text(gettext("Huggers:"))
             );
-            $.each(self.hugs, function (index, value){
+            $.each(self.hugs, function (index, value) {
                 huggers.append($('<li/>').text(value.author.username));
             });
         }
@@ -239,7 +239,7 @@ function Post(data) {
             runners.append(
                 $('<li/>').addClass('first').text(gettext("Runners:"))
             );
-            $.each(self.runs, function (index, value){
+            $.each(self.runs, function (index, value) {
                 runners.append($('<li/>').text(value.author.username));
             });
         }
