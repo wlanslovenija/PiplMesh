@@ -163,9 +163,6 @@ function Post(data) {
                     $.ajax({
                         'type': 'POST',
                         'url': url,
-                        'data': JSON.stringify({}),
-                        'contentType': 'application/json',
-                        'dataType': 'json',
                         'success': function (data, textStatus, jqXHR) {
                             link1.data('selected', true);
                             link1.css('font-weight', 'bold').text(text1b);
