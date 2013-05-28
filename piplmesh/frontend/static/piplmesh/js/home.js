@@ -162,13 +162,7 @@ function Post(data) {
                     }
                     $.ajax({
                         'type': 'POST',
-                        'url': url,
-                        'success': function (data, textStatus, jqXHR) {
-                            link1.data('selected', true);
-                            link1.css('font-weight', 'bold').text(text1b);
-                            link2.data('selected', false);
-                            link2.css('font-weight', 'normal').text(text2);
-                        }
+                        'url': url
                     });
                 }
                 else {
