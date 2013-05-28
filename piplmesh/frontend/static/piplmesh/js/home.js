@@ -200,15 +200,13 @@ function Post(data) {
         var hug = $('<li/>').addClass('hug').append(hug_link);
         var run = $('<li/>').addClass('run').append(run_link);
 
-
         var post_options = $('<ul />').addClass('options').append(edit_link, delete_link, hug, run);
-        
+
         // TODO: Author link shouldn't be hardcoded
         var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
 
         var date = $('<span/>').addClass('date');
         new Date(self.created_time).updatingNaturaltime(date);
-
 
         var huggers = $('<ul/>');
         if (self.hugs.length < 1) {
@@ -269,10 +267,10 @@ function Post(data) {
         ).append(
            $('<span/>').append(createCommentForm())
         );
-        
+
         return post;
     }
-    
+
     function createCommentForm() {
         // TODO: Instead of creating forms use a static form from template, clone it and append event handlers
         var textarea = $('<textarea/>').addClass('comment_text').keyup(function (event) {
@@ -309,23 +307,23 @@ function Post(data) {
             });
         });
         var form = $('<form/>').append(textarea, input);
-        
+
         return form;
     }
-    
+
     function getComment(comment_url) {
         $.getJSON(comment_url, function (data, textStatus, jqXHR) {
             new Comment(data, self).appendToPost();
         });
     }
-    
+
     function displayComments() {
         // TODO: We call comments in the right order but that doesn't mean we get them in the right order aswell. Should make some ordering down the road
         $.each(self.comments, function (index, comment_url) {
             getComment(comment_url);
         });
     }
-    
+
     function checkIfPostExists() {
         return $('.post').is(function (index) {
             return $(this).data('post').id === self.id;
@@ -345,7 +343,7 @@ function Post(data) {
 
     self.addToBottom = function () {
         if (checkIfPostExists()) return;
-        
+
         $('.posts').append(createDOM());
         displayComments();
     };
@@ -358,7 +356,7 @@ function Post(data) {
 
         var post = createDOM().hide().prependTo($('.posts'));
         displayComments();
-        
+
         if (postByUser()) {
             // TODO: Maybe we should remove URI after showing user's post
             showPost(post);
@@ -382,7 +380,7 @@ function Post(data) {
         $('.post').filter(function () {
             return $(this).data('post') && $(this).data('post').id == self.id
                 && $(this).data('post').updated_time < self.updated_time;
-        }).replaceWith(generateHtml());
+        }).replaceWith(createDOM());
     }
 }
 
@@ -397,7 +395,7 @@ function Comment(data, post) {
     var self = this;
     $.extend(self, data);
     self.post = post;
-    
+
     function createDOM() {
         // TODO: Author link shouldn't be hardcoded
         var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
@@ -410,10 +408,10 @@ function Comment(data, post) {
         ).append(
             date
         );
-        
+
         return comment;
     }
-    
+
     self.appendToPost = function () {
         $('.post').each(function (index, post) {
             if ($(post).data('post').id === self.post.id) {
