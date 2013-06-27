@@ -162,7 +162,10 @@ function Post(data) {
                     }
                     $.ajax({
                         'type': 'POST',
-                        'url': url
+                        'url': url,
+                        'data': '{}',
+                        'contentType': 'application/json',
+                        'dataType': 'json'
                     });
                 }
                 else {
