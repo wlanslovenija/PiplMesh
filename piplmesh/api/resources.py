@@ -62,6 +62,8 @@ class RunResource(HugRunResourceParent):
 
         self.instance.save()
 
+        # TODO: Should use the signal to push to all clients information about the new run
+
         return bundle
 
 class HugResource(HugRunResourceParent):
@@ -78,7 +80,7 @@ class HugResource(HugRunResourceParent):
 
         self.instance.save()
 
-        #signals.post_created.send(sender=self, post=bundle.obj, request=request or bundle.request, bundle=bundle)
+        # TODO: Should use the signal to push to all clients information about the new run
 
         return bundle
 
