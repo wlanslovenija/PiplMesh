@@ -47,7 +47,7 @@ class ContactView(generic_views.FormView):
     
     User is redirected back to the contact page.
     """
-    
+
     template_name = 'contact.html'
     success_url = urlresolvers.reverse_lazy('contact')
     form_class = forms.ContactForm

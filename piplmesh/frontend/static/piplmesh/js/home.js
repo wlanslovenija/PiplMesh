@@ -119,35 +119,158 @@ function Post(data) {
 
     function createDOM() {
         // TODO: Improve and add other post options
+
         var delete_link = $('<li/>').append(
-            $('<a/>').addClass('delete-post hand').text(gettext("Delete"))
+            $('<a/>').addClass('delete-post hand').text(gettext("Delete")).click(function (event) {
+                $.ajax({
+                    'type': 'DELETE',
+                    'url': data.resource_uri
+                });
+            })
         );
         var edit_link = $('<li/>').append(
             $('<a/>').addClass('edit-post hand').text(gettext("Edit"))
         );
-        var post_options = $('<ul />').addClass('options').append(edit_link, delete_link);
-        
+
+        var hug_link = $('<a/>').addClass('hand').text(gettext("Hug"));
+        var run_link = $('<a/>').addClass('hand').append(gettext("Run"));
+
+        $.each(self.hugs, function (index, value) {
+            if(user.username == value.author.username) {
+                hug_link.data('selected', true);
+                hug_link.css('font-weight', 'bold').text(gettext("Unhug"));
+            }
+        });
+
+        $.each(self.runs, function (index, value) {
+            if(user.username == value.author.username) {
+                run_link.data('selected', true);
+                run_link.css('font-weight', 'bold').text(gettext("Unrun"));
+            }
+        });
+
+        function hug_run_link_click(link1, link2, type, text1, text1b, text2) {
+            link1.click(function (event) {
+                var selected = link1.data('selected');
+                var url;
+                if (!selected) {
+                    if (type == "hug") {
+                        url = URLS.post + self.id + '/hugs/';
+                    }
+                    else {
+                        url = URLS.post + self.id + '/runs/';
+                    }
+                    $.ajax({
+                        'type': 'POST',
+                        'url': url
+                    });
+                }
+                else {
+                    if (type == "hug") {
+                        $.each(self.hugs, function (index, value) {
+                            if (value.author.username == user.username) {
+                                url = value.resource_uri;
+                            }
+                        });
+                    }
+                    else {
+                        $.each(self.runs, function (index, value) {
+                            if (value.author.username == user.username) {
+                                url = value.resource_uri;
+                            }
+                        });
+                    }
+                    $.ajax({
+                        'type': 'DELETE',
+                        'url': url,
+                        'success': function (data, textStatus, jqXHR) {
+                            link1.data('selected', false);
+                            link1.css('font-weight', 'normal').text(text1);
+                            link2.data('selected', false);
+                            link2.css('font-weight', 'normal').text(text2);
+                        }
+                    });
+                }
+            });
+        }
+
+        hug_run_link_click(hug_link, run_link, 'hug', gettext("Hug"), gettext("Unhug"), gettext("Run"));
+        hug_run_link_click(run_link, hug_link, 'run', gettext("Run"), gettext("Unrun"), gettext("Hug"));
+
+        var hug = $('<li/>').addClass('hug').append(hug_link);
+        var run = $('<li/>').addClass('run').append(run_link);
+
+        var post_options = $('<ul />').addClass('options').append(edit_link, delete_link, hug, run);
+
         // TODO: Author link shouldn't be hardcoded
         var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
 
         var date = $('<span/>').addClass('date');
         new Date(self.created_time).updatingNaturaltime(date);
 
+        var huggers = $('<ul/>');
+        if (self.hugs.length < 1) {
+            huggers.append(
+                $('<li/>').addClass('first').text(gettext("No huggers"))
+            );
+        } else {
+            huggers.append(
+                $('<li/>').addClass('first').text(gettext("Huggers:"))
+            );
+            $.each(self.hugs, function (index, value) {
+                huggers.append($('<li/>').text(value.author.username));
+            });
+        }
+
+        var runners = $('<ul/>');
+        if (self.runs.length < 1) {
+            runners.append(
+                $('<li/>').addClass('first').text(gettext("No runners"))
+            );
+        } else {
+            runners.append(
+                $('<li/>').addClass('first').text(gettext("Runners:"))
+            );
+            $.each(self.runs, function (index, value) {
+                runners.append($('<li/>').text(value.author.username));
+            });
+        }
+
+        var hugs = ngettext("%(hugs)s hug, ", "%(hugs)s hugs, ", self.hugs.length);
+        var hugs = interpolate(hugs, {'hugs': self.hugs.length}, true);
+        var runs = ngettext("%(runs)s run", "%(runs)s runs", self.runs.length);
+        var runs = interpolate(runs, {'runs': self.runs.length}, true);
+        hugs_runs = $('<div/>').addClass('hugs_runs').text(hugs + runs)
+            .append($('<div/>').addClass('hugs_runs_display').append(huggers).append(runners)
+        );
+
+        hugs_runs.hover(function (event) {
+                $('.hugs_runs_display', this).show();
+            },
+            function (event) {
+                $('.hugs_runs_display', this).hide();
+            }
+        );
+
         var post = $('<li/>').addClass('post').data('post', self).append(post_options).append(
             $('<span/>').append(author_link)
         ).append(
             $('<p/>').addClass('content').text(self.message)
         ).append(
-            date
+            $('<div/>').addClass('footer').append(
+                date
+            ).append(
+                hugs_runs
+            )
         ).append(
            $('<span/>').append($('<ul/>').addClass('comments'))
         ).append(
            $('<span/>').append(createCommentForm())
         );
-        
+
         return post;
     }
-    
+
     function createCommentForm() {
         // TODO: Instead of creating forms use a static form from template, clone it and append event handlers
         var textarea = $('<textarea/>').addClass('comment_text').keyup(function (event) {
@@ -184,23 +307,23 @@ function Post(data) {
             });
         });
         var form = $('<form/>').append(textarea, input);
-        
+
         return form;
     }
-    
+
     function getComment(comment_url) {
         $.getJSON(comment_url, function (data, textStatus, jqXHR) {
             new Comment(data, self).appendToPost();
         });
     }
-    
+
     function displayComments() {
         // TODO: We call comments in the right order but that doesn't mean we get them in the right order aswell. Should make some ordering down the road
         $.each(self.comments, function (index, comment_url) {
             getComment(comment_url);
         });
     }
-    
+
     function checkIfPostExists() {
         return $('.post').is(function (index) {
             return $(this).data('post').id === self.id;
@@ -220,17 +343,20 @@ function Post(data) {
 
     self.addToBottom = function () {
         if (checkIfPostExists()) return;
-        
+
         $('.posts').append(createDOM());
         displayComments();
     };
 
     self.addToTop = function () {
-        if (checkIfPostExists()) return;
+        if (checkIfPostExists()) {
+            self.updatePost();
+            return;
+        }
 
         var post = createDOM().hide().prependTo($('.posts'));
         displayComments();
-        
+
         if (postByUser()) {
             // TODO: Maybe we should remove URI after showing user's post
             showPost(post);
@@ -249,6 +375,13 @@ function Post(data) {
             $('#posts_in_queue, #show_posts').show();
         }
     };
+
+    self.updatePost = function () {
+        $('.post').filter(function () {
+            return $(this).data('post') && $(this).data('post').id == self.id
+                && $(this).data('post').updated_time < self.updated_time;
+        }).replaceWith(createDOM());
+    }
 }
 
 Post.getById = function (post_id) {
@@ -262,7 +395,7 @@ function Comment(data, post) {
     var self = this;
     $.extend(self, data);
     self.post = post;
-    
+
     function createDOM() {
         // TODO: Author link shouldn't be hardcoded
         var author_link = $('<a/>').attr('href', '/user/' + self.author.username).addClass('author hand').text(self.author.username);
@@ -275,10 +408,10 @@ function Comment(data, post) {
         ).append(
             date
         );
-        
+
         return comment;
     }
-    
+
     self.appendToPost = function () {
         $('.post').each(function (index, post) {
             if ($(post).data('post').id === self.post.id) {

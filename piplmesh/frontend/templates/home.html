@@ -31,6 +31,10 @@
             'location': '{{ request.node.location|escapejs }}',
             'url': '{{ request.node.url|escapejs }}'
         };
+
+        var user = {};
+        user.username = '{% filter escapejs %}{{ request.user.username }}{% endfilter %}';
+        
         /* ]]> */
     </script>
 {% endblock %}
